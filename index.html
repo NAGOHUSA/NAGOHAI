@@ -590,7 +590,7 @@ async function send() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
       body: JSON.stringify({
-        messages,
+        messages: msgs,
         system:      document.getElementById('sysTxt').value.trim() || undefined,
         model:       document.getElementById('modelSel').value,
         max_tokens:  2048,
