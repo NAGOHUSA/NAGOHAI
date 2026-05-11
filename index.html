@@ -6,6 +6,8 @@
 <title>NAGOH AI — Your Creative Business Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -79,6 +81,23 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   color: rgba(255,255,255,0.65); cursor: pointer; border-radius: 6px; transition: all 0.15s;
 }
 .tbtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+/* User avatar in topbar */
+.tuser {
+  display: flex; align-items: center; gap: 8px;
+}
+.tuser-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.3); object-fit: cover;
+  display: none;
+}
+.tuser-avatar.show { display: block; }
+.tuser-name {
+  font-size: 0.68rem; color: rgba(255,255,255,0.7); max-width: 100px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: none;
+}
+.tuser-name.show { display: block; }
+
 .tbal {
   font-size: 0.72rem; color: var(--gold-md); font-weight: 500; letter-spacing: 0.04em;
 }
@@ -107,6 +126,16 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .bal-icon { font-size: 1.4rem; line-height: 1; }
 .bal-num { font-family: var(--serif); font-size: 1.25rem; font-weight: 700; color: var(--ink); line-height: 1; }
 .bal-sub { font-size: 0.58rem; color: var(--dim); margin-top: 2px; letter-spacing: 0.04em; }
+
+/* Buy tokens button */
+.buy-btn {
+  display: block; width: 100%; margin-top: 8px;
+  font-family: var(--sans); font-size: 0.68rem; font-weight: 600;
+  padding: 6px 0; background: var(--gold); border: none; color: var(--deep);
+  cursor: pointer; border-radius: 8px; transition: all 0.15s; text-align: center;
+  letter-spacing: 0.02em; text-decoration: none;
+}
+.buy-btn:hover { background: #d48f20; }
 
 .msel {
   width: 100%; background: #fff; border: 1px solid var(--border2);
@@ -205,6 +234,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 .ava.ai  { background: var(--teal); color: #fff; font-family: var(--serif); font-weight: 700; }
 .ava.you { background: var(--warm); color: var(--dim); font-size: 0.75rem; font-weight: 600; }
+.ava.you img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
 .bub {
   max-width: 76%; font-size: 0.9rem; line-height: 1.75;
@@ -324,7 +354,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .modal-wrap.hidden { display: none; }
 .modal {
   background: #fff; border: 1px solid var(--border);
-  width: 100%; max-width: 440px;
+  width: 100%; max-width: 420px;
   border-radius: 20px; overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.15);
   animation: mIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -342,12 +372,12 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .modal-logo em { color: var(--gold); font-style: italic; }
 .modal-tagline { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; }
 
-.modal-body { padding: 1.5rem 2rem 2rem; }
+.modal-body { padding: 1.75rem 2rem 2rem; }
 .modal-title { 
   font-family: var(--serif); font-size: 1.3rem; font-weight: 500; 
-  color: var(--ink); margin-bottom: 0.3rem;
+  color: var(--ink); margin-bottom: 0.3rem; text-align: center;
 }
-.modal-sub { font-size: 0.75rem; color: var(--dim); line-height: 1.7; margin-bottom: 1.25rem; }
+.modal-sub { font-size: 0.75rem; color: var(--dim); line-height: 1.7; margin-bottom: 1.5rem; text-align: center; }
 
 /* value props */
 .vprops { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
@@ -358,42 +388,25 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .vp-icon { font-size: 1.1rem; }
 .vp-text { font-size: 0.72rem; color: var(--ink); font-weight: 500; }
 
-.tab-row { display: flex; gap: 4px; background: var(--parchmt); border-radius: 10px; padding: 3px; margin-bottom: 1.25rem; }
-.tab {
-  flex: 1; font-family: var(--sans); font-size: 0.72rem; font-weight: 500;
-  color: var(--dim); padding: 0.45rem; cursor: pointer;
-  border: none; background: none; border-radius: 8px; transition: all 0.15s;
+/* Google sign-in area */
+.google-btn-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
 }
-.tab.active { background: #fff; color: var(--teal); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.tab:hover:not(.active) { color: var(--ink); }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
+.google-signin-btn {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 12px 20px;
+  background: #fff; border: 1.5px solid var(--border2);
+  border-radius: 12px; cursor: pointer; transition: all 0.15s;
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+  color: var(--ink); justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.google-signin-btn:hover { border-color: var(--teal); background: var(--teal-lt); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.google-signin-btn svg { flex-shrink: 0; }
+.auth-note { font-size: 0.62rem; color: var(--muted); text-align: center; }
+.auth-loading { font-size: 0.78rem; color: var(--teal); display: none; text-align: center; padding: 8px 0; }
+.auth-err { font-size: 0.65rem; color: var(--rose); text-align: center; margin-top: 6px; min-height: 1rem; }
 
-.finput {
-  width: 100%; background: var(--cream); border: 1.5px solid var(--border2);
-  color: var(--ink); font-family: var(--sans); font-size: 0.82rem;
-  padding: 0.65rem 0.85rem; outline: none; margin-bottom: 0.65rem;
-  border-radius: 10px; transition: border-color 0.2s;
-}
-.finput:focus { border-color: var(--teal); }
-.finput::placeholder { color: var(--muted); }
-.flabel { font-size: 0.62rem; color: var(--sub); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.3rem; display: block; font-weight: 500; }
-.fbtn {
-  width: 100%; font-family: var(--sans); font-size: 0.82rem; font-weight: 600;
-  padding: 0.75rem; background: var(--teal); border: none; color: #fff;
-  cursor: pointer; transition: all 0.15s; border-radius: 10px; letter-spacing: 0.02em;
-}
-.fbtn:hover { background: #228b7e; }
-.fbtn:disabled { opacity: 0.4; cursor: not-allowed; }
-.fkey-box {
-  background: var(--teal-lt); border: 1px solid var(--teal-md);
-  padding: 0.65rem 0.85rem; margin-bottom: 0.65rem; border-radius: 10px;
-  font-size: 0.75rem; color: var(--teal); word-break: break-all; display: none;
-  font-family: monospace;
-}
-.fkey-box.show { display: block; }
-.ferr { font-size: 0.65rem; color: var(--rose); margin-top: 0.4rem; min-height: 1rem; }
-.fok  { font-size: 0.65rem; color: var(--sage); margin-top: 0.4rem; min-height: 1rem; }
 .modal-foot {
   padding: 0.75rem 2rem; border-top: 1px solid var(--border);
   font-size: 0.62rem; color: var(--muted); text-align: center;
@@ -412,7 +425,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 </head>
 <body>
 
-<!-- ── AUTH MODAL ── -->
+<!-- ── AUTH MODAL (Google OAuth) ── -->
 <div class="modal-wrap" id="modalWrap">
   <div class="modal">
     <div class="modal-hero">
@@ -421,7 +434,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
     </div>
     <div class="modal-body">
       <div class="modal-title">Welcome! 👋</div>
-      <div class="modal-sub">Get 5,000 free tokens to write product listings, answer customer questions, plan your shop, and more.</div>
+      <div class="modal-sub">Sign in with Google to get started. New users receive 5,000 free tokens instantly.</div>
 
       <div class="vprops">
         <div class="vprop"><div class="vp-icon">✍️</div><div class="vp-text">Write product descriptions that sell</div></div>
@@ -429,28 +442,23 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
         <div class="vprop"><div class="vp-icon">💌</div><div class="vp-text">Reply to customers with confidence</div></div>
       </div>
 
-      <div class="tab-row">
-        <button class="tab active" onclick="switchTab('register')">Create Free Account</button>
-        <button class="tab" onclick="switchTab('signin')">Sign In</button>
-      </div>
-
-      <div class="tab-panel active" id="tab-register">
-        <label class="flabel">Your email address</label>
-        <input class="finput" id="regEmail" type="email" placeholder="you@example.com">
-        <div class="fkey-box" id="regKeyBox"></div>
-        <button class="fbtn" id="regBtn" onclick="doRegister()">Get Started Free →</button>
-        <div class="ferr" id="regErr"></div>
-        <div class="fok"  id="regOk"></div>
-      </div>
-
-      <div class="tab-panel" id="tab-signin">
-        <label class="flabel">Your API key</label>
-        <input class="finput" id="siKey" type="password" placeholder="nah_xxxxxxxxxxxxxxxx">
-        <button class="fbtn" id="siBtn" onclick="doSignIn()">Sign In →</button>
-        <div class="ferr" id="siErr"></div>
+      <div class="google-btn-wrap">
+        <button class="google-signin-btn" onclick="signInWithGoogle()">
+          <!-- Google "G" logo SVG -->
+          <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/>
+            <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        </button>
+        <div class="auth-loading" id="authLoading">⏳ Signing you in…</div>
+        <div class="auth-err" id="authErr"></div>
+        <div class="auth-note">By signing in you agree to our terms of service. Your data is private and never shared.</div>
       </div>
     </div>
-    <div class="modal-foot">ai.nagoh.us &nbsp;·&nbsp; <a href="#">buy tokens</a> &nbsp;·&nbsp; <a href="#">help</a></div>
+    <div class="modal-foot">ai.nagoh.us &nbsp;·&nbsp; <a href="#" onclick="openBuyTokens()">buy tokens</a> &nbsp;·&nbsp; <a href="#">help</a></div>
   </div>
 </div>
 
@@ -465,6 +473,10 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   <div class="tpill">
     <div class="dot spin" id="led"></div>
     <span id="sstr" style="font-size:0.68rem;">connecting…</span>
+  </div>
+  <div class="tuser">
+    <img class="tuser-avatar" id="tuserAvatar" src="" alt="">
+    <span class="tuser-name" id="tuserName"></span>
   </div>
   <button class="tbtn" onclick="signOut()">Sign out</button>
 </div>
@@ -483,6 +495,8 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
           <div class="bal-sub">NAGOH TOKENS</div>
         </div>
       </div>
+      <!-- Buy More Tokens -->
+      <a class="buy-btn" id="buyLink" href="#" target="_blank" onclick="openBuyTokens()">+ Buy More Tokens</a>
     </div>
 
     <div class="pblock">
@@ -615,16 +629,24 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 </div>
 
 <script>
-const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
+// ─────────────────────────────────────────────────────────
+// CONFIGURATION — update these for your deployment
+// ─────────────────────────────────────────────────────────
+const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
+const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+// Stripe Payment Link — add ?client_reference_id= dynamically per user
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/YOUR_PAYMENT_LINK';
+// ─────────────────────────────────────────────────────────
 
-let apiKey    = lsGet('nagoh_key', '');
-let msgs      = [];
-let sessions  = lsGet('nagoh_sessions', []);
-let curSess   = null;
-let busy      = false;
-let balance   = 0;
-let sessSpent = 0;
-let turns     = 0;
+let sessionToken = ''; // JWT session from our Worker (stored in sessionStorage)
+let currentUser  = null; // { user_id, email, name, picture }
+let msgs         = [];
+let sessions     = lsGet('nagoh_sessions', []);
+let curSess      = null;
+let busy         = false;
+let balance      = 0;
+let sessSpent    = 0;
+let turns        = 0;
 
 const TONE_PROMPTS = {
   friendly:     "You are NAGOH AI, a warm, encouraging assistant for small business owners, Etsy sellers, crafters, and artists. Be friendly, supportive, and clear. Use simple language. Always be positive and practical. Help them feel confident about their business.",
@@ -633,21 +655,135 @@ const TONE_PROMPTS = {
   concise:      "You are NAGOH AI, an assistant for small business owners. Be extremely concise. Bullet points preferred. No fluff. Get right to the useful info.",
 };
 
-window.addEventListener('DOMContentLoaded', () => {
+// ─────────────────────────────────────────────────────────
+// GOOGLE OAUTH
+// ─────────────────────────────────────────────────────────
+
+// Called when GIS library loads
+window.onload = () => {
+  if (typeof google !== 'undefined') {
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: true,           // silently sign in if already consented
+      cancel_on_tap_outside: false,
+    });
+    // Attempt silent sign-in first
+    google.accounts.id.prompt();
+  }
   updateSysPrompt();
   renderHistory();
-  if (apiKey) { hideModal(); connect(); }
-});
 
-function updateSysPrompt() {
-  const tone = document.getElementById('toneMode').value;
-  document.getElementById('sysTxt').value = TONE_PROMPTS[tone] || TONE_PROMPTS.friendly;
+  // Check if we have a saved session
+  const saved = sessionStorage.getItem('nagoh_session');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      sessionToken = parsed.token;
+      currentUser  = parsed.user;
+      applyUserToUI(currentUser);
+      connect();
+    } catch { showModal(); }
+  } else {
+    showModal();
+  }
+};
+
+function signInWithGoogle() {
+  document.getElementById('authErr').textContent = '';
+  document.getElementById('authLoading').style.display = 'block';
+  // Trigger the Google One Tap / popup flow
+  google.accounts.id.prompt((notification) => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      // Fall back to redirect flow if One Tap was suppressed
+      google.accounts.id.renderButton(
+        document.createElement('div'),
+        { theme: 'outline', size: 'large' }
+      );
+      document.getElementById('authLoading').style.display = 'none';
+      document.getElementById('authErr').textContent = 'Pop-up blocked. Please allow pop-ups and try again.';
+    }
+  });
 }
 
+async function handleGoogleCredential(response) {
+  // response.credential = Google ID token (JWT)
+  document.getElementById('authLoading').style.display = 'block';
+  document.getElementById('authErr').textContent = '';
+
+  try {
+    const r = await fetch(`${WORKER}/v1/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id_token: response.credential }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Auth failed');
+
+    // Worker returns: { session_token, user: { user_id, email, name, picture }, token_balance, is_new }
+    sessionToken = d.session_token;
+    currentUser  = d.user;
+    balance      = d.token_balance;
+
+    // Persist session
+    sessionStorage.setItem('nagoh_session', JSON.stringify({ token: sessionToken, user: currentUser }));
+
+    applyUserToUI(currentUser);
+    setBalUI(balance);
+    setLed('on', 'Connected ✓');
+    document.getElementById('sendBtn').disabled = false;
+    hideModal();
+
+    if (d.is_new) {
+      setTimeout(() => {
+        addBubble('ai', `Welcome to NAGOH AI, ${currentUser.name.split(' ')[0]}! 🎉 You've received 5,000 free tokens to get started. Ask me anything about your shop or business!`, null, null);
+      }, 400);
+    }
+  } catch (err) {
+    document.getElementById('authErr').textContent = err.message || 'Sign-in failed. Please try again.';
+    document.getElementById('authLoading').style.display = 'none';
+  }
+}
+
+function applyUserToUI(user) {
+  if (!user) return;
+  const avatar = document.getElementById('tuserAvatar');
+  const name   = document.getElementById('tuserName');
+  if (user.picture) { avatar.src = user.picture; avatar.classList.add('show'); }
+  if (user.name)    { name.textContent = user.name.split(' ')[0]; name.classList.add('show'); }
+}
+
+function signOut() {
+  if (!confirm('Sign out? Your chat history stays saved locally.')) return;
+  sessionToken = ''; currentUser = null;
+  sessionStorage.removeItem('nagoh_session');
+  document.getElementById('sendBtn').disabled = true;
+  document.getElementById('tuserAvatar').classList.remove('show');
+  document.getElementById('tuserName').classList.remove('show');
+  setLed('spin', 'Signed out');
+  setBalUI(0);
+  if (typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
+  showModal();
+}
+
+// ─────────────────────────────────────────────────────────
+// STRIPE — open payment link with user ID embedded
+// ─────────────────────────────────────────────────────────
+function openBuyTokens() {
+  if (!currentUser) { showModal(); return; }
+  const url = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}`;
+  window.open(url, '_blank');
+}
+
+// ─────────────────────────────────────────────────────────
+// CONNECTION / SESSION
+// ─────────────────────────────────────────────────────────
 async function connect() {
   setLed('spin', 'Connecting…');
   try {
-    const r = await fetch(`${WORKER}/v1/balance`, { headers: { 'X-API-Key': apiKey } });
+    const r = await fetch(`${WORKER}/v1/balance`, {
+      headers: { 'Authorization': `Bearer ${sessionToken}` }
+    });
     const d = await r.json();
     if (!r.ok) { setLed('err', 'Auth error'); showModal(); return; }
     balance = d.token_balance;
@@ -662,74 +798,9 @@ async function connect() {
 function showModal() { document.getElementById('modalWrap').classList.remove('hidden'); }
 function hideModal() { document.getElementById('modalWrap').classList.add('hidden'); }
 
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i === (tab==='register'?0:1)));
-  document.querySelectorAll('.tab-panel').forEach((p,i) => p.classList.toggle('active', i === (tab==='register'?0:1)));
-}
-
-async function doRegister() {
-  const email = document.getElementById('regEmail').value.trim();
-  const errEl = document.getElementById('regErr');
-  const okEl  = document.getElementById('regOk');
-  const keyEl = document.getElementById('regKeyBox');
-  const btn   = document.getElementById('regBtn');
-  errEl.textContent = ''; okEl.textContent = ''; keyEl.classList.remove('show');
-  if (!email || !email.includes('@')) { errEl.textContent = 'Please enter a valid email address.'; return; }
-  btn.disabled = true; btn.textContent = 'Creating your account…';
-  try {
-    const r = await fetch(`${WORKER}/v1/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    const d = await r.json();
-    if (!r.ok && r.status !== 201) { errEl.textContent = d.error || 'Registration failed.'; return; }
-    keyEl.textContent = d.api_key; keyEl.classList.add('show');
-    okEl.textContent = d.returning
-      ? '👋 Welcome back! Your key is shown above — keep it safe!'
-      : `🎉 You're in! ${d.token_balance.toLocaleString()} free tokens loaded. Save your key above!`;
-    apiKey = d.api_key; lsSet('nagoh_key', apiKey);
-    btn.textContent = '✓ All set! Taking you in…';
-    setTimeout(() => { hideModal(); connect(); }, 2000);
-  } catch { errEl.textContent = 'Network error. Please try again.'; }
-  finally { setTimeout(() => { btn.disabled = false; btn.textContent = 'Get Started Free →'; }, 3500); }
-}
-
-async function doSignIn() {
-  const key   = document.getElementById('siKey').value.trim();
-  const errEl = document.getElementById('siErr');
-  const btn   = document.getElementById('siBtn');
-  errEl.textContent = '';
-  if (!key.startsWith('nah_')) { errEl.textContent = 'Your key should start with nah_'; return; }
-  btn.disabled = true; btn.textContent = 'Checking…';
-  try {
-    const r = await fetch(`${WORKER}/v1/balance`, { headers: { 'X-API-Key': key } });
-    if (!r.ok) { errEl.textContent = 'That key didn\'t work — check and try again.'; return; }
-    apiKey = key; lsSet('nagoh_key', apiKey); hideModal(); connect();
-  } catch { errEl.textContent = 'Network error. Please try again.'; }
-  finally { btn.disabled = false; btn.textContent = 'Sign In →'; }
-}
-
-function signOut() {
-  if (!confirm('Sign out? Your chat history stays saved locally.')) return;
-  apiKey = ''; lsSet('nagoh_key', '');
-  document.getElementById('sendBtn').disabled = true;
-  setLed('spin', 'Signed out');
-  setBalUI(0); showModal();
-}
-
-function quickPrompt(text) {
-  const box = document.getElementById('prompt');
-  box.value = text; box.focus();
-  grow(box);
-  box.setSelectionRange(text.length, text.length);
-}
-
-function quickSend(text) {
-  const box = document.getElementById('prompt');
-  box.value = text; send();
-}
-
+// ─────────────────────────────────────────────────────────
+// CHAT
+// ─────────────────────────────────────────────────────────
 async function send() {
   const box  = document.getElementById('prompt');
   const text = box.value.trim();
@@ -750,7 +821,10 @@ async function send() {
   try {
     const r = await fetch(`${WORKER}/v1/chat`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-API-Key': apiKey },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionToken}`,  // session token replaces API key
+      },
       body: JSON.stringify({
         messages: msgs,
         system:      document.getElementById('sysTxt').value.trim() || undefined,
@@ -765,7 +839,8 @@ async function send() {
     if (!r.ok) {
       addErr(data.error || 'Something went wrong. Please try again.');
       msgs.pop();
-      if (r.status === 402) addErr('You\'re out of tokens! Visit ai.nagoh.us to buy more.');
+      if (r.status === 402) addErr('You\'re out of tokens! Click "Buy More Tokens" in the sidebar to top up.');
+      if (r.status === 401) { showModal(); }
     } else {
       const reply = data.message.content;
       msgs.push({ role: 'assistant', content: reply });
@@ -827,8 +902,13 @@ function addBubble(role, content, nagoh, suggestions) {
     sugsHtml = `<div class="suggestions">${suggestions.map(s => `<button class="sug" onclick="quickSend('${s.replace(/'/g,"\\'")}')">↪ ${esc(s)}</button>`).join('')}</div>`;
   }
 
+  // Use Google avatar for user bubbles if available
+  const avaContent = (role === 'user' && currentUser?.picture)
+    ? `<img src="${currentUser.picture}" alt="">`
+    : (role === 'ai' ? 'N' : 'U');
+
   r.innerHTML = `
-    <div class="ava ${role}">${role==='ai'?'N':'U'}</div>
+    <div class="ava ${role === 'user' ? 'you' : 'ai'}">${avaContent}</div>
     <div><div class="bub">${esc(content)}</div>${meta}${sugsHtml}</div>`;
   c.appendChild(r); c.scrollTop = c.scrollHeight;
 }
@@ -868,6 +948,10 @@ function setBalUI(n) {
   document.getElementById('topBal').innerHTML = `${fmt} <span>tokens</span>`;
 }
 function onModel() {}
+function updateSysPrompt() {
+  const tone = document.getElementById('toneMode').value;
+  document.getElementById('sysTxt').value = TONE_PROMPTS[tone] || TONE_PROMPTS.friendly;
+}
 function updateStats() {
   document.getElementById('rMsgs').textContent  = msgs.length;
   document.getElementById('rSpent').textContent = sessSpent;
@@ -931,6 +1015,18 @@ function clearAll() {
   if (!confirm('Clear all past chats?')) return;
   sessions = []; curSess = null; msgs = [];
   lsSet('nagoh_sessions', []); newChat();
+}
+
+function quickPrompt(text) {
+  const box = document.getElementById('prompt');
+  box.value = text; box.focus();
+  grow(box);
+  box.setSelectionRange(text.length, text.length);
+}
+
+function quickSend(text) {
+  const box = document.getElementById('prompt');
+  box.value = text; send();
 }
 
 function onKey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
