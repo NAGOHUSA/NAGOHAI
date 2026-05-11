@@ -1,20 +1,30 @@
-name = "nagoh-ai-worker"
-main = "index.js"
-compatibility_date = "2024-09-23"
+name = "nagohai"
+main = "worker.js"
+compatibility_date = "2024-01-01"
 
-# Uncomment after deploying to attach to ai.nagoh.us:
-# routes = [
-#   { pattern = "ai.nagoh.us/*", zone_name = "nagoh.us" }
-# ]
-
+# ── KV Namespace ──────────────────────────────────────────────────────────────
+# Run: wrangler kv:namespace create NAGOH_KV
+# Then paste the id below
 [[kv_namespaces]]
 binding = "NAGOH_KV"
-id      = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+id      = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
 
-# Set secrets via CLI — never put values here:
-#   wrangler secret put DEEPSEEK_API_KEY
+# ── Environment Variables ─────────────────────────────────────────────────────
+# Set these as SECRETS (not plain vars) via:
+#   wrangler secret put GOOGLE_CLIENT_ID
+#   wrangler secret put SESSION_SECRET
 #   wrangler secret put STRIPE_WEBHOOK_SECRET
-#   wrangler secret put ADMIN_KEY
+#   wrangler secret put ADMIN_PASSWORD
+#   wrangler secret put DEEPSEEK_API_KEY
+#
+# Or set in the Cloudflare dashboard:
+#   Workers > nagohai > Settings > Variables
 
-[observability]
-enabled = true
+[vars]
+FREE_TOKENS = "5000"
+
+# ── Routes ───────────────────────────────────────────────────────────────────
+# Uncomment and customize if you have a custom domain:
+# routes = [
+#   { pattern = "api.nagoh.us/*", zone_name = "nagoh.us" }
+# ]
