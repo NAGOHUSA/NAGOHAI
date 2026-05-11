@@ -3,389 +3,528 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NAGOH AI</title>
+<title>NAGOH AI — Your Creative Business Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --black:  #050505;
-  --ink:    #0a0a0a;
-  --ground: #0f0f0f;
-  --raised: #161616;
-  --border: #232323;
-  --bord2:  #2e2e2e;
-  --muted:  #444;
-  --dim:    #666;
-  --sub:    #999;
-  --text:   #e8e4db;
-  --bright: #f5f0e8;
-  --gold:   #c8952a;
-  --amber:  #e8a83a;
-  --glow:   rgba(200,149,42,0.12);
-  --glowS:  rgba(200,149,42,0.05);
-  --red:    #c0392b;
-  --green:  #27ae60;
-  --mono:   'IBM Plex Mono', monospace;
-  --sans:   'IBM Plex Sans', sans-serif;
+  --cream:    #fdf8f0;
+  --parchmt:  #f5ede0;
+  --warm:     #ede3d5;
+  --border:   #e0d4c4;
+  --border2:  #d4c4b0;
+  --muted:    #b5a090;
+  --dim:      #8a7868;
+  --sub:      #6b5e50;
+  --ink:      #3d2f24;
+  --deep:     #2a1f16;
+
+  --rose:     #e8524a;
+  --rose-lt:  #fce8e7;
+  --rose-md:  #f5c4c2;
+  --teal:     #2a9d8f;
+  --teal-lt:  #e0f5f3;
+  --teal-md:  #a0dcd6;
+  --gold:     #e9a028;
+  --gold-lt:  #fdf0d5;
+  --gold-md:  #f7d08a;
+  --plum:     #8b5cf6;
+  --plum-lt:  #f0ebff;
+  --plum-md:  #c4b0f8;
+  --sage:     #4a7c59;
+  --sage-lt:  #e8f4eb;
+  --sage-md:  #a8d4b4;
+
+  --sans:     'DM Sans', sans-serif;
+  --serif:    'Fraunces', serif;
 }
 
-html, body { height: 100%; overflow: hidden; background: var(--black); }
-body { color: var(--text); font-family: var(--mono); display: flex; flex-direction: column; position: relative; }
-
-/* scanlines */
-body::after {
-  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.025) 2px, rgba(0,0,0,0.025) 4px);
-}
+html, body { height: 100%; overflow: hidden; background: var(--cream); }
+body { color: var(--ink); font-family: var(--sans); display: flex; flex-direction: column; }
 
 /* ── TOPBAR ── */
 .topbar {
-  height: 48px; display: flex; align-items: center;
+  height: 60px; display: flex; align-items: center;
   padding: 0 1.5rem; gap: 1rem;
-  background: var(--ink); border-bottom: 1px solid var(--border);
-  flex-shrink: 0; position: relative; z-index: 100;
+  background: var(--deep); flex-shrink: 0;
+  position: relative; z-index: 100;
+  border-bottom: 3px solid var(--rose);
 }
-.wordmark { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.22em; color: var(--bright); }
-.wordmark em { color: var(--gold); font-style: normal; }
-.tdiv { width: 1px; height: 18px; background: var(--border); }
-.ttag {
-  font-size: 0.58rem; font-weight: 600; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--dim);
-  padding: 2px 7px; border: 1px solid var(--border);
+.wordmark { 
+  font-family: var(--serif); font-size: 1.4rem; font-weight: 700;
+  color: #fff; letter-spacing: 0.02em;
+}
+.wordmark em { color: var(--gold); font-style: italic; }
+.tagline {
+  font-size: 0.65rem; color: rgba(255,255,255,0.45); letter-spacing: 0.08em;
+  font-weight: 300; line-height: 1;
 }
 .tsep { flex: 1; }
-.tstat { display: flex; flex-direction: column; align-items: flex-end; }
-.tstat-val { font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 0.05em; line-height: 1; }
-.tstat-key { font-size: 0.52rem; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+.tpill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px; padding: 4px 12px; font-size: 0.7rem; color: rgba(255,255,255,0.65);
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); transition: all 0.3s; flex-shrink: 0; }
+.dot.on { background: var(--sage); box-shadow: 0 0 8px rgba(74,124,89,0.6); }
+.dot.err { background: var(--rose); }
+.dot.spin { background: var(--gold); animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.tbtn {
+  font-family: var(--sans); font-size: 0.68rem; font-weight: 500;
+  padding: 6px 14px; background: transparent; border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.65); cursor: pointer; border-radius: 6px; transition: all 0.15s;
+}
+.tbtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.tbal {
+  font-size: 0.72rem; color: var(--gold-md); font-weight: 500; letter-spacing: 0.04em;
+}
+.tbal span { font-size: 0.58rem; color: rgba(255,255,255,0.4); display: block; text-align: right; }
 
 /* ── SHELL ── */
-.shell { flex: 1; display: flex; overflow: hidden; position: relative; z-index: 1; }
+.shell { flex: 1; display: flex; overflow: hidden; }
 
 /* ── LEFT PANEL ── */
 .left {
-  width: 204px; flex-shrink: 0;
-  background: var(--ink); border-right: 1px solid var(--border);
+  width: 220px; flex-shrink: 0;
+  background: var(--parchmt);
+  border-right: 1px solid var(--border);
   display: flex; flex-direction: column; overflow: hidden;
 }
-.pblock { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
-.plabel { font-size: 0.52rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.55rem; }
-
-.bal-num { font-size: 1.5rem; font-weight: 700; color: var(--gold); line-height: 1; }
-.bal-unit { font-size: 0.55rem; color: var(--dim); letter-spacing: 0.1em; margin-top: 3px; }
-.srow { display: flex; align-items: center; gap: 6px; margin-top: 0.5rem; }
-.led { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); flex-shrink: 0; transition: background 0.3s, box-shadow 0.3s; }
-.led.on  { background: var(--green); box-shadow: 0 0 6px rgba(39,174,96,0.55); }
-.led.err { background: var(--red);   box-shadow: 0 0 6px rgba(192,57,43,0.55); }
-.led.spin { background: var(--amber); animation: blink 0.9s ease-in-out infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
-.sstr { font-size: 0.6rem; color: var(--dim); letter-spacing: 0.06em; }
+.pblock { padding: 1rem 1rem; border-bottom: 1px solid var(--border); }
+.plabel { 
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.65rem;
+}
+.bal-wrap {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--gold-lt); border: 1px solid var(--gold-md);
+  border-radius: 10px; padding: 10px 12px;
+}
+.bal-icon { font-size: 1.4rem; line-height: 1; }
+.bal-num { font-family: var(--serif); font-size: 1.25rem; font-weight: 700; color: var(--ink); line-height: 1; }
+.bal-sub { font-size: 0.58rem; color: var(--dim); margin-top: 2px; letter-spacing: 0.04em; }
 
 .msel {
-  width: 100%; background: var(--ground); border: 1px solid var(--border);
-  color: var(--text); font-family: var(--mono); font-size: 0.65rem;
-  padding: 0.38rem 0.5rem; outline: none; cursor: pointer;
+  width: 100%; background: #fff; border: 1px solid var(--border2);
+  color: var(--ink); font-family: var(--sans); font-size: 0.72rem;
+  padding: 0.45rem 0.6rem; outline: none; cursor: pointer; border-radius: 8px;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 8px center; padding-right: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b5a090'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
 }
-.msel:focus { border-color: var(--gold); outline: none; }
-.msel option { background: var(--ground); }
+.msel:focus { border-color: var(--teal); outline: none; }
+.msel option { background: #fff; }
 
-.stxt {
-  width: 100%; background: var(--ground); border: 1px solid var(--border);
-  color: var(--sub); font-family: var(--mono); font-size: 0.6rem;
-  line-height: 1.5; padding: 0.4rem 0.5rem; resize: none; outline: none;
-  transition: border-color 0.2s, color 0.2s;
+/* Quick prompts */
+.qgrid { display: flex; flex-direction: column; gap: 5px; }
+.qbtn {
+  display: flex; align-items: flex-start; gap: 8px;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 10px; cursor: pointer; transition: all 0.15s;
+  text-align: left;
 }
-.stxt:focus { border-color: var(--gold); color: var(--text); }
+.qbtn:hover { border-color: var(--teal); background: var(--teal-lt); }
+.qbtn .qi { font-size: 1rem; line-height: 1; flex-shrink: 0; margin-top: 1px; }
+.qbtn .ql { font-size: 0.68rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
+.qbtn .qs { font-size: 0.6rem; color: var(--dim); line-height: 1.3; margin-top: 2px; }
 
 .pbtn {
-  display: block; width: 100%; font-family: var(--mono);
-  font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
-  padding: 0.42rem 0; background: transparent; border: 1px solid var(--bord2);
-  color: var(--dim); cursor: pointer; transition: all 0.15s; text-align: center; margin-bottom: 0.35rem;
+  display: block; width: 100%; font-family: var(--sans);
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.03em;
+  padding: 0.45rem 0; background: transparent; border: 1px solid var(--border2);
+  color: var(--dim); cursor: pointer; transition: all 0.15s; text-align: center;
+  border-radius: 8px; margin-bottom: 0.4rem;
 }
 .pbtn:last-child { margin-bottom: 0; }
-.pbtn:hover { border-color: var(--gold); color: var(--gold); background: var(--glowS); }
-.pbtn.danger:hover { border-color: var(--red); color: var(--red); background: rgba(192,57,43,0.05); }
+.pbtn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
+.pbtn.danger:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-lt); }
+.pbtn.primary { background: var(--teal); border-color: var(--teal); color: #fff; }
+.pbtn.primary:hover { background: #228b7e; border-color: #228b7e; color: #fff; }
 
-.hscroll { flex: 1; overflow-y: auto; padding: 0.35rem; }
-.hscroll::-webkit-scrollbar { width: 2px; }
-.hscroll::-webkit-scrollbar-thumb { background: var(--bord2); }
+.hscroll { flex: 1; overflow-y: auto; padding: 0.4rem; }
+.hscroll::-webkit-scrollbar { width: 3px; }
+.hscroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
 .hitem {
-  font-size: 0.62rem; color: var(--muted); padding: 0.38rem 0.5rem;
+  font-size: 0.68rem; color: var(--dim); padding: 0.4rem 0.6rem;
   cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  border-left: 2px solid transparent; transition: all 0.1s;
+  border-radius: 6px; transition: all 0.12s; border-left: 2px solid transparent;
 }
-.hitem:hover { color: var(--sub); background: var(--ground); border-left-color: var(--bord2); }
-.hitem.active { color: var(--gold); background: var(--glowS); border-left-color: var(--gold); }
+.hitem:hover { color: var(--ink); background: var(--warm); }
+.hitem.active { color: var(--teal); background: var(--teal-lt); border-left-color: var(--teal); }
 
 /* ── CHAT ── */
-.chat-col { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--black); }
+.chat-col { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--cream); }
 
 .msgs { flex: 1; overflow-y: auto; padding: 2rem 0 1rem; scroll-behavior: smooth; }
-.msgs::-webkit-scrollbar { width: 3px; }
-.msgs::-webkit-scrollbar-thumb { background: var(--border); }
+.msgs::-webkit-scrollbar { width: 4px; }
+.msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 .empty {
   height: 100%; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   text-align: center; padding: 2rem; user-select: none;
 }
-.eglyph { font-size: 0.62rem; color: var(--raised); letter-spacing: 0.2em; line-height: 1.9; margin-bottom: 1.5rem; font-weight: 600; }
-.etitle { font-size: 1.6rem; font-weight: 700; color: var(--raised); letter-spacing: 0.06em; margin-bottom: 0.5rem; }
-.esub { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.08em; line-height: 2; }
+.ehero { 
+  font-family: var(--serif); font-size: 2.6rem; font-weight: 500; font-style: italic;
+  color: var(--ink); line-height: 1.2; margin-bottom: 0.4rem;
+}
+.ehero em { color: var(--teal); font-style: normal; }
+.esub { 
+  font-size: 0.8rem; color: var(--dim); line-height: 1.8; max-width: 380px;
+  margin-bottom: 2rem;
+}
+.echips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 440px; }
+.echip {
+  display: flex; align-items: center; gap: 6px;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 20px; padding: 7px 14px; cursor: pointer; transition: all 0.15s;
+  font-size: 0.72rem; font-weight: 500; color: var(--sub);
+}
+.echip:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
+.echip span { font-size: 0.95rem; }
+.etagline {
+  font-size: 0.65rem; color: var(--muted); margin-top: 1.5rem;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
 
 .row {
-  display: flex; padding: 0.3rem 2rem; gap: 1rem;
-  max-width: 860px; margin: 0 auto; width: 100%;
-  animation: rin 0.15s ease both;
+  display: flex; padding: 0.4rem 2rem; gap: 10px;
+  max-width: 820px; margin: 0 auto; width: 100%;
+  animation: rin 0.18s ease both;
 }
-@keyframes rin { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
+@keyframes rin { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
 .row.user { flex-direction: row-reverse; }
 
 .ava {
-  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
-  font-size: 0.5rem; font-weight: 700; letter-spacing: 0.06em;
-  flex-shrink: 0; margin-top: 4px; border: 1px solid;
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; flex-shrink: 0; margin-top: 3px; border-radius: 50%;
 }
-.ava.ai  { background: var(--glowS); color: var(--gold); border-color: rgba(200,149,42,0.25); }
-.ava.you { background: rgba(255,255,255,0.02); color: var(--dim); border-color: var(--bord2); }
+.ava.ai  { background: var(--teal); color: #fff; font-family: var(--serif); font-weight: 700; }
+.ava.you { background: var(--warm); color: var(--dim); font-size: 0.75rem; font-weight: 600; }
 
 .bub {
-  max-width: 78%; font-size: 0.83rem; line-height: 1.7;
+  max-width: 76%; font-size: 0.9rem; line-height: 1.75;
   white-space: pre-wrap; word-break: break-word;
-  font-family: var(--sans); font-weight: 400; color: var(--text);
-  padding: 0.6rem 0.9rem; border: 1px solid;
+  font-family: var(--sans); font-weight: 400; color: var(--ink);
+  padding: 0.75rem 1rem; border-radius: 4px;
 }
-.row.ai   .bub { background: var(--ground); border-color: var(--border); border-radius: 0 6px 6px 6px; }
-.row.user .bub { background: transparent; border-color: var(--bord2); color: var(--sub); font-style: italic; border-radius: 6px 0 6px 6px; }
-.bub.thinking { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); font-style: italic; font-weight: 300; letter-spacing: 0.05em; background: var(--ground); border-color: var(--border); }
-.bub.error { border-color: rgba(192,57,43,0.3); background: rgba(192,57,43,0.04); color: #e06c5a; font-family: var(--mono); font-size: 0.7rem; }
+.row.ai   .bub { 
+  background: #fff; border: 1px solid var(--border); 
+  border-radius: 4px 14px 14px 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.row.user .bub { 
+  background: var(--teal); color: #fff;
+  border-radius: 14px 4px 14px 14px;
+}
+.bub.thinking { 
+  font-family: var(--sans); font-size: 0.82rem; color: var(--dim);
+  font-style: italic; font-weight: 300; background: #fff;
+  border: 1px solid var(--border); border-radius: 4px 14px 14px 14px;
+}
+.bub.error { 
+  border: 1px solid var(--rose-md); background: var(--rose-lt); 
+  color: #b8392e; font-size: 0.8rem; border-radius: 4px 14px 14px 14px;
+}
+.think-dots span { display: inline-block; animation: tdot 1.2s ease-in-out infinite; }
+.think-dots span:nth-child(2) { animation-delay: 0.2s; }
+.think-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes tdot { 0%,80%,100%{opacity:0.3;transform:scale(0.85)} 40%{opacity:1;transform:scale(1)} }
 
-.rmeta { font-size: 0.55rem; color: var(--muted); margin-top: 0.2rem; letter-spacing: 0.06em; font-family: var(--mono); }
-.rmeta b { color: var(--gold); font-weight: 400; }
+.rmeta { 
+  font-size: 0.58rem; color: var(--muted); margin-top: 0.25rem; 
+  display: flex; align-items: center; gap: 8px;
+}
+.rmeta .chip { 
+  background: var(--gold-lt); color: var(--dim); border-radius: 10px; 
+  padding: 1px 8px; font-size: 0.58rem;
+}
+
+/* ── SUGGESTIONS (post-message) ── */
+.suggestions { 
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; max-width: 76%;
+}
+.sug {
+  background: var(--parchmt); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 4px 12px; font-size: 0.7rem; color: var(--dim);
+  cursor: pointer; transition: all 0.12s; font-weight: 400;
+}
+.sug:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
 
 /* ── INPUT ── */
-.ibar { border-top: 1px solid var(--border); background: var(--ink); padding: 0.85rem 2rem; flex-shrink: 0; }
-.iinner { max-width: 860px; margin: 0 auto; display: flex; gap: 0.65rem; align-items: flex-end; }
+.ibar { 
+  border-top: 1px solid var(--border); background: var(--parchmt); 
+  padding: 0.85rem 2rem; flex-shrink: 0;
+}
+.iinner { max-width: 820px; margin: 0 auto; display: flex; gap: 0.7rem; align-items: flex-end; }
 .prompt {
-  flex: 1; background: var(--ground); border: 1px solid var(--border);
-  border-top-color: var(--bord2); color: var(--text);
-  font-family: var(--sans); font-size: 0.88rem; font-weight: 300; line-height: 1.55;
-  padding: 0.65rem 0.9rem; resize: none; outline: none;
-  min-height: 44px; max-height: 160px; transition: border-color 0.2s;
+  flex: 1; background: #fff; border: 1.5px solid var(--border2);
+  color: var(--ink); font-family: var(--sans); font-size: 0.9rem;
+  font-weight: 400; line-height: 1.6; padding: 0.7rem 1rem;
+  resize: none; outline: none; min-height: 48px; max-height: 160px;
+  border-radius: 12px; transition: border-color 0.2s;
 }
-.prompt::placeholder { color: var(--muted); font-weight: 300; }
-.prompt:focus { border-color: var(--gold); }
+.prompt::placeholder { color: var(--muted); }
+.prompt:focus { border-color: var(--teal); }
 .send {
-  font-family: var(--mono); font-size: 0.65rem; font-weight: 600;
-  letter-spacing: 0.12em; text-transform: uppercase;
-  height: 44px; padding: 0 1.25rem;
-  background: var(--gold); border: none; color: var(--black);
+  font-family: var(--sans); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.03em; height: 48px; padding: 0 1.4rem;
+  background: var(--teal); border: none; color: #fff;
   cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+  border-radius: 12px;
 }
-.send:hover:not(:disabled) { background: var(--amber); }
-.send:disabled { opacity: 0.25; cursor: not-allowed; }
-.ifoot { max-width: 860px; margin: 0.45rem auto 0; display: flex; justify-content: space-between; font-size: 0.55rem; color: var(--muted); letter-spacing: 0.08em; }
-.ifoot kbd { border: 1px solid var(--bord2); padding: 1px 4px; font-family: var(--mono); font-size: 0.55rem; color: var(--dim); }
+.send:hover:not(:disabled) { background: #228b7e; }
+.send:disabled { opacity: 0.3; cursor: not-allowed; }
+.ifoot { 
+  max-width: 820px; margin: 0.4rem auto 0; 
+  display: flex; justify-content: space-between; 
+  font-size: 0.58rem; color: var(--muted);
+}
 
 /* ── RIGHT PANEL ── */
 .right {
-  width: 180px; flex-shrink: 0;
-  background: var(--ink); border-left: 1px solid var(--border);
+  width: 190px; flex-shrink: 0;
+  background: var(--parchmt); border-left: 1px solid var(--border);
   display: flex; flex-direction: column; overflow: hidden;
 }
-.rblock { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border); }
-.sgrid { display: flex; flex-direction: column; gap: 0.7rem; }
-.sval { font-size: 0.78rem; font-weight: 600; color: var(--text); letter-spacing: 0.03em; line-height: 1; }
-.sval.gold { color: var(--gold); }
-.slbl { font-size: 0.52rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
-.ticker { flex: 1; overflow-y: auto; padding: 0.5rem; font-size: 0.6rem; color: var(--muted); line-height: 2; letter-spacing: 0.04em; }
-.ticker::-webkit-scrollbar { width: 2px; }
-.tline { display: flex; justify-content: space-between; padding: 0 0.25rem; }
-.tline span { color: var(--gold); }
-.tline.new { animation: tin 0.3s ease; }
-@keyframes tin { from{background:var(--glowS)} to{background:transparent} }
+.rblock { padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); }
+.sgrid { display: flex; flex-direction: column; gap: 0.8rem; }
+.scard {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 10px;
+}
+.sval { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; color: var(--ink); line-height: 1; }
+.sval.teal { color: var(--teal); }
+.slbl { font-size: 0.58rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px; }
+
+/* use ideas */
+.ideas { flex: 1; overflow-y: auto; padding: 0.5rem; }
+.ideas::-webkit-scrollbar { width: 3px; }
+.idea-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 7px 8px; border-radius: 8px; cursor: pointer;
+  transition: all 0.12s; margin-bottom: 4px;
+}
+.idea-item:hover { background: var(--warm); }
+.idea-icon { font-size: 1rem; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+.idea-text { font-size: 0.65rem; color: var(--dim); line-height: 1.4; }
+.idea-text strong { color: var(--ink); font-weight: 500; display: block; font-size: 0.68rem; }
 
 /* ── AUTH MODAL ── */
 .modal-wrap {
   position: fixed; inset: 0; z-index: 1000;
-  background: rgba(0,0,0,0.88);
+  background: rgba(45, 32, 22, 0.72);
   display: flex; align-items: center; justify-content: center;
-  padding: 1rem;
-  backdrop-filter: blur(3px);
+  padding: 1rem; backdrop-filter: blur(6px);
 }
 .modal-wrap.hidden { display: none; }
 .modal {
-  background: var(--ink);
-  border: 1px solid var(--bord2);
-  width: 100%; max-width: 420px;
-  padding: 0;
-  animation: mIn 0.2s ease;
+  background: #fff; border: 1px solid var(--border);
+  width: 100%; max-width: 440px;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  animation: mIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-@keyframes mIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
-.modal-head {
-  padding: 1.25rem 1.5rem 0;
-  display: flex; align-items: flex-start; justify-content: space-between;
-}
-.modal-logo { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; color: var(--bright); }
-.modal-logo em { color: var(--gold); font-style: normal; }
-.modal-body { padding: 1.25rem 1.5rem; }
-.modal-title { font-size: 1rem; font-weight: 600; color: var(--bright); letter-spacing: 0.05em; margin-bottom: 0.35rem; }
-.modal-sub { font-size: 0.65rem; color: var(--dim); line-height: 1.7; margin-bottom: 1.5rem; letter-spacing: 0.04em; }
+@keyframes mIn { from{opacity:0;transform:translateY(20px) scale(0.97)} to{opacity:1;transform:none} }
 
-.tab-row { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; }
+.modal-hero {
+  background: var(--deep); padding: 2rem 2rem 1.5rem;
+  text-align: center;
+}
+.modal-logo { 
+  font-family: var(--serif); font-size: 2rem; font-weight: 700; 
+  color: #fff; margin-bottom: 0.35rem;
+}
+.modal-logo em { color: var(--gold); font-style: italic; }
+.modal-tagline { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; }
+
+.modal-body { padding: 1.5rem 2rem 2rem; }
+.modal-title { 
+  font-family: var(--serif); font-size: 1.3rem; font-weight: 500; 
+  color: var(--ink); margin-bottom: 0.3rem;
+}
+.modal-sub { font-size: 0.75rem; color: var(--dim); line-height: 1.7; margin-bottom: 1.25rem; }
+
+/* value props */
+.vprops { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+.vprop { 
+  display: flex; align-items: center; gap: 10px;
+  background: var(--parchmt); border-radius: 10px; padding: 8px 12px;
+}
+.vp-icon { font-size: 1.1rem; }
+.vp-text { font-size: 0.72rem; color: var(--ink); font-weight: 500; }
+
+.tab-row { display: flex; gap: 4px; background: var(--parchmt); border-radius: 10px; padding: 3px; margin-bottom: 1.25rem; }
 .tab {
-  font-family: var(--mono); font-size: 0.6rem; font-weight: 600;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-  padding: 0.5rem 1rem; cursor: pointer; border-bottom: 2px solid transparent;
-  transition: all 0.15s; background: none; border-top: none; border-left: none; border-right: none;
+  flex: 1; font-family: var(--sans); font-size: 0.72rem; font-weight: 500;
+  color: var(--dim); padding: 0.45rem; cursor: pointer;
+  border: none; background: none; border-radius: 8px; transition: all 0.15s;
 }
-.tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-.tab:hover:not(.active) { color: var(--sub); }
-
+.tab.active { background: #fff; color: var(--teal); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.tab:hover:not(.active) { color: var(--ink); }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
 .finput {
-  width: 100%; background: var(--ground); border: 1px solid var(--border);
-  color: var(--text); font-family: var(--mono); font-size: 0.72rem;
-  padding: 0.6rem 0.75rem; outline: none; margin-bottom: 0.6rem;
-  letter-spacing: 0.04em; transition: border-color 0.2s;
+  width: 100%; background: var(--cream); border: 1.5px solid var(--border2);
+  color: var(--ink); font-family: var(--sans); font-size: 0.82rem;
+  padding: 0.65rem 0.85rem; outline: none; margin-bottom: 0.65rem;
+  border-radius: 10px; transition: border-color 0.2s;
 }
-.finput:focus { border-color: var(--gold); }
+.finput:focus { border-color: var(--teal); }
 .finput::placeholder { color: var(--muted); }
-
-.flabel { font-size: 0.55rem; color: var(--dim); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.3rem; display: block; }
-
+.flabel { font-size: 0.62rem; color: var(--sub); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.3rem; display: block; font-weight: 500; }
 .fbtn {
-  width: 100%; font-family: var(--mono); font-size: 0.68rem; font-weight: 600;
-  letter-spacing: 0.12em; text-transform: uppercase; padding: 0.65rem;
-  background: var(--gold); border: none; color: var(--black);
-  cursor: pointer; transition: all 0.15s;
+  width: 100%; font-family: var(--sans); font-size: 0.82rem; font-weight: 600;
+  padding: 0.75rem; background: var(--teal); border: none; color: #fff;
+  cursor: pointer; transition: all 0.15s; border-radius: 10px; letter-spacing: 0.02em;
 }
-.fbtn:hover { background: var(--amber); }
+.fbtn:hover { background: #228b7e; }
 .fbtn:disabled { opacity: 0.4; cursor: not-allowed; }
-
 .fkey-box {
-  background: var(--ground); border: 1px solid rgba(200,149,42,0.3);
-  padding: 0.6rem 0.75rem; margin-bottom: 0.6rem;
-  font-size: 0.68rem; color: var(--gold); letter-spacing: 0.04em;
-  word-break: break-all; display: none;
+  background: var(--teal-lt); border: 1px solid var(--teal-md);
+  padding: 0.65rem 0.85rem; margin-bottom: 0.65rem; border-radius: 10px;
+  font-size: 0.75rem; color: var(--teal); word-break: break-all; display: none;
+  font-family: monospace;
 }
 .fkey-box.show { display: block; }
-
-.ferr { font-size: 0.6rem; color: var(--red); letter-spacing: 0.04em; margin-top: 0.4rem; min-height: 1rem; }
-.fok  { font-size: 0.6rem; color: var(--green); letter-spacing: 0.04em; margin-top: 0.4rem; min-height: 1rem; }
-
+.ferr { font-size: 0.65rem; color: var(--rose); margin-top: 0.4rem; min-height: 1rem; }
+.fok  { font-size: 0.65rem; color: var(--sage); margin-top: 0.4rem; min-height: 1rem; }
 .modal-foot {
-  padding: 0.75rem 1.5rem;
-  border-top: 1px solid var(--border);
-  font-size: 0.58rem; color: var(--muted); letter-spacing: 0.06em;
-  text-align: center;
+  padding: 0.75rem 2rem; border-top: 1px solid var(--border);
+  font-size: 0.62rem; color: var(--muted); text-align: center;
 }
-.modal-foot a { color: var(--dim); text-decoration: none; }
-.modal-foot a:hover { color: var(--gold); }
+.modal-foot a { color: var(--teal); text-decoration: none; }
+
+/* Sys prompt */
+.stxt {
+  width: 100%; background: #fff; border: 1px solid var(--border2);
+  color: var(--sub); font-family: var(--sans); font-size: 0.68rem;
+  line-height: 1.55; padding: 0.5rem 0.7rem; resize: none; outline: none;
+  border-radius: 8px; transition: border-color 0.2s;
+}
+.stxt:focus { border-color: var(--teal); color: var(--ink); }
 </style>
 </head>
 <body>
 
-<!-- ── AUTH MODAL ─────────────────────────────────────────── -->
+<!-- ── AUTH MODAL ── -->
 <div class="modal-wrap" id="modalWrap">
   <div class="modal">
-    <div class="modal-head">
+    <div class="modal-hero">
       <div class="modal-logo">NAGOH <em>AI</em></div>
+      <div class="modal-tagline">Your Creative Business Assistant</div>
     </div>
     <div class="modal-body">
-      <div class="modal-title">Get Access</div>
-      <div class="modal-sub">Register for 5,000 free tokens, or sign in with your existing API key.</div>
+      <div class="modal-title">Welcome! 👋</div>
+      <div class="modal-sub">Get 5,000 free tokens to write product listings, answer customer questions, plan your shop, and more.</div>
+
+      <div class="vprops">
+        <div class="vprop"><div class="vp-icon">✍️</div><div class="vp-text">Write product descriptions that sell</div></div>
+        <div class="vprop"><div class="vp-icon">📱</div><div class="vp-text">Create social media captions instantly</div></div>
+        <div class="vprop"><div class="vp-icon">💌</div><div class="vp-text">Reply to customers with confidence</div></div>
+      </div>
 
       <div class="tab-row">
-        <button class="tab active" onclick="switchTab('register')">Register</button>
+        <button class="tab active" onclick="switchTab('register')">Create Free Account</button>
         <button class="tab" onclick="switchTab('signin')">Sign In</button>
       </div>
 
-      <!-- REGISTER TAB -->
       <div class="tab-panel active" id="tab-register">
-        <label class="flabel">Email address</label>
+        <label class="flabel">Your email address</label>
         <input class="finput" id="regEmail" type="email" placeholder="you@example.com">
         <div class="fkey-box" id="regKeyBox"></div>
-        <button class="fbtn" id="regBtn" onclick="doRegister()">Create Account →</button>
+        <button class="fbtn" id="regBtn" onclick="doRegister()">Get Started Free →</button>
         <div class="ferr" id="regErr"></div>
         <div class="fok"  id="regOk"></div>
       </div>
 
-      <!-- SIGN IN TAB -->
       <div class="tab-panel" id="tab-signin">
         <label class="flabel">Your API key</label>
-        <input class="finput" id="siKey" type="password" placeholder="nah_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
-        <button class="fbtn" id="siBtn" onclick="doSignIn()">Connect →</button>
+        <input class="finput" id="siKey" type="password" placeholder="nah_xxxxxxxxxxxxxxxx">
+        <button class="fbtn" id="siBtn" onclick="doSignIn()">Sign In →</button>
         <div class="ferr" id="siErr"></div>
       </div>
     </div>
-    <div class="modal-foot">
-      ai.nagoh.us &nbsp;·&nbsp; powered by DeepSeek &nbsp;·&nbsp; <a href="#">buy tokens</a>
-    </div>
+    <div class="modal-foot">ai.nagoh.us &nbsp;·&nbsp; <a href="#">buy tokens</a> &nbsp;·&nbsp; <a href="#">help</a></div>
   </div>
 </div>
 
-<!-- ── TOPBAR ──────────────────────────────────────────────── -->
+<!-- ── TOPBAR ── -->
 <div class="topbar">
-  <div class="wordmark">NAGOH <em>AI</em></div>
-  <div class="tdiv"></div>
-  <div class="ttag">v3.0</div>
+  <div>
+    <div class="wordmark">NAGOH <em>AI</em></div>
+    <div class="tagline">YOUR CREATIVE BUSINESS ASSISTANT</div>
+  </div>
   <div class="tsep"></div>
-  <div class="tstat">
-    <div class="tstat-val" id="topBal">—</div>
-    <div class="tstat-key">tokens</div>
+  <div class="tbal" id="topBal">— <span>tokens</span></div>
+  <div class="tpill">
+    <div class="dot spin" id="led"></div>
+    <span id="sstr" style="font-size:0.68rem;">connecting…</span>
   </div>
-  <div class="tdiv"></div>
-  <div class="tstat">
-    <div class="tstat-val" id="topModel">deepseek-chat</div>
-    <div class="tstat-key">model</div>
-  </div>
-  <div class="tdiv"></div>
-  <button class="pbtn" style="width:auto;padding:0 0.75rem;margin:0;height:28px;font-size:0.55rem;" onclick="signOut()">sign out</button>
+  <button class="tbtn" onclick="signOut()">Sign out</button>
 </div>
 
-<!-- ── SHELL ───────────────────────────────────────────────── -->
+<!-- ── SHELL ── -->
 <div class="shell">
 
   <!-- LEFT -->
   <div class="left">
     <div class="pblock">
-      <div class="plabel">Balance</div>
-      <div class="bal-num" id="balNum">—</div>
-      <div class="bal-unit">NAGOH TOKENS</div>
-      <div class="srow">
-        <div class="led spin" id="led"></div>
-        <div class="sstr" id="sstr">connecting...</div>
+      <div class="plabel">Your Balance</div>
+      <div class="bal-wrap">
+        <div class="bal-icon">🪙</div>
+        <div>
+          <div class="bal-num" id="balNum">—</div>
+          <div class="bal-sub">NAGOH TOKENS</div>
+        </div>
       </div>
     </div>
 
     <div class="pblock">
-      <div class="plabel">Model</div>
+      <div class="plabel">AI Model</div>
       <select class="msel" id="modelSel" onchange="onModel()">
-        <option value="deepseek-chat">deepseek-chat</option>
-        <option value="deepseek-reasoner">deepseek-reasoner</option>
+        <option value="deepseek-chat">DeepSeek Chat (fast)</option>
+        <option value="deepseek-reasoner">DeepSeek Reasoner (deep)</option>
       </select>
     </div>
 
     <div class="pblock">
-      <div class="plabel">System Prompt</div>
-      <textarea class="stxt" id="sysTxt" rows="5"
-        placeholder="System prompt...">You are NAGOH AI — a sharp, direct, and highly capable assistant. Be concise and accurate. Never add unnecessary padding.</textarea>
+      <div class="plabel">Quick Starters</div>
+      <div class="qgrid">
+        <button class="qbtn" onclick="quickPrompt('Write an Etsy product description for: ')">
+          <div class="qi">🛍️</div>
+          <div><div class="ql">Etsy Listing</div><div class="qs">Product descriptions that sell</div></div>
+        </button>
+        <button class="qbtn" onclick="quickPrompt('Write 5 Instagram captions for my small business that sells: ')">
+          <div class="qi">📸</div>
+          <div><div class="ql">Social Captions</div><div class="qs">Instagram, Facebook & more</div></div>
+        </button>
+        <button class="qbtn" onclick="quickPrompt('Write a friendly reply to this customer message: ')">
+          <div class="qi">💌</div>
+          <div><div class="ql">Customer Reply</div><div class="qs">Handle messages with ease</div></div>
+        </button>
+        <button class="qbtn" onclick="quickPrompt('Give me 10 pricing strategies for a small craft business that makes: ')">
+          <div class="qi">💰</div>
+          <div><div class="ql">Pricing Help</div><div class="qs">Price your work fairly</div></div>
+        </button>
+        <button class="qbtn" onclick="quickPrompt('Write SEO tags and keywords for my Etsy shop that sells: ')">
+          <div class="qi">🔍</div>
+          <div><div class="ql">SEO & Tags</div><div class="qs">Get found by buyers</div></div>
+        </button>
+      </div>
     </div>
 
     <div class="pblock">
-      <button class="pbtn" onclick="newChat()">+ new chat</button>
-      <button class="pbtn danger" onclick="clearAll()">clear history</button>
+      <button class="pbtn primary" onclick="newChat()">+ New Chat</button>
+      <button class="pbtn danger" onclick="clearAll()">Clear History</button>
     </div>
 
-    <div class="plabel" style="padding:0.6rem 1rem 0.2rem;font-size:0.5rem;letter-spacing:0.18em;">Sessions</div>
+    <div class="plabel" style="padding:0.6rem 1rem 0.25rem;font-size:0.52rem;letter-spacing:0.15em;">Past Chats</div>
     <div class="hscroll" id="hscroll"></div>
   </div>
 
@@ -393,20 +532,31 @@ body::after {
   <div class="chat-col">
     <div class="msgs" id="msgs">
       <div class="empty" id="empty">
-        <div class="eglyph">██ ██ ██ ██ ██<br>░░ ░░ ░░ ░░ ░░<br>██ ██ ██ ██ ██</div>
-        <div class="etitle">NAGOH AI</div>
-        <div class="esub">TERMINAL READY<br>DEEPSEEK ONLINE<br>AWAITING INPUT_</div>
+        <div class="ehero">Your AI <em>creative partner</em><br>is ready to help.</div>
+        <div class="esub">Whether you sell on Etsy, run a craft business, or make things with love — NAGOH AI helps you write, plan, and grow without the stress.</div>
+        <div class="echips">
+          <div class="echip" onclick="quickSend('Help me write a product description for handmade soy candles')"><span>🕯️</span>Candle listing</div>
+          <div class="echip" onclick="quickSend('Write Instagram captions for my jewelry shop')"><span>💍</span>Jewelry captions</div>
+          <div class="echip" onclick="quickSend('How do I price my handmade items to make a profit?')"><span>💰</span>Pricing guide</div>
+          <div class="echip" onclick="quickSend('Write a friendly out-of-office message for my Etsy shop')"><span>💌</span>Shop message</div>
+          <div class="echip" onclick="quickSend('Give me 10 ideas for new products for my pottery shop')"><span>🏺</span>Product ideas</div>
+          <div class="echip" onclick="quickSend('How do I get more 5-star reviews on Etsy?')"><span>⭐</span>More reviews</div>
+          <div class="echip" onclick="quickSend('Write a bio for my Etsy shop that sells handmade art prints')"><span>🎨</span>Shop bio</div>
+          <div class="echip" onclick="quickSend('What are the best hashtags for a small candle business on Instagram?')"><span>📱</span>Hashtags</div>
+        </div>
+        <div class="etagline">Tap any idea above or type your own question below</div>
       </div>
     </div>
 
     <div class="ibar">
       <div class="iinner">
-        <textarea class="prompt" id="prompt" placeholder="Enter prompt..." rows="1"
-          onkeydown="onKey(event)" oninput="grow(this)"></textarea>
-        <button class="send" id="sendBtn" onclick="send()" disabled>RUN →</button>
+        <textarea class="prompt" id="prompt" 
+          placeholder="Ask anything — product ideas, listing copy, customer replies, pricing help…" 
+          rows="1" onkeydown="onKey(event)" oninput="grow(this)"></textarea>
+        <button class="send" id="sendBtn" onclick="send()" disabled>Send ↑</button>
       </div>
       <div class="ifoot">
-        <span><kbd>Enter</kbd> run &nbsp;·&nbsp; <kbd>Shift+Enter</kbd> newline</span>
+        <span>Press <strong>Enter</strong> to send &nbsp;·&nbsp; Shift+Enter for new line</span>
         <span id="ccount"></span>
       </div>
     </div>
@@ -415,74 +565,100 @@ body::after {
   <!-- RIGHT -->
   <div class="right">
     <div class="rblock">
-      <div class="plabel">Session</div>
+      <div class="plabel">This Chat</div>
       <div class="sgrid">
-        <div><div class="sval" id="rMsgs">0</div><div class="slbl">messages</div></div>
-        <div><div class="sval gold" id="rSpent">0</div><div class="slbl">tokens used</div></div>
-        <div><div class="sval" id="rTurns">0</div><div class="slbl">turns</div></div>
+        <div class="scard"><div class="sval" id="rMsgs">0</div><div class="slbl">messages</div></div>
+        <div class="scard"><div class="sval teal" id="rSpent">0</div><div class="slbl">tokens used</div></div>
       </div>
     </div>
-    <div class="rblock"><div class="plabel">Activity</div></div>
-    <div class="ticker" id="ticker">
-      <div class="tline" style="color:var(--border);">— awaiting —</div>
+
+    <div class="rblock">
+      <div class="plabel">Tone / Mode</div>
+      <select class="msel" id="toneMode" onchange="updateSysPrompt()">
+        <option value="friendly">😊 Friendly & warm</option>
+        <option value="professional">💼 Professional</option>
+        <option value="playful">🎉 Fun & playful</option>
+        <option value="concise">⚡ Short & snappy</option>
+      </select>
+    </div>
+
+    <div class="rblock" style="display:none;">
+      <div class="plabel">Custom System Prompt</div>
+      <textarea class="stxt" id="sysTxt" rows="4" placeholder="Custom instructions..."></textarea>
+    </div>
+
+    <div class="plabel" style="padding:0.6rem 1rem 0.25rem;font-size:0.52rem;letter-spacing:0.15em;">💡 Ideas to Try</div>
+    <div class="ideas" id="ideas">
+      <div class="idea-item" onclick="quickSend('Write 3 versions of my shop announcement for the holidays')">
+        <div class="idea-icon">🎄</div><div class="idea-text"><strong>Holiday announcement</strong>Let buyers know your hours</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('What should I post on social media this week for my craft shop?')">
+        <div class="idea-icon">📅</div><div class="idea-text"><strong>Weekly content plan</strong>Never run out of post ideas</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('Help me write a thank-you note to include in orders')">
+        <div class="idea-icon">💝</div><div class="idea-text"><strong>Thank-you note</strong>Delight your customers</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('What are the most searched Etsy keywords right now?')">
+        <div class="idea-icon">🔎</div><div class="idea-text"><strong>Trending keywords</strong>Improve your SEO</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('Help me handle a bad review professionally')">
+        <div class="idea-icon">🛡️</div><div class="idea-text"><strong>Handle bad reviews</strong>Respond with grace</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('Give me a 30-day social media plan for my small business')">
+        <div class="idea-icon">🗓️</div><div class="idea-text"><strong>30-day social plan</strong>Stay consistent online</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('What shipping options should I offer in my Etsy shop?')">
+        <div class="idea-icon">📦</div><div class="idea-text"><strong>Shipping tips</strong>Keep buyers happy</div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-// ════════════════════════════════════════════════════
-//  CONFIG
-// ════════════════════════════════════════════════════
 const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
 
-// ════════════════════════════════════════════════════
-//  STATE
-// ════════════════════════════════════════════════════
-let apiKey       = lsGet('nagoh_key', '');
-let msgs         = [];
-let sessions     = lsGet('nagoh_sessions', []);
-let curSess      = null;
-let busy         = false;
-let balance      = 0;
-let sessSpent    = 0;
-let turns        = 0;
+let apiKey    = lsGet('nagoh_key', '');
+let msgs      = [];
+let sessions  = lsGet('nagoh_sessions', []);
+let curSess   = null;
+let busy      = false;
+let balance   = 0;
+let sessSpent = 0;
+let turns     = 0;
 
-// ════════════════════════════════════════════════════
-//  BOOT
-// ════════════════════════════════════════════════════
+const TONE_PROMPTS = {
+  friendly:     "You are NAGOH AI, a warm, encouraging assistant for small business owners, Etsy sellers, crafters, and artists. Be friendly, supportive, and clear. Use simple language. Always be positive and practical. Help them feel confident about their business.",
+  professional: "You are NAGOH AI, a professional business assistant for small business owners and Etsy sellers. Provide clear, well-structured, business-focused advice. Be concise and accurate.",
+  playful:      "You are NAGOH AI, a fun and enthusiastic assistant for creative small business owners! Be upbeat, use emojis occasionally, and make running a business feel exciting and doable. Keep energy high!",
+  concise:      "You are NAGOH AI, an assistant for small business owners. Be extremely concise. Bullet points preferred. No fluff. Get right to the useful info.",
+};
+
 window.addEventListener('DOMContentLoaded', () => {
+  updateSysPrompt();
   renderHistory();
-  if (apiKey) {
-    hideModal();
-    connect();
-  }
-  // else modal stays open
+  if (apiKey) { hideModal(); connect(); }
 });
 
+function updateSysPrompt() {
+  const tone = document.getElementById('toneMode').value;
+  document.getElementById('sysTxt').value = TONE_PROMPTS[tone] || TONE_PROMPTS.friendly;
+}
+
 async function connect() {
-  setLed('spin', 'connecting...');
+  setLed('spin', 'Connecting…');
   try {
     const r = await fetch(`${WORKER}/v1/balance`, { headers: { 'X-API-Key': apiKey } });
     const d = await r.json();
-    if (!r.ok) {
-      setLed('err', 'auth error');
-      showModal();
-      return;
-    }
+    if (!r.ok) { setLed('err', 'Auth error'); showModal(); return; }
     balance = d.token_balance;
     setBalUI(balance);
-    setLed('on', 'connected');
+    setLed('on', 'Connected ✓');
     document.getElementById('sendBtn').disabled = false;
-    tick('← connected');
   } catch {
-    setLed('err', 'offline');
-    tick('✗ offline');
+    setLed('err', 'Offline');
   }
 }
 
-// ════════════════════════════════════════════════════
-//  MODAL / AUTH
-// ════════════════════════════════════════════════════
 function showModal() { document.getElementById('modalWrap').classList.remove('hidden'); }
 function hideModal() { document.getElementById('modalWrap').classList.add('hidden'); }
 
@@ -497,11 +673,9 @@ async function doRegister() {
   const okEl  = document.getElementById('regOk');
   const keyEl = document.getElementById('regKeyBox');
   const btn   = document.getElementById('regBtn');
-
   errEl.textContent = ''; okEl.textContent = ''; keyEl.classList.remove('show');
-  if (!email || !email.includes('@')) { errEl.textContent = 'Enter a valid email.'; return; }
-
-  btn.disabled = true; btn.textContent = 'Creating account...';
+  if (!email || !email.includes('@')) { errEl.textContent = 'Please enter a valid email address.'; return; }
+  btn.disabled = true; btn.textContent = 'Creating your account…';
   try {
     const r = await fetch(`${WORKER}/v1/register`, {
       method: 'POST',
@@ -510,24 +684,15 @@ async function doRegister() {
     });
     const d = await r.json();
     if (!r.ok && r.status !== 201) { errEl.textContent = d.error || 'Registration failed.'; return; }
-
-    // Show key
-    keyEl.textContent = d.api_key;
-    keyEl.classList.add('show');
+    keyEl.textContent = d.api_key; keyEl.classList.add('show');
     okEl.textContent = d.returning
-      ? 'Welcome back — your key is shown above. Save it somewhere safe.'
-      : `Account created! ${d.token_balance.toLocaleString()} tokens loaded. Save your key below.`;
-
-    // Auto-connect
-    apiKey = d.api_key;
-    lsSet('nagoh_key', apiKey);
-    btn.textContent = '✓ Connected — entering...';
-    setTimeout(() => { hideModal(); connect(); }, 1800);
-  } catch {
-    errEl.textContent = 'Network error. Try again.';
-  } finally {
-    setTimeout(() => { btn.disabled = false; btn.textContent = 'Create Account →'; }, 3000);
-  }
+      ? '👋 Welcome back! Your key is shown above — keep it safe!'
+      : `🎉 You're in! ${d.token_balance.toLocaleString()} free tokens loaded. Save your key above!`;
+    apiKey = d.api_key; lsSet('nagoh_key', apiKey);
+    btn.textContent = '✓ All set! Taking you in…';
+    setTimeout(() => { hideModal(); connect(); }, 2000);
+  } catch { errEl.textContent = 'Network error. Please try again.'; }
+  finally { setTimeout(() => { btn.disabled = false; btn.textContent = 'Get Started Free →'; }, 3500); }
 }
 
 async function doSignIn() {
@@ -535,42 +700,40 @@ async function doSignIn() {
   const errEl = document.getElementById('siErr');
   const btn   = document.getElementById('siBtn');
   errEl.textContent = '';
-
-  if (!key.startsWith('nah_')) { errEl.textContent = 'Key must start with nah_'; return; }
-
-  btn.disabled = true; btn.textContent = 'Verifying...';
+  if (!key.startsWith('nah_')) { errEl.textContent = 'Your key should start with nah_'; return; }
+  btn.disabled = true; btn.textContent = 'Checking…';
   try {
     const r = await fetch(`${WORKER}/v1/balance`, { headers: { 'X-API-Key': key } });
-    if (!r.ok) { errEl.textContent = 'Invalid API key.'; return; }
-    apiKey = key;
-    lsSet('nagoh_key', apiKey);
-    hideModal();
-    connect();
-  } catch {
-    errEl.textContent = 'Network error.';
-  } finally {
-    btn.disabled = false; btn.textContent = 'Connect →';
-  }
+    if (!r.ok) { errEl.textContent = 'That key didn\'t work — check and try again.'; return; }
+    apiKey = key; lsSet('nagoh_key', apiKey); hideModal(); connect();
+  } catch { errEl.textContent = 'Network error. Please try again.'; }
+  finally { btn.disabled = false; btn.textContent = 'Sign In →'; }
 }
 
 function signOut() {
-  if (!confirm('Sign out and clear your local API key?')) return;
-  apiKey = '';
-  lsSet('nagoh_key', '');
+  if (!confirm('Sign out? Your chat history stays saved locally.')) return;
+  apiKey = ''; lsSet('nagoh_key', '');
   document.getElementById('sendBtn').disabled = true;
-  setLed('spin', 'signed out');
-  setBalUI(0);
-  showModal();
+  setLed('spin', 'Signed out');
+  setBalUI(0); showModal();
 }
 
-// ════════════════════════════════════════════════════
-//  SEND
-// ════════════════════════════════════════════════════
+function quickPrompt(text) {
+  const box = document.getElementById('prompt');
+  box.value = text; box.focus();
+  grow(box);
+  box.setSelectionRange(text.length, text.length);
+}
+
+function quickSend(text) {
+  const box = document.getElementById('prompt');
+  box.value = text; send();
+}
+
 async function send() {
   const box  = document.getElementById('prompt');
   const text = box.value.trim();
   if (!text || busy) return;
-
   busy = true;
   document.getElementById('sendBtn').disabled = true;
   box.value = ''; box.style.height = 'auto';
@@ -583,7 +746,6 @@ async function send() {
 
   const tid = 'T' + Date.now();
   addThink(tid);
-  tick('→ sending...');
 
   try {
     const r = await fetch(`${WORKER}/v1/chat`, {
@@ -594,35 +756,32 @@ async function send() {
         system:      document.getElementById('sysTxt').value.trim() || undefined,
         model:       document.getElementById('modelSel').value,
         max_tokens:  2048,
-        temperature: 0.7,
+        temperature: 0.75,
       }),
     });
-
     const data = await r.json();
     killThink(tid);
 
     if (!r.ok) {
-      addErr(data.error || 'Request failed');
+      addErr(data.error || 'Something went wrong. Please try again.');
       msgs.pop();
-      tick('✗ error');
-      if (r.status === 402) tick('! top up tokens');
+      if (r.status === 402) addErr('You\'re out of tokens! Visit ai.nagoh.us to buy more.');
     } else {
       const reply = data.message.content;
       msgs.push({ role: 'assistant', content: reply });
-      addBubble('ai', reply, data.nagoh);
+      const suggestions = getSuggestions(text);
+      addBubble('ai', reply, data.nagoh, suggestions);
       balance = data.nagoh.tokens_remaining;
       sessSpent += data.nagoh.tokens_charged;
       turns++;
       setBalUI(balance);
-      tick(`← ${data.usage?.total_tokens ?? '?'}tok used`);
       updateStats();
       saveSession(text);
     }
   } catch (e) {
     killThink(tid);
-    addErr('Network error.');
+    addErr('Network error — check your connection and try again.');
     msgs.pop();
-    tick('✗ network');
     console.error(e);
   }
 
@@ -631,24 +790,46 @@ async function send() {
   document.getElementById('prompt').focus();
 }
 
-// ════════════════════════════════════════════════════
-//  DOM
-// ════════════════════════════════════════════════════
+function getSuggestions(userMsg) {
+  const lower = userMsg.toLowerCase();
+  if (lower.includes('etsy') || lower.includes('listing') || lower.includes('product')) {
+    return ['Make it shorter', 'Add more keywords', 'Write a second version', 'Make it more playful'];
+  }
+  if (lower.includes('instagram') || lower.includes('social') || lower.includes('caption')) {
+    return ['Give me 5 more', 'Make it shorter', 'Add hashtags', 'Write one for Facebook too'];
+  }
+  if (lower.includes('customer') || lower.includes('reply') || lower.includes('review')) {
+    return ['Make it more formal', 'Make it warmer', 'Make it shorter', 'Write another version'];
+  }
+  if (lower.includes('pric') || lower.includes('cost') || lower.includes('profit')) {
+    return ['Tell me more', 'What about shipping?', 'How do I add taxes?'];
+  }
+  return ['Tell me more', 'Give me another version', 'Make it shorter', 'Can you give examples?'];
+}
+
 function hideEmpty() {
   const e = document.getElementById('empty');
   if (e) e.style.display = 'none';
 }
 
-function addBubble(role, content, nagoh) {
+function addBubble(role, content, nagoh, suggestions) {
   const c = document.getElementById('msgs');
   const r = document.createElement('div');
   r.className = `row ${role}`;
-  const meta = nagoh
-    ? `<div class="rmeta">−<b>${nagoh.tokens_charged}</b> tokens &nbsp;·&nbsp; <b>${nagoh.tokens_remaining.toLocaleString()}</b> left</div>`
-    : '';
+
+  let meta = '';
+  if (nagoh) {
+    meta = `<div class="rmeta"><span class="chip">−${nagoh.tokens_charged} tokens</span><span>${nagoh.tokens_remaining.toLocaleString()} left</span></div>`;
+  }
+
+  let sugsHtml = '';
+  if (suggestions && role === 'ai') {
+    sugsHtml = `<div class="suggestions">${suggestions.map(s => `<button class="sug" onclick="quickSend('${s.replace(/'/g,"\\'")}')">↪ ${esc(s)}</button>`).join('')}</div>`;
+  }
+
   r.innerHTML = `
-    <div class="ava ${role}">${role==='ai'?'AI':'YOU'}</div>
-    <div><div class="bub">${esc(content)}</div>${meta}</div>`;
+    <div class="ava ${role}">${role==='ai'?'N':'U'}</div>
+    <div><div class="bub">${esc(content)}</div>${meta}${sugsHtml}</div>`;
   c.appendChild(r); c.scrollTop = c.scrollHeight;
 }
 
@@ -656,25 +837,20 @@ function addThink(id) {
   const c = document.getElementById('msgs');
   const r = document.createElement('div');
   r.id = id; r.className = 'row ai';
-  r.innerHTML = `<div class="ava ai">AI</div><div class="bub thinking" id="${id}b">processing</div>`;
+  r.innerHTML = `<div class="ava ai">N</div><div class="bub thinking">Thinking<span class="think-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
   c.appendChild(r); c.scrollTop = c.scrollHeight;
-  let n = 0;
-  r._t = setInterval(() => {
-    const b = document.getElementById(id+'b');
-    if (b) b.textContent = 'processing' + '...'.slice(0, ++n % 4);
-  }, 350);
 }
 
 function killThink(id) {
   const el = document.getElementById(id);
-  if (el) { clearInterval(el._t); el.remove(); }
+  if (el) el.remove();
 }
 
 function addErr(msg) {
   const c = document.getElementById('msgs');
   const r = document.createElement('div');
   r.className = 'row ai';
-  r.innerHTML = `<div class="ava ai">AI</div><div class="bub error">ERR: ${esc(msg)}</div>`;
+  r.innerHTML = `<div class="ava ai">N</div><div class="bub error">⚠️ ${esc(msg)}</div>`;
   c.appendChild(r); c.scrollTop = c.scrollHeight;
 }
 
@@ -682,48 +858,24 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// ════════════════════════════════════════════════════
-//  UI HELPERS
-// ════════════════════════════════════════════════════
 function setLed(state, label) {
-  document.getElementById('led').className = 'led ' + state;
+  document.getElementById('led').className = 'dot ' + state;
   document.getElementById('sstr').textContent = label;
 }
 function setBalUI(n) {
-  document.getElementById('balNum').textContent = n.toLocaleString();
-  document.getElementById('topBal').textContent = n.toLocaleString();
+  const fmt = n.toLocaleString();
+  document.getElementById('balNum').textContent = fmt;
+  document.getElementById('topBal').innerHTML = `${fmt} <span>tokens</span>`;
 }
-function onModel() {
-  document.getElementById('topModel').textContent = document.getElementById('modelSel').value;
-}
+function onModel() {}
 function updateStats() {
   document.getElementById('rMsgs').textContent  = msgs.length;
   document.getElementById('rSpent').textContent = sessSpent;
-  document.getElementById('rTurns').textContent = turns;
 }
 
-// ════════════════════════════════════════════════════
-//  ACTIVITY TICKER
-// ════════════════════════════════════════════════════
-function tick(msg) {
-  const t = document.getElementById('ticker');
-  const ph = t.querySelector('[style*="border"]');
-  if (ph) ph.remove();
-  const now = new Date().toLocaleTimeString('en', { hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit' });
-  const line = document.createElement('div');
-  line.className = 'tline new';
-  line.innerHTML = `<span>${now}</span> ${esc(msg)}`;
-  t.appendChild(line);
-  t.scrollTop = t.scrollHeight;
-  while (t.children.length > 40) t.removeChild(t.firstChild);
-}
-
-// ════════════════════════════════════════════════════
-//  SESSIONS
-// ════════════════════════════════════════════════════
 function saveSession(firstMsg) {
   if (!curSess) {
-    curSess = { id: Date.now(), title: firstMsg.slice(0, 40), messages: [] };
+    curSess = { id: Date.now(), title: firstMsg.slice(0, 45), messages: [] };
     sessions.unshift(curSess);
     if (sessions.length > 50) sessions.pop();
   }
@@ -736,7 +888,7 @@ function renderHistory() {
   const w = document.getElementById('hscroll');
   w.innerHTML = '';
   if (!sessions.length) {
-    w.innerHTML = '<div style="font-size:0.58rem;color:var(--border);padding:0.5rem 0.75rem;letter-spacing:0.06em;">no history</div>';
+    w.innerHTML = '<div style="font-size:0.62rem;color:var(--muted);padding:0.5rem 0.75rem;">No past chats yet</div>';
     return;
   }
   sessions.forEach(s => {
@@ -749,7 +901,6 @@ function renderHistory() {
       msgs.forEach(m => addBubble(m.role==='user'?'user':'ai', m.content));
       turns = Math.floor(msgs.length / 2);
       updateStats(); renderHistory();
-      tick('← session loaded');
     };
     w.appendChild(el);
   });
@@ -759,33 +910,37 @@ function newChat() {
   curSess = null; msgs = []; sessSpent = 0; turns = 0;
   document.getElementById('msgs').innerHTML = `
     <div class="empty" id="empty">
-      <div class="eglyph">██ ██ ██ ██ ██<br>░░ ░░ ░░ ░░ ░░<br>██ ██ ██ ██ ██</div>
-      <div class="etitle">NAGOH AI</div>
-      <div class="esub">TERMINAL READY<br>DEEPSEEK ONLINE<br>AWAITING INPUT_</div>
+      <div class="ehero">Your AI <em>creative partner</em><br>is ready to help.</div>
+      <div class="esub">Whether you sell on Etsy, run a craft business, or make things with love — NAGOH AI helps you write, plan, and grow without the stress.</div>
+      <div class="echips">
+        <div class="echip" onclick="quickSend('Help me write a product description for handmade soy candles')"><span>🕯️</span>Candle listing</div>
+        <div class="echip" onclick="quickSend('Write Instagram captions for my jewelry shop')"><span>💍</span>Jewelry captions</div>
+        <div class="echip" onclick="quickSend('How do I price my handmade items to make a profit?')"><span>💰</span>Pricing guide</div>
+        <div class="echip" onclick="quickSend('Write a friendly out-of-office message for my Etsy shop')"><span>💌</span>Shop message</div>
+        <div class="echip" onclick="quickSend('Give me 10 ideas for new products for my pottery shop')"><span>🏺</span>Product ideas</div>
+        <div class="echip" onclick="quickSend('How do I get more 5-star reviews on Etsy?')"><span>⭐</span>More reviews</div>
+        <div class="echip" onclick="quickSend('Write a bio for my Etsy shop that sells handmade art prints')"><span>🎨</span>Shop bio</div>
+        <div class="echip" onclick="quickSend('What are the best hashtags for a small candle business on Instagram?')"><span>📱</span>Hashtags</div>
+      </div>
+      <div class="etagline">Tap any idea above or type your own question below</div>
     </div>`;
-  updateStats(); renderHistory(); tick('+ new session');
+  updateStats(); renderHistory();
 }
 
 function clearAll() {
-  if (!confirm('Clear all session history?')) return;
+  if (!confirm('Clear all past chats?')) return;
   sessions = []; curSess = null; msgs = [];
-  lsSet('nagoh_sessions', []); newChat(); tick('✗ history cleared');
+  lsSet('nagoh_sessions', []); newChat();
 }
 
-// ════════════════════════════════════════════════════
-//  INPUT UX
-// ════════════════════════════════════════════════════
 function onKey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
 function grow(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 160) + 'px';
   const l = el.value.length;
-  document.getElementById('ccount').textContent = l ? `${l}c` : '';
+  document.getElementById('ccount').textContent = l ? `${l} chars` : '';
 }
 
-// ════════════════════════════════════════════════════
-//  LOCALSTORAGE
-// ════════════════════════════════════════════════════
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
 </script>
