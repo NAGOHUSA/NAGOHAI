@@ -407,6 +407,37 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .auth-loading { font-size: 0.78rem; color: var(--teal); display: none; text-align: center; padding: 8px 0; }
 .auth-err { font-size: 0.65rem; color: var(--rose); text-align: center; margin-top: 6px; min-height: 1rem; }
 
+.auth-divider {
+  display: flex; align-items: center; gap: 10px;
+  margin: 10px 0; color: var(--muted); font-size: 0.65rem; letter-spacing: 0.06em;
+}
+.auth-divider::before, .auth-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.guest-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 10px 20px;
+  background: transparent; border: 1.5px solid var(--border2);
+  border-radius: 12px; cursor: pointer; transition: all 0.15s;
+  font-family: var(--sans); font-size: 0.82rem; font-weight: 500;
+  color: var(--dim);
+}
+.guest-btn:hover { border-color: var(--muted); color: var(--ink); background: var(--parchmt); }
+.guest-note {
+  font-size: 0.6rem; color: var(--muted); text-align: center; margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* Guest banner shown in topbar */
+.guest-banner {
+  display: none; align-items: center; gap: 8px;
+  background: var(--gold-lt); border: 1px solid var(--gold-md);
+  border-radius: 8px; padding: 4px 10px;
+  font-size: 0.65rem; color: var(--dim); font-weight: 500;
+}
+.guest-banner.show { display: flex; }
+.guest-banner a { color: var(--teal); cursor: pointer; text-decoration: underline; }
+
 .modal-foot {
   padding: 0.75rem 2rem; border-top: 1px solid var(--border);
   font-size: 0.62rem; color: var(--muted); text-align: center;
@@ -456,6 +487,13 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
         <div class="auth-loading" id="authLoading">⏳ Signing you in…</div>
         <div class="auth-err" id="authErr"></div>
         <div class="auth-note">By signing in you agree to our terms of service. Your data is private and never shared.</div>
+
+        <div class="auth-divider">or</div>
+
+        <button class="guest-btn" onclick="continueAsGuest()">
+          👤 Continue as Guest
+        </button>
+        <div class="guest-note">No account needed — get 1,000 free tokens.<br>Tokens don't carry over between visits.</div>
       </div>
     </div>
     <div class="modal-foot">ai.nagoh.us &nbsp;·&nbsp; <a href="#" onclick="openBuyTokens()">buy tokens</a> &nbsp;·&nbsp; <a href="#">help</a></div>
@@ -470,6 +508,9 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   </div>
   <div class="tsep"></div>
   <div class="tbal" id="topBal">— <span>tokens</span></div>
+  <div class="guest-banner" id="guestBanner">
+    👤 Guest &nbsp;·&nbsp; <a onclick="showModal()">Sign in for more tokens</a>
+  </div>
   <div class="tpill">
     <div class="dot spin" id="led"></div>
     <span id="sstr" style="font-size:0.68rem;">connecting…</span>
@@ -640,6 +681,7 @@ const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/YOUR_PAYMENT_LINK';
 
 let sessionToken = ''; // JWT session from our Worker (stored in sessionStorage)
 let currentUser  = null; // { user_id, email, name, picture }
+let isGuest      = false;
 let msgs         = [];
 let sessions     = lsGet('nagoh_sessions', []);
 let curSess      = null;
@@ -755,8 +797,9 @@ function applyUserToUI(user) {
 
 function signOut() {
   if (!confirm('Sign out? Your chat history stays saved locally.')) return;
-  sessionToken = ''; currentUser = null;
+  sessionToken = ''; currentUser = null; isGuest = false;
   sessionStorage.removeItem('nagoh_session');
+  document.getElementById('guestBanner').classList.remove('show');
   document.getElementById('sendBtn').disabled = true;
   document.getElementById('tuserAvatar').classList.remove('show');
   document.getElementById('tuserName').classList.remove('show');
@@ -769,8 +812,40 @@ function signOut() {
 // ─────────────────────────────────────────────────────────
 // STRIPE — open payment link with user ID embedded
 // ─────────────────────────────────────────────────────────
+
+// GUEST SESSION
+async function continueAsGuest() {
+  document.getElementById('authErr').textContent = '';
+  document.getElementById('authLoading').style.display = 'block';
+  try {
+    const r = await fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Could not start guest session');
+
+    isGuest      = true;
+    sessionToken = d.session_token;
+    currentUser  = d.user;
+    balance      = d.token_balance;
+
+    setBalUI(balance);
+    setLed('on', 'Guest mode');
+    document.getElementById('sendBtn').disabled = false;
+    document.getElementById('guestBanner').classList.add('show');
+    hideModal();
+
+    setTimeout(() => {
+      addBubble('ai', "You're browsing as a guest with 1,000 free tokens. \ud83c\udf89 Sign in with Google anytime to get 5,000 tokens and save your chat history!", null, null);
+    }, 400);
+  } catch (e) {
+    document.getElementById('authErr').textContent = e.message;
+  } finally {
+    document.getElementById('authLoading').style.display = 'none';
+  }
+}
+
 function openBuyTokens() {
   if (!currentUser) { showModal(); return; }
+  if (isGuest) { showModal(); return; } // guests must sign in to buy
   const url = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}`;
   window.open(url, '_blank');
 }
