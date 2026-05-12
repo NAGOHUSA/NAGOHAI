@@ -727,8 +727,8 @@ input, textarea, select {
     <div class="pblock">
       <div class="plabel">AI Model</div>
       <select class="msel" id="modelSel" onchange="onModel()">
-        <option value="deepseek-chat">NagohAI-chat (fast)</option>
-        <option value="deepseek-reasoner">NagohAI-chat (deep)</option>
+        <option value="deepseek-chat">NaghohAI Chat (fast)</option>
+        <option value="deepseek-reasoner">NagohAI Reasoner (deep)</option>
       </select>
     </div>
 
@@ -900,7 +900,7 @@ window.onload = () => {
   checkPaymentSuccess();
 
   // Check if we have a saved session
-  const saved = sessionStorage.getItem('nagoh_session');
+  const saved = localStorage.getItem('nagoh_session');
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
@@ -975,7 +975,7 @@ async function handleGoogleCredential(response) {
     currentUser  = d.user;
     balance      = d.token_balance;
 
-    sessionStorage.setItem('nagoh_session', JSON.stringify({ token: sessionToken, user: currentUser }));
+    localStorage.setItem('nagoh_session', JSON.stringify({ token: sessionToken, user: currentUser }));
 
     applyUserToUI(currentUser);
     setBalUI(balance);
@@ -1007,6 +1007,7 @@ function signOut() {
   if (!confirm('Sign out? Your chat history stays saved locally.')) return;
   sessionToken = ''; currentUser = null; isGuest = false;
   sessionStorage.removeItem('nagoh_session');
+  localStorage.removeItem('nagoh_session');
   document.getElementById('guestBanner').classList.remove('show');
   document.getElementById('sendBtn').disabled = true;
   document.getElementById('tuserAvatar').classList.remove('show');
