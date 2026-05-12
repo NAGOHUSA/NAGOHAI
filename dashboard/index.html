@@ -1,1 +1,1057 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --border: #475569;
+            --text: #f1f5f9;
+            --text-muted: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, #1a1f3a 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 48px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: #fca5a5;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dashboard-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logout-button {
+            padding: 10px 20px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .content-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row.full {
+            grid-template-columns: 1fr;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--surface-light);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--border);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border: 1px solid var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #6ee7b7;
+            border: 1px solid var(--success);
+        }
+
+        .btn-success:hover {
+            background: var(--success);
+            color: white;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .users-table th {
+            background: var(--bg);
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .users-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .users-table tr:hover {
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .user-email {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .user-email:hover {
+            text-decoration: underline;
+        }
+
+        .token-badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(16, 185, 129, 0.1);
+            color: #6ee7b7;
+        }
+
+        .status-badge.suspended {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-buttons button {
+            padding: 6px 12px;
+            font-size: 11px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .action-btn-award {
+            background: rgba(16, 185, 129, 0.1);
+            color: #6ee7b7;
+            border: 1px solid var(--success);
+        }
+
+        .action-btn-award:hover {
+            background: var(--success);
+            color: white;
+        }
+
+        .action-btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border: 1px solid var(--danger);
+        }
+
+        .action-btn-delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .loading-spinner {
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .success-message {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: #6ee7b7;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .content-section {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .users-table {
+                font-size: 12px;
+            }
+
+            .users-table th,
+            .users-table td {
+                padding: 10px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>Admin Panel</h1>
+                <p>Manage users and token allocation</p>
+            </div>
+            <div class="error-message" id="loginError"></div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username" value="admin">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" value="admin1234">
+            </div>
+            <button class="login-button" onclick="handleLogin()">Sign In</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Admin Dashboard</h1>
+                <button class="logout-button" onclick="handleLogout()">Logout</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="totalUsers">0</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="activeUsers">0</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalTokens">0</div>
+                    <div class="stat-label">Tokens Distributed</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="avgTokens">0</div>
+                    <div class="stat-label">Avg Tokens/User</div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('users')">Users</button>
+                <button class="tab" onclick="switchTab('create')">Add User</button>
+                <button class="tab" onclick="switchTab('award')">Award Tokens</button>
+            </div>
+
+            <!-- Users Tab -->
+            <div class="tab-content active" id="usersTab">
+                <div class="card">
+                    <div class="card-title">User Management</div>
+                    <div class="loading show" id="usersLoading">
+                        <div class="loading-spinner"></div>
+                    </div>
+                    <div id="usersContainer"></div>
+                </div>
+            </div>
+
+            <!-- Create User Tab -->
+            <div class="tab-content" id="createTab">
+                <div class="card">
+                    <div class="card-title">Add New User</div>
+                    <div class="success-message" id="createSuccess">User created successfully!</div>
+                    <form onsubmit="handleCreateUser(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" id="createName" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="createEmail" placeholder="john@example.com" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Initial Tokens</label>
+                                <input type="number" id="createTokens" placeholder="1000" value="0">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-primary">Create User</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Award Tokens Tab -->
+            <div class="tab-content" id="awardTab">
+                <div class="card">
+                    <div class="card-title">Award Tokens to User</div>
+                    <div class="success-message" id="awardSuccess">Tokens awarded successfully!</div>
+                    <form onsubmit="handleAwardTokens(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Select User</label>
+                                <select id="awardUserId" required style="width: 100%; padding: 12px 14px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 14px;">
+                                    <option value="">Choose a user...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Token Amount</label>
+                                <input type="number" id="awardAmount" placeholder="500" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Reason (Optional)</label>
+                                <input type="text" id="awardReason" placeholder="Bonus, Referral, etc.">
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="btn btn-success">Award Tokens</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Token Award Modal -->
+    <div class="modal" id="tokenModal">
+        <div class="modal-content">
+            <div class="modal-header">Award Tokens</div>
+            <form onsubmit="confirmTokenAward(event)">
+                <div class="form-group">
+                    <label>Token Amount</label>
+                    <input type="number" id="modalTokenAmount" placeholder="500" required>
+                </div>
+                <div class="form-group">
+                    <label>Reason (Optional)</label>
+                    <input type="text" id="modalTokenReason" placeholder="Bonus, Referral, etc.">
+                </div>
+                <div class="button-group">
+                    <button type="submit" class="btn btn-success">Award</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeTokenModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://your-worker-url.workers.dev'; // Update this with your actual worker URL
+        let authToken = null;
+        let currentUsers = [];
+        let selectedUserId = null;
+
+        // Initialize
+        async function init() {
+            // Check if we have a saved session
+            const saved = localStorage.getItem('adminSession');
+            if (saved) {
+                authToken = saved;
+                loadDashboard();
+            }
+        }
+
+        async function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    authToken = data.token;
+                    localStorage.setItem('adminSession', authToken);
+                    loadDashboard();
+                    errorDiv.classList.remove('show');
+                } else {
+                    showError(errorDiv, data.error || 'Login failed');
+                }
+            } catch (error) {
+                showError(errorDiv, 'Connection error: ' + error.message);
+            }
+        }
+
+        async function loadDashboard() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('dashboard').classList.add('active');
+            await loadUsers();
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/users`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    currentUsers = data.users;
+                    updateStats();
+                    renderUsers();
+                    updateUserSelect();
+                } else {
+                    console.error('Failed to load users');
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        function updateStats() {
+            const totalUsers = currentUsers.length;
+            const activeUsers = currentUsers.filter(u => u.status === 'active').length;
+            const totalTokens = currentUsers.reduce((sum, u) => sum + u.tokens, 0);
+            const avgTokens = totalUsers > 0 ? Math.round(totalTokens / totalUsers) : 0;
+
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('activeUsers').textContent = activeUsers;
+            document.getElementById('totalTokens').textContent = totalTokens.toLocaleString();
+            document.getElementById('avgTokens').textContent = avgTokens.toLocaleString();
+        }
+
+        function renderUsers() {
+            const container = document.getElementById('usersContainer');
+            const loadingDiv = document.getElementById('usersLoading');
+
+            if (!currentUsers || currentUsers.length === 0) {
+                loadingDiv.classList.remove('show');
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <p>No users found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            loadingDiv.classList.remove('show');
+
+            const table = document.createElement('table');
+            table.className = 'users-table';
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Tokens</th>
+                        <th>Status</th>
+                        <th>Joined</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${currentUsers.map(user => `
+                        <tr>
+                            <td>${user.name}</td>
+                            <td><a class="user-email">${user.email}</a></td>
+                            <td><span class="token-badge">${user.tokens.toLocaleString()}</span></td>
+                            <td><span class="status-badge ${user.status}">${user.status}</span></td>
+                            <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="action-btn-award" onclick="openTokenModal('${user.id}')">Award</button>
+                                    <button class="action-btn-delete" onclick="deleteUser('${user.id}', '${user.name}')">Delete</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+
+            container.innerHTML = '';
+            container.appendChild(table);
+        }
+
+        function updateUserSelect() {
+            const select = document.getElementById('awardUserId');
+            select.innerHTML = '<option value="">Choose a user...</option>' + 
+                currentUsers.map(user => `<option value="${user.id}">${user.name} (${user.email})</option>`).join('');
+        }
+
+        async function handleCreateUser(event) {
+            event.preventDefault();
+            const name = document.getElementById('createName').value;
+            const email = document.getElementById('createEmail').value;
+            const initialTokens = parseInt(document.getElementById('createTokens').value) || 0;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/users/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ email, name, initialTokens })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccessMessage('createSuccess');
+                    document.getElementById('createName').value = '';
+                    document.getElementById('createEmail').value = '';
+                    document.getElementById('createTokens').value = '0';
+                    await loadUsers();
+                    setTimeout(() => switchTab('users'), 1500);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error creating user: ' + error.message);
+            }
+        }
+
+        function openTokenModal(userId) {
+            selectedUserId = userId;
+            document.getElementById('tokenModal').classList.add('active');
+        }
+
+        function closeTokenModal() {
+            document.getElementById('tokenModal').classList.remove('active');
+            selectedUserId = null;
+        }
+
+        async function handleAwardTokens(event) {
+            event.preventDefault();
+            const userId = document.getElementById('awardUserId').value;
+            const amount = parseInt(document.getElementById('awardAmount').value);
+            const reason = document.getElementById('awardReason').value;
+
+            if (!userId) {
+                alert('Please select a user');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/tokens/award`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ userId, amount, reason })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccessMessage('awardSuccess');
+                    document.getElementById('awardUserId').value = '';
+                    document.getElementById('awardAmount').value = '';
+                    document.getElementById('awardReason').value = '';
+                    await loadUsers();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error awarding tokens: ' + error.message);
+            }
+        }
+
+        async function confirmTokenAward(event) {
+            event.preventDefault();
+            const amount = parseInt(document.getElementById('modalTokenAmount').value);
+            const reason = document.getElementById('modalTokenReason').value;
+
+            if (!selectedUserId || !amount) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/tokens/award`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ userId: selectedUserId, amount, reason })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    closeTokenModal();
+                    await loadUsers();
+                    renderUsers();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function deleteUser(userId, name) {
+            if (!confirm(`Are you sure you want to delete ${name}?`)) return;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/users/${userId}?action=delete`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (response.ok) {
+                    await loadUsers();
+                } else {
+                    alert('Error deleting user');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        function handleLogout() {
+            authToken = null;
+            localStorage.removeItem('adminSession');
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('loginContainer').style.display = 'flex';
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'admin1234';
+        }
+
+        function showError(element, message) {
+            element.textContent = message;
+            element.classList.add('show');
+        }
+
+        function showSuccessMessage(elementId) {
+            const element = document.getElementById(elementId);
+            element.classList.add('show');
+            setTimeout(() => element.classList.remove('show'), 3000);
+        }
+
+        // Start the app
+        init();
+    </script>
+</body>
+</html>
