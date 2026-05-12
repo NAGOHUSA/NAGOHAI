@@ -859,7 +859,6 @@ input, textarea, select {
 // ─────────────────────────────────────────────────────────
 const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
-const REDIRECT_URI    = 'https://ai.nagoh.us/'; // Must match Google Cloud Console
 // Stripe Payment Link — with client reference and success redirect
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
 const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
@@ -939,41 +938,26 @@ function showSuccessNotification(msg) {
 }
 
 // ─────────────────────────────────────────────────────────
-// GOOGLE OAUTH — REDIRECT FLOW (no pop-ups!)
+// GOOGLE OAUTH — ONE TAP FLOW (reliable, no redirects!)
 // ─────────────────────────────────────────────────────────
 
 function initiateGoogleSignIn() {
-  // Generate state for security
-  const state = generateRandomString(32);
-  sessionStorage.setItem('google_oauth_state', state);
-
-  // Build the OAuth authorization URL
-  const params = new URLSearchParams({
-    client_id: GOOGLE_CLIENT_ID,
-    redirect_uri: REDIRECT_URI,
-    response_type: 'code',
-    scope: 'openid profile email',
-    state: state,
-    prompt: 'select_account', // Always show account picker
-  });
-
-  // Redirect to Google
-  window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-}
-
-function generateRandomString(length) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  document.getElementById('authErr').textContent = '';
+  document.getElementById('authLoading').style.display = 'block';
+  // The One Tap flow handles everything automatically
+  if (typeof google !== 'undefined') {
+    google.accounts.id.prompt();
   }
-  return result;
 }
 
-// Called by Google's callback when user is redirected back
+// Called by Google's callback when user selects account
 async function handleGoogleCredential(response) {
-  // This is called by the GIS library when using the One Tap flow
-  if (!response || !response.credential) return;
+  // response.credential = Google ID token (JWT)
+  if (!response || !response.credential) {
+    document.getElementById('authLoading').style.display = 'none';
+    document.getElementById('authErr').textContent = 'Sign-in cancelled.';
+    return;
+  }
   
   document.getElementById('authLoading').style.display = 'block';
   document.getElementById('authErr').textContent = '';
