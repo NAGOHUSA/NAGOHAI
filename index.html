@@ -462,6 +462,175 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 .success-banner.show { display: flex; }
 @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ─────────────────────────────────────────────────────────
+   MOBILE RESPONSIVE STYLES
+   ───────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .left { width: 180px; }
+  .right { width: 160px; }
+  .bub { max-width: 85%; }
+}
+
+@media (max-width: 768px) {
+  /* Hide side panels on tablet */
+  .left, .right { display: none; }
+  .shell { flex-direction: column; }
+  .chat-col { width: 100%; }
+  
+  /* Adjust topbar for smaller screens */
+  .topbar {
+    padding: 0 1rem;
+    height: 56px;
+  }
+  .wordmark { font-size: 1.1rem; }
+  .tagline { font-size: 0.55rem; }
+  .tuser-name { display: none !important; }
+  .tuser-avatar { width: 24px; height: 24px; }
+  .tbtn { padding: 4px 10px; font-size: 0.6rem; }
+  
+  /* Adjust modal for mobile */
+  .modal {
+    max-width: 90vw;
+    border-radius: 16px;
+  }
+  .modal-body { padding: 1.5rem 1.5rem 1.5rem; }
+  .modal-title { font-size: 1.1rem; }
+  .modal-sub { font-size: 0.7rem; }
+  .vprops { gap: 6px; }
+  .vprop { padding: 6px 10px; }
+  
+  /* Adjust chat area */
+  .msgs { padding: 1.5rem 0 0.5rem; }
+  .row { padding: 0.3rem 1rem; gap: 8px; }
+  .bub { max-width: 90%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
+  .ava { width: 28px; height: 28px; font-size: 0.7rem; }
+  
+  /* Input area */
+  .ibar { padding: 0.65rem 1rem; }
+  .iinner { gap: 0.5rem; }
+  .prompt { padding: 0.6rem 0.8rem; font-size: 0.85rem; min-height: 44px; }
+  .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; }
+  .ifoot { padding: 0.3rem 1rem 0; font-size: 0.52rem; }
+  
+  /* Empty state */
+  .empty { padding: 1rem; }
+  .ehero { font-size: 1.8rem; margin-bottom: 0.3rem; }
+  .esub { font-size: 0.75rem; margin-bottom: 1.5rem; max-width: 100%; }
+  .echips { gap: 6px; }
+  .echip { padding: 6px 12px; font-size: 0.65rem; }
+  .echip span { font-size: 0.85rem; }
+  .etagline { font-size: 0.6rem; margin-top: 1rem; }
+}
+
+@media (max-width: 480px) {
+  /* Extra small phones */
+  .topbar {
+    height: 52px;
+    padding: 0 0.75rem;
+    gap: 0.5rem;
+  }
+  .wordmark { font-size: 0.95rem; }
+  .tagline { font-size: 0.5rem; letter-spacing: 0.04em; }
+  .tsep { flex: 1; }
+  .tpill { padding: 3px 8px; font-size: 0.6rem; }
+  .dot { width: 5px; height: 5px; }
+  .tbtn { padding: 3px 8px; font-size: 0.55rem; }
+  .tbal { font-size: 0.6rem; }
+  .tbal span { font-size: 0.5rem; }
+  
+  /* Modal adjustments */
+  .modal {
+    max-width: 95vw;
+    border-radius: 14px;
+  }
+  .modal-hero { padding: 1.5rem 1.5rem 1rem; }
+  .modal-logo { font-size: 1.6rem; margin-bottom: 0.25rem; }
+  .modal-tagline { font-size: 0.65rem; }
+  .modal-body { padding: 1.2rem 1.2rem 1.5rem; }
+  .modal-title { font-size: 1rem; margin-bottom: 0.2rem; }
+  .modal-sub { font-size: 0.65rem; line-height: 1.5; margin-bottom: 1rem; }
+  .vp-icon { font-size: 0.95rem; }
+  .vp-text { font-size: 0.65rem; }
+  .google-signin-btn { padding: 10px 16px; font-size: 0.8rem; }
+  .guest-btn { padding: 8px 16px; font-size: 0.75rem; }
+  .auth-note { font-size: 0.58rem; }
+  .auth-divider { margin: 8px 0; font-size: 0.6rem; }
+  .guest-note { font-size: 0.55rem; }
+  .modal-foot { padding: 0.6rem 1.2rem; font-size: 0.58rem; }
+  
+  /* Chat layout */
+  .msgs { padding: 1rem 0 0.5rem; }
+  .row { padding: 0.25rem 0.75rem; gap: 6px; }
+  .ava { width: 26px; height: 26px; font-size: 0.65rem; margin-top: 2px; }
+  .bub { max-width: 92%; font-size: 0.8rem; line-height: 1.5; padding: 0.5rem 0.7rem; }
+  .bub.thinking { font-size: 0.75rem; }
+  .think-dots span { font-size: 0.8rem; }
+  .rmeta { font-size: 0.52rem; gap: 6px; }
+  .rmeta .chip { padding: 1px 6px; font-size: 0.52rem; }
+  
+  /* Suggestions */
+  .suggestions { gap: 4px; margin-top: 4px; max-width: 92%; }
+  .sug { padding: 3px 10px; font-size: 0.65rem; border-radius: 10px; }
+  
+  /* Input */
+  .ibar { padding: 0.5rem 0.75rem; }
+  .iinner { gap: 0.4rem; }
+  .prompt { 
+    padding: 0.5rem 0.7rem; 
+    font-size: 0.8rem; 
+    min-height: 40px;
+    max-height: 120px;
+  }
+  .send { 
+    padding: 0 0.8rem; 
+    font-size: 0.65rem; 
+    height: 40px;
+  }
+  .ifoot { 
+    padding: 0.25rem 0.75rem 0;
+    font-size: 0.5rem;
+    gap: 0.5rem;
+  }
+  
+  /* Empty state */
+  .empty { padding: 0.75rem; }
+  .ehero { font-size: 1.4rem; line-height: 1.1; margin-bottom: 0.25rem; }
+  .esub { font-size: 0.7rem; line-height: 1.6; margin-bottom: 1rem; }
+  .echips { gap: 5px; }
+  .echip { padding: 5px 10px; font-size: 0.6rem; border-radius: 16px; }
+  .echip span { font-size: 0.75rem; }
+  .etagline { font-size: 0.55rem; margin-top: 0.75rem; }
+  
+  /* Success banner mobile */
+  .success-banner {
+    top: auto;
+    bottom: 20px;
+    right: 10px;
+    left: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+  button, .pbtn, .qbtn, .echip, .sug, .idea-item {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+  }
+  
+  button:active, .pbtn:active, .qbtn:active, .echip:active, .sug:active {
+    opacity: 0.8;
+  }
+}
+
+/* Prevent zoom on inputs */
+input, textarea, select {
+  font-size: 16px !important;
+}
 </style>
 </head>
 <body>
@@ -558,8 +727,8 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
     <div class="pblock">
       <div class="plabel">AI Model</div>
       <select class="msel" id="modelSel" onchange="onModel()">
-        <option value="NagohAI-chat">NagohAI Chat (fast)</option>
-        <option value="NagohAI-reasoner">NagohAI Reasoner (deep)</option>
+        <option value="deepseek-chat">DeepSeek Chat (fast)</option>
+        <option value="deepseek-reasoner">DeepSeek Reasoner (deep)</option>
       </select>
     </div>
 
