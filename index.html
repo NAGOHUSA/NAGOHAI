@@ -452,6 +452,16 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   border-radius: 8px; transition: border-color 0.2s;
 }
 .stxt:focus { border-color: var(--teal); color: var(--ink); }
+
+/* Success notification */
+.success-banner {
+  position: fixed; top: 20px; right: 20px; z-index: 2000;
+  background: var(--sage); color: #fff; padding: 1rem 1.5rem;
+  border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: none; align-items: center; gap: 10px; animation: slideIn 0.3s ease;
+}
+.success-banner.show { display: flex; }
+@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 </style>
 </head>
 <body>
@@ -474,7 +484,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
       </div>
 
       <div class="google-btn-wrap">
-        <button class="google-signin-btn" onclick="signInWithGoogle()">
+        <button class="google-signin-btn" id="googleSignInBtn" onclick="initiateGoogleSignIn()">
           <!-- Google "G" logo SVG -->
           <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
@@ -498,6 +508,11 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
     </div>
     <div class="modal-foot">ai.nagoh.us &nbsp;·&nbsp; <a href="#" onclick="openBuyTokens()">buy tokens</a> &nbsp;·&nbsp; <a href="#">help</a></div>
   </div>
+</div>
+
+<!-- Success notification -->
+<div class="success-banner" id="successBanner">
+  ✅ <span id="successMsg">Purchase successful! Your tokens have been added.</span>
 </div>
 
 <!-- ── TOPBAR ── -->
@@ -543,8 +558,8 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
     <div class="pblock">
       <div class="plabel">AI Model</div>
       <select class="msel" id="modelSel" onchange="onModel()">
-        <option value="deepseek-chat">DeepSeek Chat (fast)</option>
-        <option value="deepseek-reasoner">DeepSeek Reasoner (deep)</option>
+        <option value="NagohAI-chat">NagohAI Chat (fast)</option>
+        <option value="NagohAI-reasoner">NagohAI Reasoner (deep)</option>
       </select>
     </div>
 
@@ -675,8 +690,10 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 // ─────────────────────────────────────────────────────────
 const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
-// Stripe Payment Link — add ?client_reference_id= dynamically per user
+const REDIRECT_URI    = 'https://ai.nagoh.us/'; // Must match Google Cloud Console
+// Stripe Payment Link — with client reference and success redirect
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
+const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
 // ─────────────────────────────────────────────────────────
 
 let sessionToken = ''; // JWT session from our Worker (stored in sessionStorage)
@@ -698,23 +715,21 @@ const TONE_PROMPTS = {
 };
 
 // ─────────────────────────────────────────────────────────
-// GOOGLE OAUTH
+// INITIALIZATION
 // ─────────────────────────────────────────────────────────
 
-// Called when GIS library loads
 window.onload = () => {
   if (typeof google !== 'undefined') {
     google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
       callback: handleGoogleCredential,
-      auto_select: true,           // silently sign in if already consented
+      auto_select: true,
       cancel_on_tap_outside: false,
     });
-    // Attempt silent sign-in first
-    google.accounts.id.prompt();
   }
   updateSysPrompt();
   renderHistory();
+  checkPaymentSuccess();
 
   // Check if we have a saved session
   const saved = sessionStorage.getItem('nagoh_session');
@@ -731,25 +746,66 @@ window.onload = () => {
   }
 };
 
-function signInWithGoogle() {
-  document.getElementById('authErr').textContent = '';
-  document.getElementById('authLoading').style.display = 'block';
-  // Trigger the Google One Tap / popup flow
-  google.accounts.id.prompt((notification) => {
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-      // Fall back to redirect flow if One Tap was suppressed
-      google.accounts.id.renderButton(
-        document.createElement('div'),
-        { theme: 'outline', size: 'large' }
-      );
-      document.getElementById('authLoading').style.display = 'none';
-      document.getElementById('authErr').textContent = 'Pop-up blocked. Please allow pop-ups and try again.';
+// Check if user just returned from Stripe
+function checkPaymentSuccess() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('payment') === 'success') {
+    // Show success message and refresh balance
+    showSuccessNotification('✅ Purchase successful! Your tokens have been added.');
+    if (sessionToken) {
+      setTimeout(() => { connect(); }, 1000); // Refresh balance after 1 second
     }
-  });
+    // Clean up URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
 }
 
+function showSuccessNotification(msg) {
+  const banner = document.getElementById('successBanner');
+  document.getElementById('successMsg').textContent = msg;
+  banner.classList.add('show');
+  setTimeout(() => {
+    banner.classList.remove('show');
+  }, 4000);
+}
+
+// ─────────────────────────────────────────────────────────
+// GOOGLE OAUTH — REDIRECT FLOW (no pop-ups!)
+// ─────────────────────────────────────────────────────────
+
+function initiateGoogleSignIn() {
+  // Generate state for security
+  const state = generateRandomString(32);
+  sessionStorage.setItem('google_oauth_state', state);
+
+  // Build the OAuth authorization URL
+  const params = new URLSearchParams({
+    client_id: GOOGLE_CLIENT_ID,
+    redirect_uri: REDIRECT_URI,
+    response_type: 'code',
+    scope: 'openid profile email',
+    state: state,
+    prompt: 'select_account', // Always show account picker
+  });
+
+  // Redirect to Google
+  window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+}
+
+function generateRandomString(length) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
+// Called by Google's callback when user is redirected back
 async function handleGoogleCredential(response) {
-  // response.credential = Google ID token (JWT)
+  // This is called by the GIS library when using the One Tap flow
+  if (!response || !response.credential) return;
+  
   document.getElementById('authLoading').style.display = 'block';
   document.getElementById('authErr').textContent = '';
 
@@ -762,12 +818,10 @@ async function handleGoogleCredential(response) {
     const d = await r.json();
     if (!r.ok) throw new Error(d.error || 'Auth failed');
 
-    // Worker returns: { session_token, user: { user_id, email, name, picture }, token_balance, is_new }
     sessionToken = d.session_token;
     currentUser  = d.user;
     balance      = d.token_balance;
 
-    // Persist session
     sessionStorage.setItem('nagoh_session', JSON.stringify({ token: sessionToken, user: currentUser }));
 
     applyUserToUI(currentUser);
@@ -783,6 +837,7 @@ async function handleGoogleCredential(response) {
     }
   } catch (err) {
     document.getElementById('authErr').textContent = err.message || 'Sign-in failed. Please try again.';
+  } finally {
     document.getElementById('authLoading').style.display = 'none';
   }
 }
@@ -810,49 +865,22 @@ function signOut() {
 }
 
 // ─────────────────────────────────────────────────────────
-// STRIPE — open payment link with user ID embedded
+// STRIPE PAYMENT
 // ─────────────────────────────────────────────────────────
-
-// GUEST SESSION
-async function continueAsGuest() {
-  document.getElementById('authErr').textContent = '';
-  document.getElementById('authLoading').style.display = 'block';
-  try {
-    const r = await fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error || 'Could not start guest session');
-
-    isGuest      = true;
-    sessionToken = d.session_token;
-    currentUser  = d.user;
-    balance      = d.token_balance;
-
-    setBalUI(balance);
-    setLed('on', 'Guest mode');
-    document.getElementById('sendBtn').disabled = false;
-    document.getElementById('guestBanner').classList.add('show');
-    hideModal();
-
-    setTimeout(() => {
-      addBubble('ai', "You're browsing as a guest with 1,000 free tokens. \ud83c\udf89 Sign in with Google anytime to get 5,000 tokens and save your chat history!", null, null);
-    }, 400);
-  } catch (e) {
-    document.getElementById('authErr').textContent = e.message;
-  } finally {
-    document.getElementById('authLoading').style.display = 'none';
-  }
-}
 
 function openBuyTokens() {
   if (!currentUser) { showModal(); return; }
-  if (isGuest) { showModal(); return; } // guests must sign in to buy
-  const url = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}`;
-  window.open(url, '_blank');
+  if (isGuest) { showModal(); return; }
+  
+  // Build Stripe URL with user ID and success redirect
+  const stripeUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}&success_url=${STRIPE_SUCCESS_URL}`;
+  window.location.href = stripeUrl;
 }
 
 // ─────────────────────────────────────────────────────────
 // CONNECTION / SESSION
 // ─────────────────────────────────────────────────────────
+
 async function connect() {
   setLed('spin', 'Connecting…');
   try {
@@ -876,6 +904,7 @@ function hideModal() { document.getElementById('modalWrap').classList.add('hidde
 // ─────────────────────────────────────────────────────────
 // CHAT
 // ─────────────────────────────────────────────────────────
+
 async function send() {
   const box  = document.getElementById('prompt');
   const text = box.value.trim();
@@ -898,7 +927,7 @@ async function send() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionToken}`,  // session token replaces API key
+        'Authorization': `Bearer ${sessionToken}`,
       },
       body: JSON.stringify({
         messages: msgs,
@@ -977,7 +1006,6 @@ function addBubble(role, content, nagoh, suggestions) {
     sugsHtml = `<div class="suggestions">${suggestions.map(s => `<button class="sug" onclick="quickSend('${s.replace(/'/g,"\\'")}')">↪ ${esc(s)}</button>`).join('')}</div>`;
   }
 
-  // Use Google avatar for user bubbles if available
   const avaContent = (role === 'user' && currentUser?.picture)
     ? `<img src="${currentUser.picture}" alt="">`
     : (role === 'ai' ? 'N' : 'U');
@@ -1017,16 +1045,20 @@ function setLed(state, label) {
   document.getElementById('led').className = 'dot ' + state;
   document.getElementById('sstr').textContent = label;
 }
+
 function setBalUI(n) {
   const fmt = n.toLocaleString();
   document.getElementById('balNum').textContent = fmt;
   document.getElementById('topBal').innerHTML = `${fmt} <span>tokens</span>`;
 }
+
 function onModel() {}
+
 function updateSysPrompt() {
   const tone = document.getElementById('toneMode').value;
   document.getElementById('sysTxt').value = TONE_PROMPTS[tone] || TONE_PROMPTS.friendly;
 }
+
 function updateStats() {
   document.getElementById('rMsgs').textContent  = msgs.length;
   document.getElementById('rSpent').textContent = sessSpent;
@@ -1105,11 +1137,19 @@ function quickSend(text) {
 }
 
 function onKey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+
 function grow(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 160) + 'px';
   const l = el.value.length;
   document.getElementById('ccount').textContent = l ? `${l} chars` : '';
+}
+
+function continueAsGuest() {
+  document.getElementById('authErr').textContent = '';
+  document.getElementById('authLoading').style.display = 'block';
+  // TODO: Implement guest session if needed
+  document.getElementById('authLoading').style.display = 'none';
 }
 
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
