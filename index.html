@@ -704,11 +704,11 @@ input, textarea, select { font-size: 16px !important; }
     </div>
     <div class="checkout-body">
       <div class="checkout-amount">
-        <button class="amount-btn selected" onclick="selectAmount(100,000 this)">
-          100,000 tokens<br><span style="font-size:0.7rem;opacity:0.7;">$9.99</span>
+        <button class="amount-btn selected" onclick="selectAmount(5000, this)">
+          5,000 tokens<br><span style="font-size:0.7rem;opacity:0.7;">$9.99</span>
         </button>
-        <button class="amount-btn" onclick="selectAmount(500,000 this)">
-          500,000 tokens<br><span style="font-size:0.7rem;opacity:0.7;">$24.99</span>
+        <button class="amount-btn" onclick="selectAmount(15000, this)">
+          15,000 tokens<br><span style="font-size:0.7rem;opacity:0.7;">$24.99</span>
         </button>
       </div>
       <form class="checkout-form" id="checkoutForm" onsubmit="handleCheckout(event)">
@@ -871,7 +871,7 @@ input, textarea, select { font-size: 16px !important; }
 // ─────────────────────────────────────────────────────────
 const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
-const STRIPE_PUBLISHABLE_KEY = 'pk_live_51TK0JWGUbXtKf7F7FBt5ingZaPPj8oi6n7sk50AS4yWKkoISv6bJHXphJS5ygOX0QQScFuDUskZ6Uq0SCgwBVwnr00GVEiex2f'; // Replace with your Stripe publishable key
+const STRIPE_PUBLISHABLE_KEY = 'pk_test_your_key_here'; // Replace with your Stripe publishable key
 // ─────────────────────────────────────────────────────────
 
 // Industry-specific configurations
