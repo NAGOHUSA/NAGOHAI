@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NAGOH AI — Your Creative Business Assistant</title>
+<title>NAGOH AI — Your Small Business Assistant</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<!-- Google Identity Services -->
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -82,7 +81,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 .tbtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
-/* User avatar in topbar */
 .tuser {
   display: flex; align-items: center; gap: 8px;
 }
@@ -127,7 +125,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .bal-num { font-family: var(--serif); font-size: 1.25rem; font-weight: 700; color: var(--ink); line-height: 1; }
 .bal-sub { font-size: 0.58rem; color: var(--dim); margin-top: 2px; letter-spacing: 0.04em; }
 
-/* Buy tokens button */
 .buy-btn {
   display: block; width: 100%; margin-top: 8px;
   font-family: var(--sans); font-size: 0.68rem; font-weight: 600;
@@ -136,6 +133,30 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   letter-spacing: 0.02em; text-decoration: none;
 }
 .buy-btn:hover { background: #d48f20; }
+
+/* ── INDUSTRY SELECTOR ── */
+.industry-section { padding: 1rem 1rem 0.8rem; border-bottom: 1px solid var(--border); }
+.industry-label { 
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; display: block;
+}
+.industry-sel {
+  width: 100%; background: #fff; border: 1.5px solid var(--border2);
+  color: var(--ink); font-family: var(--sans); font-size: 0.75rem;
+  padding: 0.6rem 0.7rem; outline: none; cursor: pointer; border-radius: 8px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b5a090'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
+  font-weight: 500; transition: all 0.2s;
+}
+.industry-sel:focus { border-color: var(--teal); outline: none; box-shadow: 0 0 0 3px var(--teal-lt); }
+.industry-sel option { background: #fff; padding: 8px; }
+
+.industry-badge {
+  display: inline-block; background: var(--teal-lt); color: var(--teal);
+  font-size: 0.65rem; font-weight: 600; padding: 4px 10px;
+  border-radius: 12px; margin-top: 0.5rem; letter-spacing: 0.03em;
+}
 
 .msel {
   width: 100%; background: #fff; border: 1px solid var(--border2);
@@ -146,7 +167,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
 }
 .msel:focus { border-color: var(--teal); outline: none; }
-.msel option { background: #fff; }
 
 /* Quick prompts */
 .qgrid { display: flex; flex-direction: column; gap: 5px; }
@@ -274,7 +294,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   padding: 1px 8px; font-size: 0.58rem;
 }
 
-/* ── SUGGESTIONS (post-message) ── */
 .suggestions { 
   display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; max-width: 76%;
 }
@@ -379,7 +398,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 .modal-sub { font-size: 0.75rem; color: var(--dim); line-height: 1.7; margin-bottom: 1.5rem; text-align: center; }
 
-/* value props */
 .vprops { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
 .vprop { 
   display: flex; align-items: center; gap: 10px;
@@ -388,7 +406,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .vp-icon { font-size: 1.1rem; }
 .vp-text { font-size: 0.72rem; color: var(--ink); font-weight: 500; }
 
-/* Google sign-in area */
 .google-btn-wrap {
   display: flex; flex-direction: column; align-items: center; gap: 12px;
 }
@@ -428,7 +445,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   line-height: 1.5;
 }
 
-/* Guest banner shown in topbar */
 .guest-banner {
   display: none; align-items: center; gap: 8px;
   background: var(--gold-lt); border: 1px solid var(--gold-md);
@@ -444,7 +460,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 .modal-foot a { color: var(--teal); text-decoration: none; }
 
-/* Sys prompt */
 .stxt {
   width: 100%; background: #fff; border: 1px solid var(--border2);
   color: var(--sub); font-family: var(--sans); font-size: 0.68rem;
@@ -453,7 +468,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 .stxt:focus { border-color: var(--teal); color: var(--ink); }
 
-/* Success notification */
 .success-banner {
   position: fixed; top: 20px; right: 20px; z-index: 2000;
   background: var(--sage); color: #fff; padding: 1rem 1.5rem;
@@ -463,10 +477,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .success-banner.show { display: flex; }
 @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* ─────────────────────────────────────────────────────────
-   MOBILE RESPONSIVE STYLES
-   ───────────────────────────────────────────────────────── */
-
+/* RESPONSIVE */
 @media (max-width: 1024px) {
   .left { width: 180px; }
   .right { width: 160px; }
@@ -576,20 +587,20 @@ input, textarea, select { font-size: 16px !important; }
 </head>
 <body>
 
-<!-- ── AUTH MODAL (Google OAuth) ── -->
+<!-- ── AUTH MODAL ── -->
 <div class="modal-wrap" id="modalWrap">
   <div class="modal">
     <div class="modal-hero">
       <div class="modal-logo">NAGOH <em>AI</em></div>
-      <div class="modal-tagline">Your Creative Business Assistant</div>
+      <div class="modal-tagline">Your Small Business Assistant</div>
     </div>
     <div class="modal-body">
       <div class="modal-title">Welcome! 👋</div>
       <div class="modal-sub">Sign in with Google to get started. New users receive 5,000 free tokens instantly.</div>
 
       <div class="vprops">
-        <div class="vprop"><div class="vp-icon">✍️</div><div class="vp-text">Write product descriptions that sell</div></div>
-        <div class="vprop"><div class="vp-icon">📱</div><div class="vp-text">Create social media captions instantly</div></div>
+        <div class="vprop"><div class="vp-icon">✍️</div><div class="vp-text">Craft professional messages instantly</div></div>
+        <div class="vprop"><div class="vp-icon">📱</div><div class="vp-text">Generate marketing content for your business</div></div>
         <div class="vprop"><div class="vp-icon">💌</div><div class="vp-text">Reply to customers with confidence</div></div>
       </div>
 
@@ -628,7 +639,7 @@ input, textarea, select { font-size: 16px !important; }
 <div class="topbar">
   <div>
     <div class="wordmark">NAGOH <em>AI</em></div>
-    <div class="tagline">YOUR CREATIVE BUSINESS ASSISTANT</div>
+    <div class="tagline">YOUR BUSINESS ASSISTANT</div>
   </div>
   <div class="tsep"></div>
   <div class="tbal" id="topBal">— <span>tokens</span></div>
@@ -651,6 +662,26 @@ input, textarea, select { font-size: 16px !important; }
 
   <!-- LEFT -->
   <div class="left">
+    <!-- Industry Selector -->
+    <div class="industry-section">
+      <label class="industry-label">Your Industry</label>
+      <select class="industry-sel" id="industrySel" onchange="onIndustryChange()">
+        <option value="etsy">🛍️ Etsy & Craft Sellers</option>
+        <option value="realtor">🏠 Real Estate Agents</option>
+        <option value="landlord">🏢 Landlords & Property Managers</option>
+        <option value="coffee">☕ Coffee Shops & Cafés</option>
+        <option value="landscaping">🌳 Landscaping & Yard Services</option>
+        <option value="roofing">🏠 Roofing & Construction</option>
+        <option value="plumbing">🔧 Plumbing & HVAC</option>
+        <option value="salon">💇 Hair & Beauty Services</option>
+        <option value="photography">📸 Photography & Creative Services</option>
+        <option value="personal_training">💪 Personal Training & Fitness</option>
+        <option value="consulting">💼 Consulting & Professional Services</option>
+        <option value="general">⭐ General Small Business</option>
+      </select>
+      <div class="industry-badge" id="industryBadge">Etsy & Craft Sellers</div>
+    </div>
+
     <div class="pblock">
       <div class="plabel">Your Balance</div>
       <div class="bal-wrap">
@@ -673,28 +704,7 @@ input, textarea, select { font-size: 16px !important; }
 
     <div class="pblock">
       <div class="plabel">Quick Starters</div>
-      <div class="qgrid">
-        <button class="qbtn" onclick="quickPrompt('Write an Etsy product description for: ')">
-          <div class="qi">🛍️</div>
-          <div><div class="ql">Etsy Listing</div><div class="qs">Product descriptions that sell</div></div>
-        </button>
-        <button class="qbtn" onclick="quickPrompt('Write 5 Instagram captions for my small business that sells: ')">
-          <div class="qi">📸</div>
-          <div><div class="ql">Social Captions</div><div class="qs">Instagram, Facebook & more</div></div>
-        </button>
-        <button class="qbtn" onclick="quickPrompt('Write a friendly reply to this customer message: ')">
-          <div class="qi">💌</div>
-          <div><div class="ql">Customer Reply</div><div class="qs">Handle messages with ease</div></div>
-        </button>
-        <button class="qbtn" onclick="quickPrompt('Give me 10 pricing strategies for a small craft business that makes: ')">
-          <div class="qi">💰</div>
-          <div><div class="ql">Pricing Help</div><div class="qs">Price your work fairly</div></div>
-        </button>
-        <button class="qbtn" onclick="quickPrompt('Write SEO tags and keywords for my Etsy shop that sells: ')">
-          <div class="qi">🔍</div>
-          <div><div class="ql">SEO & Tags</div><div class="qs">Get found by buyers</div></div>
-        </button>
-      </div>
+      <div class="qgrid" id="quickGrid"></div>
     </div>
 
     <div class="pblock">
@@ -709,27 +719,13 @@ input, textarea, select { font-size: 16px !important; }
   <!-- CHAT -->
   <div class="chat-col">
     <div class="msgs" id="msgs">
-      <div class="empty" id="empty">
-        <div class="ehero">Your AI <em>creative partner</em><br>is ready to help.</div>
-        <div class="esub">Whether you sell on Etsy, run a craft business, or make things with love — NAGOH AI helps you write, plan, and grow without the stress.</div>
-        <div class="echips">
-          <div class="echip" onclick="quickSend('Help me write a product description for handmade soy candles')"><span>🕯️</span>Candle listing</div>
-          <div class="echip" onclick="quickSend('Write Instagram captions for my jewelry shop')"><span>💍</span>Jewelry captions</div>
-          <div class="echip" onclick="quickSend('How do I price my handmade items to make a profit?')"><span>💰</span>Pricing guide</div>
-          <div class="echip" onclick="quickSend('Write a friendly out-of-office message for my Etsy shop')"><span>💌</span>Shop message</div>
-          <div class="echip" onclick="quickSend('Give me 10 ideas for new products for my pottery shop')"><span>🏺</span>Product ideas</div>
-          <div class="echip" onclick="quickSend('How do I get more 5-star reviews on Etsy?')"><span>⭐</span>More reviews</div>
-          <div class="echip" onclick="quickSend('Write a bio for my Etsy shop that sells handmade art prints')"><span>🎨</span>Shop bio</div>
-          <div class="echip" onclick="quickSend('What are the best hashtags for a small candle business on Instagram?')"><span>📱</span>Hashtags</div>
-        </div>
-        <div class="etagline">Tap any idea above or type your own question below</div>
-      </div>
+      <div class="empty" id="empty"></div>
     </div>
 
     <div class="ibar">
       <div class="iinner">
         <textarea class="prompt" id="prompt" 
-          placeholder="Ask anything — product ideas, listing copy, customer replies, pricing help…" 
+          placeholder="Ask anything..." 
           rows="1" onkeydown="onKey(event)" oninput="grow(this)"></textarea>
         <button class="send" id="sendBtn" onclick="send()" disabled>Send ↑</button>
       </div>
@@ -760,35 +756,8 @@ input, textarea, select { font-size: 16px !important; }
       </select>
     </div>
 
-    <div class="rblock" style="display:none;">
-      <div class="plabel">Custom System Prompt</div>
-      <textarea class="stxt" id="sysTxt" rows="4" placeholder="Custom instructions..."></textarea>
-    </div>
-
     <div class="plabel" style="padding:0.6rem 1rem 0.25rem;font-size:0.52rem;letter-spacing:0.15em;">💡 Ideas to Try</div>
-    <div class="ideas" id="ideas">
-      <div class="idea-item" onclick="quickSend('Write 3 versions of my shop announcement for the holidays')">
-        <div class="idea-icon">🎄</div><div class="idea-text"><strong>Holiday announcement</strong>Let buyers know your hours</div>
-      </div>
-      <div class="idea-item" onclick="quickSend('What should I post on social media this week for my craft shop?')">
-        <div class="idea-icon">📅</div><div class="idea-text"><strong>Weekly content plan</strong>Never run out of post ideas</div>
-      </div>
-      <div class="idea-item" onclick="quickSend('Help me write a thank-you note to include in orders')">
-        <div class="idea-icon">💝</div><div class="idea-text"><strong>Thank-you note</strong>Delight your customers</div>
-      </div>
-      <div class="idea-item" onclick="quickSend('What are the most searched Etsy keywords right now?')">
-        <div class="idea-icon">🔎</div><div class="idea-text"><strong>Trending keywords</strong>Improve your SEO</div>
-      </div>
-      <div class="idea-item" onclick="quickSend('Help me handle a bad review professionally')">
-        <div class="idea-icon">🛡️</div><div class="idea-text"><strong>Handle bad reviews</strong>Respond with grace</div>
-      </div>
-      <div class="idea-item" onclick="quickSend('Give me a 30-day social media plan for my small business')">
-        <div class="idea-icon">🗓️</div><div class="idea-text"><strong>30-day social plan</strong>Stay consistent online</div>
-      </div>
-      <div class="idea-item" onclick="quickSend('What shipping options should I offer in my Etsy shop?')">
-        <div class="idea-icon">📦</div><div class="idea-text"><strong>Shipping tips</strong>Keep buyers happy</div>
-      </div>
-    </div>
+    <div class="ideas" id="ideas"></div>
   </div>
 </div>
 
@@ -796,11 +765,339 @@ input, textarea, select { font-size: 16px !important; }
 // ─────────────────────────────────────────────────────────
 // CONFIGURATION — UPDATE THESE VALUES
 // ─────────────────────────────────────────────────────────
-const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';  // Your Cloudflare Worker URL
+const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
 const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
 // ─────────────────────────────────────────────────────────
+
+// Industry-specific configurations
+const INDUSTRIES = {
+  etsy: {
+    name: '🛍️ Etsy & Craft Sellers',
+    placeholder: 'Ask anything — listing copy, captions, pricing, customer replies…',
+    emptyMsg: 'Perfect for selling handmade goods, crafts, and creative items.',
+    quickStarters: [
+      { emoji: '📝', title: 'Product Listing', desc: 'Write descriptions that sell', prompt: 'Write an Etsy product description for: ' },
+      { emoji: '📸', title: 'Social Captions', desc: 'Instagram, Facebook & more', prompt: 'Write 5 Instagram captions for my craft shop that sells: ' },
+      { emoji: '💌', title: 'Customer Reply', desc: 'Handle messages with ease', prompt: 'Write a friendly reply to this customer message: ' },
+      { emoji: '💰', title: 'Pricing Help', desc: 'Price your work fairly', prompt: 'Give me 10 pricing strategies for my craft business that makes: ' },
+      { emoji: '🔍', title: 'SEO & Tags', desc: 'Get found by buyers', prompt: 'Write SEO tags and keywords for my Etsy shop that sells: ' },
+    ],
+    ideas: [
+      { emoji: '🎄', title: 'Holiday announcement', desc: 'Let buyers know your hours' },
+      { emoji: '📅', title: 'Weekly content plan', desc: 'Never run out of post ideas' },
+      { emoji: '💝', title: 'Thank-you note', desc: 'Delight your customers' },
+      { emoji: '🔎', title: 'Trending keywords', desc: 'Improve your SEO' },
+      { emoji: '🛡️', title: 'Handle bad reviews', desc: 'Respond with grace' },
+      { emoji: '🗓️', title: '30-day social plan', desc: 'Stay consistent online' },
+      { emoji: '📦', title: 'Shipping tips', desc: 'Keep buyers happy' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a warm, encouraging assistant for Etsy sellers, crafters, and artists. Be supportive and clear. Use simple language. Help them feel confident about their business and creative work.",
+      professional: "You are NAGOH AI, a professional business assistant for Etsy sellers. Provide clear, well-structured advice about listings, pricing, and customer service.",
+      playful: "You are NAGOH AI, a fun and enthusiastic assistant for creative makers! Be upbeat and make running a craft business feel exciting. Use emojis occasionally.",
+      concise: "You are NAGOH AI, an assistant for Etsy sellers. Be extremely concise. Bullet points preferred. No fluff.",
+    }
+  },
+  realtor: {
+    name: '🏠 Real Estate Agents',
+    placeholder: 'Ask anything — listings, social posts, client follow-ups, property promotions…',
+    emptyMsg: 'Create professional property listings and marketing content.',
+    quickStarters: [
+      { emoji: '🏘️', title: 'Property Listing', desc: 'MLS-ready descriptions', prompt: 'Write a compelling real estate listing description for a house at [address/MLS number]: ' },
+      { emoji: '📸', title: 'Social Post', desc: 'Facebook, Instagram ads', prompt: 'Write a social media post to promote this property: [address]: ' },
+      { emoji: '💌', title: 'Client Follow-up', desc: 'Nurture leads', prompt: 'Write a follow-up email to a client who viewed this property: ' },
+      { emoji: '📊', title: 'Market Analysis', desc: 'Explain neighborhood value', prompt: 'Write a market analysis summary for this neighborhood: ' },
+      { emoji: '🎯', title: 'Open House Invite', desc: 'Drive attendance', prompt: 'Write an open house invitation email for: ' },
+    ],
+    ideas: [
+      { emoji: '🏡', title: 'New listing announcement', desc: 'Alert your sphere' },
+      { emoji: '📍', title: 'Neighborhood guide', desc: 'Show local value' },
+      { emoji: '💼', title: 'Buyer qualification', desc: 'Pre-qualify leads' },
+      { emoji: '🔑', title: 'Closing congrats', desc: 'Build relationships' },
+      { emoji: '🏆', title: 'Success story', desc: 'Share testimonials' },
+      { emoji: '💡', title: 'Investment tips', desc: 'Attract investors' },
+      { emoji: '📞', title: 'Cold outreach', desc: 'Expired/FSBO scripts' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a helpful assistant for real estate professionals. Be warm, professional, and client-focused. Create content that builds trust and showcases properties effectively.",
+      professional: "You are NAGOH AI, a professional real estate assistant. Provide clear, market-smart advice about listings, marketing, and client management.",
+      playful: "You are NAGOH AI, an enthusiastic real estate marketing assistant. Be energetic and make property marketing fun and engaging.",
+      concise: "You are NAGOH AI, a real estate assistant. Be concise and direct. Focus on key selling points and call-to-action.",
+    }
+  },
+  landlord: {
+    name: '🏢 Landlords & Property Managers',
+    placeholder: 'Ask anything — tenant communication, rent reminders, maintenance requests…',
+    emptyMsg: 'Professional communication templates for property management.',
+    quickStarters: [
+      { emoji: '💰', title: 'Late Rent Notice', desc: 'Professional reminder', prompt: 'Write a professional reminder email to a tenant who is [days] days late on rent: ' },
+      { emoji: '⚠️', title: 'Rule Violation', desc: 'Address issues firmly', prompt: 'Write a letter to a tenant about this lease violation: ' },
+      { emoji: '🔧', title: 'Repair Request Reply', desc: 'Acknowledge & schedule', prompt: 'Write a professional response to a tenant maintenance request: ' },
+      { emoji: '📋', title: 'Lease Renewal', desc: 'Terms & options', prompt: 'Write a lease renewal offer email for a tenant: ' },
+      { emoji: '🚪', title: 'Move-out Notice', desc: 'Professional & clear', prompt: 'Write a move-out inspection notification email: ' },
+    ],
+    ideas: [
+      { emoji: '📅', title: 'Rent due reminder', desc: 'Friendly advance notice' },
+      { emoji: '🔒', title: 'Security deposit info', desc: 'Clear expectations' },
+      { emoji: '🏠', title: 'Property update', desc: 'Announce improvements' },
+      { emoji: '📞', title: 'Emergency procedure', desc: 'Tenant communication' },
+      { emoji: '📝', title: 'Lease clarification', desc: 'Prevent disputes' },
+      { emoji: '🎯', title: 'Tenant screening', desc: 'Professional criteria' },
+      { emoji: '🤝', title: 'Dispute resolution', desc: 'De-escalation scripts' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a helpful property management assistant. Be professional yet approachable. Help landlords communicate clearly and fairly with tenants.",
+      professional: "You are NAGOH AI, a professional property management assistant. Provide clear, legally-aware communication templates that protect landlord interests.",
+      playful: "You are NAGOH AI, a property management assistant. Keep tone professional but personable. Make interactions pleasant despite difficult topics.",
+      concise: "You are NAGOH AI, a property management assistant. Be direct and clear. Include key information without unnecessary details.",
+    }
+  },
+  coffee: {
+    name: '☕ Coffee Shops & Cafés',
+    placeholder: 'Ask anything — menu descriptions, promotions, staff communication…',
+    emptyMsg: 'Marketing and communication tools for coffee shops and cafés.',
+    quickStarters: [
+      { emoji: '☕', title: 'Menu Item', desc: 'Appetizing descriptions', prompt: 'Write an appetizing description for this coffee shop menu item: ' },
+      { emoji: '📢', title: 'Promotion Post', desc: 'Social media buzz', prompt: 'Write a social media post promoting our: ' },
+      { emoji: '👥', title: 'Staff Memo', desc: 'Clear instructions', prompt: 'Write a staff memo about: ' },
+      { emoji: '🎁', title: 'Loyalty Program', desc: 'Drive repeat customers', prompt: 'Write copy for our coffee shop loyalty program: ' },
+      { emoji: '🌟', title: 'Event Announcement', desc: 'Live music, tastings…', prompt: 'Write an announcement for our coffee shop event: ' },
+    ],
+    ideas: [
+      { emoji: '📱', title: 'New seasonal drink', desc: 'Build anticipation' },
+      { emoji: '🏆', title: 'Customer spotlight', desc: 'Build community' },
+      { emoji: '🎵', title: 'Live music night', desc: 'Promote entertainment' },
+      { emoji: '💝', title: 'Gift card promo', desc: 'Holiday sales' },
+      { emoji: '☕', title: 'Coffee tasting', desc: 'Educational event' },
+      { emoji: '🤝', title: 'Partnership post', desc: 'Local bakery collab' },
+      { emoji: '📸', title: 'Behind the scenes', desc: 'Show your craft' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a warm and creative assistant for coffee shop owners. Be enthusiastic about coffee culture. Make content feel welcoming and community-focused.",
+      professional: "You are NAGOH AI, a professional business assistant for cafés. Provide clear, consistent messaging that builds brand loyalty.",
+      playful: "You are NAGOH AI, a fun and witty assistant for coffee shops. Use coffee humor and personality. Make customers smile.",
+      concise: "You are NAGOH AI, a coffee shop assistant. Be snappy and memorable. Get people in the door.",
+    }
+  },
+  landscaping: {
+    name: '🌳 Landscaping & Yard Services',
+    placeholder: 'Ask anything — quotes, project descriptions, customer updates…',
+    emptyMsg: 'Marketing and communication for landscaping and outdoor services.',
+    quickStarters: [
+      { emoji: '🌿', title: 'Service Description', desc: 'Explain your work', prompt: 'Write a description of our landscaping service: ' },
+      { emoji: '📸', title: 'Before/After Post', desc: 'Social media showcase', prompt: 'Write social media post describing this transformation: ' },
+      { emoji: '💰', title: 'Estimate Explanation', desc: 'Justify pricing', prompt: 'Write an estimate email for a landscaping project: ' },
+      { emoji: '📋', title: 'Project Timeline', desc: 'Set expectations', prompt: 'Write a project timeline and progress update for: ' },
+      { emoji: '🛠️', title: 'Service Upsell', desc: 'Seasonal offerings', prompt: 'Write about our seasonal landscaping services: ' },
+    ],
+    ideas: [
+      { emoji: '🌱', title: 'Spring cleanup', desc: 'Seasonal promotion' },
+      { emoji: '💡', title: 'Lawn care tips', desc: 'Educational content' },
+      { emoji: '🏡', title: 'Curb appeal guide', desc: 'Drive conversions' },
+      { emoji: '🌸', title: 'Plant selection', desc: 'Design ideas' },
+      { emoji: '⏰', title: 'Maintenance schedule', desc: 'Customer retention' },
+      { emoji: '🎯', title: 'Hardscaping project', desc: 'Upsell opportunities' },
+      { emoji: '👥', title: 'Testimonial request', desc: 'Social proof' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a helpful assistant for landscaping businesses. Be knowledgeable about outdoor work. Help showcase your team's craftsmanship.",
+      professional: "You are NAGOH AI, a professional business assistant for landscaping companies. Provide clear project communication and credible estimates.",
+      playful: "You are NAGOH AI, an enthusiastic landscaping assistant. Celebrate beautiful outdoor spaces. Make yard transformation sound exciting.",
+      concise: "You are NAGOH AI, a landscaping assistant. Be direct about services and pricing. Show value quickly.",
+    }
+  },
+  roofing: {
+    name: '🏠 Roofing & Construction',
+    placeholder: 'Ask anything — inspections, quotes, safety updates…',
+    emptyMsg: 'Professional communication for roofing and construction services.',
+    quickStarters: [
+      { emoji: '🏠', title: 'Inspection Report', desc: 'Explain findings', prompt: 'Write a roof inspection report explaining: ' },
+      { emoji: '💰', title: 'Quote Letter', desc: 'Professional estimates', prompt: 'Write a roofing project quote for: ' },
+      { emoji: '⚠️', title: 'Safety Notice', desc: 'Job site communication', prompt: 'Write a safety update for our roofing crew: ' },
+      { emoji: '📅', title: 'Project Schedule', desc: 'Timeline management', prompt: 'Write a project timeline email for our roofing job: ' },
+      { emoji: '✅', title: 'Completion Notice', desc: 'Hand-off & warranty', prompt: 'Write a project completion email with warranty info: ' },
+    ],
+    ideas: [
+      { emoji: '🔍', title: 'Roof inspection tips', desc: 'Educational content' },
+      { emoji: '🌧️', title: 'Storm damage help', desc: 'Emergency services' },
+      { emoji: '📝', title: 'Insurance claim guide', desc: 'Help customers' },
+      { emoji: '⭐', title: 'Case study', desc: 'Show your work' },
+      { emoji: '🛡️', title: 'Warranty explanation', desc: 'Peace of mind' },
+      { emoji: '💼', title: 'Commercial roofing', desc: 'B2B marketing' },
+      { emoji: '🎯', title: 'Preventive maintenance', desc: 'Recurring revenue' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a helpful assistant for roofing contractors. Be reassuring about safety and quality. Build trust with homeowners.",
+      professional: "You are NAGOH AI, a professional business assistant for construction companies. Provide clear, technical communication.",
+      playful: "You are NAGOH AI, a roofing assistant. Make home protection feel important and manageable.",
+      concise: "You are NAGOH AI, a roofing assistant. Be direct about problems and solutions.",
+    }
+  },
+  plumbing: {
+    name: '🔧 Plumbing & HVAC',
+    placeholder: 'Ask anything — emergency calls, repair quotes, maintenance tips…',
+    emptyMsg: 'Communication tools for plumbing, HVAC, and home services.',
+    quickStarters: [
+      { emoji: '🚰', title: 'Service Description', desc: 'Explain your expertise', prompt: 'Write a description of our plumbing/HVAC service: ' },
+      { emoji: '📞', title: 'Emergency Response', desc: 'Quick callback email', prompt: 'Write an emergency service response email: ' },
+      { emoji: '💰', title: 'Service Estimate', desc: 'Professional quotes', prompt: 'Write a service estimate for: ' },
+      { emoji: '🔧', title: 'Maintenance Tips', desc: 'Educational content', prompt: 'Write maintenance tips for homeowners about: ' },
+      { emoji: '⏰', title: 'Appointment Confirm', desc: 'Reduce no-shows', prompt: 'Write an appointment confirmation email: ' },
+    ],
+    ideas: [
+      { emoji: '❄️', title: 'Winter prep guide', desc: 'Seasonal service' },
+      { emoji: '💧', title: 'Water saving tips', desc: 'Green marketing' },
+      { emoji: '🏠', title: 'System maintenance', desc: 'Recurring revenue' },
+      { emoji: '🆘', title: 'Emergency hotline', desc: 'Highlight availability' },
+      { emoji: '📺', title: 'Video tutorial', desc: 'Educational content' },
+      { emoji: '👥', title: 'Customer spotlight', desc: 'Testimonials' },
+      { emoji: '🎯', title: 'Upgrade options', desc: 'Upsell campaigns' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a helpful assistant for plumbing and HVAC professionals. Be reassuring about home comfort and safety. Help customers understand their systems.",
+      professional: "You are NAGOH AI, a professional business assistant for home service companies. Provide clear, technical communication.",
+      playful: "You are NAGOH AI, a home services assistant. Make plumbing and HVAC feel manageable and important.",
+      concise: "You are NAGOH AI, a plumbing/HVAC assistant. Be direct and clear. Focus on urgency and solutions.",
+    }
+  },
+  salon: {
+    name: '💇 Hair & Beauty Services',
+    placeholder: 'Ask anything — services, bookings, product recommendations…',
+    emptyMsg: 'Marketing and booking tools for salons and beauty services.',
+    quickStarters: [
+      { emoji: '✨', title: 'Service Menu', desc: 'Describe your services', prompt: 'Write a description for our salon service: ' },
+      { emoji: '📸', title: 'Transformation Post', desc: 'Social media showcase', prompt: 'Write a before/after social post for: ' },
+      { emoji: '💇', title: 'Styling Tips', desc: 'Educational content', prompt: 'Write a hair care or styling tip for: ' },
+      { emoji: '🎁', title: 'Gift Card Promo', desc: 'Holiday sales', prompt: 'Write a gift card promotion for our salon: ' },
+      { emoji: '👑', title: 'Special Event', desc: 'Bridal, prom, events', prompt: 'Write about our special occasion services: ' },
+    ],
+    ideas: [
+      { emoji: '🌟', title: 'New stylist intro', desc: 'Build clientele' },
+      { emoji: '💅', title: 'Product launch', desc: 'Retail sales' },
+      { emoji: '📅', title: 'Appointment reminder', desc: 'Reduce no-shows' },
+      { emoji: '👰', title: 'Bridal package', desc: 'Premium service' },
+      { emoji: '🎉', title: 'Grand opening', desc: 'New location buzz' },
+      { emoji: '⭐', title: 'Client testimonial', desc: 'Social proof' },
+      { emoji: '💝', title: 'Loyalty program', desc: 'Repeat customers' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a warm and creative assistant for beauty professionals. Celebrate transformations and self-care. Be enthusiastic about beauty.",
+      professional: "You are NAGOH AI, a professional business assistant for salons. Provide clear, consistent messaging about services and booking.",
+      playful: "You are NAGOH AI, a fun and fabulous salon assistant. Use style and personality. Make beauty feel exciting.",
+      concise: "You are NAGOH AI, a salon assistant. Be snappy and visual. Focus on results and booking.",
+    }
+  },
+  photography: {
+    name: '📸 Photography & Creative Services',
+    placeholder: 'Ask anything — packages, portfolio, client communication…',
+    emptyMsg: 'Marketing and client management for photographers and creative professionals.',
+    quickStarters: [
+      { emoji: '📸', title: 'Package Description', desc: 'Explain your offerings', prompt: 'Write a description for our photography package: ' },
+      { emoji: '💌', title: 'Client Inquiry Reply', desc: 'Professional response', prompt: 'Write a response to a photography inquiry: ' },
+      { emoji: '💰', title: 'Pricing Guide', desc: 'Justify your rates', prompt: 'Write a pricing justification for our photography: ' },
+      { emoji: '🎬', title: 'Portfolio Feature', desc: 'Showcase your work', prompt: 'Write a social post featuring this photography project: ' },
+      { emoji: '👑', title: 'Special Package', desc: 'Weddings, events, etc.', prompt: 'Write about our special event photography services: ' },
+    ],
+    ideas: [
+      { emoji: '💍', title: 'Wedding showcase', desc: 'Featured shoot' },
+      { emoji: '👶', title: 'Family session', desc: 'Seasonal promo' },
+      { emoji: '🎓', title: 'Senior portraits', desc: 'Back-to-school market' },
+      { emoji: '🎉', title: 'Event coverage', desc: 'Show versatility' },
+      { emoji: '📷', title: 'Behind-the-scenes', desc: 'Process content' },
+      { emoji: '⭐', title: 'Client testimonial', desc: 'Social proof' },
+      { emoji: '🎁', title: 'Gift session', desc: 'Holiday sales' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a warm and creative assistant for photographers. Celebrate visual storytelling. Help photographers connect with clients emotionally.",
+      professional: "You are NAGOH AI, a professional business assistant for creative service providers. Provide clear, portfolio-focused communication.",
+      playful: "You are NAGOH AI, a creative assistant for photographers. Be artistic and engaging. Make photography feel special.",
+      concise: "You are NAGOH AI, a photography assistant. Be visual and compelling. Show value in your work.",
+    }
+  },
+  personal_training: {
+    name: '💪 Personal Training & Fitness',
+    placeholder: 'Ask anything — programs, motivation, nutrition tips…',
+    emptyMsg: 'Client communication for fitness professionals and trainers.',
+    quickStarters: [
+      { emoji: '💪', title: 'Program Description', desc: 'Explain your training', prompt: 'Write a description of our fitness program: ' },
+      { emoji: '🥗', title: 'Nutrition Tip', desc: 'Educational content', prompt: 'Write a nutrition tip or meal idea for clients: ' },
+      { emoji: '📈', title: 'Progress Check-in', desc: 'Client motivation', prompt: 'Write a motivational progress check-in message: ' },
+      { emoji: '🎯', title: 'Goal-Setting Guide', desc: 'Help clients plan', prompt: 'Write a guide for setting fitness goals: ' },
+      { emoji: '📅', title: 'Challenge Invite', desc: 'Group motivation', prompt: 'Write an invitation to our fitness challenge: ' },
+    ],
+    ideas: [
+      { emoji: '🏋️', title: 'New class launch', desc: 'Expand offerings' },
+      { emoji: '🔥', title: 'Transformation story', desc: 'Client success' },
+      { emoji: '🥇', title: 'Challenge results', desc: 'Testimonials' },
+      { emoji: '💝', title: 'Gift membership', desc: 'Holiday sales' },
+      { emoji: '🎥', title: 'Workout tutorial', desc: 'Educational content' },
+      { emoji: '⚡', title: 'Quick workout', desc: 'Home fitness tip' },
+      { emoji: '🤝', title: 'Referral program', desc: 'Growth incentive' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a warm and motivational assistant for fitness professionals. Be encouraging and supportive. Help clients feel confident.",
+      professional: "You are NAGOH AI, a professional business assistant for trainers. Provide clear, results-focused communication.",
+      playful: "You are NAGOH AI, an energetic fitness assistant. Be fun and motivating. Make working out feel exciting.",
+      concise: "You are NAGOH AI, a fitness assistant. Be motivational and direct. Get clients moving.",
+    }
+  },
+  consulting: {
+    name: '💼 Consulting & Professional Services',
+    placeholder: 'Ask anything — proposals, client updates, thought leadership…',
+    emptyMsg: 'Business communication for consultants and professionals.',
+    quickStarters: [
+      { emoji: '📋', title: 'Proposal Draft', desc: 'Professional overview', prompt: 'Write a consulting proposal for: ' },
+      { emoji: '📊', title: 'Executive Summary', desc: 'Key findings brief', prompt: 'Write an executive summary for: ' },
+      { emoji: '💌', title: 'Client Update', desc: 'Progress reporting', prompt: 'Write a project status update for: ' },
+      { emoji: '🎯', title: 'Strategy Brief', desc: 'Recommendations', prompt: 'Write a strategic recommendation for: ' },
+      { emoji: '👥', title: 'Thought Leadership', desc: 'Industry insights', prompt: 'Write a thought leadership piece on: ' },
+    ],
+    ideas: [
+      { emoji: '📖', title: 'Case study', desc: 'Show results' },
+      { emoji: '🎓', title: 'Webinar topic', desc: 'Thought leadership' },
+      { emoji: '📰', title: 'Industry insight', desc: 'Market analysis' },
+      { emoji: '💡', title: 'Best practices guide', desc: 'Lead generation' },
+      { emoji: '🤝', title: 'Partnership proposal', desc: 'Joint ventures' },
+      { emoji: '⭐', title: 'Client testimonial', desc: 'Social proof' },
+      { emoji: '📱', title: 'LinkedIn post', desc: 'Professional branding' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a professional assistant for consultants. Be clear and insightful. Help consultants communicate value and build trust.",
+      professional: "You are NAGOH AI, a professional business consultant assistant. Provide strategic, credible, detail-oriented communication.",
+      playful: "You are NAGOH AI, a consulting assistant. Make complex topics accessible and engaging.",
+      concise: "You are NAGOH AI, a consulting assistant. Be direct and strategic. Focus on business impact.",
+    }
+  },
+  general: {
+    name: '⭐ General Small Business',
+    placeholder: 'Ask anything — marketing, customer service, operations…',
+    emptyMsg: 'Your AI assistant for all small business needs.',
+    quickStarters: [
+      { emoji: '📝', title: 'Product/Service', desc: 'Write descriptions', prompt: 'Write a description for our product/service: ' },
+      { emoji: '📢', title: 'Marketing Post', desc: 'Social media content', prompt: 'Write a social media post for: ' },
+      { emoji: '💌', title: 'Customer Message', desc: 'Professional replies', prompt: 'Write a professional response to: ' },
+      { emoji: '💰', title: 'Pricing Strategy', desc: 'Fair & profitable', prompt: 'Help me develop pricing for: ' },
+      { emoji: '📊', title: 'Business Plan', desc: 'Growth strategy', prompt: 'Help me create a plan for: ' },
+    ],
+    ideas: [
+      { emoji: '📱', title: 'Social media post', desc: 'Build audience' },
+      { emoji: '📧', title: 'Email campaign', desc: 'Customer retention' },
+      { emoji: '🎯', title: 'Lead generation', desc: 'Grow your business' },
+      { emoji: '⭐', title: 'Customer review', desc: 'Request testimonials' },
+      { emoji: '🎁', title: 'Promotion idea', desc: 'Drive sales' },
+      { emoji: '📞', title: 'Cold outreach', desc: 'New business' },
+      { emoji: '🎉', title: 'Event planning', desc: 'Customer engagement' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a warm and practical assistant for small business owners. Be supportive and encouraging. Help entrepreneurs succeed.",
+      professional: "You are NAGOH AI, a professional business assistant. Provide clear, strategic business advice.",
+      playful: "You are NAGOH AI, an enthusiastic business assistant. Make entrepreneurship feel exciting and achievable.",
+      concise: "You are NAGOH AI, a business assistant. Be direct and actionable. Focus on results.",
+    }
+  }
+};
 
 let sessionToken = '';
 let currentUser  = null;
@@ -812,13 +1109,7 @@ let busy         = false;
 let balance      = 0;
 let sessSpent    = 0;
 let turns        = 0;
-
-const TONE_PROMPTS = {
-  friendly:     "You are NAGOH AI, a warm, encouraging assistant for small business owners, Etsy sellers, crafters, and artists. Be friendly, supportive, and clear. Use simple language. Always be positive and practical. Help them feel confident about their business.",
-  professional: "You are NAGOH AI, a professional business assistant for small business owners and Etsy sellers. Provide clear, well-structured, business-focused advice. Be concise and accurate.",
-  playful:      "You are NAGOH AI, a fun and enthusiastic assistant for creative small business owners! Be upbeat, use emojis occasionally, and make running a business feel exciting and doable. Keep energy high!",
-  concise:      "You are NAGOH AI, an assistant for small business owners. Be extremely concise. Bullet points preferred. No fluff. Get right to the useful info.",
-};
+let currentIndustry = 'etsy';
 
 // ─────────────────────────────────────────────────────────
 // INITIALIZATION
@@ -833,11 +1124,16 @@ window.onload = () => {
       cancel_on_tap_outside: false,
     });
   }
+  
+  // Load saved industry preference
+  currentIndustry = lsGet('nagoh_industry', 'etsy');
+  document.getElementById('industrySel').value = currentIndustry;
+  
+  onIndustryChange();
   updateSysPrompt();
   renderHistory();
   checkPaymentSuccess();
 
-  // Check if we have a saved session
   const sessionStored = sessionStorage.getItem('nagoh_session');
   const localStored = localStorage.getItem('nagoh_session');
   const saved = sessionStored || localStored;
@@ -861,6 +1157,51 @@ window.onload = () => {
     showModal();
   }
 };
+
+function onIndustryChange() {
+  currentIndustry = document.getElementById('industrySel').value;
+  lsSet('nagoh_industry', currentIndustry);
+  const ind = INDUSTRIES[currentIndustry];
+  
+  if (ind) {
+    // Update industry badge
+    document.getElementById('industryBadge').textContent = ind.name;
+    
+    // Update placeholder
+    document.getElementById('prompt').placeholder = ind.placeholder;
+    
+    // Render quick starters
+    const grid = document.getElementById('quickGrid');
+    grid.innerHTML = '';
+    ind.quickStarters.forEach(q => {
+      const btn = document.createElement('button');
+      btn.className = 'qbtn';
+      btn.onclick = () => quickPrompt(q.prompt);
+      btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
+      grid.appendChild(btn);
+    });
+    
+    // Render ideas
+    const ideas = document.getElementById('ideas');
+    ideas.innerHTML = '';
+    ind.ideas.forEach(idea => {
+      const item = document.createElement('div');
+      item.className = 'idea-item';
+      item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
+      item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
+      ideas.appendChild(item);
+    });
+    
+    // Update empty state
+    const empty = document.getElementById('empty');
+    if (empty) {
+      empty.innerHTML = `
+        <div class="ehero">Your AI <em>business partner</em><br>is ready to help.</div>
+        <div class="esub">${ind.emptyMsg}</div>
+        <div class="etagline">Use quick starters or type your question below</div>`;
+    }
+  }
+}
 
 function checkPaymentSuccess() {
   const params = new URLSearchParams(window.location.search);
@@ -929,7 +1270,7 @@ async function handleGoogleCredential(response) {
 
     if (d.is_new) {
       setTimeout(() => {
-        addBubble('ai', `Welcome to NAGOH AI, ${currentUser.name.split(' ')[0]}! 🎉 You've received 5,000 free tokens to get started. Ask me anything about your shop or business!`, null, null);
+        addBubble('ai', `Welcome to NAGOH AI, ${currentUser.name.split(' ')[0]}! 🎉 You've received 5,000 free tokens to get started. Choose your industry to see tailored prompts for your business.`, null, null);
       }, 400);
     }
   } catch (err) {
@@ -1028,7 +1369,7 @@ async function send() {
       },
       body: JSON.stringify({
         messages: msgs,
-        system:      document.getElementById('sysTxt').value.trim() || undefined,
+        system:      document.getElementById('sysTxt').value.trim() || getSystemPrompt(),
         model:       document.getElementById('modelSel').value,
         max_tokens:  2048,
         temperature: 0.75,
@@ -1067,20 +1408,15 @@ async function send() {
 }
 
 function getSuggestions(userMsg) {
+  // Simple suggestion logic based on message content
   const lower = userMsg.toLowerCase();
-  if (lower.includes('etsy') || lower.includes('listing') || lower.includes('product')) {
-    return ['Make it shorter', 'Add more keywords', 'Write a second version', 'Make it more playful'];
+  if (lower.includes('list') || lower.includes('product') || lower.includes('service')) {
+    return ['Make it shorter', 'Add more detail', 'Write a second version', 'Make it more professional'];
   }
-  if (lower.includes('instagram') || lower.includes('social') || lower.includes('caption')) {
-    return ['Give me 5 more', 'Make it shorter', 'Add hashtags', 'Write one for Facebook too'];
+  if (lower.includes('social') || lower.includes('post') || lower.includes('caption')) {
+    return ['Give me more options', 'Make it shorter', 'Add emojis', 'Write a different tone'];
   }
-  if (lower.includes('customer') || lower.includes('reply') || lower.includes('review')) {
-    return ['Make it more formal', 'Make it warmer', 'Make it shorter', 'Write another version'];
-  }
-  if (lower.includes('pric') || lower.includes('cost') || lower.includes('profit')) {
-    return ['Tell me more', 'What about shipping?', 'How do I add taxes?'];
-  }
-  return ['Tell me more', 'Give me another version', 'Make it shorter', 'Can you give examples?'];
+  return ['Tell me more', 'Give me another version', 'Make it shorter', 'Can you explain?'];
 }
 
 function hideEmpty() {
@@ -1151,9 +1487,17 @@ function setBalUI(n) {
 
 function onModel() {}
 
-function updateSysPrompt() {
+function getSystemPrompt() {
   const tone = document.getElementById('toneMode').value;
-  document.getElementById('sysTxt').value = TONE_PROMPTS[tone] || TONE_PROMPTS.friendly;
+  const ind = INDUSTRIES[currentIndustry];
+  if (ind && ind.tonePrompts && ind.tonePrompts[tone]) {
+    return ind.tonePrompts[tone];
+  }
+  return INDUSTRIES.general.tonePrompts[tone] || INDUSTRIES.general.tonePrompts.friendly;
+}
+
+function updateSysPrompt() {
+  document.getElementById('sysTxt').value = getSystemPrompt();
 }
 
 function updateStats() {
@@ -1196,21 +1540,12 @@ function renderHistory() {
 
 function newChat() {
   curSess = null; msgs = []; sessSpent = 0; turns = 0;
+  const ind = INDUSTRIES[currentIndustry];
   document.getElementById('msgs').innerHTML = `
     <div class="empty" id="empty">
-      <div class="ehero">Your AI <em>creative partner</em><br>is ready to help.</div>
-      <div class="esub">Whether you sell on Etsy, run a craft business, or make things with love — NAGOH AI helps you write, plan, and grow without the stress.</div>
-      <div class="echips">
-        <div class="echip" onclick="quickSend('Help me write a product description for handmade soy candles')"><span>🕯️</span>Candle listing</div>
-        <div class="echip" onclick="quickSend('Write Instagram captions for my jewelry shop')"><span>💍</span>Jewelry captions</div>
-        <div class="echip" onclick="quickSend('How do I price my handmade items to make a profit?')"><span>💰</span>Pricing guide</div>
-        <div class="echip" onclick="quickSend('Write a friendly out-of-office message for my Etsy shop')"><span>💌</span>Shop message</div>
-        <div class="echip" onclick="quickSend('Give me 10 ideas for new products for my pottery shop')"><span>🏺</span>Product ideas</div>
-        <div class="echip" onclick="quickSend('How do I get more 5-star reviews on Etsy?')"><span>⭐</span>More reviews</div>
-        <div class="echip" onclick="quickSend('Write a bio for my Etsy shop that sells handmade art prints')"><span>🎨</span>Shop bio</div>
-        <div class="echip" onclick="quickSend('What are the best hashtags for a small candle business on Instagram?')"><span>📱</span>Hashtags</div>
-      </div>
-      <div class="etagline">Tap any idea above or type your own question below</div>
+      <div class="ehero">Your AI <em>business partner</em><br>is ready to help.</div>
+      <div class="esub">${ind.emptyMsg}</div>
+      <div class="etagline">Use quick starters or type your question below</div>
     </div>`;
   updateStats(); renderHistory();
 }
