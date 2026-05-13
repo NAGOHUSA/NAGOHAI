@@ -132,9 +132,19 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
   <!-- Tab 0: Users List -->
   <div class="tab-content active">
     <div class="card">
-      <div class="card-title">User Management</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+        <div class="card-title" style="margin:0;">User Management</div>
+        <label style="margin:0;display:flex;gap:0.5rem;align-items:center;font-size:0.75rem;cursor:pointer;">
+          <input type="checkbox" id="hideGuests" onchange="toggleGuestFilter()">
+          Hide Guests
+        </label>
+      </div>
       <div id="usersLoading" class="loading"><div class="spinner"></div> Loading users...</div>
       <div id="usersEmpty" class="users-empty" style="display:none;">No users found</div>
+      <div id="deleteGuestsBox" style="display:none;margin-bottom:1rem;padding:1rem;background:var(--rose-lt);border:1px solid var(--rose-md);border-radius:10px;">
+        <div style="font-size:0.8rem;color:var(--rose);margin-bottom:0.5rem;"><strong id="guestCount">0</strong> guest sessions found</div>
+        <button class="fbtn danger" onclick="deleteAllGuests()">Delete All Guests</button>
+      </div>
       <table class="users-table" id="usersTable" style="display:none;">
         <thead>
           <tr><th>Name</th><th>Email</th><th>Tokens</th><th>Created</th><th>Action</th></tr>
@@ -217,12 +227,19 @@ const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
 let adminPwd = localStorage.getItem('adminPwd') || '';
 let allUsers = [];
 let selectedUserId = null;
+let hideGuestsEnabled = localStorage.getItem('hideGuests') === 'true';
 
 function switchTab(idx) {
   document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
   document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
   document.querySelectorAll('.tab-content')[idx].classList.add('active');
   document.querySelectorAll('.tab')[idx].classList.add('active');
+}
+
+function toggleGuestFilter() {
+  hideGuestsEnabled = document.getElementById('hideGuests').checked;
+  localStorage.setItem('hideGuests', hideGuestsEnabled);
+  renderUsers();
 }
 
 async function unlock() {
@@ -282,7 +299,20 @@ function renderUsers() {
   const tbody = document.getElementById('usersBody');
   tbody.innerHTML = '';
 
-  if (allUsers.length === 0) {
+  // Filter guests if enabled
+  const usersToShow = hideGuestsEnabled ? allUsers.filter(u => !u.is_guest) : allUsers;
+  const guestCount = allUsers.filter(u => u.is_guest).length;
+
+  // Show/hide delete guests box
+  const deleteBox = document.getElementById('deleteGuestsBox');
+  if (guestCount > 0 && !hideGuestsEnabled) {
+    deleteBox.style.display = 'block';
+    document.getElementById('guestCount').textContent = guestCount;
+  } else {
+    deleteBox.style.display = 'none';
+  }
+
+  if (usersToShow.length === 0) {
     document.getElementById('usersEmpty').style.display = 'block';
     document.getElementById('usersTable').style.display = 'none';
     return;
@@ -291,13 +321,21 @@ function renderUsers() {
   document.getElementById('usersTable').style.display = 'table';
   document.getElementById('usersEmpty').style.display = 'none';
 
-  allUsers.forEach(function(u) {
+  usersToShow.forEach(function(u) {
     const tr = document.createElement('tr');
     const date = new Date(u.created_at || 0).toLocaleDateString();
     const name = u.name || 'N/A';
     const email = u.email || 'Guest';
     const balance = (u.token_balance || 0).toLocaleString();
-    tr.innerHTML = '<td>' + name + '</td><td>' + email + '</td><td class="bal">' + balance + '</td><td>' + date + '</td><td><button class="fbtn" style="width:auto;padding:0.5rem 1rem;font-size:0.7rem;" onclick="openTokenModal(\'' + u.user_id + '\',\'' + name.replace(/'/g, "\\'") + '\',\'' + email.replace(/'/g, "\\'") + '\')">+ Tokens</button></td>';
+    const isGuest = u.is_guest ? ' (guest)' : '';
+    
+    let actionBtn = '<button class="fbtn" style="width:auto;padding:0.5rem 1rem;font-size:0.7rem;" onclick="openTokenModal(\'' + u.user_id + '\',\'' + name.replace(/'/g, "\\'") + '\',\'' + email.replace(/'/g, "\\'") + '\')">+ Tokens</button>';
+    
+    if (u.is_guest) {
+      actionBtn += ' <button class="fbtn" style="width:auto;padding:0.5rem 1rem;font-size:0.7rem;background:var(--rose);color:#fff;margin-left:0.5rem;" onclick="deleteUser(\'' + u.user_id + '\')">Delete</button>';
+    }
+    
+    tr.innerHTML = '<td>' + name + isGuest + '</td><td>' + email + '</td><td class="bal">' + balance + '</td><td>' + date + '</td><td>' + actionBtn + '</td>';
     tbody.appendChild(tr);
   });
 }
@@ -354,6 +392,55 @@ async function confirmAssignTokens() {
   } catch (e) {
     showErr('modalErr', 'Error: ' + e.message);
   }
+}
+
+async function deleteUser(userId) {
+  if (!confirm('Delete this user? This cannot be undone.')) return;
+
+  try {
+    const r = await fetch(WORKER + '/admin/api/users', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Password': adminPwd
+      },
+      body: JSON.stringify({ user_id: userId })
+    });
+
+    const d = await r.json();
+    if (!r.ok) { alert('Error: ' + (d.error || 'Delete failed')); return; }
+
+    loadAllUsers();
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+async function deleteAllGuests() {
+  const guestCount = allUsers.filter(u => u.is_guest).length;
+  if (!confirm('Delete all ' + guestCount + ' guest sessions? This cannot be undone.')) return;
+
+  const guestIds = allUsers.filter(u => u.is_guest).map(u => u.user_id);
+  let deleted = 0;
+
+  for (const userId of guestIds) {
+    try {
+      const r = await fetch(WORKER + '/admin/api/users', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Admin-Password': adminPwd
+        },
+        body: JSON.stringify({ user_id: userId })
+      });
+      if (r.ok) deleted++;
+    } catch (e) {
+      console.error('Failed to delete guest:', e);
+    }
+  }
+
+  alert('Deleted ' + deleted + ' guest sessions');
+  loadAllUsers();
 }
 
 async function addUser() {
@@ -444,6 +531,7 @@ function showOk(id, msg) {
 }
 
 window.addEventListener('load', function() {
+  document.getElementById('hideGuests').checked = hideGuestsEnabled;
   if (adminPwd) {
     document.getElementById('lockScreen').style.display = 'none';
     loadAllUsers();
