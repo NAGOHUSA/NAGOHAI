@@ -112,6 +112,70 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   border-right: 1px solid var(--border);
   display: flex; flex-direction: column; overflow: hidden;
 }
+
+/* Mobile panel toggle button */
+.panel-toggle {
+  display: none; position: absolute; bottom: 1rem; left: 1rem;
+  background: var(--teal); color: #fff; border: none;
+  border-radius: 50%; width: 48px; height: 48px; font-size: 1.2rem;
+  cursor: pointer; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.panel-toggle.show { display: flex; align-items: center; justify-content: center; }
+
+.mobile-panels {
+  display: none; position: fixed; inset: 0; z-index: 999;
+  background: rgba(0,0,0,0.5); padding: 1rem;
+}
+
+.mobile-panels.show { display: flex; align-items: flex-end; }
+
+.mobile-panel-content {
+  width: 100%; max-height: 80vh; background: var(--parchmt);
+  border-radius: 20px 20px 0 0; overflow-y: auto;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.panel-header {
+  position: sticky; top: 0; background: var(--deep); color: #fff;
+  padding: 1rem 1.5rem; border-radius: 20px 20px 0 0;
+  display: flex; justify-content: space-between; align-items: center;
+  z-index: 10;
+}
+
+.panel-header-title {
+  font-family: var(--serif); font-size: 1.1rem; font-weight: 600;
+}
+
+.panel-close {
+  background: none; border: none; color: #fff; font-size: 1.5rem;
+  cursor: pointer; padding: 0; width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.panel-body { padding: 1.5rem 1rem; }
+
+.panel-tabs {
+  display: flex; gap: 0; border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+}
+
+.panel-tab {
+  flex: 1; padding: 0.75rem; background: none; border: none;
+  border-bottom: 2px solid transparent; color: var(--dim);
+  cursor: pointer; font-family: var(--sans); font-size: 0.75rem;
+  font-weight: 600; transition: all 0.2s; text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.panel-tab:hover { color: var(--ink); }
+.panel-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+.panel-content { display: none; }
+.panel-content.active { display: block; }
+
 .pblock { padding: 1rem 1rem; border-bottom: 1px solid var(--border); }
 .plabel { 
   font-size: 0.6rem; font-weight: 600; letter-spacing: 0.16em;
@@ -550,8 +614,10 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 
 @media (max-width: 768px) {
   .left, .right { display: none; }
-  .shell { flex-direction: column; }
+  .shell { flex-direction: column; position: relative; }
   .chat-col { width: 100%; }
+  
+  .panel-toggle { display: flex; }
   
   .topbar { padding: 0 1rem; height: 56px; }
   .wordmark { font-size: 1.1rem; }
@@ -572,7 +638,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .bub { max-width: 90%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
   .ava { width: 28px; height: 28px; font-size: 0.7rem; }
   
-  .ibar { padding: 0.65rem 1rem; }
+  .ibar { padding: 0.65rem 1rem; padding-bottom: 5rem; }
   .iinner { gap: 0.5rem; }
   .prompt { padding: 0.6rem 0.8rem; font-size: 0.85rem; min-height: 44px; }
   .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; }
@@ -860,6 +926,101 @@ input, textarea, select { font-size: 16px !important; }
 
     <div class="plabel" style="padding:0.6rem 1rem 0.25rem;font-size:0.52rem;letter-spacing:0.15em;">💡 Ideas to Try</div>
     <div class="ideas" id="ideas"></div>
+  </div>
+</div>
+
+<!-- Mobile Panels -->
+<button class="panel-toggle" id="panelToggle" onclick="togglePanels()">⚙️</button>
+
+<div class="mobile-panels" id="mobilePanels">
+  <div class="mobile-panel-content">
+    <div class="panel-header">
+      <div class="panel-header-title" id="panelTitle">Settings</div>
+      <button class="panel-close" onclick="closePanels()">×</button>
+    </div>
+    
+    <div class="panel-tabs">
+      <button class="panel-tab active" onclick="switchMobileTab(0)">Settings</button>
+      <button class="panel-tab" onclick="switchMobileTab(1)">Ideas</button>
+      <button class="panel-tab" onclick="switchMobileTab(2)">History</button>
+    </div>
+    
+    <!-- Tab 0: Settings -->
+    <div class="panel-content active">
+      <div class="panel-body">
+        <!-- Industry Selector -->
+        <div style="margin-bottom: 1.5rem;">
+          <div class="plabel">Your Industry</div>
+          <select class="industry-sel" id="industrySel-mobile" onchange="onIndustryChange()">
+            <option value="etsy">🛍️ Etsy & Craft Sellers</option>
+            <option value="realtor">🏠 Real Estate Agents</option>
+            <option value="landlord">🏢 Landlords & Property Managers</option>
+            <option value="coffee">☕ Coffee Shops & Cafés</option>
+            <option value="landscaping">🌳 Landscaping & Yard Services</option>
+            <option value="roofing">🏠 Roofing & Construction</option>
+            <option value="plumbing">🔧 Plumbing & HVAC</option>
+            <option value="salon">💇 Hair & Beauty Services</option>
+            <option value="photography">📸 Photography & Creative Services</option>
+            <option value="personal_training">💪 Personal Training & Fitness</option>
+            <option value="consulting">💼 Consulting & Professional Services</option>
+            <option value="general">⭐ General Small Business</option>
+          </select>
+          <div class="industry-badge" id="industryBadge-mobile">Etsy & Craft Sellers</div>
+        </div>
+
+        <!-- Balance -->
+        <div style="margin-bottom: 1.5rem;">
+          <div class="plabel">Your Balance</div>
+          <div class="bal-wrap">
+            <div class="bal-icon">🪙</div>
+            <div>
+              <div class="bal-num" id="balNum-mobile">—</div>
+              <div class="bal-sub">NAGOH TOKENS</div>
+            </div>
+          </div>
+          <button class="buy-btn" onclick="openBuyTokens(); closePanels();">+ Buy More Tokens</button>
+        </div>
+
+        <!-- Model -->
+        <div style="margin-bottom: 1.5rem;">
+          <div class="plabel">AI Model</div>
+          <select class="msel" id="modelSel-mobile" onchange="onModel()">
+            <option value="deepseek-chat">NagohAI Chat (fast)</option>
+            <option value="deepseek-reasoner">NagohAI Reasoner (deep)</option>
+          </select>
+        </div>
+
+        <!-- Tone -->
+        <div style="margin-bottom: 1.5rem;">
+          <div class="plabel">Tone / Mode</div>
+          <select class="msel" id="toneMode-mobile" onchange="updateSysPrompt()">
+            <option value="friendly">😊 Friendly & warm</option>
+            <option value="professional">💼 Professional</option>
+            <option value="playful">🎉 Fun & playful</option>
+            <option value="concise">⚡ Short & snappy</option>
+          </select>
+        </div>
+
+        <!-- Buttons -->
+        <button class="pbtn primary" onclick="newChat(); closePanels();">+ New Chat</button>
+        <button class="pbtn danger" onclick="clearAll(); closePanels();">Clear History</button>
+      </div>
+    </div>
+    
+    <!-- Tab 1: Ideas -->
+    <div class="panel-content">
+      <div class="panel-body">
+        <div class="ideas" id="ideas-mobile"></div>
+      </div>
+    </div>
+    
+    <!-- Tab 2: History -->
+    <div class="panel-content">
+      <div class="panel-body">
+        <div class="plabel">Past Chats</div>
+        <div class="hscroll" id="hscroll-mobile" style="max-height: 400px;"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1290,9 +1451,15 @@ function onIndustryChange() {
   lsSet('nagoh_industry', currentIndustry);
   const ind = INDUSTRIES[currentIndustry];
   
+  // Sync mobile selector
+  const indMobile = document.getElementById('industrySel-mobile');
+  if (indMobile) indMobile.value = currentIndustry;
+  
   if (ind) {
-    // Update industry badge
+    // Update industry badge (desktop & mobile)
     document.getElementById('industryBadge').textContent = ind.name;
+    const badgeMobile = document.getElementById('industryBadge-mobile');
+    if (badgeMobile) badgeMobile.textContent = ind.name;
     
     // Update placeholder
     document.getElementById('prompt').placeholder = ind.placeholder;
@@ -1308,7 +1475,7 @@ function onIndustryChange() {
       grid.appendChild(btn);
     });
     
-    // Render ideas
+    // Render ideas (desktop)
     const ideas = document.getElementById('ideas');
     ideas.innerHTML = '';
     ind.ideas.forEach(idea => {
@@ -1318,6 +1485,8 @@ function onIndustryChange() {
       item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
       ideas.appendChild(item);
     });
+    
+    // Render ideas (mobile) - will be synced when panel opens
     
     // Update empty state
     const empty = document.getElementById('empty');
@@ -1676,6 +1845,8 @@ function setBalUI(n) {
   const fmt = n.toLocaleString();
   document.getElementById('balNum').textContent = fmt;
   document.getElementById('topBal').innerHTML = `${fmt} <span>tokens</span>`;
+  const balMobile = document.getElementById('balNum-mobile');
+  if (balMobile) balMobile.textContent = fmt;
 }
 
 function onModel() {}
@@ -1799,6 +1970,70 @@ function continueAsGuest() {
 
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
+
+// ─────────────────────────────────────────────────────────
+// MOBILE PANELS
+// ─────────────────────────────────────────────────────────
+
+function togglePanels() {
+  const panels = document.getElementById('mobilePanels');
+  panels.classList.toggle('show');
+  if (panels.classList.contains('show')) {
+    syncMobilePanels();
+  }
+}
+
+function closePanels() {
+  document.getElementById('mobilePanels').classList.remove('show');
+}
+
+function switchMobileTab(idx) {
+  document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.panel-tab')[idx].classList.add('active');
+  document.querySelectorAll('.panel-content')[idx].classList.add('active');
+  
+  const titles = ['Settings', 'Ideas', 'History'];
+  document.getElementById('panelTitle').textContent = titles[idx];
+}
+
+function syncMobilePanels() {
+  // Sync industry selector
+  const ind = document.getElementById('industrySel');
+  const indMobile = document.getElementById('industrySel-mobile');
+  if (indMobile) indMobile.value = ind.value;
+  
+  // Sync model selector
+  const model = document.getElementById('modelSel');
+  const modelMobile = document.getElementById('modelSel-mobile');
+  if (modelMobile) modelMobile.value = model.value;
+  
+  // Sync tone selector
+  const tone = document.getElementById('toneMode');
+  const toneMobile = document.getElementById('toneMode-mobile');
+  if (toneMobile) toneMobile.value = tone.value;
+  
+  // Sync balance
+  const balNum = document.getElementById('balNum');
+  const balMobile = document.getElementById('balNum-mobile');
+  if (balMobile) balMobile.textContent = balNum.textContent;
+  
+  // Sync industry badge
+  const badge = document.getElementById('industryBadge');
+  const badgeMobile = document.getElementById('industryBadge-mobile');
+  if (badgeMobile) badgeMobile.textContent = badge.textContent;
+  
+  // Sync ideas
+  const ideas = document.getElementById('ideas');
+  const ideasMobile = document.getElementById('ideas-mobile');
+  if (ideasMobile) ideasMobile.innerHTML = ideas.innerHTML;
+  
+  // Sync history
+  const history = document.getElementById('hscroll');
+  const historyMobile = document.getElementById('hscroll-mobile');
+  if (historyMobile) historyMobile.innerHTML = history.innerHTML;
+}
+
 </script>
 </body>
 </html>
