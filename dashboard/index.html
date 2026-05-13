@@ -1,57 +1,835 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// NAGOH AI — MAIN APP CONFIGURATION
-// ─────────────────────────────────────────────────────────────────────────────
-//
-// Replace the CONFIGURATION section of your index.html with this:
-//
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAGOH AI — Your Creative Business Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONFIGURATION — update these for your deployment
-// ─────────────────────────────────────────────────────────────────────────────
-const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';  // Your Cloudflare Worker
+:root {
+  --cream:    #fdf8f0;
+  --parchmt:  #f5ede0;
+  --warm:     #ede3d5;
+  --border:   #e0d4c4;
+  --border2:  #d4c4b0;
+  --muted:    #b5a090;
+  --dim:      #8a7868;
+  --sub:      #6b5e50;
+  --ink:      #3d2f24;
+  --deep:     #2a1f16;
+
+  --rose:     #e8524a;
+  --rose-lt:  #fce8e7;
+  --rose-md:  #f5c4c2;
+  --teal:     #2a9d8f;
+  --teal-lt:  #e0f5f3;
+  --teal-md:  #a0dcd6;
+  --gold:     #e9a028;
+  --gold-lt:  #fdf0d5;
+  --gold-md:  #f7d08a;
+  --plum:     #8b5cf6;
+  --plum-lt:  #f0ebff;
+  --plum-md:  #c4b0f8;
+  --sage:     #4a7c59;
+  --sage-lt:  #e8f4eb;
+  --sage-md:  #a8d4b4;
+
+  --sans:     'DM Sans', sans-serif;
+  --serif:    'Fraunces', serif;
+}
+
+html, body { height: 100%; overflow: hidden; background: var(--cream); }
+body { color: var(--ink); font-family: var(--sans); display: flex; flex-direction: column; }
+
+/* ── TOPBAR ── */
+.topbar {
+  height: 60px; display: flex; align-items: center;
+  padding: 0 1.5rem; gap: 1rem;
+  background: var(--deep); flex-shrink: 0;
+  position: relative; z-index: 100;
+  border-bottom: 3px solid var(--rose);
+}
+.wordmark { 
+  font-family: var(--serif); font-size: 1.4rem; font-weight: 700;
+  color: #fff; letter-spacing: 0.02em;
+}
+.wordmark em { color: var(--gold); font-style: italic; }
+.tagline {
+  font-size: 0.65rem; color: rgba(255,255,255,0.45); letter-spacing: 0.08em;
+  font-weight: 300; line-height: 1;
+}
+.tsep { flex: 1; }
+.tpill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px; padding: 4px 12px; font-size: 0.7rem; color: rgba(255,255,255,0.65);
+}
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); transition: all 0.3s; flex-shrink: 0; }
+.dot.on { background: var(--sage); box-shadow: 0 0 8px rgba(74,124,89,0.6); }
+.dot.err { background: var(--rose); }
+.dot.spin { background: var(--gold); animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.tbtn {
+  font-family: var(--sans); font-size: 0.68rem; font-weight: 500;
+  padding: 6px 14px; background: transparent; border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.65); cursor: pointer; border-radius: 6px; transition: all 0.15s;
+}
+.tbtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+/* User avatar in topbar */
+.tuser {
+  display: flex; align-items: center; gap: 8px;
+}
+.tuser-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.3); object-fit: cover;
+  display: none;
+}
+.tuser-avatar.show { display: block; }
+.tuser-name {
+  font-size: 0.68rem; color: rgba(255,255,255,0.7); max-width: 100px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: none;
+}
+.tuser-name.show { display: block; }
+
+.tbal {
+  font-size: 0.72rem; color: var(--gold-md); font-weight: 500; letter-spacing: 0.04em;
+}
+.tbal span { font-size: 0.58rem; color: rgba(255,255,255,0.4); display: block; text-align: right; }
+
+/* ── SHELL ── */
+.shell { flex: 1; display: flex; overflow: hidden; }
+
+/* ── LEFT PANEL ── */
+.left {
+  width: 220px; flex-shrink: 0;
+  background: var(--parchmt);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.pblock { padding: 1rem 1rem; border-bottom: 1px solid var(--border); }
+.plabel { 
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 0.65rem;
+}
+.bal-wrap {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--gold-lt); border: 1px solid var(--gold-md);
+  border-radius: 10px; padding: 10px 12px;
+}
+.bal-icon { font-size: 1.4rem; line-height: 1; }
+.bal-num { font-family: var(--serif); font-size: 1.25rem; font-weight: 700; color: var(--ink); line-height: 1; }
+.bal-sub { font-size: 0.58rem; color: var(--dim); margin-top: 2px; letter-spacing: 0.04em; }
+
+/* Buy tokens button */
+.buy-btn {
+  display: block; width: 100%; margin-top: 8px;
+  font-family: var(--sans); font-size: 0.68rem; font-weight: 600;
+  padding: 6px 0; background: var(--gold); border: none; color: var(--deep);
+  cursor: pointer; border-radius: 8px; transition: all 0.15s; text-align: center;
+  letter-spacing: 0.02em; text-decoration: none;
+}
+.buy-btn:hover { background: #d48f20; }
+
+.msel {
+  width: 100%; background: #fff; border: 1px solid var(--border2);
+  color: var(--ink); font-family: var(--sans); font-size: 0.72rem;
+  padding: 0.45rem 0.6rem; outline: none; cursor: pointer; border-radius: 8px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b5a090'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
+}
+.msel:focus { border-color: var(--teal); outline: none; }
+.msel option { background: #fff; }
+
+/* Quick prompts */
+.qgrid { display: flex; flex-direction: column; gap: 5px; }
+.qbtn {
+  display: flex; align-items: flex-start; gap: 8px;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 10px; cursor: pointer; transition: all 0.15s;
+  text-align: left;
+}
+.qbtn:hover { border-color: var(--teal); background: var(--teal-lt); }
+.qbtn .qi { font-size: 1rem; line-height: 1; flex-shrink: 0; margin-top: 1px; }
+.qbtn .ql { font-size: 0.68rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
+.qbtn .qs { font-size: 0.6rem; color: var(--dim); line-height: 1.3; margin-top: 2px; }
+
+.pbtn {
+  display: block; width: 100%; font-family: var(--sans);
+  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.03em;
+  padding: 0.45rem 0; background: transparent; border: 1px solid var(--border2);
+  color: var(--dim); cursor: pointer; transition: all 0.15s; text-align: center;
+  border-radius: 8px; margin-bottom: 0.4rem;
+}
+.pbtn:last-child { margin-bottom: 0; }
+.pbtn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
+.pbtn.danger:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-lt); }
+.pbtn.primary { background: var(--teal); border-color: var(--teal); color: #fff; }
+.pbtn.primary:hover { background: #228b7e; border-color: #228b7e; color: #fff; }
+
+.hscroll { flex: 1; overflow-y: auto; padding: 0.4rem; }
+.hscroll::-webkit-scrollbar { width: 3px; }
+.hscroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+.hitem {
+  font-size: 0.68rem; color: var(--dim); padding: 0.4rem 0.6rem;
+  cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  border-radius: 6px; transition: all 0.12s; border-left: 2px solid transparent;
+}
+.hitem:hover { color: var(--ink); background: var(--warm); }
+.hitem.active { color: var(--teal); background: var(--teal-lt); border-left-color: var(--teal); }
+
+/* ── CHAT ── */
+.chat-col { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--cream); }
+
+.msgs { flex: 1; overflow-y: auto; padding: 2rem 0 1rem; scroll-behavior: smooth; }
+.msgs::-webkit-scrollbar { width: 4px; }
+.msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.empty {
+  height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 2rem; user-select: none;
+}
+.ehero { 
+  font-family: var(--serif); font-size: 2.6rem; font-weight: 500; font-style: italic;
+  color: var(--ink); line-height: 1.2; margin-bottom: 0.4rem;
+}
+.ehero em { color: var(--teal); font-style: normal; }
+.esub { 
+  font-size: 0.8rem; color: var(--dim); line-height: 1.8; max-width: 380px;
+  margin-bottom: 2rem;
+}
+.echips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 440px; }
+.echip {
+  display: flex; align-items: center; gap: 6px;
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 20px; padding: 7px 14px; cursor: pointer; transition: all 0.15s;
+  font-size: 0.72rem; font-weight: 500; color: var(--sub);
+}
+.echip:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
+.echip span { font-size: 0.95rem; }
+.etagline {
+  font-size: 0.65rem; color: var(--muted); margin-top: 1.5rem;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+.row {
+  display: flex; padding: 0.4rem 2rem; gap: 10px;
+  max-width: 820px; margin: 0 auto; width: 100%;
+  animation: rin 0.18s ease both;
+}
+@keyframes rin { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+.row.user { flex-direction: row-reverse; }
+
+.ava {
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; flex-shrink: 0; margin-top: 3px; border-radius: 50%;
+}
+.ava.ai  { background: var(--teal); color: #fff; font-family: var(--serif); font-weight: 700; }
+.ava.you { background: var(--warm); color: var(--dim); font-size: 0.75rem; font-weight: 600; }
+.ava.you img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+.bub {
+  max-width: 76%; font-size: 0.9rem; line-height: 1.75;
+  white-space: pre-wrap; word-break: break-word;
+  font-family: var(--sans); font-weight: 400; color: var(--ink);
+  padding: 0.75rem 1rem; border-radius: 4px;
+}
+.row.ai   .bub { 
+  background: #fff; border: 1px solid var(--border); 
+  border-radius: 4px 14px 14px 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.row.user .bub { 
+  background: var(--teal); color: #fff;
+  border-radius: 14px 4px 14px 14px;
+}
+.bub.thinking { 
+  font-family: var(--sans); font-size: 0.82rem; color: var(--dim);
+  font-style: italic; font-weight: 300; background: #fff;
+  border: 1px solid var(--border); border-radius: 4px 14px 14px 14px;
+}
+.bub.error { 
+  border: 1px solid var(--rose-md); background: var(--rose-lt); 
+  color: #b8392e; font-size: 0.8rem; border-radius: 4px 14px 14px 14px;
+}
+.think-dots span { display: inline-block; animation: tdot 1.2s ease-in-out infinite; }
+.think-dots span:nth-child(2) { animation-delay: 0.2s; }
+.think-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes tdot { 0%,80%,100%{opacity:0.3;transform:scale(0.85)} 40%{opacity:1;transform:scale(1)} }
+
+.rmeta { 
+  font-size: 0.58rem; color: var(--muted); margin-top: 0.25rem; 
+  display: flex; align-items: center; gap: 8px;
+}
+.rmeta .chip { 
+  background: var(--gold-lt); color: var(--dim); border-radius: 10px; 
+  padding: 1px 8px; font-size: 0.58rem;
+}
+
+/* ── SUGGESTIONS (post-message) ── */
+.suggestions { 
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; max-width: 76%;
+}
+.sug {
+  background: var(--parchmt); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 4px 12px; font-size: 0.7rem; color: var(--dim);
+  cursor: pointer; transition: all 0.12s; font-weight: 400;
+}
+.sug:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
+
+/* ── INPUT ── */
+.ibar { 
+  border-top: 1px solid var(--border); background: var(--parchmt); 
+  padding: 0.85rem 2rem; flex-shrink: 0;
+}
+.iinner { max-width: 820px; margin: 0 auto; display: flex; gap: 0.7rem; align-items: flex-end; }
+.prompt {
+  flex: 1; background: #fff; border: 1.5px solid var(--border2);
+  color: var(--ink); font-family: var(--sans); font-size: 0.9rem;
+  font-weight: 400; line-height: 1.6; padding: 0.7rem 1rem;
+  resize: none; outline: none; min-height: 48px; max-height: 160px;
+  border-radius: 12px; transition: border-color 0.2s;
+}
+.prompt::placeholder { color: var(--muted); }
+.prompt:focus { border-color: var(--teal); }
+.send {
+  font-family: var(--sans); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.03em; height: 48px; padding: 0 1.4rem;
+  background: var(--teal); border: none; color: #fff;
+  cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+  border-radius: 12px;
+}
+.send:hover:not(:disabled) { background: #228b7e; }
+.send:disabled { opacity: 0.3; cursor: not-allowed; }
+.ifoot { 
+  max-width: 820px; margin: 0.4rem auto 0; 
+  display: flex; justify-content: space-between; 
+  font-size: 0.58rem; color: var(--muted);
+}
+
+/* ── RIGHT PANEL ── */
+.right {
+  width: 190px; flex-shrink: 0;
+  background: var(--parchmt); border-left: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.rblock { padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); }
+.sgrid { display: flex; flex-direction: column; gap: 0.8rem; }
+.scard {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 10px;
+}
+.sval { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; color: var(--ink); line-height: 1; }
+.sval.teal { color: var(--teal); }
+.slbl { font-size: 0.58rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px; }
+
+/* use ideas */
+.ideas { flex: 1; overflow-y: auto; padding: 0.5rem; }
+.ideas::-webkit-scrollbar { width: 3px; }
+.idea-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 7px 8px; border-radius: 8px; cursor: pointer;
+  transition: all 0.12s; margin-bottom: 4px;
+}
+.idea-item:hover { background: var(--warm); }
+.idea-icon { font-size: 1rem; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+.idea-text { font-size: 0.65rem; color: var(--dim); line-height: 1.4; }
+.idea-text strong { color: var(--ink); font-weight: 500; display: block; font-size: 0.68rem; }
+
+/* ── AUTH MODAL ── */
+.modal-wrap {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(45, 32, 22, 0.72);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem; backdrop-filter: blur(6px);
+}
+.modal-wrap.hidden { display: none; }
+.modal {
+  background: #fff; border: 1px solid var(--border);
+  width: 100%; max-width: 420px;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  animation: mIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes mIn { from{opacity:0;transform:translateY(20px) scale(0.97)} to{opacity:1;transform:none} }
+
+.modal-hero {
+  background: var(--deep); padding: 2rem 2rem 1.5rem;
+  text-align: center;
+}
+.modal-logo { 
+  font-family: var(--serif); font-size: 2rem; font-weight: 700; 
+  color: #fff; margin-bottom: 0.35rem;
+}
+.modal-logo em { color: var(--gold); font-style: italic; }
+.modal-tagline { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; }
+
+.modal-body { padding: 1.75rem 2rem 2rem; }
+.modal-title { 
+  font-family: var(--serif); font-size: 1.3rem; font-weight: 500; 
+  color: var(--ink); margin-bottom: 0.3rem; text-align: center;
+}
+.modal-sub { font-size: 0.75rem; color: var(--dim); line-height: 1.7; margin-bottom: 1.5rem; text-align: center; }
+
+/* value props */
+.vprops { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+.vprop { 
+  display: flex; align-items: center; gap: 10px;
+  background: var(--parchmt); border-radius: 10px; padding: 8px 12px;
+}
+.vp-icon { font-size: 1.1rem; }
+.vp-text { font-size: 0.72rem; color: var(--ink); font-weight: 500; }
+
+/* Google sign-in area */
+.google-btn-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.google-signin-btn {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 12px 20px;
+  background: #fff; border: 1.5px solid var(--border2);
+  border-radius: 12px; cursor: pointer; transition: all 0.15s;
+  font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
+  color: var(--ink); justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.google-signin-btn:hover { border-color: var(--teal); background: var(--teal-lt); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.google-signin-btn svg { flex-shrink: 0; }
+.auth-note { font-size: 0.62rem; color: var(--muted); text-align: center; }
+.auth-loading { font-size: 0.78rem; color: var(--teal); display: none; text-align: center; padding: 8px 0; }
+.auth-err { font-size: 0.65rem; color: var(--rose); text-align: center; margin-top: 6px; min-height: 1rem; }
+
+.auth-divider {
+  display: flex; align-items: center; gap: 10px;
+  margin: 10px 0; color: var(--muted); font-size: 0.65rem; letter-spacing: 0.06em;
+}
+.auth-divider::before, .auth-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.guest-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 10px 20px;
+  background: transparent; border: 1.5px solid var(--border2);
+  border-radius: 12px; cursor: pointer; transition: all 0.15s;
+  font-family: var(--sans); font-size: 0.82rem; font-weight: 500;
+  color: var(--dim);
+}
+.guest-btn:hover { border-color: var(--muted); color: var(--ink); background: var(--parchmt); }
+.guest-note {
+  font-size: 0.6rem; color: var(--muted); text-align: center; margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* Guest banner shown in topbar */
+.guest-banner {
+  display: none; align-items: center; gap: 8px;
+  background: var(--gold-lt); border: 1px solid var(--gold-md);
+  border-radius: 8px; padding: 4px 10px;
+  font-size: 0.65rem; color: var(--dim); font-weight: 500;
+}
+.guest-banner.show { display: flex; }
+.guest-banner a { color: var(--teal); cursor: pointer; text-decoration: underline; }
+
+.modal-foot {
+  padding: 0.75rem 2rem; border-top: 1px solid var(--border);
+  font-size: 0.62rem; color: var(--muted); text-align: center;
+}
+.modal-foot a { color: var(--teal); text-decoration: none; }
+
+/* Sys prompt */
+.stxt {
+  width: 100%; background: #fff; border: 1px solid var(--border2);
+  color: var(--sub); font-family: var(--sans); font-size: 0.68rem;
+  line-height: 1.55; padding: 0.5rem 0.7rem; resize: none; outline: none;
+  border-radius: 8px; transition: border-color 0.2s;
+}
+.stxt:focus { border-color: var(--teal); color: var(--ink); }
+
+/* Success notification */
+.success-banner {
+  position: fixed; top: 20px; right: 20px; z-index: 2000;
+  background: var(--sage); color: #fff; padding: 1rem 1.5rem;
+  border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: none; align-items: center; gap: 10px; animation: slideIn 0.3s ease;
+}
+.success-banner.show { display: flex; }
+@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* ─────────────────────────────────────────────────────────
+   MOBILE RESPONSIVE STYLES
+   ───────────────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .left { width: 180px; }
+  .right { width: 160px; }
+  .bub { max-width: 85%; }
+}
+
+@media (max-width: 768px) {
+  .left, .right { display: none; }
+  .shell { flex-direction: column; }
+  .chat-col { width: 100%; }
+  
+  .topbar { padding: 0 1rem; height: 56px; }
+  .wordmark { font-size: 1.1rem; }
+  .tagline { font-size: 0.55rem; }
+  .tuser-name { display: none !important; }
+  .tuser-avatar { width: 24px; height: 24px; }
+  .tbtn { padding: 4px 10px; font-size: 0.6rem; }
+  
+  .modal { max-width: 90vw; border-radius: 16px; }
+  .modal-body { padding: 1.5rem 1.5rem 1.5rem; }
+  .modal-title { font-size: 1.1rem; }
+  .modal-sub { font-size: 0.7rem; }
+  .vprops { gap: 6px; }
+  .vprop { padding: 6px 10px; }
+  
+  .msgs { padding: 1.5rem 0 0.5rem; }
+  .row { padding: 0.3rem 1rem; gap: 8px; }
+  .bub { max-width: 90%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
+  .ava { width: 28px; height: 28px; font-size: 0.7rem; }
+  
+  .ibar { padding: 0.65rem 1rem; }
+  .iinner { gap: 0.5rem; }
+  .prompt { padding: 0.6rem 0.8rem; font-size: 0.85rem; min-height: 44px; }
+  .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; }
+  .ifoot { padding: 0.3rem 1rem 0; font-size: 0.52rem; }
+  
+  .empty { padding: 1rem; }
+  .ehero { font-size: 1.8rem; margin-bottom: 0.3rem; }
+  .esub { font-size: 0.75rem; margin-bottom: 1.5rem; max-width: 100%; }
+  .echips { gap: 6px; }
+  .echip { padding: 6px 12px; font-size: 0.65rem; }
+  .echip span { font-size: 0.85rem; }
+  .etagline { font-size: 0.6rem; margin-top: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .topbar { height: 52px; padding: 0 0.75rem; gap: 0.5rem; }
+  .wordmark { font-size: 0.95rem; }
+  .tagline { font-size: 0.5rem; letter-spacing: 0.04em; }
+  .tpill { padding: 3px 8px; font-size: 0.6rem; }
+  .dot { width: 5px; height: 5px; }
+  .tbtn { padding: 3px 8px; font-size: 0.55rem; }
+  .tbal { font-size: 0.6rem; }
+  
+  .modal { max-width: 95vw; border-radius: 14px; }
+  .modal-hero { padding: 1.5rem 1.5rem 1rem; }
+  .modal-logo { font-size: 1.6rem; margin-bottom: 0.25rem; }
+  .modal-tagline { font-size: 0.65rem; }
+  .modal-body { padding: 1.2rem 1.2rem 1.5rem; }
+  .modal-title { font-size: 1rem; margin-bottom: 0.2rem; }
+  .modal-sub { font-size: 0.65rem; line-height: 1.5; margin-bottom: 1rem; }
+  .vp-icon { font-size: 0.95rem; }
+  .vp-text { font-size: 0.65rem; }
+  .google-signin-btn { padding: 10px 16px; font-size: 0.8rem; }
+  .guest-btn { padding: 8px 16px; font-size: 0.75rem; }
+  .auth-note { font-size: 0.58rem; }
+  .auth-divider { margin: 8px 0; font-size: 0.6rem; }
+  .guest-note { font-size: 0.55rem; }
+  .modal-foot { padding: 0.6rem 1.2rem; font-size: 0.58rem; }
+  
+  .msgs { padding: 1rem 0 0.5rem; }
+  .row { padding: 0.25rem 0.75rem; gap: 6px; }
+  .ava { width: 26px; height: 26px; font-size: 0.65rem; margin-top: 2px; }
+  .bub { max-width: 92%; font-size: 0.8rem; line-height: 1.5; padding: 0.5rem 0.7rem; }
+  .bub.thinking { font-size: 0.75rem; }
+  .think-dots span { font-size: 0.8rem; }
+  .rmeta { font-size: 0.52rem; gap: 6px; }
+  .rmeta .chip { padding: 1px 6px; font-size: 0.52rem; }
+  
+  .suggestions { gap: 4px; margin-top: 4px; max-width: 92%; }
+  .sug { padding: 3px 10px; font-size: 0.65rem; border-radius: 10px; }
+  
+  .ibar { padding: 0.5rem 0.75rem; }
+  .iinner { gap: 0.4rem; }
+  .prompt { padding: 0.5rem 0.7rem; font-size: 0.8rem; min-height: 40px; max-height: 120px; }
+  .send { padding: 0 0.8rem; font-size: 0.65rem; height: 40px; }
+  .ifoot { padding: 0.25rem 0.75rem 0; font-size: 0.5rem; gap: 0.5rem; }
+  
+  .empty { padding: 0.75rem; }
+  .ehero { font-size: 1.4rem; line-height: 1.1; margin-bottom: 0.25rem; }
+  .esub { font-size: 0.7rem; line-height: 1.6; margin-bottom: 1rem; }
+  .echips { gap: 5px; }
+  .echip { padding: 5px 10px; font-size: 0.6rem; border-radius: 16px; }
+  .echip span { font-size: 0.75rem; }
+  .etagline { font-size: 0.55rem; margin-top: 0.75rem; }
+  
+  .success-banner { top: auto; bottom: 20px; right: 10px; left: 10px; padding: 0.75rem 1rem; font-size: 0.8rem; border-radius: 10px; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  button, .pbtn, .qbtn, .echip, .sug, .idea-item { -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1); transition: all 0.2s; }
+  button:active, .pbtn:active, .qbtn:active, .echip:active, .sug:active { opacity: 0.8; }
+}
+
+input, textarea, select { font-size: 16px !important; }
+</style>
+</head>
+<body>
+
+<!-- ── AUTH MODAL (Google OAuth) ── -->
+<div class="modal-wrap" id="modalWrap">
+  <div class="modal">
+    <div class="modal-hero">
+      <div class="modal-logo">NAGOH <em>AI</em></div>
+      <div class="modal-tagline">Your Creative Business Assistant</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title">Welcome! 👋</div>
+      <div class="modal-sub">Sign in with Google to get started. New users receive 5,000 free tokens instantly.</div>
+
+      <div class="vprops">
+        <div class="vprop"><div class="vp-icon">✍️</div><div class="vp-text">Write product descriptions that sell</div></div>
+        <div class="vprop"><div class="vp-icon">📱</div><div class="vp-text">Create social media captions instantly</div></div>
+        <div class="vprop"><div class="vp-icon">💌</div><div class="vp-text">Reply to customers with confidence</div></div>
+      </div>
+
+      <div class="google-btn-wrap">
+        <button class="google-signin-btn" id="googleSignInBtn" onclick="initiateGoogleSignIn()">
+          <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+            <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/>
+            <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+            <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        </button>
+        <div class="auth-loading" id="authLoading">⏳ Signing you in…</div>
+        <div class="auth-err" id="authErr"></div>
+        <div class="auth-note">By signing in you agree to our terms of service. Your data is private and never shared.</div>
+
+        <div class="auth-divider">or</div>
+
+        <button class="guest-btn" onclick="continueAsGuest()">
+          👤 Continue as Guest
+        </button>
+        <div class="guest-note">No account needed — get 1,000 free tokens.<br>Tokens don't carry over between visits.</div>
+      </div>
+    </div>
+    <div class="modal-foot">ai.nagoh.us &nbsp;·&nbsp; <a href="#" onclick="openBuyTokens()">buy tokens</a> &nbsp;·&nbsp; <a href="#">help</a></div>
+  </div>
+</div>
+
+<!-- Success notification -->
+<div class="success-banner" id="successBanner">
+  ✅ <span id="successMsg">Purchase successful! Your tokens have been added.</span>
+</div>
+
+<!-- ── TOPBAR ── -->
+<div class="topbar">
+  <div>
+    <div class="wordmark">NAGOH <em>AI</em></div>
+    <div class="tagline">YOUR CREATIVE BUSINESS ASSISTANT</div>
+  </div>
+  <div class="tsep"></div>
+  <div class="tbal" id="topBal">— <span>tokens</span></div>
+  <div class="guest-banner" id="guestBanner">
+    👤 Guest &nbsp;·&nbsp; <a onclick="showModal()">Sign in for more tokens</a>
+  </div>
+  <div class="tpill">
+    <div class="dot spin" id="led"></div>
+    <span id="sstr" style="font-size:0.68rem;">connecting…</span>
+  </div>
+  <div class="tuser">
+    <img class="tuser-avatar" id="tuserAvatar" src="" alt="">
+    <span class="tuser-name" id="tuserName"></span>
+  </div>
+  <button class="tbtn" onclick="signOut()">Sign out</button>
+</div>
+
+<!-- ── SHELL ── -->
+<div class="shell">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="pblock">
+      <div class="plabel">Your Balance</div>
+      <div class="bal-wrap">
+        <div class="bal-icon">🪙</div>
+        <div>
+          <div class="bal-num" id="balNum">—</div>
+          <div class="bal-sub">NAGOH TOKENS</div>
+        </div>
+      </div>
+      <a class="buy-btn" id="buyLink" href="#" target="_blank" onclick="openBuyTokens(); return false;">+ Buy More Tokens</a>
+    </div>
+
+    <div class="pblock">
+      <div class="plabel">AI Model</div>
+      <select class="msel" id="modelSel" onchange="onModel()">
+        <option value="deepseek-chat">NagohAI Chat (fast)</option>
+        <option value="deepseek-reasoner">NagohAI Reasoner (deep)</option>
+      </select>
+    </div>
+
+    <div class="pblock">
+      <div class="plabel">Quick Starters</div>
+      <div class="qgrid">
+        <button class="qbtn" onclick="quickPrompt('Write an Etsy product description for: ')">
+          <div class="qi">🛍️</div>
+          <div><div class="ql">Etsy Listing</div><div class="qs">Product descriptions that sell</div></div>
+        </button>
+        <button class="qbtn" onclick="quickPrompt('Write 5 Instagram captions for my small business that sells: ')">
+          <div class="qi">📸</div>
+          <div><div class="ql">Social Captions</div><div class="qs">Instagram, Facebook & more</div></div>
+        </button>
+        <button class="qbtn" onclick="quickPrompt('Write a friendly reply to this customer message: ')">
+          <div class="qi">💌</div>
+          <div><div class="ql">Customer Reply</div><div class="qs">Handle messages with ease</div></div>
+        </button>
+        <button class="qbtn" onclick="quickPrompt('Give me 10 pricing strategies for a small craft business that makes: ')">
+          <div class="qi">💰</div>
+          <div><div class="ql">Pricing Help</div><div class="qs">Price your work fairly</div></div>
+        </button>
+        <button class="qbtn" onclick="quickPrompt('Write SEO tags and keywords for my Etsy shop that sells: ')">
+          <div class="qi">🔍</div>
+          <div><div class="ql">SEO & Tags</div><div class="qs">Get found by buyers</div></div>
+        </button>
+      </div>
+    </div>
+
+    <div class="pblock">
+      <button class="pbtn primary" onclick="newChat()">+ New Chat</button>
+      <button class="pbtn danger" onclick="clearAll()">Clear History</button>
+    </div>
+
+    <div class="plabel" style="padding:0.6rem 1rem 0.25rem;font-size:0.52rem;letter-spacing:0.15em;">Past Chats</div>
+    <div class="hscroll" id="hscroll"></div>
+  </div>
+
+  <!-- CHAT -->
+  <div class="chat-col">
+    <div class="msgs" id="msgs">
+      <div class="empty" id="empty">
+        <div class="ehero">Your AI <em>creative partner</em><br>is ready to help.</div>
+        <div class="esub">Whether you sell on Etsy, run a craft business, or make things with love — NAGOH AI helps you write, plan, and grow without the stress.</div>
+        <div class="echips">
+          <div class="echip" onclick="quickSend('Help me write a product description for handmade soy candles')"><span>🕯️</span>Candle listing</div>
+          <div class="echip" onclick="quickSend('Write Instagram captions for my jewelry shop')"><span>💍</span>Jewelry captions</div>
+          <div class="echip" onclick="quickSend('How do I price my handmade items to make a profit?')"><span>💰</span>Pricing guide</div>
+          <div class="echip" onclick="quickSend('Write a friendly out-of-office message for my Etsy shop')"><span>💌</span>Shop message</div>
+          <div class="echip" onclick="quickSend('Give me 10 ideas for new products for my pottery shop')"><span>🏺</span>Product ideas</div>
+          <div class="echip" onclick="quickSend('How do I get more 5-star reviews on Etsy?')"><span>⭐</span>More reviews</div>
+          <div class="echip" onclick="quickSend('Write a bio for my Etsy shop that sells handmade art prints')"><span>🎨</span>Shop bio</div>
+          <div class="echip" onclick="quickSend('What are the best hashtags for a small candle business on Instagram?')"><span>📱</span>Hashtags</div>
+        </div>
+        <div class="etagline">Tap any idea above or type your own question below</div>
+      </div>
+    </div>
+
+    <div class="ibar">
+      <div class="iinner">
+        <textarea class="prompt" id="prompt" 
+          placeholder="Ask anything — product ideas, listing copy, customer replies, pricing help…" 
+          rows="1" onkeydown="onKey(event)" oninput="grow(this)"></textarea>
+        <button class="send" id="sendBtn" onclick="send()" disabled>Send ↑</button>
+      </div>
+      <div class="ifoot">
+        <span>Press <strong>Enter</strong> to send &nbsp;·&nbsp; Shift+Enter for new line</span>
+        <span id="ccount"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="rblock">
+      <div class="plabel">This Chat</div>
+      <div class="sgrid">
+        <div class="scard"><div class="sval" id="rMsgs">0</div><div class="slbl">messages</div></div>
+        <div class="scard"><div class="sval teal" id="rSpent">0</div><div class="slbl">tokens used</div></div>
+      </div>
+    </div>
+
+    <div class="rblock">
+      <div class="plabel">Tone / Mode</div>
+      <select class="msel" id="toneMode" onchange="updateSysPrompt()">
+        <option value="friendly">😊 Friendly & warm</option>
+        <option value="professional">💼 Professional</option>
+        <option value="playful">🎉 Fun & playful</option>
+        <option value="concise">⚡ Short & snappy</option>
+      </select>
+    </div>
+
+    <div class="rblock" style="display:none;">
+      <div class="plabel">Custom System Prompt</div>
+      <textarea class="stxt" id="sysTxt" rows="4" placeholder="Custom instructions..."></textarea>
+    </div>
+
+    <div class="plabel" style="padding:0.6rem 1rem 0.25rem;font-size:0.52rem;letter-spacing:0.15em;">💡 Ideas to Try</div>
+    <div class="ideas" id="ideas">
+      <div class="idea-item" onclick="quickSend('Write 3 versions of my shop announcement for the holidays')">
+        <div class="idea-icon">🎄</div><div class="idea-text"><strong>Holiday announcement</strong>Let buyers know your hours</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('What should I post on social media this week for my craft shop?')">
+        <div class="idea-icon">📅</div><div class="idea-text"><strong>Weekly content plan</strong>Never run out of post ideas</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('Help me write a thank-you note to include in orders')">
+        <div class="idea-icon">💝</div><div class="idea-text"><strong>Thank-you note</strong>Delight your customers</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('What are the most searched Etsy keywords right now?')">
+        <div class="idea-icon">🔎</div><div class="idea-text"><strong>Trending keywords</strong>Improve your SEO</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('Help me handle a bad review professionally')">
+        <div class="idea-icon">🛡️</div><div class="idea-text"><strong>Handle bad reviews</strong>Respond with grace</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('Give me a 30-day social media plan for my small business')">
+        <div class="idea-icon">🗓️</div><div class="idea-text"><strong>30-day social plan</strong>Stay consistent online</div>
+      </div>
+      <div class="idea-item" onclick="quickSend('What shipping options should I offer in my Etsy shop?')">
+        <div class="idea-icon">📦</div><div class="idea-text"><strong>Shipping tips</strong>Keep buyers happy</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────
+// CONFIGURATION — UPDATE THESE VALUES
+// ─────────────────────────────────────────────────────────
+const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';  // Your Cloudflare Worker URL
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
-// Stripe Payment Link — with client reference and success redirect
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
 const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
-// ─────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────
 
-/*
-   API ENDPOINTS (all from the same worker):
-   
-   Authentication:
-   - POST /v1/auth/google        → { session_token, user, token_balance, is_new }
-   - POST /v1/auth/guest         → { session_token, user, token_balance, is_guest }
-   
-   User Operations:
-   - GET  /v1/balance            → { token_balance, user_id }
-   - POST /v1/chat               → { message, nagoh: { tokens_charged, tokens_remaining } }
-   
-   Admin (requires X-Admin-Password header):
-   - GET  /admin                 → Admin dashboard HTML
-   - POST /admin/api/gift        → Gift tokens to user
-   - POST /admin/api/users       → Create new user
-   - GET  /admin/api/user?email  → Look up user
-   - DELETE /admin/api/users/{id} → Delete user
-   - PUT  /admin/api/users/{id}  → Update user
-   - POST /admin/api/tokens/award → Award tokens
-   
-   Webhooks:
-   - POST /webhooks/stripe       → Stripe payment notifications
-*/
+let sessionToken = '';
+let currentUser  = null;
+let isGuest      = false;
+let msgs         = [];
+let sessions     = lsGet('nagoh_sessions', []);
+let curSess      = null;
+let busy         = false;
+let balance      = 0;
+let sessSpent    = 0;
+let turns        = 0;
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SESSION PERSISTENCE (updated for better login flow)
-// ─────────────────────────────────────────────────────────────────────────────
-//
-// In your window.onload, replace the session check with:
-//
+const TONE_PROMPTS = {
+  friendly:     "You are NAGOH AI, a warm, encouraging assistant for small business owners, Etsy sellers, crafters, and artists. Be friendly, supportive, and clear. Use simple language. Always be positive and practical. Help them feel confident about their business.",
+  professional: "You are NAGOH AI, a professional business assistant for small business owners and Etsy sellers. Provide clear, well-structured, business-focused advice. Be concise and accurate.",
+  playful:      "You are NAGOH AI, a fun and enthusiastic assistant for creative small business owners! Be upbeat, use emojis occasionally, and make running a business feel exciting and doable. Keep energy high!",
+  concise:      "You are NAGOH AI, an assistant for small business owners. Be extremely concise. Bullet points preferred. No fluff. Get right to the useful info.",
+};
+
+// ─────────────────────────────────────────────────────────
+// INITIALIZATION
+// ─────────────────────────────────────────────────────────
 
 window.onload = () => {
   if (typeof google !== 'undefined') {
     google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
       callback: handleGoogleCredential,
-      auto_select: false,  // Don't automatically prompt
+      auto_select: false,
       cancel_on_tap_outside: false,
     });
   }
@@ -59,7 +837,7 @@ window.onload = () => {
   renderHistory();
   checkPaymentSuccess();
 
-  // Check both sessionStorage and localStorage for saved session
+  // Check if we have a saved session
   const sessionStored = sessionStorage.getItem('nagoh_session');
   const localStored = localStorage.getItem('nagoh_session');
   const saved = sessionStored || localStored;
@@ -75,10 +853,8 @@ window.onload = () => {
       setLed('on', 'Connected ✓');
       document.getElementById('sendBtn').disabled = false;
       hideModal();
-      // Re-sync balance with server
       connect();
-    } catch (e) { 
-      console.error('Session restore failed:', e);
+    } catch { 
       showModal(); 
     }
   } else {
@@ -86,12 +862,37 @@ window.onload = () => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// UPDATED GOOGLE AUTH HANDLER
-// ─────────────────────────────────────────────────────────────────────────────
-//
-// Replace handleGoogleCredential with:
-//
+function checkPaymentSuccess() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('payment') === 'success') {
+    showSuccessNotification('✅ Purchase successful! Your tokens have been added.');
+    if (sessionToken) {
+      setTimeout(() => { connect(); }, 1000);
+    }
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}
+
+function showSuccessNotification(msg) {
+  const banner = document.getElementById('successBanner');
+  document.getElementById('successMsg').textContent = msg;
+  banner.classList.add('show');
+  setTimeout(() => {
+    banner.classList.remove('show');
+  }, 4000);
+}
+
+// ─────────────────────────────────────────────────────────
+// GOOGLE OAUTH
+// ─────────────────────────────────────────────────────────
+
+function initiateGoogleSignIn() {
+  document.getElementById('authErr').textContent = '';
+  document.getElementById('authLoading').style.display = 'block';
+  if (typeof google !== 'undefined') {
+    google.accounts.id.prompt();
+  }
+}
 
 async function handleGoogleCredential(response) {
   if (!response || !response.credential) {
@@ -116,7 +917,6 @@ async function handleGoogleCredential(response) {
     currentUser  = d.user;
     balance      = d.token_balance;
 
-    // Save to BOTH storages for persistence
     const sessionData = { token: sessionToken, user: currentUser, balance: balance };
     sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
     localStorage.setItem('nagoh_session', JSON.stringify(sessionData));
@@ -139,23 +939,19 @@ async function handleGoogleCredential(response) {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// UPDATED SIGN OUT
-// ─────────────────────────────────────────────────────────────────────────────
-//
-// Make sure signOut() clears both storages:
-//
+function applyUserToUI(user) {
+  if (!user) return;
+  const avatar = document.getElementById('tuserAvatar');
+  const name   = document.getElementById('tuserName');
+  if (user.picture) { avatar.src = user.picture; avatar.classList.add('show'); }
+  if (user.name)    { name.textContent = user.name.split(' ')[0]; name.classList.add('show'); }
+}
 
 function signOut() {
   if (!confirm('Sign out? Your chat history stays saved locally.')) return;
-  sessionToken = ''; 
-  currentUser = null; 
-  isGuest = false;
-  
-  // Clear both storage types
+  sessionToken = ''; currentUser = null; isGuest = false;
   sessionStorage.removeItem('nagoh_session');
   localStorage.removeItem('nagoh_session');
-  
   document.getElementById('guestBanner').classList.remove('show');
   document.getElementById('sendBtn').disabled = true;
   document.getElementById('tuserAvatar').classList.remove('show');
@@ -166,25 +962,45 @@ function signOut() {
   showModal();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// STRIPE PAYMENT (unchanged, but confirm the URL)
-// ─────────────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────
+// STRIPE PAYMENT
+// ─────────────────────────────────────────────────────────
 
 function openBuyTokens() {
   if (!currentUser) { showModal(); return; }
   if (isGuest) { showModal(); return; }
   
-  // Build Stripe URL with user ID and success redirect
   const stripeUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}&success_url=${STRIPE_SUCCESS_URL}`;
   window.location.href = stripeUrl;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CHAT FUNCTION (uses correct worker URL)
-// ─────────────────────────────────────────────────────────────────────────────
-//
-// In your send() function, make sure it's using:
-//
+// ─────────────────────────────────────────────────────────
+// CONNECTION / SESSION
+// ─────────────────────────────────────────────────────────
+
+async function connect() {
+  setLed('spin', 'Connecting…');
+  try {
+    const r = await fetch(`${WORKER}/v1/balance`, {
+      headers: { 'Authorization': `Bearer ${sessionToken}` }
+    });
+    const d = await r.json();
+    if (!r.ok) { setLed('err', 'Auth error'); showModal(); return; }
+    balance = d.token_balance;
+    setBalUI(balance);
+    setLed('on', 'Connected ✓');
+    document.getElementById('sendBtn').disabled = false;
+  } catch {
+    setLed('err', 'Offline');
+  }
+}
+
+function showModal() { document.getElementById('modalWrap').classList.remove('hidden'); }
+function hideModal() { document.getElementById('modalWrap').classList.add('hidden'); }
+
+// ─────────────────────────────────────────────────────────
+// CHAT
+// ─────────────────────────────────────────────────────────
 
 async function send() {
   const box  = document.getElementById('prompt');
@@ -204,7 +1020,7 @@ async function send() {
   addThink(tid);
 
   try {
-    const r = await fetch(`${WORKER}/v1/chat`, {  // ← Using the worker URL
+    const r = await fetch(`${WORKER}/v1/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -250,23 +1066,211 @@ async function send() {
   document.getElementById('prompt').focus();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONNECTION / BALANCE SYNC
-// ─────────────────────────────────────────────────────────────────────────────
-
-async function connect() {
-  setLed('spin', 'Connecting…');
-  try {
-    const r = await fetch(`${WORKER}/v1/balance`, {  // ← Using the worker URL
-      headers: { 'Authorization': `Bearer ${sessionToken}` }
-    });
-    const d = await r.json();
-    if (!r.ok) { setLed('err', 'Auth error'); showModal(); return; }
-    balance = d.token_balance;
-    setBalUI(balance);
-    setLed('on', 'Connected ✓');
-    document.getElementById('sendBtn').disabled = false;
-  } catch {
-    setLed('err', 'Offline');
+function getSuggestions(userMsg) {
+  const lower = userMsg.toLowerCase();
+  if (lower.includes('etsy') || lower.includes('listing') || lower.includes('product')) {
+    return ['Make it shorter', 'Add more keywords', 'Write a second version', 'Make it more playful'];
   }
+  if (lower.includes('instagram') || lower.includes('social') || lower.includes('caption')) {
+    return ['Give me 5 more', 'Make it shorter', 'Add hashtags', 'Write one for Facebook too'];
+  }
+  if (lower.includes('customer') || lower.includes('reply') || lower.includes('review')) {
+    return ['Make it more formal', 'Make it warmer', 'Make it shorter', 'Write another version'];
+  }
+  if (lower.includes('pric') || lower.includes('cost') || lower.includes('profit')) {
+    return ['Tell me more', 'What about shipping?', 'How do I add taxes?'];
+  }
+  return ['Tell me more', 'Give me another version', 'Make it shorter', 'Can you give examples?'];
 }
+
+function hideEmpty() {
+  const e = document.getElementById('empty');
+  if (e) e.style.display = 'none';
+}
+
+function addBubble(role, content, nagoh, suggestions) {
+  const c = document.getElementById('msgs');
+  const r = document.createElement('div');
+  r.className = `row ${role}`;
+
+  let meta = '';
+  if (nagoh) {
+    meta = `<div class="rmeta"><span class="chip">−${nagoh.tokens_charged} tokens</span><span>${nagoh.tokens_remaining.toLocaleString()} left</span></div>`;
+  }
+
+  let sugsHtml = '';
+  if (suggestions && role === 'ai') {
+    sugsHtml = `<div class="suggestions">${suggestions.map(s => `<button class="sug" onclick="quickSend('${s.replace(/'/g,"\\'")}')">↪ ${esc(s)}</button>`).join('')}</div>`;
+  }
+
+  const avaContent = (role === 'user' && currentUser?.picture)
+    ? `<img src="${currentUser.picture}" alt="">`
+    : (role === 'ai' ? 'N' : 'U');
+
+  r.innerHTML = `
+    <div class="ava ${role === 'user' ? 'you' : 'ai'}">${avaContent}</div>
+    <div><div class="bub">${esc(content)}</div>${meta}${sugsHtml}</div>`;
+  c.appendChild(r); c.scrollTop = c.scrollHeight;
+}
+
+function addThink(id) {
+  const c = document.getElementById('msgs');
+  const r = document.createElement('div');
+  r.id = id; r.className = 'row ai';
+  r.innerHTML = `<div class="ava ai">N</div><div class="bub thinking">Thinking<span class="think-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
+  c.appendChild(r); c.scrollTop = c.scrollHeight;
+}
+
+function killThink(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function addErr(msg) {
+  const c = document.getElementById('msgs');
+  const r = document.createElement('div');
+  r.className = 'row ai';
+  r.innerHTML = `<div class="ava ai">N</div><div class="bub error">⚠️ ${esc(msg)}</div>`;
+  c.appendChild(r); c.scrollTop = c.scrollHeight;
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function setLed(state, label) {
+  document.getElementById('led').className = 'dot ' + state;
+  document.getElementById('sstr').textContent = label;
+}
+
+function setBalUI(n) {
+  const fmt = n.toLocaleString();
+  document.getElementById('balNum').textContent = fmt;
+  document.getElementById('topBal').innerHTML = `${fmt} <span>tokens</span>`;
+}
+
+function onModel() {}
+
+function updateSysPrompt() {
+  const tone = document.getElementById('toneMode').value;
+  document.getElementById('sysTxt').value = TONE_PROMPTS[tone] || TONE_PROMPTS.friendly;
+}
+
+function updateStats() {
+  document.getElementById('rMsgs').textContent  = msgs.length;
+  document.getElementById('rSpent').textContent = sessSpent;
+}
+
+function saveSession(firstMsg) {
+  if (!curSess) {
+    curSess = { id: Date.now(), title: firstMsg.slice(0, 45), messages: [] };
+    sessions.unshift(curSess);
+    if (sessions.length > 50) sessions.pop();
+  }
+  curSess.messages = [...msgs];
+  lsSet('nagoh_sessions', sessions);
+  renderHistory();
+}
+
+function renderHistory() {
+  const w = document.getElementById('hscroll');
+  w.innerHTML = '';
+  if (!sessions.length) {
+    w.innerHTML = '<div style="font-size:0.62rem;color:var(--muted);padding:0.5rem 0.75rem;">No past chats yet</div>';
+    return;
+  }
+  sessions.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'hitem' + (curSess?.id === s.id ? ' active' : '');
+    el.textContent = s.title;
+    el.onclick = () => {
+      curSess = s; msgs = [...s.messages];
+      document.getElementById('msgs').innerHTML = '';
+      msgs.forEach(m => addBubble(m.role==='user'?'user':'ai', m.content));
+      turns = Math.floor(msgs.length / 2);
+      updateStats(); renderHistory();
+    };
+    w.appendChild(el);
+  });
+}
+
+function newChat() {
+  curSess = null; msgs = []; sessSpent = 0; turns = 0;
+  document.getElementById('msgs').innerHTML = `
+    <div class="empty" id="empty">
+      <div class="ehero">Your AI <em>creative partner</em><br>is ready to help.</div>
+      <div class="esub">Whether you sell on Etsy, run a craft business, or make things with love — NAGOH AI helps you write, plan, and grow without the stress.</div>
+      <div class="echips">
+        <div class="echip" onclick="quickSend('Help me write a product description for handmade soy candles')"><span>🕯️</span>Candle listing</div>
+        <div class="echip" onclick="quickSend('Write Instagram captions for my jewelry shop')"><span>💍</span>Jewelry captions</div>
+        <div class="echip" onclick="quickSend('How do I price my handmade items to make a profit?')"><span>💰</span>Pricing guide</div>
+        <div class="echip" onclick="quickSend('Write a friendly out-of-office message for my Etsy shop')"><span>💌</span>Shop message</div>
+        <div class="echip" onclick="quickSend('Give me 10 ideas for new products for my pottery shop')"><span>🏺</span>Product ideas</div>
+        <div class="echip" onclick="quickSend('How do I get more 5-star reviews on Etsy?')"><span>⭐</span>More reviews</div>
+        <div class="echip" onclick="quickSend('Write a bio for my Etsy shop that sells handmade art prints')"><span>🎨</span>Shop bio</div>
+        <div class="echip" onclick="quickSend('What are the best hashtags for a small candle business on Instagram?')"><span>📱</span>Hashtags</div>
+      </div>
+      <div class="etagline">Tap any idea above or type your own question below</div>
+    </div>`;
+  updateStats(); renderHistory();
+}
+
+function clearAll() {
+  if (!confirm('Clear all past chats?')) return;
+  sessions = []; curSess = null; msgs = [];
+  lsSet('nagoh_sessions', []); newChat();
+}
+
+function quickPrompt(text) {
+  const box = document.getElementById('prompt');
+  box.value = text; box.focus();
+  grow(box);
+  box.setSelectionRange(text.length, text.length);
+}
+
+function quickSend(text) {
+  const box = document.getElementById('prompt');
+  box.value = text; send();
+}
+
+function onKey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+
+function grow(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+  const l = el.value.length;
+  document.getElementById('ccount').textContent = l ? `${l} chars` : '';
+}
+
+function continueAsGuest() {
+  document.getElementById('authLoading').style.display = 'block';
+  fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' })
+    .then(r => r.json())
+    .then(d => {
+      if (d.session_token) {
+        sessionToken = d.session_token;
+        currentUser = d.user;
+        balance = d.token_balance;
+        isGuest = true;
+        
+        const sessionData = { token: sessionToken, user: currentUser, balance: balance };
+        sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
+        
+        applyUserToUI(currentUser);
+        setBalUI(balance);
+        document.getElementById('guestBanner').classList.add('show');
+        setLed('on', 'Connected ✓');
+        document.getElementById('sendBtn').disabled = false;
+        hideModal();
+      }
+    })
+    .finally(() => {
+      document.getElementById('authLoading').style.display = 'none';
+    });
+}
+
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
+</script>
+</body>
+</html>
