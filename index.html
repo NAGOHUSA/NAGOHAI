@@ -1349,9 +1349,14 @@ function showSuccessNotification(msg) {
 
 function initiateGoogleSignIn() {
   document.getElementById('authErr').textContent = '';
-  document.getElementById('authLoading').style.display = 'block';
   if (typeof google !== 'undefined') {
-    google.accounts.id.prompt();
+    document.getElementById('authLoading').style.display = 'block';
+    // Show the One Tap UI
+    google.accounts.id.prompt((notification) => {
+      console.log('Google prompt notification:', notification);
+    });
+  } else {
+    document.getElementById('authErr').textContent = 'Google Sign-In not available. Please refresh the page.';
   }
 }
 
