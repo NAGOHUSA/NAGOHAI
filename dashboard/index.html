@@ -1,1061 +1,272 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAGOH Admin — User Management</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --cream:    #fdf8f0;
-            --parchmt:  #f5ede0;
-            --warm:     #ede3d5;
-            --border:   #e0d4c4;
-            --border2:  #d4c4b0;
-            --muted:    #b5a090;
-            --dim:      #8a7868;
-            --sub:      #6b5e50;
-            --ink:      #3d2f24;
-            --deep:     #2a1f16;
-            
-            --rose:     #e8524a;
-            --rose-lt:  #fce8e7;
-            --rose-md:  #f5c4c2;
-            --teal:     #2a9d8f;
-            --teal-lt:  #e0f5f3;
-            --teal-md:  #a0dcd6;
-            --gold:     #e9a028;
-            --gold-lt:  #fdf0d5;
-            --gold-md:  #f7d08a;
-            --plum:     #8b5cf6;
-            --plum-lt:  #f0ebff;
-            --sage:     #4a7c59;
-            --sage-lt:  #e8f4eb;
-            
-            --sans:     'DM Sans', sans-serif;
-            --serif:    'Fraunces', serif;
-        }
-
-        html, body { height: 100%; background: var(--cream); }
-        body { 
-            color: var(--ink); 
-            font-family: var(--sans); 
-            display: flex; 
-            flex-direction: column;
-        }
-
-        /* TOPBAR */
-        .topbar {
-            height: 60px;
-            display: flex;
-            align-items: center;
-            padding: 0 1.5rem;
-            gap: 1rem;
-            background: var(--deep);
-            border-bottom: 3px solid var(--rose);
-            flex-shrink: 0;
-        }
-
-        .wordmark {
-            font-family: var(--serif);
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 0.02em;
-        }
-
-        .wordmark em {
-            color: var(--gold);
-            font-style: italic;
-        }
-
-        .tagline {
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.45);
-            letter-spacing: 0.08em;
-            font-weight: 300;
-        }
-
-        .tsep { flex: 1; }
-
-        .logout-button {
-            font-family: var(--sans);
-            font-size: 0.68rem;
-            font-weight: 500;
-            padding: 6px 14px;
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.2);
-            color: rgba(255,255,255,0.65);
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.15s;
-        }
-
-        .logout-button:hover {
-            background: rgba(255,255,255,0.1);
-            color: #fff;
-        }
-
-        /* LOGIN SCREEN */
-        .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            background: linear-gradient(135deg, var(--cream) 0%, var(--parchmt) 100%);
-        }
-
-        .login-card {
-            background: #fff;
-            border: 1.5px solid var(--border);
-            border-radius: 16px;
-            padding: 48px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 10px 40px rgba(45,32,22,0.08);
-            animation: slideUp 0.5s ease-out;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .login-header h1 {
-            font-family: var(--serif);
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--ink);
-        }
-
-        .login-header h1 em {
-            color: var(--gold);
-            font-style: italic;
-        }
-
-        .login-header p {
-            color: var(--dim);
-            font-size: 0.8rem;
-            letter-spacing: 0.04em;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            color: var(--ink);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 11px 13px;
-            background: var(--cream);
-            border: 1.5px solid var(--border2);
-            border-radius: 10px;
-            color: var(--ink);
-            font-family: var(--sans);
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--teal);
-            background: #fff;
-            box-shadow: 0 0 0 3px var(--teal-lt);
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 12px;
-            background: var(--teal);
-            border: none;
-            border-radius: 10px;
-            color: #fff;
-            font-family: var(--sans);
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            margin-top: 10px;
-        }
-
-        .login-button:hover {
-            background: #228b7e;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(42,157,143,0.2);
-        }
-
-        .error-message {
-            background: var(--rose-lt);
-            border: 1.5px solid var(--rose-md);
-            color: #b8392e;
-            padding: 12px 14px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .error-message.show {
-            display: block;
-            animation: shake 0.4s ease-in-out;
-        }
-
-        /* DASHBOARD */
-        .dashboard {
-            display: none;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        .dashboard.active {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 2rem 1.5rem;
-            border-bottom: 1px solid var(--border);
-            background: #fff;
-        }
-
-        .dashboard-title {
-            font-family: var(--serif);
-            font-size: 1.8rem;
-            font-weight: 500;
-            color: var(--ink);
-        }
-
-        .dashboard-title em {
-            color: var(--gold);
-            font-style: italic;
-        }
-
-        .dashboard-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 0;
-            margin-bottom: 2rem;
-            border-bottom: 1.5px solid var(--border);
-        }
-
-        .tab {
-            padding: 12px 20px;
-            background: none;
-            border: none;
-            border-bottom: 3px solid transparent;
-            color: var(--dim);
-            cursor: pointer;
-            font-family: var(--sans);
-            font-size: 0.75rem;
-            font-weight: 600;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .tab:hover {
-            color: var(--ink);
-        }
-
-        .tab.active {
-            color: var(--teal);
-            border-bottom-color: var(--teal);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        .card {
-            background: #fff;
-            border: 1.5px solid var(--border);
-            border-radius: 14px;
-            padding: 24px;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(45,32,22,0.04);
-        }
-
-        .card-title {
-            font-family: var(--serif);
-            font-size: 1.3rem;
-            font-weight: 500;
-            margin-bottom: 20px;
-            color: var(--ink);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 2rem;
-        }
-
-        .stat-box {
-            background: #fff;
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(45,32,22,0.04);
-        }
-
-        .stat-value {
-            font-family: var(--serif);
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--teal);
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 0.65rem;
-            color: var(--muted);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .form-row.full {
-            grid-template-columns: 1fr;
-        }
-
-        .form-group input[type="number"],
-        .form-group input[type="text"],
-        .form-group input[type="email"],
-        .form-group select {
-            width: 100%;
-            padding: 11px 13px;
-            background: var(--cream);
-            border: 1.5px solid var(--border2);
-            border-radius: 10px;
-            color: var(--ink);
-            font-family: var(--sans);
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .form-group input[type="number"]:focus,
-        .form-group input[type="text"]:focus,
-        .form-group input[type="email"]:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--teal);
-            background: #fff;
-            box-shadow: 0 0 0 3px var(--teal-lt);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            padding: 11px 18px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-family: var(--sans);
-            font-size: 0.75rem;
-            font-weight: 600;
-            transition: all 0.15s;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }
-
-        .btn-primary {
-            background: var(--teal);
-            color: #fff;
-            flex: 1;
-        }
-
-        .btn-primary:hover {
-            background: #228b7e;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(42,157,143,0.2);
-        }
-
-        .btn-secondary {
-            background: var(--parchmt);
-            color: var(--dim);
-            border: 1.5px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--teal);
-            color: var(--teal);
-            background: var(--teal-lt);
-        }
-
-        .btn-danger {
-            background: var(--rose-lt);
-            color: var(--rose);
-            border: 1.5px solid var(--rose-md);
-        }
-
-        .btn-danger:hover {
-            background: var(--rose);
-            color: #fff;
-        }
-
-        .btn-success {
-            background: var(--sage-lt);
-            color: var(--sage);
-            border: 1.5px solid var(--sage);
-        }
-
-        .btn-success:hover {
-            background: var(--sage);
-            color: #fff;
-        }
-
-        .users-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-
-        .users-table th {
-            background: var(--warm);
-            padding: 12px 14px;
-            text-align: left;
-            font-weight: 600;
-            color: var(--dim);
-            border-bottom: 1.5px solid var(--border);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.65rem;
-        }
-
-        .users-table td {
-            padding: 12px 14px;
-            border-bottom: 1px solid var(--border);
-            color: var(--ink);
-        }
-
-        .users-table tbody tr:hover {
-            background: var(--teal-lt);
-        }
-
-        .user-email {
-            color: var(--teal);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .token-badge {
-            display: inline-block;
-            background: var(--gold-lt);
-            color: var(--dim);
-            padding: 4px 12px;
-            border-radius: 14px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 14px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
-        .status-badge.active {
-            background: var(--sage-lt);
-            color: var(--sage);
-        }
-
-        .status-badge.suspended {
-            background: var(--rose-lt);
-            color: var(--rose);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-buttons button {
-            padding: 6px 12px;
-            font-size: 0.65rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 600;
-            font-family: var(--sans);
-        }
-
-        .action-btn-award {
-            background: var(--sage-lt);
-            color: var(--sage);
-            border: 1px solid var(--sage);
-        }
-
-        .action-btn-award:hover {
-            background: var(--sage);
-            color: #fff;
-        }
-
-        .action-btn-delete {
-            background: var(--rose-lt);
-            color: var(--rose);
-            border: 1px solid var(--rose-md);
-        }
-
-        .action-btn-delete:hover {
-            background: var(--rose);
-            color: #fff;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--muted);
-        }
-
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        .success-message {
-            background: var(--sage-lt);
-            border: 1.5px solid var(--sage);
-            color: var(--sage);
-            padding: 12px 14px;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            margin-bottom: 20px;
-            display: none;
-            font-weight: 500;
-        }
-
-        .success-message.show {
-            display: block;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        .loading-spinner {
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--teal);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .form-row { grid-template-columns: 1fr; }
-            .topbar { padding: 0 1rem; height: 56px; }
-            .wordmark { font-size: 1.1rem; }
-            .dashboard-header { padding: 1.5rem 1rem; }
-            .dashboard-content { padding: 1.5rem 1rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .users-table { font-size: 0.7rem; }
-            .users-table th, .users-table td { padding: 8px 10px; }
-            .action-buttons { flex-direction: column; }
-            .action-buttons button { width: 100%; }
-        }
-    </style>
-</head>
-<body>
-
-<!-- TOPBAR -->
-<div class="topbar">
-    <div>
-        <div class="wordmark">NAGOH <em>Admin</em></div>
-        <div class="tagline">USER & TOKEN MANAGEMENT</div>
-    </div>
-    <div class="tsep"></div>
-    <button class="logout-button" onclick="handleLogout()">Sign out</button>
-</div>
-
-<!-- LOGIN SCREEN -->
-<div class="login-container" id="loginContainer">
-    <div class="login-card">
-        <div class="login-header">
-            <h1>NAGOH <em>Admin</em></h1>
-            <p>Manage users and token allocation</p>
-        </div>
-        <div class="error-message" id="loginError"></div>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Enter username" value="admin" autofocus>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter password" value="admin1234">
-        </div>
-        <button class="login-button" onclick="handleLogin()">Sign In</button>
-    </div>
-</div>
-
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-    <div class="dashboard-header">
-        <div>
-            <h1 class="dashboard-title">Admin Dashboard</h1>
-        </div>
-    </div>
-
-    <div class="dashboard-content">
-        <div class="stats-grid">
-            <div class="stat-box">
-                <div class="stat-value" id="totalUsers">0</div>
-                <div class="stat-label">Total Users</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value" id="activeUsers">0</div>
-                <div class="stat-label">Active Users</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value" id="totalTokens">0</div>
-                <div class="stat-label">Tokens Distributed</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-value" id="avgTokens">0</div>
-                <div class="stat-label">Avg Tokens/User</div>
-            </div>
-        </div>
-
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('users')">Users</button>
-            <button class="tab" onclick="switchTab('create')">Add User</button>
-            <button class="tab" onclick="switchTab('award')">Award Tokens</button>
-        </div>
-
-        <!-- Users Tab -->
-        <div class="tab-content active" id="usersTab">
-            <div class="card">
-                <div class="card-title">User Management</div>
-                <div class="loading show" id="usersLoading">
-                    <div class="loading-spinner"></div>
-                </div>
-                <div id="usersContainer"></div>
-            </div>
-        </div>
-
-        <!-- Create User Tab -->
-        <div class="tab-content" id="createTab">
-            <div class="card">
-                <div class="card-title">Add New User</div>
-                <div class="success-message" id="createSuccess">✓ User created successfully!</div>
-                <form onsubmit="handleCreateUser(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" id="createName" placeholder="John Doe" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="createEmail" placeholder="john@example.com" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Initial Tokens</label>
-                            <input type="number" id="createTokens" placeholder="1000" value="0">
-                        </div>
-                    </div>
-                    <div class="button-group">
-                        <button type="submit" class="btn btn-primary">Create User</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Award Tokens Tab -->
-        <div class="tab-content" id="awardTab">
-            <div class="card">
-                <div class="card-title">Award Tokens to User</div>
-                <div class="success-message" id="awardSuccess">✓ Tokens awarded successfully!</div>
-                <form onsubmit="handleAwardTokens(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Select User</label>
-                            <select id="awardUserId" required>
-                                <option value="">Choose a user...</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Token Amount</label>
-                            <input type="number" id="awardAmount" placeholder="500" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Reason (Optional)</label>
-                            <input type="text" id="awardReason" placeholder="Bonus, Referral, etc.">
-                        </div>
-                    </div>
-                    <div class="button-group">
-                        <button type="submit" class="btn btn-success">Award Tokens</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    const API_BASE = 'https://nagohai.gregoryhogan.workers.dev'; // Update with your worker URL
-    let authToken = null;
-    let currentUsers = [];
-
-    // Initialize on page load
-    function init() {
-        const saved = sessionStorage.getItem('adminAuthToken');
-        if (saved) {
-            authToken = saved;
-            loadDashboard();
-        } else {
-            showLoginScreen();
-        }
+// ─────────────────────────────────────────────────────────────────────────────
+// NAGOH AI — MAIN APP CONFIGURATION
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Replace the CONFIGURATION section of your index.html with this:
+//
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CONFIGURATION — update these for your deployment
+// ─────────────────────────────────────────────────────────────────────────────
+const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';  // Your Cloudflare Worker
+const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
+// Stripe Payment Link — with client reference and success redirect
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
+const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
+// ─────────────────────────────────────────────────────────────────────────────
+
+/*
+   API ENDPOINTS (all from the same worker):
+   
+   Authentication:
+   - POST /v1/auth/google        → { session_token, user, token_balance, is_new }
+   - POST /v1/auth/guest         → { session_token, user, token_balance, is_guest }
+   
+   User Operations:
+   - GET  /v1/balance            → { token_balance, user_id }
+   - POST /v1/chat               → { message, nagoh: { tokens_charged, tokens_remaining } }
+   
+   Admin (requires X-Admin-Password header):
+   - GET  /admin                 → Admin dashboard HTML
+   - POST /admin/api/gift        → Gift tokens to user
+   - POST /admin/api/users       → Create new user
+   - GET  /admin/api/user?email  → Look up user
+   - DELETE /admin/api/users/{id} → Delete user
+   - PUT  /admin/api/users/{id}  → Update user
+   - POST /admin/api/tokens/award → Award tokens
+   
+   Webhooks:
+   - POST /webhooks/stripe       → Stripe payment notifications
+*/
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SESSION PERSISTENCE (updated for better login flow)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// In your window.onload, replace the session check with:
+//
+
+window.onload = () => {
+  if (typeof google !== 'undefined') {
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: false,  // Don't automatically prompt
+      cancel_on_tap_outside: false,
+    });
+  }
+  updateSysPrompt();
+  renderHistory();
+  checkPaymentSuccess();
+
+  // Check both sessionStorage and localStorage for saved session
+  const sessionStored = sessionStorage.getItem('nagoh_session');
+  const localStored = localStorage.getItem('nagoh_session');
+  const saved = sessionStored || localStored;
+  
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      sessionToken = parsed.token;
+      currentUser  = parsed.user;
+      balance      = parsed.balance || 0;
+      applyUserToUI(currentUser);
+      setBalUI(balance);
+      setLed('on', 'Connected ✓');
+      document.getElementById('sendBtn').disabled = false;
+      hideModal();
+      // Re-sync balance with server
+      connect();
+    } catch (e) { 
+      console.error('Session restore failed:', e);
+      showModal(); 
     }
+  } else {
+    showModal();
+  }
+};
 
-    async function handleLogin() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
-        const errorDiv = document.getElementById('loginError');
+// ─────────────────────────────────────────────────────────────────────────────
+// UPDATED GOOGLE AUTH HANDLER
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Replace handleGoogleCredential with:
+//
 
-        try {
-            const response = await fetch(`${API_BASE}/api/admin/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+async function handleGoogleCredential(response) {
+  if (!response || !response.credential) {
+    document.getElementById('authLoading').style.display = 'none';
+    document.getElementById('authErr').textContent = 'Sign-in cancelled.';
+    return;
+  }
+  
+  document.getElementById('authLoading').style.display = 'block';
+  document.getElementById('authErr').textContent = '';
 
-            const data = await response.json();
+  try {
+    const r = await fetch(`${WORKER}/v1/auth/google`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id_token: response.credential }),
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'Auth failed');
 
-            if (response.ok) {
-                authToken = data.token;
-                // Save to sessionStorage (persists while tab is open)
-                sessionStorage.setItem('adminAuthToken', authToken);
-                // Save to localStorage for returning visitors
-                localStorage.setItem('adminAuthToken', authToken);
-                errorDiv.classList.remove('show');
-                loadDashboard();
-            } else {
-                showError(errorDiv, data.error || 'Login failed');
-            }
-        } catch (error) {
-            showError(errorDiv, 'Connection error: ' + error.message);
-        }
+    sessionToken = d.session_token;
+    currentUser  = d.user;
+    balance      = d.token_balance;
+
+    // Save to BOTH storages for persistence
+    const sessionData = { token: sessionToken, user: currentUser, balance: balance };
+    sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
+    localStorage.setItem('nagoh_session', JSON.stringify(sessionData));
+
+    applyUserToUI(currentUser);
+    setBalUI(balance);
+    setLed('on', 'Connected ✓');
+    document.getElementById('sendBtn').disabled = false;
+    hideModal();
+
+    if (d.is_new) {
+      setTimeout(() => {
+        addBubble('ai', `Welcome to NAGOH AI, ${currentUser.name.split(' ')[0]}! 🎉 You've received 5,000 free tokens to get started. Ask me anything about your shop or business!`, null, null);
+      }, 400);
     }
+  } catch (err) {
+    document.getElementById('authErr').textContent = err.message || 'Sign-in failed. Please try again.';
+  } finally {
+    document.getElementById('authLoading').style.display = 'none';
+  }
+}
 
-    function showLoginScreen() {
-        document.getElementById('loginContainer').style.display = 'flex';
-        document.getElementById('dashboard').classList.remove('active');
+// ─────────────────────────────────────────────────────────────────────────────
+// UPDATED SIGN OUT
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Make sure signOut() clears both storages:
+//
+
+function signOut() {
+  if (!confirm('Sign out? Your chat history stays saved locally.')) return;
+  sessionToken = ''; 
+  currentUser = null; 
+  isGuest = false;
+  
+  // Clear both storage types
+  sessionStorage.removeItem('nagoh_session');
+  localStorage.removeItem('nagoh_session');
+  
+  document.getElementById('guestBanner').classList.remove('show');
+  document.getElementById('sendBtn').disabled = true;
+  document.getElementById('tuserAvatar').classList.remove('show');
+  document.getElementById('tuserName').classList.remove('show');
+  setLed('spin', 'Signed out');
+  setBalUI(0);
+  if (typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
+  showModal();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STRIPE PAYMENT (unchanged, but confirm the URL)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function openBuyTokens() {
+  if (!currentUser) { showModal(); return; }
+  if (isGuest) { showModal(); return; }
+  
+  // Build Stripe URL with user ID and success redirect
+  const stripeUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}&success_url=${STRIPE_SUCCESS_URL}`;
+  window.location.href = stripeUrl;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CHAT FUNCTION (uses correct worker URL)
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// In your send() function, make sure it's using:
+//
+
+async function send() {
+  const box  = document.getElementById('prompt');
+  const text = box.value.trim();
+  if (!text || busy) return;
+  busy = true;
+  document.getElementById('sendBtn').disabled = true;
+  box.value = ''; box.style.height = 'auto';
+  document.getElementById('ccount').textContent = '';
+
+  hideEmpty();
+  msgs.push({ role: 'user', content: text });
+  addBubble('user', text);
+  updateStats();
+
+  const tid = 'T' + Date.now();
+  addThink(tid);
+
+  try {
+    const r = await fetch(`${WORKER}/v1/chat`, {  // ← Using the worker URL
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionToken}`,
+      },
+      body: JSON.stringify({
+        messages: msgs,
+        system:      document.getElementById('sysTxt').value.trim() || undefined,
+        model:       document.getElementById('modelSel').value,
+        max_tokens:  2048,
+        temperature: 0.75,
+      }),
+    });
+    const data = await r.json();
+    killThink(tid);
+
+    if (!r.ok) {
+      addErr(data.error || 'Something went wrong. Please try again.');
+      msgs.pop();
+      if (r.status === 402) addErr('You\'re out of tokens! Click "Buy More Tokens" in the sidebar to top up.');
+      if (r.status === 401) { showModal(); }
+    } else {
+      const reply = data.message.content;
+      msgs.push({ role: 'assistant', content: reply });
+      const suggestions = getSuggestions(text);
+      addBubble('ai', reply, data.nagoh, suggestions);
+      balance = data.nagoh.tokens_remaining;
+      sessSpent += data.nagoh.tokens_charged;
+      turns++;
+      setBalUI(balance);
+      updateStats();
+      saveSession(text);
     }
+  } catch (e) {
+    killThink(tid);
+    addErr('Network error — check your connection and try again.');
+    msgs.pop();
+    console.error(e);
+  }
 
-    async function loadDashboard() {
-        document.getElementById('loginContainer').style.display = 'none';
-        document.getElementById('dashboard').classList.add('active');
-        await loadUsers();
-    }
+  busy = false;
+  document.getElementById('sendBtn').disabled = false;
+  document.getElementById('prompt').focus();
+}
 
-    async function loadUsers() {
-        try {
-            const response = await fetch(`${API_BASE}/api/admin/users`, {
-                headers: { 'Authorization': `Bearer ${authToken}` }
-            });
+// ─────────────────────────────────────────────────────────────────────────────
+// CONNECTION / BALANCE SYNC
+// ─────────────────────────────────────────────────────────────────────────────
 
-            const data = await response.json();
-
-            if (response.ok) {
-                currentUsers = data.users;
-                updateStats();
-                renderUsers();
-                updateUserSelect();
-            }
-        } catch (error) {
-            console.error('Error loading users:', error);
-        }
-    }
-
-    function updateStats() {
-        const totalUsers = currentUsers.length;
-        const activeUsers = currentUsers.filter(u => u.status === 'active').length;
-        const totalTokens = currentUsers.reduce((sum, u) => sum + u.tokens, 0);
-        const avgTokens = totalUsers > 0 ? Math.round(totalTokens / totalUsers) : 0;
-
-        document.getElementById('totalUsers').textContent = totalUsers;
-        document.getElementById('activeUsers').textContent = activeUsers;
-        document.getElementById('totalTokens').textContent = totalTokens.toLocaleString();
-        document.getElementById('avgTokens').textContent = avgTokens.toLocaleString();
-    }
-
-    function renderUsers() {
-        const container = document.getElementById('usersContainer');
-        const loadingDiv = document.getElementById('usersLoading');
-
-        if (!currentUsers || currentUsers.length === 0) {
-            loadingDiv.classList.remove('show');
-            container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><p>No users found</p></div>';
-            return;
-        }
-
-        loadingDiv.classList.remove('show');
-
-        const table = document.createElement('table');
-        table.className = 'users-table';
-        table.innerHTML = `
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Tokens</th>
-                    <th>Status</th>
-                    <th>Joined</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${currentUsers.map(user => `
-                    <tr>
-                        <td>${user.name}</td>
-                        <td><a class="user-email">${user.email}</a></td>
-                        <td><span class="token-badge">${user.tokens.toLocaleString()}</span></td>
-                        <td><span class="status-badge ${user.status}">${user.status}</span></td>
-                        <td>${new Date(user.createdAt).toLocaleDateString()}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="action-btn-award" onclick="quickAward('${user.id}', '${user.name}')">Award</button>
-                                <button class="action-btn-delete" onclick="deleteUser('${user.id}', '${user.name}')">Delete</button>
-                            </div>
-                        </td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        `;
-
-        container.innerHTML = '';
-        container.appendChild(table);
-    }
-
-    function updateUserSelect() {
-        const select = document.getElementById('awardUserId');
-        select.innerHTML = '<option value="">Choose a user...</option>' +
-            currentUsers.map(user => `<option value="${user.id}">${user.name} (${user.email})</option>`).join('');
-    }
-
-    async function handleCreateUser(event) {
-        event.preventDefault();
-        const name = document.getElementById('createName').value;
-        const email = document.getElementById('createEmail').value;
-        const initialTokens = parseInt(document.getElementById('createTokens').value) || 0;
-
-        try {
-            const response = await fetch(`${API_BASE}/api/admin/users/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify({ email, name, initialTokens })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                showSuccessMessage('createSuccess');
-                document.getElementById('createName').value = '';
-                document.getElementById('createEmail').value = '';
-                document.getElementById('createTokens').value = '0';
-                await loadUsers();
-                setTimeout(() => switchTab('users'), 1500);
-            } else {
-                alert('Error: ' + data.error);
-            }
-        } catch (error) {
-            alert('Error creating user: ' + error.message);
-        }
-    }
-
-    async function handleAwardTokens(event) {
-        event.preventDefault();
-        const userId = document.getElementById('awardUserId').value;
-        const amount = parseInt(document.getElementById('awardAmount').value);
-        const reason = document.getElementById('awardReason').value;
-
-        if (!userId) {
-            alert('Please select a user');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE}/api/admin/tokens/award`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify({ userId, amount, reason })
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                showSuccessMessage('awardSuccess');
-                document.getElementById('awardUserId').value = '';
-                document.getElementById('awardAmount').value = '';
-                document.getElementById('awardReason').value = '';
-                await loadUsers();
-            } else {
-                alert('Error: ' + data.error);
-            }
-        } catch (error) {
-            alert('Error awarding tokens: ' + error.message);
-        }
-    }
-
-    function quickAward(userId, userName) {
-        const amount = prompt(`Enter token amount to award to ${userName}:`);
-        if (amount && !isNaN(amount)) {
-            const reason = prompt('Reason (optional):', '');
-            awardTokensQuick(userId, parseInt(amount), reason);
-        }
-    }
-
-    async function awardTokensQuick(userId, amount, reason) {
-        try {
-            const response = await fetch(`${API_BASE}/api/admin/tokens/award`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: JSON.stringify({ userId, amount, reason })
-            });
-
-            if (response.ok) {
-                await loadUsers();
-                showSuccessMessage('awardSuccess');
-            } else {
-                alert('Error awarding tokens');
-            }
-        } catch (error) {
-            alert('Error: ' + error.message);
-        }
-    }
-
-    async function deleteUser(userId, name) {
-        if (!confirm(`Are you sure you want to delete ${name}?`)) return;
-
-        try {
-            const response = await fetch(`${API_BASE}/api/admin/users/${userId}?action=delete`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${authToken}` }
-            });
-
-            if (response.ok) {
-                await loadUsers();
-            } else {
-                alert('Error deleting user');
-            }
-        } catch (error) {
-            alert('Error: ' + error.message);
-        }
-    }
-
-    function switchTab(tabName) {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-        event.target.classList.add('active');
-        document.getElementById(tabName + 'Tab').classList.add('active');
-    }
-
-    function handleLogout() {
-        if (!confirm('Sign out?')) return;
-        authToken = null;
-        sessionStorage.removeItem('adminAuthToken');
-        localStorage.removeItem('adminAuthToken');
-        showLoginScreen();
-        document.getElementById('username').value = 'admin';
-        document.getElementById('password').value = 'admin1234';
-    }
-
-    function showError(element, message) {
-        element.textContent = message;
-        element.classList.add('show');
-    }
-
-    function showSuccessMessage(elementId) {
-        const element = document.getElementById(elementId);
-        element.classList.add('show');
-        setTimeout(() => element.classList.remove('show'), 3000);
-    }
-
-    // Initialize on page load
-    init();
-</script>
-</body>
-</html>
+async function connect() {
+  setLed('spin', 'Connecting…');
+  try {
+    const r = await fetch(`${WORKER}/v1/balance`, {  // ← Using the worker URL
+      headers: { 'Authorization': `Bearer ${sessionToken}` }
+    });
+    const d = await r.json();
+    if (!r.ok) { setLed('err', 'Auth error'); showModal(); return; }
+    balance = d.token_balance;
+    setBalUI(balance);
+    setLed('on', 'Connected ✓');
+    document.getElementById('sendBtn').disabled = false;
+  } catch {
+    setLed('err', 'Offline');
+  }
+}
