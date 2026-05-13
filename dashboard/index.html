@@ -45,6 +45,7 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .fbtn.gold:hover:not(:disabled){background:#d48f20;}
 .fbtn.danger{background:var(--rose);color:#fff;width:auto;}
 .fbtn.danger:hover:not(:disabled){background:#c63d36;}
+.fbtn.full{width:100%;}
 .alert{padding:0.75rem 1rem;border-radius:10px;font-size:0.78rem;margin-top:0.75rem;display:none;}
 .alert.ok{background:var(--sage-lt);border:1px solid var(--sage);color:var(--sage);}
 .alert.err{background:var(--rose-lt);border:1px solid var(--rose-md);color:var(--rose);}
@@ -71,7 +72,7 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;}
 .modal.show{display:flex;}
-.modal-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:400px;}
+.modal-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:400px;position:relative;}
 .modal-title{font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:1rem;}
 .modal-close{position:absolute;right:1.5rem;top:1.5rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--dim);}
 @media(max-width:768px){.row2{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}}
@@ -83,8 +84,8 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
   <div class="lock-box">
     <div class="lock-title">🔐 Admin Only</div>
     <div class="lock-sub">Enter your admin password</div>
-    <input class="finput" id="pwdInput" type="password" placeholder="Admin password" autofocus onkeydown="if(event.key==='Enter')unlock()">
-    <button class="fbtn" style="width:100%;" onclick="unlock()">Unlock</button>
+    <input class="finput" id="pwdInput" type="password" placeholder="Admin password" autofocus>
+    <button class="fbtn full" onclick="unlock()">Unlock</button>
     <div class="alert err show" id="lockErr"></div>
   </div>
 </div>
@@ -159,7 +160,7 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
         <label>Initial Tokens</label>
         <input class="finput" id="addTokens" type="number" placeholder="5000" min="0" value="5000">
       </div>
-      <button class="fbtn" onclick="addUser()" style="width:100%;">Create User</button>
+      <button class="fbtn full" onclick="addUser()">Create User</button>
       <div class="alert ok" id="addOk"></div>
       <div class="alert err" id="addErr"></div>
     </div>
@@ -179,15 +180,16 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
       </div>
       <div class="fgroup">
         <label>Reason (optional)</label>
-        <input class="finput" id="awardReason" type="text" placeholder="Bonus, support…">
+        <input class="finput" id="awardReason" type="text" placeholder="Bonus, support...">
       </div>
-      <button class="fbtn gold" onclick="awardTokens()" style="width:100%;">Award Tokens</button>
+      <button class="fbtn gold full" onclick="awardTokens()">Award Tokens</button>
       <div class="alert ok" id="awardOk"></div>
       <div class="alert err" id="awardErr"></div>
     </div>
   </div>
 </div>
 
+<!-- Modal -->
 <div class="modal" id="tokenModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeModal()">×</button>
@@ -204,7 +206,7 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
       <label>Note (optional)</label>
       <input class="finput" id="modalNote" type="text" placeholder="Reason for assignment">
     </div>
-    <button class="fbtn gold" onclick="confirmAssignTokens()" style="width:100%;">Assign</button>
+    <button class="fbtn gold full" onclick="confirmAssignTokens()">Assign</button>
     <div class="alert ok" id="modalOk"></div>
     <div class="alert err" id="modalErr"></div>
   </div>
@@ -217,8 +219,8 @@ let allUsers = [];
 let selectedUserId = null;
 
 function switchTab(idx) {
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
   document.querySelectorAll('.tab-content')[idx].classList.add('active');
   document.querySelectorAll('.tab')[idx].classList.add('active');
 }
@@ -272,7 +274,7 @@ async function loadAllUsers() {
     updateStats();
   } catch (e) {
     document.getElementById('usersLoading').style.display = 'none';
-    showErr('usersLoading', 'Error: ' + e.message);
+    document.getElementById('usersLoading').innerHTML = 'Error: ' + e.message;
   }
 }
 
@@ -289,23 +291,20 @@ function renderUsers() {
   document.getElementById('usersTable').style.display = 'table';
   document.getElementById('usersEmpty').style.display = 'none';
 
-  allUsers.forEach(u => {
+  allUsers.forEach(function(u) {
     const tr = document.createElement('tr');
     const date = new Date(u.created_at || 0).toLocaleDateString();
-    tr.innerHTML = \`
-      <td>\${u.name || 'N/A'}</td>
-      <td>\${u.email || 'Guest'}</td>
-      <td class="bal">\${(u.token_balance || 0).toLocaleString()}</td>
-      <td>\${date}</td>
-      <td><button class="fbtn" style="width:auto;padding:0.5rem 1rem;font-size:0.7rem;" onclick="openTokenModal('\${u.user_id}','\${u.name}','\${u.email}')">+ Tokens</button></td>
-    \`;
+    const name = u.name || 'N/A';
+    const email = u.email || 'Guest';
+    const balance = (u.token_balance || 0).toLocaleString();
+    tr.innerHTML = '<td>' + name + '</td><td>' + email + '</td><td class="bal">' + balance + '</td><td>' + date + '</td><td><button class="fbtn" style="width:auto;padding:0.5rem 1rem;font-size:0.7rem;" onclick="openTokenModal(\'' + u.user_id + '\',\'' + name.replace(/'/g, "\\'") + '\',\'' + email.replace(/'/g, "\\'") + '\')">+ Tokens</button></td>';
     tbody.appendChild(tr);
   });
 }
 
 function updateStats() {
-  const total = allUsers.reduce((sum, u) => sum + (u.token_balance || 0), 0);
-  const active = allUsers.filter(u => !u.is_guest).length;
+  const total = allUsers.reduce(function(sum, u) { return sum + (u.token_balance || 0); }, 0);
+  const active = allUsers.filter(function(u) { return !u.is_guest; }).length;
   document.getElementById('statUsers').textContent = allUsers.length;
   document.getElementById('statActive').textContent = active;
   document.getElementById('statTokens').textContent = total.toLocaleString();
@@ -344,14 +343,14 @@ async function confirmAssignTokens() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ userId: selectedUserId, amount, reason: note })
+      body: JSON.stringify({ userId: selectedUserId, amount: amount, reason: note })
     });
 
     const d = await r.json();
     if (!r.ok) { showErr('modalErr', d.error); return; }
 
-    showOk('modalOk', \`✅ Assigned \${amount.toLocaleString()} tokens\`);
-    setTimeout(() => { closeModal(); loadAllUsers(); }, 1500);
+    showOk('modalOk', 'Assigned ' + amount.toLocaleString() + ' tokens');
+    setTimeout(function() { closeModal(); loadAllUsers(); }, 1500);
   } catch (e) {
     showErr('modalErr', 'Error: ' + e.message);
   }
@@ -374,17 +373,17 @@ async function addUser() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ name, email, initialTokens: tokens })
+      body: JSON.stringify({ name: name, email: email, initialTokens: tokens })
     });
 
     const d = await r.json();
     if (!r.ok) { showErr('addErr', d.error); return; }
 
-    showOk('addOk', \`✅ Created \${name}\`);
+    showOk('addOk', 'Created ' + name);
     document.getElementById('addName').value = '';
     document.getElementById('addEmail').value = '';
     document.getElementById('addTokens').value = '5000';
-    setTimeout(() => loadAllUsers(), 1000);
+    setTimeout(function() { loadAllUsers(); }, 1000);
   } catch (e) {
     showErr('addErr', 'Error: ' + e.message);
   }
@@ -407,17 +406,17 @@ async function awardTokens() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ email, amount, note: reason })
+      body: JSON.stringify({ email: email, amount: amount, note: reason })
     });
 
     const d = await r.json();
     if (!r.ok) { showErr('awardErr', d.error); return; }
 
-    showOk('awardOk', \`✅ Awarded \${amount.toLocaleString()} tokens\`);
+    showOk('awardOk', 'Awarded ' + amount.toLocaleString() + ' tokens');
     document.getElementById('awardEmail').value = '';
     document.getElementById('awardAmount').value = '';
     document.getElementById('awardReason').value = '';
-    setTimeout(() => loadAllUsers(), 1000);
+    setTimeout(function() { loadAllUsers(); }, 1000);
   } catch (e) {
     showErr('awardErr', 'Error: ' + e.message);
   }
@@ -444,11 +443,15 @@ function showOk(id, msg) {
   el.textContent = msg;
 }
 
-window.addEventListener('load', () => {
+window.addEventListener('load', function() {
   if (adminPwd) {
     document.getElementById('lockScreen').style.display = 'none';
     loadAllUsers();
   }
+});
+
+document.getElementById('pwdInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') unlock();
 });
 </script>
 </body>
