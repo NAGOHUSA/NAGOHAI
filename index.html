@@ -474,47 +474,35 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 
 @media (max-width: 768px) {
-  /* Hide side panels on tablet */
   .left, .right { display: none; }
   .shell { flex-direction: column; }
   .chat-col { width: 100%; }
   
-  /* Adjust topbar for smaller screens */
-  .topbar {
-    padding: 0 1rem;
-    height: 56px;
-  }
+  .topbar { padding: 0 1rem; height: 56px; }
   .wordmark { font-size: 1.1rem; }
   .tagline { font-size: 0.55rem; }
   .tuser-name { display: none !important; }
   .tuser-avatar { width: 24px; height: 24px; }
   .tbtn { padding: 4px 10px; font-size: 0.6rem; }
   
-  /* Adjust modal for mobile */
-  .modal {
-    max-width: 90vw;
-    border-radius: 16px;
-  }
+  .modal { max-width: 90vw; border-radius: 16px; }
   .modal-body { padding: 1.5rem 1.5rem 1.5rem; }
   .modal-title { font-size: 1.1rem; }
   .modal-sub { font-size: 0.7rem; }
   .vprops { gap: 6px; }
   .vprop { padding: 6px 10px; }
   
-  /* Adjust chat area */
   .msgs { padding: 1.5rem 0 0.5rem; }
   .row { padding: 0.3rem 1rem; gap: 8px; }
   .bub { max-width: 90%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
   .ava { width: 28px; height: 28px; font-size: 0.7rem; }
   
-  /* Input area */
   .ibar { padding: 0.65rem 1rem; }
   .iinner { gap: 0.5rem; }
   .prompt { padding: 0.6rem 0.8rem; font-size: 0.85rem; min-height: 44px; }
   .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; }
   .ifoot { padding: 0.3rem 1rem 0; font-size: 0.52rem; }
   
-  /* Empty state */
   .empty { padding: 1rem; }
   .ehero { font-size: 1.8rem; margin-bottom: 0.3rem; }
   .esub { font-size: 0.75rem; margin-bottom: 1.5rem; max-width: 100%; }
@@ -525,26 +513,15 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 
 @media (max-width: 480px) {
-  /* Extra small phones */
-  .topbar {
-    height: 52px;
-    padding: 0 0.75rem;
-    gap: 0.5rem;
-  }
+  .topbar { height: 52px; padding: 0 0.75rem; gap: 0.5rem; }
   .wordmark { font-size: 0.95rem; }
   .tagline { font-size: 0.5rem; letter-spacing: 0.04em; }
-  .tsep { flex: 1; }
   .tpill { padding: 3px 8px; font-size: 0.6rem; }
   .dot { width: 5px; height: 5px; }
   .tbtn { padding: 3px 8px; font-size: 0.55rem; }
   .tbal { font-size: 0.6rem; }
-  .tbal span { font-size: 0.5rem; }
   
-  /* Modal adjustments */
-  .modal {
-    max-width: 95vw;
-    border-radius: 14px;
-  }
+  .modal { max-width: 95vw; border-radius: 14px; }
   .modal-hero { padding: 1.5rem 1.5rem 1rem; }
   .modal-logo { font-size: 1.6rem; margin-bottom: 0.25rem; }
   .modal-tagline { font-size: 0.65rem; }
@@ -560,7 +537,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .guest-note { font-size: 0.55rem; }
   .modal-foot { padding: 0.6rem 1.2rem; font-size: 0.58rem; }
   
-  /* Chat layout */
   .msgs { padding: 1rem 0 0.5rem; }
   .row { padding: 0.25rem 0.75rem; gap: 6px; }
   .ava { width: 26px; height: 26px; font-size: 0.65rem; margin-top: 2px; }
@@ -570,31 +546,15 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .rmeta { font-size: 0.52rem; gap: 6px; }
   .rmeta .chip { padding: 1px 6px; font-size: 0.52rem; }
   
-  /* Suggestions */
   .suggestions { gap: 4px; margin-top: 4px; max-width: 92%; }
   .sug { padding: 3px 10px; font-size: 0.65rem; border-radius: 10px; }
   
-  /* Input */
   .ibar { padding: 0.5rem 0.75rem; }
   .iinner { gap: 0.4rem; }
-  .prompt { 
-    padding: 0.5rem 0.7rem; 
-    font-size: 0.8rem; 
-    min-height: 40px;
-    max-height: 120px;
-  }
-  .send { 
-    padding: 0 0.8rem; 
-    font-size: 0.65rem; 
-    height: 40px;
-  }
-  .ifoot { 
-    padding: 0.25rem 0.75rem 0;
-    font-size: 0.5rem;
-    gap: 0.5rem;
-  }
+  .prompt { padding: 0.5rem 0.7rem; font-size: 0.8rem; min-height: 40px; max-height: 120px; }
+  .send { padding: 0 0.8rem; font-size: 0.65rem; height: 40px; }
+  .ifoot { padding: 0.25rem 0.75rem 0; font-size: 0.5rem; gap: 0.5rem; }
   
-  /* Empty state */
   .empty { padding: 0.75rem; }
   .ehero { font-size: 1.4rem; line-height: 1.1; margin-bottom: 0.25rem; }
   .esub { font-size: 0.7rem; line-height: 1.6; margin-bottom: 1rem; }
@@ -603,34 +563,15 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .echip span { font-size: 0.75rem; }
   .etagline { font-size: 0.55rem; margin-top: 0.75rem; }
   
-  /* Success banner mobile */
-  .success-banner {
-    top: auto;
-    bottom: 20px;
-    right: 10px;
-    left: 10px;
-    padding: 0.75rem 1rem;
-    font-size: 0.8rem;
-    border-radius: 10px;
-  }
+  .success-banner { top: auto; bottom: 20px; right: 10px; left: 10px; padding: 0.75rem 1rem; font-size: 0.8rem; border-radius: 10px; }
 }
 
-/* Touch-friendly interactions */
 @media (hover: none) and (pointer: coarse) {
-  button, .pbtn, .qbtn, .echip, .sug, .idea-item {
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-    transition: all 0.2s;
-  }
-  
-  button:active, .pbtn:active, .qbtn:active, .echip:active, .sug:active {
-    opacity: 0.8;
-  }
+  button, .pbtn, .qbtn, .echip, .sug, .idea-item { -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1); transition: all 0.2s; }
+  button:active, .pbtn:active, .qbtn:active, .echip:active, .sug:active { opacity: 0.8; }
 }
 
-/* Prevent zoom on inputs */
-input, textarea, select {
-  font-size: 16px !important;
-}
+input, textarea, select { font-size: 16px !important; }
 </style>
 </head>
 <body>
@@ -654,7 +595,6 @@ input, textarea, select {
 
       <div class="google-btn-wrap">
         <button class="google-signin-btn" id="googleSignInBtn" onclick="initiateGoogleSignIn()">
-          <!-- Google "G" logo SVG -->
           <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
             <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/>
@@ -720,8 +660,7 @@ input, textarea, select {
           <div class="bal-sub">NAGOH TOKENS</div>
         </div>
       </div>
-      <!-- Buy More Tokens -->
-      <a class="buy-btn" id="buyLink" href="#" target="_blank" onclick="openBuyTokens()">+ Buy More Tokens</a>
+      <a class="buy-btn" id="buyLink" href="#" target="_blank" onclick="openBuyTokens(); return false;">+ Buy More Tokens</a>
     </div>
 
     <div class="pblock">
@@ -855,17 +794,16 @@ input, textarea, select {
 
 <script>
 // ─────────────────────────────────────────────────────────
-// CONFIGURATION — update these for your deployment
+// CONFIGURATION — UPDATE THESE VALUES
 // ─────────────────────────────────────────────────────────
-const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
+const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';  // Your Cloudflare Worker URL
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
-// Stripe Payment Link — with client reference and success redirect
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
 const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
 // ─────────────────────────────────────────────────────────
 
-let sessionToken = ''; // JWT session from our Worker (stored in sessionStorage)
-let currentUser  = null; // { user_id, email, name, picture }
+let sessionToken = '';
+let currentUser  = null;
 let isGuest      = false;
 let msgs         = [];
 let sessions     = lsGet('nagoh_sessions', []);
@@ -891,7 +829,7 @@ window.onload = () => {
     google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
       callback: handleGoogleCredential,
-      auto_select: true,
+      auto_select: false,
       cancel_on_tap_outside: false,
     });
   }
@@ -900,30 +838,37 @@ window.onload = () => {
   checkPaymentSuccess();
 
   // Check if we have a saved session
-  const saved = localStorage.getItem('nagoh_session');
+  const sessionStored = sessionStorage.getItem('nagoh_session');
+  const localStored = localStorage.getItem('nagoh_session');
+  const saved = sessionStored || localStored;
+  
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
       sessionToken = parsed.token;
       currentUser  = parsed.user;
+      balance      = parsed.balance || 0;
       applyUserToUI(currentUser);
+      setBalUI(balance);
+      setLed('on', 'Connected ✓');
+      document.getElementById('sendBtn').disabled = false;
+      hideModal();
       connect();
-    } catch { showModal(); }
+    } catch { 
+      showModal(); 
+    }
   } else {
     showModal();
   }
 };
 
-// Check if user just returned from Stripe
 function checkPaymentSuccess() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('payment') === 'success') {
-    // Show success message and refresh balance
     showSuccessNotification('✅ Purchase successful! Your tokens have been added.');
     if (sessionToken) {
-      setTimeout(() => { connect(); }, 1000); // Refresh balance after 1 second
+      setTimeout(() => { connect(); }, 1000);
     }
-    // Clean up URL
     window.history.replaceState({}, document.title, window.location.pathname);
   }
 }
@@ -938,21 +883,18 @@ function showSuccessNotification(msg) {
 }
 
 // ─────────────────────────────────────────────────────────
-// GOOGLE OAUTH — ONE TAP FLOW (reliable, no redirects!)
+// GOOGLE OAUTH
 // ─────────────────────────────────────────────────────────
 
 function initiateGoogleSignIn() {
   document.getElementById('authErr').textContent = '';
   document.getElementById('authLoading').style.display = 'block';
-  // The One Tap flow handles everything automatically
   if (typeof google !== 'undefined') {
     google.accounts.id.prompt();
   }
 }
 
-// Called by Google's callback when user selects account
 async function handleGoogleCredential(response) {
-  // response.credential = Google ID token (JWT)
   if (!response || !response.credential) {
     document.getElementById('authLoading').style.display = 'none';
     document.getElementById('authErr').textContent = 'Sign-in cancelled.';
@@ -975,7 +917,9 @@ async function handleGoogleCredential(response) {
     currentUser  = d.user;
     balance      = d.token_balance;
 
-    localStorage.setItem('nagoh_session', JSON.stringify({ token: sessionToken, user: currentUser }));
+    const sessionData = { token: sessionToken, user: currentUser, balance: balance };
+    sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
+    localStorage.setItem('nagoh_session', JSON.stringify(sessionData));
 
     applyUserToUI(currentUser);
     setBalUI(balance);
@@ -1026,7 +970,6 @@ function openBuyTokens() {
   if (!currentUser) { showModal(); return; }
   if (isGuest) { showModal(); return; }
   
-  // Build Stripe URL with user ID and success redirect
   const stripeUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}&success_url=${STRIPE_SUCCESS_URL}`;
   window.location.href = stripeUrl;
 }
@@ -1300,10 +1243,30 @@ function grow(el) {
 }
 
 function continueAsGuest() {
-  document.getElementById('authErr').textContent = '';
   document.getElementById('authLoading').style.display = 'block';
-  // TODO: Implement guest session if needed
-  document.getElementById('authLoading').style.display = 'none';
+  fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' })
+    .then(r => r.json())
+    .then(d => {
+      if (d.session_token) {
+        sessionToken = d.session_token;
+        currentUser = d.user;
+        balance = d.token_balance;
+        isGuest = true;
+        
+        const sessionData = { token: sessionToken, user: currentUser, balance: balance };
+        sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
+        
+        applyUserToUI(currentUser);
+        setBalUI(balance);
+        document.getElementById('guestBanner').classList.add('show');
+        setLed('on', 'Connected ✓');
+        document.getElementById('sendBtn').disabled = false;
+        hideModal();
+      }
+    })
+    .finally(() => {
+      document.getElementById('authLoading').style.display = 'none';
+    });
 }
 
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
