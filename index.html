@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="https://js.stripe.com/v3/" async defer></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -112,70 +111,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   border-right: 1px solid var(--border);
   display: flex; flex-direction: column; overflow: hidden;
 }
-
-/* Mobile panel toggle button */
-.panel-toggle {
-  display: none; position: absolute; bottom: 1rem; left: 1rem;
-  background: var(--teal); color: #fff; border: none;
-  border-radius: 50%; width: 48px; height: 48px; font-size: 1.2rem;
-  cursor: pointer; z-index: 50; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.panel-toggle.show { display: flex; align-items: center; justify-content: center; }
-
-.mobile-panels {
-  display: none; position: fixed; inset: 0; z-index: 999;
-  background: rgba(0,0,0,0.5); padding: 1rem;
-}
-
-.mobile-panels.show { display: flex; align-items: flex-end; }
-
-.mobile-panel-content {
-  width: 100%; max-height: 80vh; background: var(--parchmt);
-  border-radius: 20px 20px 0 0; overflow-y: auto;
-  animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-.panel-header {
-  position: sticky; top: 0; background: var(--deep); color: #fff;
-  padding: 1rem 1.5rem; border-radius: 20px 20px 0 0;
-  display: flex; justify-content: space-between; align-items: center;
-  z-index: 10;
-}
-
-.panel-header-title {
-  font-family: var(--serif); font-size: 1.1rem; font-weight: 600;
-}
-
-.panel-close {
-  background: none; border: none; color: #fff; font-size: 1.5rem;
-  cursor: pointer; padding: 0; width: 32px; height: 32px;
-  display: flex; align-items: center; justify-content: center;
-}
-
-.panel-body { padding: 1.5rem 1rem; }
-
-.panel-tabs {
-  display: flex; gap: 0; border-bottom: 1px solid var(--border);
-  margin-bottom: 1rem;
-}
-
-.panel-tab {
-  flex: 1; padding: 0.75rem; background: none; border: none;
-  border-bottom: 2px solid transparent; color: var(--dim);
-  cursor: pointer; font-family: var(--sans); font-size: 0.75rem;
-  font-weight: 600; transition: all 0.2s; text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.panel-tab:hover { color: var(--ink); }
-.panel-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
-
-.panel-content { display: none; }
-.panel-content.active { display: block; }
-
 .pblock { padding: 1rem 1rem; border-bottom: 1px solid var(--border); }
 .plabel { 
   font-size: 0.6rem; font-weight: 600; letter-spacing: 0.16em;
@@ -542,69 +477,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .success-banner.show { display: flex; }
 @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* ── CHECKOUT MODAL ── */
-.checkout-wrap {
-  position: fixed; inset: 0; z-index: 1000;
-  background: rgba(45, 32, 22, 0.72);
-  display: none; align-items: center; justify-content: center;
-  padding: 1rem; backdrop-filter: blur(6px);
-}
-.checkout-wrap.show { display: flex; }
-.checkout-modal {
-  background: #fff; border: 1px solid var(--border);
-  width: 100%; max-width: 480px;
-  border-radius: 20px; overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-  animation: mIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.checkout-header {
-  background: var(--deep); padding: 2rem 2rem 1.5rem;
-  text-align: center;
-}
-.checkout-title {
-  font-family: var(--serif); font-size: 1.8rem; font-weight: 700;
-  color: #fff; margin-bottom: 0.5rem;
-}
-.checkout-subtitle {
-  font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.06em;
-}
-.checkout-body { padding: 1.75rem 2rem 2rem; }
-.checkout-amount {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem;
-}
-.amount-btn {
-  padding: 12px; background: var(--parchmt); border: 2px solid var(--border2);
-  color: var(--ink); font-family: var(--sans); font-size: 0.85rem; font-weight: 600;
-  cursor: pointer; border-radius: 12px; transition: all 0.2s;
-}
-.amount-btn:hover { border-color: var(--teal); background: var(--teal-lt); }
-.amount-btn.selected { background: var(--teal); border-color: var(--teal); color: #fff; }
-.checkout-form { margin-bottom: 1.5rem; }
-.form-group { margin-bottom: 1rem; }
-.form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--dim);
-  letter-spacing: 0.06em; margin-bottom: 0.5rem; text-transform: uppercase; }
-.form-input { width: 100%; padding: 0.75rem; border: 1.5px solid var(--border2);
-  font-family: var(--sans); font-size: 0.9rem; border-radius: 8px; outline: none;
-  transition: border-color 0.2s; }
-.form-input:focus { border-color: var(--teal); }
-#card-element { padding: 0.75rem; border: 1.5px solid var(--border2);
-  border-radius: 8px; background: #fff; }
-#card-element.StripeElement--focus { border-color: var(--teal); }
-.checkout-btn {
-  width: 100%; padding: 12px; background: var(--teal); color: #fff;
-  font-family: var(--sans); font-size: 0.85rem; font-weight: 600;
-  border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s;
-}
-.checkout-btn:hover:not(:disabled) { background: #228b7e; }
-.checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.checkout-error { color: var(--rose); font-size: 0.75rem; margin-top: 0.75rem; min-height: 1.2rem; }
-.checkout-close {
-  position: absolute; top: 1rem; right: 1rem; width: 32px; height: 32px;
-  background: transparent; border: none; font-size: 1.5rem; cursor: pointer;
-  color: rgba(255,255,255,0.5); transition: color 0.2s;
-}
-.checkout-close:hover { color: #fff; }
-
 /* RESPONSIVE */
 @media (max-width: 1024px) {
   .left { width: 180px; }
@@ -614,10 +486,8 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 
 @media (max-width: 768px) {
   .left, .right { display: none; }
-  .shell { flex-direction: column; position: relative; }
+  .shell { flex-direction: column; }
   .chat-col { width: 100%; }
-  
-  .panel-toggle { display: flex; }
   
   .topbar { padding: 0 1rem; height: 56px; }
   .wordmark { font-size: 1.1rem; }
@@ -638,7 +508,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .bub { max-width: 90%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
   .ava { width: 28px; height: 28px; font-size: 0.7rem; }
   
-  .ibar { padding: 0.65rem 1rem; padding-bottom: 5rem; }
+  .ibar { padding: 0.65rem 1rem; }
   .iinner { gap: 0.5rem; }
   .prompt { padding: 0.6rem 0.8rem; font-size: 0.85rem; min-height: 44px; }
   .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; }
@@ -735,7 +605,7 @@ input, textarea, select { font-size: 16px !important; }
       </div>
 
       <div class="google-btn-wrap">
-        <button class="google-signin-btn" id="googleSignInBtn">
+        <button class="google-signin-btn" id="googleSignInBtn" onclick="initiateGoogleSignIn()">
           <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
             <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/>
@@ -757,39 +627,6 @@ input, textarea, select { font-size: 16px !important; }
       </div>
     </div>
     <div class="modal-foot">ai.nagoh.us &nbsp;·&nbsp; <a href="#" onclick="openBuyTokens()">buy tokens</a> &nbsp;·&nbsp; <a href="#">help</a></div>
-  </div>
-</div>
-
-<!-- ── CHECKOUT MODAL ── -->
-<div class="checkout-wrap" id="checkoutWrap">
-  <div class="checkout-modal">
-    <button class="checkout-close" onclick="closeCheckout()">×</button>
-    <div class="checkout-header">
-      <div class="checkout-title">Get Tokens</div>
-      <div class="checkout-subtitle">Add credits to your account</div>
-    </div>
-    <div class="checkout-body">
-      <div class="checkout-amount">
-        <button class="amount-btn selected" onclick="selectAmount(5000, this)">
-          5,000 tokens<br><span style="font-size:0.7rem;opacity:0.7;">$9.99</span>
-        </button>
-        <button class="amount-btn" onclick="selectAmount(15000, this)">
-          15,000 tokens<br><span style="font-size:0.7rem;opacity:0.7;">$24.99</span>
-        </button>
-      </div>
-      <form class="checkout-form" id="checkoutForm" onsubmit="handleCheckout(event)">
-        <div class="form-group">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" id="checkoutEmail" placeholder="you@example.com" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Card Details</label>
-          <div id="card-element"></div>
-        </div>
-        <button type="submit" class="checkout-btn" id="checkoutBtn">Pay Now</button>
-      </form>
-      <div class="checkout-error" id="checkoutError"></div>
-    </div>
   </div>
 </div>
 
@@ -911,7 +748,7 @@ input, textarea, select { font-size: 16px !important; }
 
     <div class="rblock">
       <div class="plabel">Tone / Mode</div>
-      <select class="msel" id="toneMode" onchange="updateSysPrompt()">
+      <select class="msel" id="toneMode" onchange="onToneModeChange()">
         <option value="friendly">😊 Friendly & warm</option>
         <option value="professional">💼 Professional</option>
         <option value="playful">🎉 Fun & playful</option>
@@ -929,110 +766,14 @@ input, textarea, select { font-size: 16px !important; }
   </div>
 </div>
 
-<!-- Mobile Panels -->
-<button class="panel-toggle" id="panelToggle" onclick="togglePanels()">⚙️</button>
-
-<div class="mobile-panels" id="mobilePanels">
-  <div class="mobile-panel-content">
-    <div class="panel-header">
-      <div class="panel-header-title" id="panelTitle">Settings</div>
-      <button class="panel-close" onclick="closePanels()">×</button>
-    </div>
-    
-    <div class="panel-tabs">
-      <button class="panel-tab active" onclick="switchMobileTab(0)">Settings</button>
-      <button class="panel-tab" onclick="switchMobileTab(1)">Ideas</button>
-      <button class="panel-tab" onclick="switchMobileTab(2)">History</button>
-    </div>
-    
-    <!-- Tab 0: Settings -->
-    <div class="panel-content active">
-      <div class="panel-body">
-        <!-- Industry Selector -->
-        <div style="margin-bottom: 1.5rem;">
-          <div class="plabel">Your Industry</div>
-          <select class="industry-sel" id="industrySel-mobile" onchange="onIndustryChange()">
-            <option value="etsy">🛍️ Etsy & Craft Sellers</option>
-            <option value="realtor">🏠 Real Estate Agents</option>
-            <option value="landlord">🏢 Landlords & Property Managers</option>
-            <option value="coffee">☕ Coffee Shops & Cafés</option>
-            <option value="landscaping">🌳 Landscaping & Yard Services</option>
-            <option value="roofing">🏠 Roofing & Construction</option>
-            <option value="plumbing">🔧 Plumbing & HVAC</option>
-            <option value="salon">💇 Hair & Beauty Services</option>
-            <option value="photography">📸 Photography & Creative Services</option>
-            <option value="personal_training">💪 Personal Training & Fitness</option>
-            <option value="consulting">💼 Consulting & Professional Services</option>
-            <option value="general">⭐ General Small Business</option>
-          </select>
-          <div class="industry-badge" id="industryBadge-mobile">Etsy & Craft Sellers</div>
-        </div>
-
-        <!-- Balance -->
-        <div style="margin-bottom: 1.5rem;">
-          <div class="plabel">Your Balance</div>
-          <div class="bal-wrap">
-            <div class="bal-icon">🪙</div>
-            <div>
-              <div class="bal-num" id="balNum-mobile">—</div>
-              <div class="bal-sub">NAGOH TOKENS</div>
-            </div>
-          </div>
-          <button class="buy-btn" onclick="openBuyTokens(); closePanels();">+ Buy More Tokens</button>
-        </div>
-
-        <!-- Model -->
-        <div style="margin-bottom: 1.5rem;">
-          <div class="plabel">AI Model</div>
-          <select class="msel" id="modelSel-mobile" onchange="onModel()">
-            <option value="deepseek-chat">NagohAI Chat (fast)</option>
-            <option value="deepseek-reasoner">NagohAI Reasoner (deep)</option>
-          </select>
-        </div>
-
-        <!-- Tone -->
-        <div style="margin-bottom: 1.5rem;">
-          <div class="plabel">Tone / Mode</div>
-          <select class="msel" id="toneMode-mobile" onchange="updateSysPrompt()">
-            <option value="friendly">😊 Friendly & warm</option>
-            <option value="professional">💼 Professional</option>
-            <option value="playful">🎉 Fun & playful</option>
-            <option value="concise">⚡ Short & snappy</option>
-          </select>
-        </div>
-
-        <!-- Buttons -->
-        <button class="pbtn primary" onclick="newChat(); closePanels();">+ New Chat</button>
-        <button class="pbtn danger" onclick="clearAll(); closePanels();">Clear History</button>
-      </div>
-    </div>
-    
-    <!-- Tab 1: Ideas -->
-    <div class="panel-content">
-      <div class="panel-body">
-        <div class="ideas" id="ideas-mobile"></div>
-      </div>
-    </div>
-    
-    <!-- Tab 2: History -->
-    <div class="panel-content">
-      <div class="panel-body">
-        <div class="plabel">Past Chats</div>
-        <div class="hscroll" id="hscroll-mobile" style="max-height: 400px;"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
-// ─────────────────────────────────────────────────────────
-// CONFIGURATION — UPDATE THESE VALUES
 // ─────────────────────────────────────────────────────────
 // CONFIGURATION — UPDATE THESE VALUES
 // ─────────────────────────────────────────────────────────
 const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
-const STRIPE_PUBLISHABLE_KEY = 'pk_live_51TK0JWGUbXtKf7F7FBt5ingZaPPj8oi6n7sk50AS4yWKkoISv6bJHXphJS5ygOX0QQScFuDUskZ6Uq0SCgwBVwnr00GVEiex2'; // Replace with your Stripe publishable key
+const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
+const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
 // ─────────────────────────────────────────────────────────
 
 // Industry-specific configurations
@@ -1374,10 +1115,6 @@ let balance      = 0;
 let sessSpent    = 0;
 let turns        = 0;
 let currentIndustry = 'etsy';
-let stripe       = null;
-let stripeElements = null;
-let stripeCardElement = null;
-let selectedAmount = 5000;
 
 // ─────────────────────────────────────────────────────────
 // INITIALIZATION
@@ -1411,20 +1148,6 @@ window.onload = () => {
     });
   }
   
-  // Bind Google Sign-In button
-  const googleBtn = document.getElementById('googleSignInBtn');
-  if (googleBtn) {
-    googleBtn.addEventListener('click', initiateGoogleSignIn);
-  }
-  
-  // Initialize Stripe
-  if (typeof Stripe !== 'undefined' && STRIPE_PUBLISHABLE_KEY) {
-    stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-    stripeElements = stripe.elements();
-    stripeCardElement = stripeElements.create('card');
-    stripeCardElement.mount('#card-element');
-  }
-  
   // Load saved industry preference
   currentIndustry = lsGet('nagoh_industry', 'etsy');
   document.getElementById('industrySel').value = currentIndustry;
@@ -1451,15 +1174,9 @@ function onIndustryChange() {
   lsSet('nagoh_industry', currentIndustry);
   const ind = INDUSTRIES[currentIndustry];
   
-  // Sync mobile selector
-  const indMobile = document.getElementById('industrySel-mobile');
-  if (indMobile) indMobile.value = currentIndustry;
-  
   if (ind) {
     // Update industry badge (desktop & mobile)
     document.getElementById('industryBadge').textContent = ind.name;
-    const badgeMobile = document.getElementById('industryBadge-mobile');
-    if (badgeMobile) badgeMobile.textContent = ind.name;
     
     // Update placeholder
     document.getElementById('prompt').placeholder = ind.placeholder;
@@ -1486,8 +1203,6 @@ function onIndustryChange() {
       ideas.appendChild(item);
     });
     
-    // Render ideas (mobile) - will be synced when panel opens
-    
     // Update empty state
     const empty = document.getElementById('empty');
     if (empty) {
@@ -1496,6 +1211,9 @@ function onIndustryChange() {
         <div class="esub">${ind.emptyMsg}</div>
         <div class="etagline">Use quick starters or type your question below</div>`;
     }
+    
+    // Update system prompt to reflect new industry
+    updateSysPrompt();
   }
 }
 
@@ -1525,14 +1243,9 @@ function showSuccessNotification(msg) {
 
 function initiateGoogleSignIn() {
   document.getElementById('authErr').textContent = '';
+  document.getElementById('authLoading').style.display = 'block';
   if (typeof google !== 'undefined') {
-    document.getElementById('authLoading').style.display = 'block';
-    // Show the One Tap UI
-    google.accounts.id.prompt((notification) => {
-      console.log('Google prompt notification:', notification);
-    });
-  } else {
-    document.getElementById('authErr').textContent = 'Google Sign-In not available. Please refresh the page.';
+    google.accounts.id.prompt();
   }
 }
 
@@ -1612,69 +1325,8 @@ function openBuyTokens() {
   if (!currentUser) { showModal(); return; }
   if (isGuest) { showModal(); return; }
   
-  document.getElementById('checkoutWrap').classList.add('show');
-  document.getElementById('checkoutEmail').value = currentUser.email || '';
-}
-
-function closeCheckout() {
-  document.getElementById('checkoutWrap').classList.remove('show');
-  document.getElementById('checkoutError').textContent = '';
-}
-
-function selectAmount(amount, btn) {
-  selectedAmount = amount;
-  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-}
-
-async function handleCheckout(e) {
-  e.preventDefault();
-  document.getElementById('checkoutError').textContent = '';
-  const btn = document.getElementById('checkoutBtn');
-  btn.disabled = true;
-  btn.textContent = 'Processing...';
-
-  try {
-    const email = document.getElementById('checkoutEmail').value.trim();
-    
-    // Create payment method from card element
-    const { paymentMethod, error } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: stripeCardElement,
-      billing_details: { email }
-    });
-
-    if (error) throw new Error(error.message);
-
-    // Call backend /checkout endpoint
-    const r = await fetch(`${WORKER}/v1/checkout`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionToken}`,
-      },
-      body: JSON.stringify({
-        amount: selectedAmount,
-        paymentMethodId: paymentMethod.id,
-        email: email
-      })
-    });
-
-    const data = await r.json();
-    if (!r.ok) throw new Error(data.error || 'Payment failed');
-
-    // Success!
-    closeCheckout();
-    balance = data.token_balance;
-    setBalUI(balance);
-    showSuccessNotification(`✅ ${selectedAmount.toLocaleString()} tokens added!`);
-    
-  } catch (err) {
-    document.getElementById('checkoutError').textContent = '❌ ' + (err.message || 'Payment failed. Try again.');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Pay Now';
-  }
+  const stripeUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}&success_url=${STRIPE_SUCCESS_URL}`;
+  window.location.href = stripeUrl;
 }
 
 // ─────────────────────────────────────────────────────────
@@ -1845,8 +1497,6 @@ function setBalUI(n) {
   const fmt = n.toLocaleString();
   document.getElementById('balNum').textContent = fmt;
   document.getElementById('topBal').innerHTML = `${fmt} <span>tokens</span>`;
-  const balMobile = document.getElementById('balNum-mobile');
-  if (balMobile) balMobile.textContent = fmt;
 }
 
 function onModel() {}
@@ -1854,14 +1504,23 @@ function onModel() {}
 function getSystemPrompt() {
   const tone = document.getElementById('toneMode').value;
   const ind = INDUSTRIES[currentIndustry];
+  
+  // Always use the current industry's tone prompts
   if (ind && ind.tonePrompts && ind.tonePrompts[tone]) {
     return ind.tonePrompts[tone];
   }
+  
+  // Fallback to general industry
   return INDUSTRIES.general.tonePrompts[tone] || INDUSTRIES.general.tonePrompts.friendly;
 }
 
 function updateSysPrompt() {
   document.getElementById('sysTxt').value = getSystemPrompt();
+}
+
+function onToneModeChange() {
+  // Update the system prompt
+  updateSysPrompt();
 }
 
 function updateStats() {
@@ -1970,70 +1629,6 @@ function continueAsGuest() {
 
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
 function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
-
-// ─────────────────────────────────────────────────────────
-// MOBILE PANELS
-// ─────────────────────────────────────────────────────────
-
-function togglePanels() {
-  const panels = document.getElementById('mobilePanels');
-  panels.classList.toggle('show');
-  if (panels.classList.contains('show')) {
-    syncMobilePanels();
-  }
-}
-
-function closePanels() {
-  document.getElementById('mobilePanels').classList.remove('show');
-}
-
-function switchMobileTab(idx) {
-  document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.panel-content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.panel-tab')[idx].classList.add('active');
-  document.querySelectorAll('.panel-content')[idx].classList.add('active');
-  
-  const titles = ['Settings', 'Ideas', 'History'];
-  document.getElementById('panelTitle').textContent = titles[idx];
-}
-
-function syncMobilePanels() {
-  // Sync industry selector
-  const ind = document.getElementById('industrySel');
-  const indMobile = document.getElementById('industrySel-mobile');
-  if (indMobile) indMobile.value = ind.value;
-  
-  // Sync model selector
-  const model = document.getElementById('modelSel');
-  const modelMobile = document.getElementById('modelSel-mobile');
-  if (modelMobile) modelMobile.value = model.value;
-  
-  // Sync tone selector
-  const tone = document.getElementById('toneMode');
-  const toneMobile = document.getElementById('toneMode-mobile');
-  if (toneMobile) toneMobile.value = tone.value;
-  
-  // Sync balance
-  const balNum = document.getElementById('balNum');
-  const balMobile = document.getElementById('balNum-mobile');
-  if (balMobile) balMobile.textContent = balNum.textContent;
-  
-  // Sync industry badge
-  const badge = document.getElementById('industryBadge');
-  const badgeMobile = document.getElementById('industryBadge-mobile');
-  if (badgeMobile) badgeMobile.textContent = badge.textContent;
-  
-  // Sync ideas
-  const ideas = document.getElementById('ideas');
-  const ideasMobile = document.getElementById('ideas-mobile');
-  if (ideasMobile) ideasMobile.innerHTML = ideas.innerHTML;
-  
-  // Sync history
-  const history = document.getElementById('hscroll');
-  const historyMobile = document.getElementById('hscroll-mobile');
-  if (historyMobile) historyMobile.innerHTML = history.innerHTML;
-}
-
 </script>
 </body>
 </html>
