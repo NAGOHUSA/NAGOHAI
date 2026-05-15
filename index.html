@@ -489,12 +489,58 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .shell { flex-direction: column; }
   .chat-col { width: 100%; }
   
-  .topbar { padding: 0 1rem; height: 56px; }
+  .topbar { padding: 0 1rem; height: auto; flex-wrap: wrap; gap: 0.5rem; }
   .wordmark { font-size: 1.1rem; }
   .tagline { font-size: 0.55rem; }
   .tuser-name { display: none !important; }
   .tuser-avatar { width: 24px; height: 24px; }
   .tbtn { padding: 4px 10px; font-size: 0.6rem; }
+  
+  .mobile-industry-bar {
+    display: flex;
+    width: 100%;
+    order: 10;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .mobile-industry-label {
+    font-size: 0.55rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 0 0.5rem;
+  }
+  .mobile-industry-sel {
+    flex: 1;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    padding: 0.5rem 0.6rem;
+    outline: none;
+    cursor: pointer;
+    border-radius: 6px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233d2f24'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 24px;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .mobile-industry-sel:focus {
+    border-color: var(--teal);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(42,157,143,0.2);
+  }
+  .mobile-industry-sel option {
+    background: #fff;
+    padding: 8px;
+  }
   
   .modal { max-width: 90vw; border-radius: 16px; }
   .modal-body { padding: 1.5rem 1.5rem 1.5rem; }
@@ -655,6 +701,25 @@ input, textarea, select { font-size: 16px !important; }
     <span class="tuser-name" id="tuserName"></span>
   </div>
   <button class="tbtn" onclick="signOut()">Sign out</button>
+  
+  <!-- Mobile Industry Selector -->
+  <div class="mobile-industry-bar">
+    <span class="mobile-industry-label">Industry:</span>
+    <select class="mobile-industry-sel" id="mobileIndustrySel" onchange="onIndustryChange()">
+      <option value="etsy">🛍️ Etsy & Craft Sellers</option>
+      <option value="realtor">🏠 Real Estate Agents</option>
+      <option value="landlord">🏢 Landlords & Property Managers</option>
+      <option value="coffee">☕ Coffee Shops & Cafés</option>
+      <option value="landscaping">🌳 Landscaping & Yard Services</option>
+      <option value="roofing">🏠 Roofing & Construction</option>
+      <option value="plumbing">🔧 Plumbing & HVAC</option>
+      <option value="salon">💇 Hair & Beauty Services</option>
+      <option value="photography">📸 Photography & Creative Services</option>
+      <option value="personal_training">💪 Personal Training & Fitness</option>
+      <option value="consulting">💼 Consulting & Professional Services</option>
+      <option value="general">⭐ General Small Business</option>
+    </select>
+  </div>
 </div>
 
 <!-- ── SHELL ── -->
@@ -748,7 +813,7 @@ input, textarea, select { font-size: 16px !important; }
 
     <div class="rblock">
       <div class="plabel">Tone / Mode</div>
-      <select class="msel" id="toneMode" onchange="onToneModeChange()">
+      <select class="msel" id="toneMode" onchange="updateSysPrompt()">
         <option value="friendly">😊 Friendly & warm</option>
         <option value="professional">💼 Professional</option>
         <option value="playful">🎉 Fun & playful</option>
@@ -1150,10 +1215,12 @@ window.onload = () => {
   
   // Load saved industry preference
   currentIndustry = lsGet('nagoh_industry', 'etsy');
-  document.getElementById('industrySel').value = currentIndustry;
+  const desktopSel = document.getElementById('industrySel');
+  const mobileSel = document.getElementById('mobileIndustrySel');
+  if (desktopSel) desktopSel.value = currentIndustry;
+  if (mobileSel) mobileSel.value = currentIndustry;
   
   onIndustryChange();
-  updateSysPrompt();
   renderHistory();
   checkPaymentSuccess();
 
@@ -1170,38 +1237,52 @@ window.onload = () => {
 };
 
 function onIndustryChange() {
-  currentIndustry = document.getElementById('industrySel').value;
+  currentIndustry = document.getElementById('industrySel')?.value || 
+                   document.getElementById('mobileIndustrySel')?.value || 
+                   'etsy';
+  
+  // Sync both selectors
+  const desktopSel = document.getElementById('industrySel');
+  const mobileSel = document.getElementById('mobileIndustrySel');
+  if (desktopSel) desktopSel.value = currentIndustry;
+  if (mobileSel) mobileSel.value = currentIndustry;
+  
   lsSet('nagoh_industry', currentIndustry);
   const ind = INDUSTRIES[currentIndustry];
   
   if (ind) {
-    // Update industry badge (desktop & mobile)
-    document.getElementById('industryBadge').textContent = ind.name;
+    // Update industry badge
+    const badge = document.getElementById('industryBadge');
+    if (badge) badge.textContent = ind.name;
     
     // Update placeholder
     document.getElementById('prompt').placeholder = ind.placeholder;
     
     // Render quick starters
     const grid = document.getElementById('quickGrid');
-    grid.innerHTML = '';
-    ind.quickStarters.forEach(q => {
-      const btn = document.createElement('button');
-      btn.className = 'qbtn';
-      btn.onclick = () => quickPrompt(q.prompt);
-      btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
-      grid.appendChild(btn);
-    });
+    if (grid) {
+      grid.innerHTML = '';
+      ind.quickStarters.forEach(q => {
+        const btn = document.createElement('button');
+        btn.className = 'qbtn';
+        btn.onclick = () => quickPrompt(q.prompt);
+        btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
+        grid.appendChild(btn);
+      });
+    }
     
-    // Render ideas (desktop)
+    // Render ideas
     const ideas = document.getElementById('ideas');
-    ideas.innerHTML = '';
-    ind.ideas.forEach(idea => {
-      const item = document.createElement('div');
-      item.className = 'idea-item';
-      item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
-      item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
-      ideas.appendChild(item);
-    });
+    if (ideas) {
+      ideas.innerHTML = '';
+      ind.ideas.forEach(idea => {
+        const item = document.createElement('div');
+        item.className = 'idea-item';
+        item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
+        item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
+        ideas.appendChild(item);
+      });
+    }
     
     // Update empty state
     const empty = document.getElementById('empty');
@@ -1504,23 +1585,14 @@ function onModel() {}
 function getSystemPrompt() {
   const tone = document.getElementById('toneMode').value;
   const ind = INDUSTRIES[currentIndustry];
-  
-  // Always use the current industry's tone prompts
   if (ind && ind.tonePrompts && ind.tonePrompts[tone]) {
     return ind.tonePrompts[tone];
   }
-  
-  // Fallback to general industry
   return INDUSTRIES.general.tonePrompts[tone] || INDUSTRIES.general.tonePrompts.friendly;
 }
 
 function updateSysPrompt() {
   document.getElementById('sysTxt').value = getSystemPrompt();
-}
-
-function onToneModeChange() {
-  // Update the system prompt
-  updateSysPrompt();
 }
 
 function updateStats() {
