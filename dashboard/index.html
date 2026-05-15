@@ -13,7 +13,7 @@
   --teal:#2a9d8f;--teal-lt:#e0f5f3;--teal-md:#a0dcd6;
   --gold:#e9a028;--gold-lt:#fdf0d5;--gold-md:#f7d08a;
   --rose:#e8524a;--rose-lt:#fce8e7;--rose-md:#f5c4c2;
-  --sage:#4a7c59;--sage-lt:#e8f4eb;
+  --sage:#4a7c59;--sage-lt:#e8f4eb;--purple:#9b6ba8;--purple-lt:#f0e8f7;
   --sans:'DM Sans',sans-serif;--serif:'Fraunces',serif;
 }
 body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
@@ -24,7 +24,7 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .badge{font-size:0.6rem;background:var(--rose);color:#fff;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:0.06em;}
 .signout-btn{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.65);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:0.68rem;font-weight:500;transition:all 0.15s;font-family:var(--sans);}
 .signout-btn:hover{background:rgba(255,255,255,0.1);color:#fff;}
-.main{flex:1;max-width:1400px;margin:0 auto;width:100%;padding:2rem 1.5rem;}
+.main{flex:1;max-width:1400px;margin:0 auto;width:100%;padding:2rem 1.5rem;overflow-y:auto;}
 .header{margin-bottom:2rem;}
 .page-title{font-family:var(--serif);font-size:2rem;font-weight:500;color:var(--ink);margin-bottom:0.5rem;}
 .page-sub{font-size:0.8rem;color:var(--dim);}
@@ -38,6 +38,8 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .lock-sub{font-size:0.78rem;color:var(--dim);margin-bottom:1.25rem;}
 .finput{width:100%;background:var(--cream);border:1.5px solid var(--border2);color:var(--ink);font-family:var(--sans);font-size:0.85rem;padding:0.65rem 0.85rem;outline:none;margin-bottom:0.75rem;border-radius:10px;transition:border-color 0.2s;}
 .finput:focus{border-color:var(--teal);}
+.fsel{width:100%;background:#fff;border:1.5px solid var(--border2);color:var(--ink);font-family:var(--sans);font-size:0.85rem;padding:0.65rem 0.85rem;outline:none;border-radius:10px;cursor:pointer;}
+.fsel:focus{border-color:var(--teal);}
 .fbtn{font-family:var(--sans);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:var(--teal);border:none;color:#fff;cursor:pointer;border-radius:10px;transition:all 0.15s;}
 .fbtn:hover:not(:disabled){background:#228b7e;}
 .fbtn:disabled{opacity:0.4;cursor:not-allowed;}
@@ -45,24 +47,36 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .fbtn.gold:hover:not(:disabled){background:#d48f20;}
 .fbtn.danger{background:var(--rose);color:#fff;width:auto;}
 .fbtn.danger:hover:not(:disabled){background:#c63d36;}
+.fbtn.warning{background:var(--purple);color:#fff;}
+.fbtn.warning:hover:not(:disabled){background:#7d4a8a;}
 .fbtn.full{width:100%;}
 .alert{padding:0.75rem 1rem;border-radius:10px;font-size:0.78rem;margin-top:0.75rem;display:none;}
 .alert.ok{background:var(--sage-lt);border:1px solid var(--sage);color:var(--sage);}
 .alert.err{background:var(--rose-lt);border:1px solid var(--rose-md);color:var(--rose);}
 .alert.show{display:block;}
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
-.tab{flex:1;padding:0.75rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--dim);cursor:pointer;font-family:var(--sans);font-size:0.75rem;font-weight:600;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em;}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;overflow-x:auto;}
+.tab{flex:1;padding:0.75rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--dim);cursor:pointer;font-family:var(--sans);font-size:0.75rem;font-weight:600;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
 .tab:hover{color:var(--ink);}
 .tab.active{color:var(--teal);border-bottom-color:var(--teal);}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
 .card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 6px rgba(0,0,0,0.04);}
 .card-title{font-family:var(--serif);font-size:1.25rem;font-weight:500;color:var(--ink);margin-bottom:1rem;}
-.users-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin-top:1rem;}
+.users-table{width:100%;border-collapse:collapse;font-size:0.75rem;margin-top:1rem;}
 .users-table th{text-align:left;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:0.75rem;border-bottom:1px solid var(--border);font-weight:600;background:rgba(255,255,255,0.5);}
 .users-table td{padding:0.75rem;border-bottom:1px solid var(--border);color:var(--dim);}
 .users-table tr:hover{background:var(--cream);}
 .users-table .bal{color:var(--teal);font-weight:600;font-family:var(--serif);}
+.sub-badge{display:inline-block;padding:3px 8px;border-radius:8px;font-size:0.65rem;font-weight:600;}
+.sub-badge.starter{background:#e0f5f3;color:#2a9d8f;}
+.sub-badge.professional{background:#f0e8f7;color:#9b6ba8;}
+.sub-badge.business{background:#fdf0d5;color:#e9a028;}
+.sub-badge.enterprise{background:#fce8e7;color:#e8524a;}
+.sub-badge.none{background:#f0f0f0;color:#8a7868;}
+.status-badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:0.65rem;font-weight:600;}
+.status-badge.active{background:#e8f4eb;color:#4a7c59;}
+.status-badge.disabled{background:#fce8e7;color:#e8524a;}
+.status-badge.trial{background:#fdf0d5;color:#e9a028;}
 .users-empty{padding:2rem;text-align:center;color:var(--muted);font-size:0.8rem;}
 .loading{text-align:center;padding:2rem;color:var(--dim);}
 .spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin 1s linear infinite;}
@@ -70,12 +84,18 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:0.3rem;}
 .fgroup{margin-bottom:0.75rem;}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;padding:1rem;}
 .modal.show{display:flex;}
-.modal-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:400px;position:relative;}
+.modal-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:450px;position:relative;max-height:90vh;overflow-y:auto;}
 .modal-title{font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:1rem;}
 .modal-close{position:absolute;right:1.5rem;top:1.5rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--dim);}
-@media(max-width:768px){.row2{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}}
+.modal-actions{display:flex;gap:1rem;margin-top:1.5rem;}
+.modal-actions button{flex:1;}
+.btn-small{padding:0.5rem 1rem;font-size:0.75rem;}
+.table-actions{display:flex;gap:0.4rem;}
+.table-actions button{padding:0.4rem 0.7rem;font-size:0.7rem;}
+@media(max-width:768px){.row2{grid-template-columns:1fr}.row3{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}.users-table{font-size:0.7rem}}
 </style>
 </head>
 <body>
@@ -101,7 +121,7 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
 <div class="main">
   <div class="header">
     <div class="page-title">Admin Dashboard</div>
-    <div class="page-sub">User & Token Management</div>
+    <div class="page-sub">User Management & Subscription Control</div>
   </div>
 
   <div class="stats-grid">
@@ -114,26 +134,27 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
       <div class="stat-label">Active Users</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value" id="statTokens">0</div>
-      <div class="stat-label">Tokens Distributed</div>
+      <div class="stat-value" id="statSubscribed">0</div>
+      <div class="stat-label">Paid Subscriptions</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value" id="statAvg">0</div>
-      <div class="stat-label">Avg Tokens/User</div>
+      <div class="stat-value" id="statTokens">0</div>
+      <div class="stat-label">Tokens Distributed</div>
     </div>
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab(0)">USERS</button>
-    <button class="tab" onclick="switchTab(1)">ADD USER</button>
-    <button class="tab" onclick="switchTab(2)">AWARD TOKENS</button>
+    <button class="tab active" onclick="switchTab(0)">👥 USERS</button>
+    <button class="tab" onclick="switchTab(1)">➕ CREATE USER</button>
+    <button class="tab" onclick="switchTab(2)">🎁 AWARD TOKENS</button>
+    <button class="tab" onclick="switchTab(3)">📅 SUBSCRIPTIONS</button>
   </div>
 
   <!-- Tab 0: Users List -->
   <div class="tab-content active">
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div class="card-title" style="margin:0;">User Management</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:1rem;">
+        <div class="card-title" style="margin:0;flex:1;min-width:200px;">User Management</div>
         <label style="margin:0;display:flex;gap:0.5rem;align-items:center;font-size:0.75rem;cursor:pointer;">
           <input type="checkbox" id="hideGuests" onchange="toggleGuestFilter()">
           Hide Guests
@@ -147,17 +168,25 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
       </div>
       <table class="users-table" id="usersTable" style="display:none;">
         <thead>
-          <tr><th>Name</th><th>Email</th><th>Tokens</th><th>Created</th><th>Action</th></tr>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Subscription</th>
+            <th>Tokens</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody id="usersBody"></tbody>
       </table>
     </div>
   </div>
 
-  <!-- Tab 1: Add User -->
+  <!-- Tab 1: Create User -->
   <div class="tab-content">
     <div class="card">
-      <div class="card-title">Add User</div>
+      <div class="card-title">Create New User</div>
       <div class="fgroup">
         <label>Full Name</label>
         <input class="finput" id="addName" type="text" placeholder="John Doe">
@@ -166,9 +195,21 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
         <label>Email</label>
         <input class="finput" id="addEmail" type="email" placeholder="john@example.com">
       </div>
-      <div class="fgroup">
-        <label>Initial Tokens</label>
-        <input class="finput" id="addTokens" type="number" placeholder="5000" min="0" value="5000">
+      <div class="row2">
+        <div class="fgroup">
+          <label>Initial Tokens</label>
+          <input class="finput" id="addTokens" type="number" placeholder="5000" min="0" value="5000">
+        </div>
+        <div class="fgroup">
+          <label>Subscription Tier</label>
+          <select class="fsel" id="addSubscription">
+            <option value="none">None (Free)</option>
+            <option value="starter">Starter ($9)</option>
+            <option value="professional">Professional ($29)</option>
+            <option value="business">Business ($79)</option>
+            <option value="enterprise">Enterprise (Custom)</option>
+          </select>
+        </div>
       </div>
       <button class="fbtn full" onclick="addUser()">Create User</button>
       <div class="alert ok" id="addOk"></div>
@@ -184,41 +225,163 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
         <label>User Email</label>
         <input class="finput" id="awardEmail" type="email" placeholder="user@example.com">
       </div>
-      <div class="fgroup">
-        <label>Tokens to Award</label>
-        <input class="finput" id="awardAmount" type="number" placeholder="1000" min="1">
-      </div>
-      <div class="fgroup">
-        <label>Reason (optional)</label>
-        <input class="finput" id="awardReason" type="text" placeholder="Bonus, support...">
+      <div class="row2">
+        <div class="fgroup">
+          <label>Tokens to Award</label>
+          <input class="finput" id="awardAmount" type="number" placeholder="1000" min="1">
+        </div>
+        <div class="fgroup">
+          <label>Reason (optional)</label>
+          <input class="finput" id="awardReason" type="text" placeholder="Bonus, support...">
+        </div>
       </div>
       <button class="fbtn gold full" onclick="awardTokens()">Award Tokens</button>
       <div class="alert ok" id="awardOk"></div>
       <div class="alert err" id="awardErr"></div>
     </div>
   </div>
+
+  <!-- Tab 3: Subscription Management -->
+  <div class="tab-content">
+    <div class="card">
+      <div class="card-title">Assign Subscription</div>
+      <div class="fgroup">
+        <label>User Email</label>
+        <input class="finput" id="subEmail" type="email" placeholder="user@example.com">
+      </div>
+      <div class="row2">
+        <div class="fgroup">
+          <label>Subscription Tier</label>
+          <select class="fsel" id="subTier">
+            <option value="none">None (Free)</option>
+            <option value="starter">Starter (10k tokens/mo)</option>
+            <option value="professional">Professional (50k tokens/mo)</option>
+            <option value="business">Business (150k tokens/mo)</option>
+            <option value="enterprise">Enterprise (500k+ tokens/mo)</option>
+          </select>
+        </div>
+        <div class="fgroup">
+          <label>Trial Days (optional)</label>
+          <input class="finput" id="subTrial" type="number" placeholder="14" min="0" value="14">
+        </div>
+      </div>
+      <button class="fbtn full" onclick="assignSubscription()">Assign Subscription</button>
+      <div class="alert ok" id="subOk"></div>
+      <div class="alert err" id="subErr"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Manage Subscriptions</div>
+      <div id="subLoading" class="loading"><div class="spinner"></div> Loading subscriptions...</div>
+      <table class="users-table" id="subTable" style="display:none;">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Tier</th>
+            <th>Status</th>
+            <th>Period End</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="subBody"></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-<!-- Modal -->
+<!-- User Actions Modal -->
+<div class="modal" id="userModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeUserModal()">×</button>
+    <div class="modal-title">User Actions</div>
+    <div style="margin-bottom:1rem;padding:1rem;background:var(--parchmt);border-radius:10px;">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:0.25rem;" id="modalUserName"></div>
+      <div style="font-size:0.8rem;color:var(--dim);" id="modalUserEmail"></div>
+    </div>
+    
+    <div style="margin-bottom:1.5rem;">
+      <label style="font-size:0.75rem;margin-bottom:0.5rem;display:block;">Quick Actions:</label>
+      <div class="table-actions" style="display:flex;flex-direction:column;gap:0.5rem;">
+        <button class="fbtn full btn-small" id="toggleStatusBtn" onclick="toggleUserStatus()"></button>
+        <button class="fbtn warning full btn-small" onclick="openSubscriptionModal()">Manage Subscription</button>
+        <button class="fbtn gold full btn-small" onclick="openTokenModal()">Award Tokens</button>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--border);padding-top:1rem;">
+      <label style="font-size:0.75rem;margin-bottom:0.5rem;display:block;color:var(--rose);">Danger Zone:</label>
+      <button class="fbtn danger full btn-small" onclick="deleteUserConfirm()">Delete User</button>
+    </div>
+
+    <div class="alert ok" id="userModalOk" style="margin-top:1rem;"></div>
+    <div class="alert err" id="userModalErr" style="margin-top:1rem;"></div>
+  </div>
+</div>
+
+<!-- Subscription Modal -->
+<div class="modal" id="subModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeSubscriptionModal()">×</button>
+    <div class="modal-title">Manage Subscription</div>
+    <div style="margin-bottom:1rem;padding:1rem;background:var(--purple-lt);border-radius:10px;">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:0.25rem;" id="subModalUserName"></div>
+      <div style="font-size:0.8rem;color:var(--dim);" id="subModalUserEmail"></div>
+    </div>
+
+    <div class="fgroup">
+      <label>Subscription Tier</label>
+      <select class="fsel" id="subModalTier">
+        <option value="none">None (Free)</option>
+        <option value="starter">Starter (10k tokens/mo)</option>
+        <option value="professional">Professional (50k tokens/mo)</option>
+        <option value="business">Business (150k tokens/mo)</option>
+        <option value="enterprise">Enterprise (500k+ tokens/mo)</option>
+      </select>
+    </div>
+
+    <div class="fgroup">
+      <label>Auto-renew</label>
+      <select class="fsel" id="subModalAutoRenew">
+        <option value="true">Yes, auto-renew</option>
+        <option value="false">No, don't auto-renew</option>
+      </select>
+    </div>
+
+    <div class="modal-actions">
+      <button class="fbtn" onclick="updateSubscription()">Update</button>
+      <button class="fbtn danger" onclick="cancelSubscription()">Cancel Subscription</button>
+    </div>
+
+    <div class="alert ok" id="subModalOk"></div>
+    <div class="alert err" id="subModalErr"></div>
+  </div>
+</div>
+
+<!-- Token Modal -->
 <div class="modal" id="tokenModal">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <div class="modal-title">Assign Tokens</div>
-    <div style="margin-bottom:1rem;">
-      <p style="font-size:0.85rem;margin-bottom:0.5rem;"><strong id="modalUserName"></strong></p>
-      <p style="font-size:0.75rem;color:var(--dim);" id="modalUserEmail"></p>
+    <button class="modal-close" onclick="closeTokenModal()">×</button>
+    <div class="modal-title">Award Tokens</div>
+    <div style="margin-bottom:1rem;padding:1rem;background:var(--gold-lt);border-radius:10px;">
+      <div style="font-size:0.9rem;font-weight:600;margin-bottom:0.25rem;" id="tokenModalUserName"></div>
+      <div style="font-size:0.8rem;color:var(--dim);" id="tokenModalUserEmail"></div>
     </div>
+
     <div class="fgroup">
-      <label>Amount to Assign</label>
-      <input class="finput" id="modalTokens" type="number" placeholder="1000" min="1">
+      <label>Tokens to Award</label>
+      <input class="finput" id="tokenModalAmount" type="number" placeholder="1000" min="1">
     </div>
+
     <div class="fgroup">
-      <label>Note (optional)</label>
-      <input class="finput" id="modalNote" type="text" placeholder="Reason for assignment">
+      <label>Reason</label>
+      <input class="finput" id="tokenModalReason" type="text" placeholder="Bonus, support refund...">
     </div>
-    <button class="fbtn gold full" onclick="confirmAssignTokens()">Assign</button>
-    <div class="alert ok" id="modalOk"></div>
-    <div class="alert err" id="modalErr"></div>
+
+    <button class="fbtn gold full" onclick="awardTokensModal()">Award</button>
+
+    <div class="alert ok" id="tokenModalOk"></div>
+    <div class="alert err" id="tokenModalErr"></div>
   </div>
 </div>
 
@@ -227,19 +390,14 @@ const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
 let adminPwd = localStorage.getItem('adminPwd') || '';
 let allUsers = [];
 let selectedUserId = null;
-let hideGuestsEnabled = localStorage.getItem('hideGuests') === 'true';
+let hideGuestsEnabled = false;
 
 function switchTab(idx) {
-  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
-  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content')[idx].classList.add('active');
   document.querySelectorAll('.tab')[idx].classList.add('active');
-}
-
-function toggleGuestFilter() {
-  hideGuestsEnabled = document.getElementById('hideGuests').checked;
-  localStorage.setItem('hideGuests', hideGuestsEnabled);
-  renderUsers();
+  if (idx === 3) loadSubscriptions();
 }
 
 async function unlock() {
@@ -299,20 +457,12 @@ function renderUsers() {
   const tbody = document.getElementById('usersBody');
   tbody.innerHTML = '';
 
-  // Filter guests if enabled
-  const usersToShow = hideGuestsEnabled ? allUsers.filter(u => !u.is_guest) : allUsers;
-  const guestCount = allUsers.filter(u => u.is_guest).length;
-
-  // Show/hide delete guests box
-  const deleteBox = document.getElementById('deleteGuestsBox');
-  if (guestCount > 0 && !hideGuestsEnabled) {
-    deleteBox.style.display = 'block';
-    document.getElementById('guestCount').textContent = guestCount;
-  } else {
-    deleteBox.style.display = 'none';
+  let displayUsers = allUsers;
+  if (hideGuestsEnabled) {
+    displayUsers = allUsers.filter(u => !u.is_guest);
   }
 
-  if (usersToShow.length === 0) {
+  if (displayUsers.length === 0) {
     document.getElementById('usersEmpty').style.display = 'block';
     document.getElementById('usersTable').style.display = 'none';
     return;
@@ -321,56 +471,213 @@ function renderUsers() {
   document.getElementById('usersTable').style.display = 'table';
   document.getElementById('usersEmpty').style.display = 'none';
 
-  usersToShow.forEach(function(u) {
+  displayUsers.forEach(u => {
     const tr = document.createElement('tr');
     const date = new Date(u.created_at || 0).toLocaleDateString();
     const name = u.name || 'N/A';
     const email = u.email || 'Guest';
     const balance = (u.token_balance || 0).toLocaleString();
-    const isGuest = u.is_guest ? ' (guest)' : '';
     
-    let actionBtn = '<button class="fbtn" style="width:auto;padding:0.5rem 1rem;font-size:0.7rem;" onclick="openTokenModal(\'' + u.user_id + '\',\'' + name.replace(/'/g, "\\'") + '\',\'' + email.replace(/'/g, "\\'") + '\')">+ Tokens</button>';
+    const statusBadge = u.is_disabled ? 
+      '<span class="status-badge disabled">DISABLED</span>' :
+      (u.is_guest ? '<span class="status-badge">Guest</span>' : '<span class="status-badge active">ACTIVE</span>');
     
-    if (u.is_guest) {
-      actionBtn += ' <button class="fbtn" style="width:auto;padding:0.5rem 1rem;font-size:0.7rem;background:var(--rose);color:#fff;margin-left:0.5rem;" onclick="deleteUser(\'' + u.user_id + '\')">Delete</button>';
-    }
-    
-    tr.innerHTML = '<td>' + name + isGuest + '</td><td>' + email + '</td><td class="bal">' + balance + '</td><td>' + date + '</td><td>' + actionBtn + '</td>';
+    const subTier = u.subscription?.tier || 'none';
+    const subBadge = `<span class="sub-badge ${subTier}">${subTier.toUpperCase()}</span>`;
+
+    tr.innerHTML = `
+      <td>${name}</td>
+      <td style="font-size:0.7rem;">${email}</td>
+      <td>${statusBadge}</td>
+      <td>${subBadge}</td>
+      <td class="bal">${balance}</td>
+      <td>${date}</td>
+      <td>
+        <button class="fbtn btn-small" onclick="openUserModal('${u.user_id}', '${name.replace(/'/g,"\\'")}', '${email.replace(/'/g,"\\'")}')">Manage</button>
+      </td>
+    `;
     tbody.appendChild(tr);
   });
+
+  const guestCount = allUsers.filter(u => u.is_guest).length;
+  if (guestCount > 0) {
+    document.getElementById('guestCount').textContent = guestCount;
+    document.getElementById('deleteGuestsBox').style.display = 'block';
+  }
 }
 
 function updateStats() {
-  const total = allUsers.reduce(function(sum, u) { return sum + (u.token_balance || 0); }, 0);
-  const active = allUsers.filter(function(u) { return !u.is_guest; }).length;
-  document.getElementById('statUsers').textContent = allUsers.length;
+  const active = allUsers.filter(u => !u.is_disabled && !u.is_guest).length;
+  const subscribed = allUsers.filter(u => u.subscription && u.subscription.tier !== 'none').length;
+  const total = allUsers.filter(u => !u.is_guest).length;
+  const tokens = allUsers.reduce((sum, u) => sum + (u.token_balance || 0), 0);
+  
+  document.getElementById('statUsers').textContent = total;
   document.getElementById('statActive').textContent = active;
-  document.getElementById('statTokens').textContent = total.toLocaleString();
-  document.getElementById('statAvg').textContent = allUsers.length > 0 ? Math.round(total / allUsers.length).toLocaleString() : '0';
+  document.getElementById('statSubscribed').textContent = subscribed;
+  document.getElementById('statTokens').textContent = tokens.toLocaleString();
 }
 
-function openTokenModal(userId, name, email) {
+function openUserModal(userId, name, email) {
   selectedUserId = userId;
+  const user = allUsers.find(u => u.user_id === userId);
+  
   document.getElementById('modalUserName').textContent = name;
   document.getElementById('modalUserEmail').textContent = email;
-  document.getElementById('modalTokens').value = '';
-  document.getElementById('modalNote').value = '';
-  document.getElementById('modalOk').classList.remove('show');
-  document.getElementById('modalErr').classList.remove('show');
-  document.getElementById('tokenModal').classList.add('show');
+  document.getElementById('userModalOk').classList.remove('show');
+  document.getElementById('userModalErr').classList.remove('show');
+  
+  const statusBtn = document.getElementById('toggleStatusBtn');
+  if (user.is_disabled) {
+    statusBtn.textContent = '✓ Enable User';
+    statusBtn.classList.remove('danger');
+  } else {
+    statusBtn.textContent = '⊘ Disable User';
+    statusBtn.classList.add('danger');
+  }
+  
+  document.getElementById('userModal').classList.add('show');
 }
 
-function closeModal() {
-  document.getElementById('tokenModal').classList.remove('show');
+function closeUserModal() {
+  document.getElementById('userModal').classList.remove('show');
   selectedUserId = null;
 }
 
-async function confirmAssignTokens() {
-  const amount = parseInt(document.getElementById('modalTokens').value, 10);
-  const note = document.getElementById('modalNote').value.trim();
+function openSubscriptionModal() {
+  const user = allUsers.find(u => u.user_id === selectedUserId);
+  if (!user) return;
+  
+  document.getElementById('subModalUserName').textContent = user.name || 'User';
+  document.getElementById('subModalUserEmail').textContent = user.email || 'Guest';
+  document.getElementById('subModalTier').value = user.subscription?.tier || 'none';
+  document.getElementById('subModalAutoRenew').value = user.subscription?.auto_renew !== false ? 'true' : 'false';
+  document.getElementById('subModalOk').classList.remove('show');
+  document.getElementById('subModalErr').classList.remove('show');
+  
+  document.getElementById('userModal').classList.remove('show');
+  document.getElementById('subModal').classList.add('show');
+}
+
+function closeSubscriptionModal() {
+  document.getElementById('subModal').classList.remove('show');
+  openUserModal(selectedUserId, allUsers.find(u => u.user_id === selectedUserId).name, allUsers.find(u => u.user_id === selectedUserId).email);
+}
+
+function openTokenModal() {
+  const user = allUsers.find(u => u.user_id === selectedUserId);
+  if (!user) return;
+  
+  document.getElementById('tokenModalUserName').textContent = user.name || 'User';
+  document.getElementById('tokenModalUserEmail').textContent = user.email || 'Guest';
+  document.getElementById('tokenModalAmount').value = '';
+  document.getElementById('tokenModalReason').value = '';
+  document.getElementById('tokenModalOk').classList.remove('show');
+  document.getElementById('tokenModalErr').classList.remove('show');
+  
+  document.getElementById('userModal').classList.remove('show');
+  document.getElementById('tokenModal').classList.add('show');
+}
+
+function closeTokenModal() {
+  document.getElementById('tokenModal').classList.remove('show');
+  openUserModal(selectedUserId, allUsers.find(u => u.user_id === selectedUserId).name, allUsers.find(u => u.user_id === selectedUserId).email);
+}
+
+async function toggleUserStatus() {
+  const user = allUsers.find(u => u.user_id === selectedUserId);
+  if (!user) return;
+  
+  try {
+    const r = await fetch(WORKER + '/admin/api/users/status', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Password': adminPwd
+      },
+      body: JSON.stringify({ userId: selectedUserId, is_disabled: !user.is_disabled })
+    });
+
+    const d = await r.json();
+    if (!r.ok) { showErr('userModalErr', d.error); return; }
+
+    showOk('userModalOk', user.is_disabled ? '✓ User enabled' : '⊘ User disabled');
+    setTimeout(() => { closeUserModal(); loadAllUsers(); }, 1500);
+  } catch (e) {
+    showErr('userModalErr', 'Error: ' + e.message);
+  }
+}
+
+async function deleteUserConfirm() {
+  if (!confirm('Permanently delete this user? This cannot be undone.')) return;
+  
+  try {
+    const r = await fetch(WORKER + '/admin/api/users/' + encodeURIComponent(selectedUserId), {
+      method: 'DELETE',
+      headers: { 'X-Admin-Password': adminPwd }
+    });
+    if (!r.ok) { alert('Error deleting user'); return; }
+
+    showOk('userModalErr', 'User deleted');
+    setTimeout(() => { closeUserModal(); loadAllUsers(); }, 1500);
+  } catch (e) {
+    showErr('userModalErr', 'Error: ' + e.message);
+  }
+}
+
+async function updateSubscription() {
+  const tier = document.getElementById('subModalTier').value;
+  const autoRenew = document.getElementById('subModalAutoRenew').value === 'true';
+
+  try {
+    const r = await fetch(WORKER + '/admin/api/subscriptions', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Password': adminPwd
+      },
+      body: JSON.stringify({ userId: selectedUserId, tier, auto_renew: autoRenew })
+    });
+
+    const d = await r.json();
+    if (!r.ok) { showErr('subModalErr', d.error); return; }
+
+    showOk('subModalOk', 'Subscription updated');
+    setTimeout(() => { closeSubscriptionModal(); loadAllUsers(); loadSubscriptions(); }, 1500);
+  } catch (e) {
+    showErr('subModalErr', 'Error: ' + e.message);
+  }
+}
+
+async function cancelSubscription() {
+  if (!confirm('Cancel this subscription?')) return;
+
+  try {
+    const r = await fetch(WORKER + '/admin/api/subscriptions', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Password': adminPwd
+      },
+      body: JSON.stringify({ userId: selectedUserId })
+    });
+
+    const d = await r.json();
+    if (!r.ok) { showErr('subModalErr', d.error); return; }
+
+    showOk('subModalOk', 'Subscription cancelled');
+    setTimeout(() => { closeSubscriptionModal(); loadAllUsers(); loadSubscriptions(); }, 1500);
+  } catch (e) {
+    showErr('subModalErr', 'Error: ' + e.message);
+  }
+}
+
+async function awardTokensModal() {
+  const amount = parseInt(document.getElementById('tokenModalAmount').value, 10);
+  const reason = document.getElementById('tokenModalReason').value.trim() || 'Admin award';
 
   if (!amount || amount <= 0) {
-    showErr('modalErr', 'Enter a positive amount');
+    showErr('tokenModalErr', 'Enter a positive amount');
     return;
   }
 
@@ -381,38 +688,16 @@ async function confirmAssignTokens() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ userId: selectedUserId, amount: amount, reason: note })
+      body: JSON.stringify({ userId: selectedUserId, amount, reason })
     });
 
     const d = await r.json();
-    if (!r.ok) { showErr('modalErr', d.error); return; }
+    if (!r.ok) { showErr('tokenModalErr', d.error); return; }
 
-    showOk('modalOk', 'Assigned ' + amount.toLocaleString() + ' tokens');
-    setTimeout(function() { closeModal(); loadAllUsers(); }, 1500);
+    showOk('tokenModalOk', 'Awarded ' + amount.toLocaleString() + ' tokens');
+    setTimeout(() => { closeTokenModal(); loadAllUsers(); }, 1500);
   } catch (e) {
-    showErr('modalErr', 'Error: ' + e.message);
-  }
-}
-
-async function deleteUser(userId) {
-  if (!confirm('Delete this user? This cannot be undone.')) return;
-
-  try {
-    const r = await fetch(WORKER + '/admin/api/users', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Password': adminPwd
-      },
-      body: JSON.stringify({ user_id: userId })
-    });
-
-    const d = await r.json();
-    if (!r.ok) { alert('Error: ' + (d.error || 'Delete failed')); return; }
-
-    loadAllUsers();
-  } catch (e) {
-    alert('Error: ' + e.message);
+    showErr('tokenModalErr', 'Error: ' + e.message);
   }
 }
 
@@ -425,13 +710,9 @@ async function deleteAllGuests() {
 
   for (const userId of guestIds) {
     try {
-      const r = await fetch(WORKER + '/admin/api/users', {
+      const r = await fetch(WORKER + '/admin/api/users/' + encodeURIComponent(userId), {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Admin-Password': adminPwd
-        },
-        body: JSON.stringify({ user_id: userId })
+        headers: { 'X-Admin-Password': adminPwd }
       });
       if (r.ok) deleted++;
     } catch (e) {
@@ -447,6 +728,7 @@ async function addUser() {
   const name = document.getElementById('addName').value.trim();
   const email = document.getElementById('addEmail').value.trim();
   const tokens = parseInt(document.getElementById('addTokens').value, 10) || 0;
+  const subTier = document.getElementById('addSubscription').value;
 
   if (!name || !email) {
     showErr('addErr', 'Enter name and email');
@@ -460,7 +742,7 @@ async function addUser() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ name: name, email: email, initialTokens: tokens })
+      body: JSON.stringify({ name, email, initialTokens: tokens, subscription_tier: subTier })
     });
 
     const d = await r.json();
@@ -470,7 +752,8 @@ async function addUser() {
     document.getElementById('addName').value = '';
     document.getElementById('addEmail').value = '';
     document.getElementById('addTokens').value = '5000';
-    setTimeout(function() { loadAllUsers(); }, 1000);
+    document.getElementById('addSubscription').value = 'none';
+    setTimeout(() => { loadAllUsers(); }, 1000);
   } catch (e) {
     showErr('addErr', 'Error: ' + e.message);
   }
@@ -479,7 +762,7 @@ async function addUser() {
 async function awardTokens() {
   const email = document.getElementById('awardEmail').value.trim();
   const amount = parseInt(document.getElementById('awardAmount').value, 10);
-  const reason = document.getElementById('awardReason').value.trim();
+  const reason = document.getElementById('awardReason').value.trim() || 'Admin award';
 
   if (!email || !amount || amount <= 0) {
     showErr('awardErr', 'Enter email and positive amount');
@@ -493,20 +776,108 @@ async function awardTokens() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ email: email, amount: amount, note: reason })
+      body: JSON.stringify({ email, amount, note: reason })
     });
 
     const d = await r.json();
     if (!r.ok) { showErr('awardErr', d.error); return; }
 
-    showOk('awardOk', 'Awarded ' + amount.toLocaleString() + ' tokens');
+    showOk('awardOk', 'Awarded ' + amount.toLocaleString() + ' tokens to ' + email);
     document.getElementById('awardEmail').value = '';
     document.getElementById('awardAmount').value = '';
     document.getElementById('awardReason').value = '';
-    setTimeout(function() { loadAllUsers(); }, 1000);
+    setTimeout(() => { loadAllUsers(); }, 1000);
   } catch (e) {
     showErr('awardErr', 'Error: ' + e.message);
   }
+}
+
+async function assignSubscription() {
+  const email = document.getElementById('subEmail').value.trim();
+  const tier = document.getElementById('subTier').value;
+  const trialDays = parseInt(document.getElementById('subTrial').value) || 0;
+
+  if (!email || tier === 'none') {
+    showErr('subErr', 'Enter email and select a tier');
+    return;
+  }
+
+  try {
+    const r = await fetch(WORKER + '/admin/api/subscriptions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Password': adminPwd
+      },
+      body: JSON.stringify({ email, tier, trial_days: trialDays })
+    });
+
+    const d = await r.json();
+    if (!r.ok) { showErr('subErr', d.error); return; }
+
+    showOk('subOk', 'Assigned ' + tier + ' subscription to ' + email);
+    document.getElementById('subEmail').value = '';
+    document.getElementById('subTier').value = 'none';
+    document.getElementById('subTrial').value = '14';
+    setTimeout(() => { loadAllUsers(); loadSubscriptions(); }, 1000);
+  } catch (e) {
+    showErr('subErr', 'Error: ' + e.message);
+  }
+}
+
+async function loadSubscriptions() {
+  document.getElementById('subLoading').style.display = 'block';
+  document.getElementById('subTable').style.display = 'none';
+
+  try {
+    const r = await fetch(WORKER + '/admin/api/subscriptions', {
+      headers: { 'X-Admin-Password': adminPwd }
+    });
+
+    if (!r.ok) throw new Error('Failed to load subscriptions');
+    const data = await r.json();
+    
+    const tbody = document.getElementById('subBody');
+    tbody.innerHTML = '';
+
+    const subs = data.subscriptions || [];
+    subs.forEach(sub => {
+      const tr = document.createElement('tr');
+      const periodEnd = new Date(sub.current_period_end * 1000).toLocaleDateString();
+      const status = sub.status || 'active';
+      const statusClass = status === 'active' ? 'active' : 'disabled';
+      const statusBadge = `<span class="status-badge ${statusClass}">${status.toUpperCase()}</span>`;
+      
+      tr.innerHTML = `
+        <td>${sub.user_name}</td>
+        <td style="font-size:0.7rem;">${sub.user_email}</td>
+        <td><span class="sub-badge ${sub.tier}">${sub.tier.toUpperCase()}</span></td>
+        <td>${statusBadge}</td>
+        <td>${periodEnd}</td>
+        <td><button class="fbtn btn-small" onclick="editSubscription('${sub.user_id.replace(/'/g,"\\'")}')">Edit</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('subLoading').style.display = 'none';
+    if (subs.length > 0) {
+      document.getElementById('subTable').style.display = 'table';
+    }
+  } catch (e) {
+    document.getElementById('subLoading').innerHTML = 'Error: ' + e.message;
+  }
+}
+
+function editSubscription(userId) {
+  const user = allUsers.find(u => u.user_id === userId);
+  if (user) {
+    openUserModal(userId, user.name, user.email);
+  }
+}
+
+function toggleGuestFilter() {
+  hideGuestsEnabled = document.getElementById('hideGuests').checked;
+  renderUsers();
 }
 
 function logout() {
@@ -518,6 +889,7 @@ function logout() {
 
 function showErr(id, msg) {
   const el = document.getElementById(id);
+  if (!el) return;
   el.classList.remove('ok');
   el.classList.add('err', 'show');
   el.textContent = msg;
@@ -525,13 +897,13 @@ function showErr(id, msg) {
 
 function showOk(id, msg) {
   const el = document.getElementById(id);
+  if (!el) return;
   el.classList.remove('err');
   el.classList.add('ok', 'show');
   el.textContent = msg;
 }
 
 window.addEventListener('load', function() {
-  document.getElementById('hideGuests').checked = hideGuestsEnabled;
   if (adminPwd) {
     document.getElementById('lockScreen').style.display = 'none';
     loadAllUsers();
