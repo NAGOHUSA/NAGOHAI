@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://js.stripe.com/v3/"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -983,6 +984,7 @@ input, textarea, select { font-size: 16px !important; }
 // ─────────────────────────────────────────────────────────
 const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
+const STRIPE_PUBLISHABLE_KEY = 'pk_live_51QwCGYABzZP9GYc2d4T9YQhXVrKJ9hRsrGPkEh4zMKlXZ2OZ5PJzGQfBzIXEXX1Hm6PqXfOyFXp5nZqKFVj600X00RtFyR5u8';
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
 const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
 // ─────────────────────────────────────────────────────────
@@ -1551,8 +1553,7 @@ function openBuyTokens() {
   if (!currentUser) { showModal(); return; }
   if (isGuest) { showModal(); return; }
   
-  const stripeUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}&success_url=${STRIPE_SUCCESS_URL}`;
-  window.location.href = stripeUrl;
+  showPricingModal();
 }
 
 // ─────────────────────────────────────────────────────────
@@ -1889,11 +1890,70 @@ function selectPlan(plan) {
 }
 
 function startCheckout() {
+  if (!currentUser) { showModal(); return; }
+  if (isGuest) { alert('Please sign in to subscribe'); showModal(); return; }
+  
   if (selectedPlan === 'enterprise' || selectedPlan === 'enterprise_yearly') {
     alert('Please contact sales@nagoh.us for enterprise pricing');
     return;
   }
-  alert(`Starting ${selectedPlan} subscription. Stripe integration coming soon.`);
+  
+  // Map selected plan to tier and billing period
+  const planMap = {
+    'starter': { tier: 'starter', billing: 'monthly' },
+    'starter_yearly': { tier: 'starter', billing: 'yearly' },
+    'professional': { tier: 'professional', billing: 'monthly' },
+    'professional_yearly': { tier: 'professional', billing: 'yearly' },
+    'business': { tier: 'business', billing: 'monthly' },
+    'business_yearly': { tier: 'business', billing: 'yearly' },
+  };
+  
+  const planInfo = planMap[selectedPlan];
+  if (!planInfo) { alert('Invalid plan'); return; }
+  
+  // Create Stripe checkout session via your worker
+  createCheckoutSession(planInfo.tier, planInfo.billing);
+}
+
+async function createCheckoutSession(tier, billing) {
+  try {
+    // Call your worker to create a Stripe checkout session
+    const r = await fetch(`${WORKER}/v1/checkout/session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionToken}`,
+      },
+      body: JSON.stringify({
+        tier: tier,
+        billing_period: billing,
+        user_id: currentUser.user_id,
+        user_email: currentUser.email,
+      }),
+    });
+    
+    const data = await r.json();
+    
+    if (!r.ok) {
+      alert('Error creating checkout: ' + (data.error || 'Unknown error'));
+      return;
+    }
+    
+    if (data.sessionId) {
+      // Redirect to Stripe checkout
+      const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+      stripe.redirectToCheckout({ sessionId: data.sessionId }).then(result => {
+        if (result.error) {
+          alert('Error: ' + result.error.message);
+        }
+      });
+    } else {
+      alert('Error: No session ID returned');
+    }
+  } catch (e) {
+    console.error('Checkout error:', e);
+    alert('Error: ' + e.message);
+  }
 }
 
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
