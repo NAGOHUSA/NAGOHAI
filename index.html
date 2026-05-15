@@ -494,33 +494,52 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .shell { flex-direction: column; }
   .chat-col { width: 100%; }
   
-  .topbar { padding: 0 0.75rem; height: 56px; gap: 0.5rem; }
-  .wordmark { font-size: 1rem; letter-spacing: -0.01em; }
-  .tagline { font-size: 0.48rem; margin-top: 0.1rem; }
+  .topbar { 
+    padding: 0.5rem 0.75rem; 
+    height: auto;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-content: flex-start;
+  }
+  .topbar > div:first-child {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .wordmark { font-size: 0.95rem; letter-spacing: -0.01em; }
+  .tagline { font-size: 0.45rem; margin-top: 0; }
   .tuser-name { display: none !important; }
-  .tuser-avatar { width: 24px; height: 24px; }
-  .tbtn { padding: 4px 10px; font-size: 0.6rem; }
-  .tpill { padding: 3px 10px; font-size: 0.65rem; }
-  .tbal { font-size: 0.65rem; }
-  .tbal span { font-size: 0.52rem; }
-  .guest-banner { font-size: 0.65rem; padding: 3px 8px; }
+  .tuser-avatar { width: 22px; height: 22px; }
+  .tbtn { padding: 3px 8px; font-size: 0.55rem; }
+  .tpill { padding: 2px 8px; font-size: 0.6rem; }
+  .tbal { font-size: 0.6rem; }
+  .tbal span { font-size: 0.48rem; }
+  .guest-banner { font-size: 0.6rem; padding: 2px 6px; }
+  .tsep { display: none; }
+  
+  .tuser {
+    display: flex;
+    gap: 0;
+    align-items: center;
+  }
   
   .mobile-industry-bar {
     display: flex;
-    width: calc(100% + 1.5rem);
-    margin: 0 -0.75rem;
-    padding: 0.6rem 0.75rem;
-    gap: 0.6rem;
+    width: 100%;
+    padding: 0.5rem 0;
+    gap: 0.4rem;
     align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.15);
-    background: rgba(0,0,0,0.2);
+    border-top: 1px solid rgba(255,255,255,0.12);
+    background: transparent;
     order: 10;
+    margin-top: 0.3rem;
   }
   .mobile-industry-label {
     display: block;
-    font-size: 0.58rem;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 0.08em;
+    font-size: 0.52rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.07em;
     text-transform: uppercase;
     white-space: nowrap;
     font-weight: 600;
@@ -529,32 +548,32 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
     display: block;
     flex: 1;
     background: #fff;
-    border: 1.5px solid rgba(255,255,255,0.4);
+    border: 1px solid rgba(255,255,255,0.3);
     color: var(--ink);
     font-family: var(--sans);
-    font-size: 0.73rem;
-    padding: 0.5rem 0.6rem;
+    font-size: 0.68rem;
+    padding: 0.45rem 0.55rem;
     outline: none;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: 5px;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233d2f24'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
-    background-position: right 8px center;
+    background-position: right 6px center;
     background-color: #fff;
-    padding-right: 26px;
+    padding-right: 24px;
     font-weight: 500;
     transition: all 0.2s;
   }
   .mobile-industry-sel:focus {
     border-color: var(--teal);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(42,157,143,0.15);
+    box-shadow: 0 0 0 2px rgba(42,157,143,0.1);
   }
   .mobile-industry-sel option {
     background: #fff;
     color: var(--ink);
-    padding: 8px;
+    padding: 6px;
   }
   
   .modal { max-width: 90vw; border-radius: 16px; }
@@ -585,27 +604,33 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 
 @media (max-width: 480px) {
-  .topbar { height: 50px; padding: 0 0.5rem; gap: 0.4rem; }
-  .wordmark { font-size: 0.9rem; letter-spacing: -0.02em; }
-  .tagline { font-size: 0.42rem; margin-top: 0; }
-  .tpill { padding: 2px 8px; font-size: 0.58rem; }
-  .dot { width: 5px; height: 5px; }
-  .tbtn { padding: 3px 8px; font-size: 0.54rem; }
-  .tbal { font-size: 0.6rem; }
-  .tbal span { font-size: 0.48rem; }
-  .guest-banner { font-size: 0.6rem; padding: 2px 6px; gap: 4px; }
+  .topbar { height: auto; padding: 0.4rem 0.5rem; gap: 0.3rem; flex-wrap: wrap; }
+  .topbar > div:first-child {
+    flex: 0 0 auto;
+  }
+  .wordmark { font-size: 0.88rem; letter-spacing: -0.02em; }
+  .tagline { font-size: 0.4rem; }
+  .tpill { padding: 2px 6px; font-size: 0.55rem; }
+  .dot { width: 4px; height: 4px; }
+  .tbtn { padding: 2px 6px; font-size: 0.5rem; }
+  .tbal { font-size: 0.55rem; }
+  .tbal span { font-size: 0.45rem; }
+  .guest-banner { font-size: 0.55rem; padding: 1px 5px; gap: 2px; }
+  .tuser { gap: 0; }
   
   .mobile-industry-bar {
-    padding: 0.5rem 0.5rem;
-    gap: 0.5rem;
+    padding: 0.4rem 0;
+    gap: 0.3rem;
+    margin-top: 0.2rem;
   }
   .mobile-industry-label {
-    font-size: 0.55rem;
+    font-size: 0.48rem;
+    padding: 0 0.3rem;
   }
   .mobile-industry-sel {
-    font-size: 0.7rem;
-    padding: 0.45rem 0.55rem;
-    padding-right: 24px;
+    font-size: 0.65rem;
+    padding: 0.4rem 0.5rem;
+    padding-right: 22px;
   }
   
   .modal { max-width: 95vw; border-radius: 14px; }
