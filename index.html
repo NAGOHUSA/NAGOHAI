@@ -21,7 +21,6 @@
   --sub:      #6b5e50;
   --ink:      #3d2f24;
   --deep:     #2a1f16;
-
   --rose:     #e8524a;
   --rose-lt:  #fce8e7;
   --rose-md:  #f5c4c2;
@@ -31,13 +30,8 @@
   --gold:     #e9a028;
   --gold-lt:  #fdf0d5;
   --gold-md:  #f7d08a;
-  --plum:     #8b5cf6;
-  --plum-lt:  #f0ebff;
-  --plum-md:  #c4b0f8;
   --sage:     #4a7c59;
   --sage-lt:  #e8f4eb;
-  --sage-md:  #a8d4b4;
-
   --sans:     'DM Sans', sans-serif;
   --serif:    'Fraunces', serif;
 }
@@ -45,7 +39,6 @@
 html, body { height: 100%; overflow: hidden; background: var(--cream); }
 body { color: var(--ink); font-family: var(--sans); display: flex; flex-direction: column; }
 
-/* ── TOPBAR ── */
 .topbar {
   height: 60px; display: flex; align-items: center;
   padding: 0 1.5rem; gap: 1rem;
@@ -58,21 +51,15 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   color: #fff; letter-spacing: 0.02em;
 }
 .wordmark em { color: var(--gold); font-style: italic; }
-.tagline {
-  font-size: 0.65rem; color: rgba(255,255,255,0.45); letter-spacing: 0.08em;
-  font-weight: 300; line-height: 1;
-}
 .tsep { flex: 1; }
 .tpill {
   display: flex; align-items: center; gap: 6px;
   background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
   border-radius: 20px; padding: 4px 12px; font-size: 0.7rem; color: rgba(255,255,255,0.65);
 }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); transition: all 0.3s; flex-shrink: 0; }
-.dot.on { background: var(--sage); box-shadow: 0 0 8px rgba(74,124,89,0.6); }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+.dot.on { background: var(--sage); }
 .dot.err { background: var(--rose); }
-.dot.spin { background: var(--gold); animation: pulse 1s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
 .tbtn {
   font-family: var(--sans); font-size: 0.68rem; font-weight: 500;
@@ -81,180 +68,38 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 .tbtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
-.tuser {
-  display: flex; align-items: center; gap: 8px;
-}
-.tuser-avatar {
-  width: 28px; height: 28px; border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.3); object-fit: cover;
-  display: none;
-}
-.tuser-avatar.show { display: block; }
-.tuser-name {
-  font-size: 0.68rem; color: rgba(255,255,255,0.7); max-width: 100px;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: none;
-}
-.tuser-name.show { display: block; }
-
 .tbal {
   font-size: 0.72rem; color: var(--gold-md); font-weight: 500; letter-spacing: 0.04em;
 }
-.tbal span { font-size: 0.58rem; color: rgba(255,255,255,0.4); display: block; text-align: right; }
 
-/* ── SHELL ── */
 .shell { flex: 1; display: flex; overflow: hidden; }
-
-/* ── LEFT PANEL ── */
-.left {
-  width: 220px; flex-shrink: 0;
-  background: var(--parchmt);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; overflow: hidden;
-}
-.pblock { padding: 1rem 1rem; border-bottom: 1px solid var(--border); }
-.plabel { 
-  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 0.65rem;
-}
-.bal-wrap {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--gold-lt); border: 1px solid var(--gold-md);
-  border-radius: 10px; padding: 10px 12px;
-}
-.bal-icon { font-size: 1.4rem; line-height: 1; }
-.bal-num { font-family: var(--serif); font-size: 1.25rem; font-weight: 700; color: var(--ink); line-height: 1; }
-.bal-sub { font-size: 0.58rem; color: var(--dim); margin-top: 2px; letter-spacing: 0.04em; }
-
-.buy-btn {
-  display: block; width: 100%; margin-top: 8px;
-  font-family: var(--sans); font-size: 0.68rem; font-weight: 600;
-  padding: 6px 0; background: var(--gold); border: none; color: var(--deep);
-  cursor: pointer; border-radius: 8px; transition: all 0.15s; text-align: center;
-  letter-spacing: 0.02em; text-decoration: none;
-}
-.buy-btn:hover { background: #d48f20; }
-
-/* ── INDUSTRY SELECTOR ── */
-.industry-section { padding: 1rem 1rem 0.8rem; border-bottom: 1px solid var(--border); }
-.industry-label { 
-  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.16em;
-  text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; display: block;
-}
-.industry-sel {
-  width: 100%; background: #fff; border: 1.5px solid var(--border2);
-  color: var(--ink); font-family: var(--sans); font-size: 0.75rem;
-  padding: 0.6rem 0.7rem; outline: none; cursor: pointer; border-radius: 8px;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b5a090'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
-  font-weight: 500; transition: all 0.2s;
-}
-.industry-sel:focus { border-color: var(--teal); outline: none; box-shadow: 0 0 0 3px var(--teal-lt); }
-.industry-sel option { background: #fff; padding: 8px; }
-
-.industry-badge {
-  display: inline-block; background: var(--teal-lt); color: var(--teal);
-  font-size: 0.65rem; font-weight: 600; padding: 4px 10px;
-  border-radius: 12px; margin-top: 0.5rem; letter-spacing: 0.03em;
-}
-
-.msel {
-  width: 100%; background: #fff; border: 1px solid var(--border2);
-  color: var(--ink); font-family: var(--sans); font-size: 0.72rem;
-  padding: 0.45rem 0.6rem; outline: none; cursor: pointer; border-radius: 8px;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b5a090'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
-}
-.msel:focus { border-color: var(--teal); outline: none; }
-
-/* Quick prompts */
-.qgrid { display: flex; flex-direction: column; gap: 5px; }
-.qbtn {
-  display: flex; align-items: flex-start; gap: 8px;
-  background: #fff; border: 1px solid var(--border);
-  border-radius: 8px; padding: 8px 10px; cursor: pointer; transition: all 0.15s;
-  text-align: left;
-}
-.qbtn:hover { border-color: var(--teal); background: var(--teal-lt); }
-.qbtn .qi { font-size: 1rem; line-height: 1; flex-shrink: 0; margin-top: 1px; }
-.qbtn .ql { font-size: 0.68rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
-.qbtn .qs { font-size: 0.6rem; color: var(--dim); line-height: 1.3; margin-top: 2px; }
-
-.pbtn {
-  display: block; width: 100%; font-family: var(--sans);
-  font-size: 0.7rem; font-weight: 500; letter-spacing: 0.03em;
-  padding: 0.45rem 0; background: transparent; border: 1px solid var(--border2);
-  color: var(--dim); cursor: pointer; transition: all 0.15s; text-align: center;
-  border-radius: 8px; margin-bottom: 0.4rem;
-}
-.pbtn:last-child { margin-bottom: 0; }
-.pbtn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
-.pbtn.danger:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-lt); }
-.pbtn.primary { background: var(--teal); border-color: var(--teal); color: #fff; }
-.pbtn.primary:hover { background: #228b7e; border-color: #228b7e; color: #fff; }
-
-.hscroll { flex: 1; overflow-y: auto; padding: 0.4rem; }
-.hscroll::-webkit-scrollbar { width: 3px; }
-.hscroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
-.hitem {
-  font-size: 0.68rem; color: var(--dim); padding: 0.4rem 0.6rem;
-  cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  border-radius: 6px; transition: all 0.12s; border-left: 2px solid transparent;
-}
-.hitem:hover { color: var(--ink); background: var(--warm); }
-.hitem.active { color: var(--teal); background: var(--teal-lt); border-left-color: var(--teal); }
-
-/* ── CHAT ── */
 .chat-col { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--cream); }
 
-.msgs { flex: 1; overflow-y: auto; padding: 2rem 0 1rem; scroll-behavior: smooth; }
+.msgs { flex: 1; overflow-y: auto; padding: 2rem 0 1rem; }
 .msgs::-webkit-scrollbar { width: 4px; }
 .msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 .empty {
   height: 100%; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 2rem; user-select: none;
+  align-items: center; justify-content: center; text-align: center; padding: 2rem;
 }
 .ehero { 
-  font-family: var(--serif); font-size: 2.6rem; font-weight: 500; font-style: italic;
+  font-family: var(--serif); font-size: 2.6rem; font-weight: 500;
   color: var(--ink); line-height: 1.2; margin-bottom: 0.4rem;
 }
 .ehero em { color: var(--teal); font-style: normal; }
-.esub { 
-  font-size: 0.8rem; color: var(--dim); line-height: 1.8; max-width: 380px;
-  margin-bottom: 2rem;
-}
-.echips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 440px; }
-.echip {
-  display: flex; align-items: center; gap: 6px;
-  background: #fff; border: 1px solid var(--border);
-  border-radius: 20px; padding: 7px 14px; cursor: pointer; transition: all 0.15s;
-  font-size: 0.72rem; font-weight: 500; color: var(--sub);
-}
-.echip:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
-.echip span { font-size: 0.95rem; }
-.etagline {
-  font-size: 0.65rem; color: var(--muted); margin-top: 1.5rem;
-  letter-spacing: 0.06em; text-transform: uppercase;
-}
 
 .row {
-  display: flex; padding: 0.4rem 2rem; gap: 10px;
-  max-width: 820px; margin: 0 auto; width: 100%;
-  animation: rin 0.18s ease both;
+  display: flex; padding: 0.4rem 2rem; gap: 10px; max-width: 820px; margin: 0 auto; width: 100%;
 }
-@keyframes rin { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
 .row.user { flex-direction: row-reverse; }
 
 .ava {
   width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
   font-size: 0.8rem; flex-shrink: 0; margin-top: 3px; border-radius: 50%;
 }
-.ava.ai  { background: var(--teal); color: #fff; font-family: var(--serif); font-weight: 700; }
-.ava.you { background: var(--warm); color: var(--dim); font-size: 0.75rem; font-weight: 600; }
-.ava.you img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.ava.ai { background: var(--teal); color: #fff; font-family: var(--serif); font-weight: 700; }
+.ava.you { background: var(--warm); color: var(--dim); }
 
 .bub {
   max-width: 76%; font-size: 0.9rem; line-height: 1.75;
@@ -262,108 +107,39 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   font-family: var(--sans); font-weight: 400; color: var(--ink);
   padding: 0.75rem 1rem; border-radius: 4px;
 }
-.row.ai   .bub { 
-  background: #fff; border: 1px solid var(--border); 
-  border-radius: 4px 14px 14px 14px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+.row.ai .bub { 
+  background: #fff; border: 1px solid var(--border); border-radius: 4px 14px 14px 14px;
 }
 .row.user .bub { 
-  background: var(--teal); color: #fff;
-  border-radius: 14px 4px 14px 14px;
-}
-.bub.thinking { 
-  font-family: var(--sans); font-size: 0.82rem; color: var(--dim);
-  font-style: italic; font-weight: 300; background: #fff;
-  border: 1px solid var(--border); border-radius: 4px 14px 14px 14px;
+  background: var(--teal); color: #fff; border-radius: 14px 4px 14px 14px;
 }
 .bub.error { 
-  border: 1px solid var(--rose-md); background: var(--rose-lt); 
-  color: #b8392e; font-size: 0.8rem; border-radius: 4px 14px 14px 14px;
-}
-.think-dots span { display: inline-block; animation: tdot 1.2s ease-in-out infinite; }
-.think-dots span:nth-child(2) { animation-delay: 0.2s; }
-.think-dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes tdot { 0%,80%,100%{opacity:0.3;transform:scale(0.85)} 40%{opacity:1;transform:scale(1)} }
-
-.rmeta { 
-  font-size: 0.58rem; color: var(--muted); margin-top: 0.25rem; 
-  display: flex; align-items: center; gap: 8px;
-}
-.rmeta .chip { 
-  background: var(--gold-lt); color: var(--dim); border-radius: 10px; 
-  padding: 1px 8px; font-size: 0.58rem;
+  border: 1px solid var(--rose-md); background: var(--rose-lt); color: #b8392e;
 }
 
-.suggestions { 
-  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; max-width: 76%;
-}
-.sug {
-  background: var(--parchmt); border: 1px solid var(--border2);
-  border-radius: 12px; padding: 4px 12px; font-size: 0.7rem; color: var(--dim);
-  cursor: pointer; transition: all 0.12s; font-weight: 400;
-}
-.sug:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-lt); }
-
-/* ── INPUT ── */
 .ibar { 
   border-top: 1px solid var(--border); background: var(--parchmt); 
   padding: 0.85rem 2rem; flex-shrink: 0;
 }
-.iinner { max-width: 820px; margin: 0 auto; display: flex; gap: 0.7rem; align-items: flex-end; }
+.iinner { max-width: 820px; margin: 0 auto; display: flex; gap: 0.7rem; }
 .prompt {
   flex: 1; background: #fff; border: 1.5px solid var(--border2);
   color: var(--ink); font-family: var(--sans); font-size: 0.9rem;
-  font-weight: 400; line-height: 1.6; padding: 0.7rem 1rem;
-  resize: none; outline: none; min-height: 48px; max-height: 160px;
+  padding: 0.7rem 1rem; resize: none; outline: none; min-height: 48px; max-height: 160px;
   border-radius: 12px; transition: border-color 0.2s;
 }
 .prompt::placeholder { color: var(--muted); }
 .prompt:focus { border-color: var(--teal); }
 .send {
   font-family: var(--sans); font-size: 0.78rem; font-weight: 600;
-  letter-spacing: 0.03em; height: 48px; padding: 0 1.4rem;
+  height: 48px; padding: 0 1.4rem;
   background: var(--teal); border: none; color: #fff;
   cursor: pointer; transition: all 0.15s; flex-shrink: 0;
   border-radius: 12px;
 }
 .send:hover:not(:disabled) { background: #228b7e; }
 .send:disabled { opacity: 0.3; cursor: not-allowed; }
-.ifoot { 
-  max-width: 820px; margin: 0.4rem auto 0; 
-  display: flex; justify-content: space-between; 
-  font-size: 0.58rem; color: var(--muted);
-}
 
-/* ── RIGHT PANEL ── */
-.right {
-  width: 190px; flex-shrink: 0;
-  background: var(--parchmt); border-left: 1px solid var(--border);
-  display: flex; flex-direction: column; overflow: hidden;
-}
-.rblock { padding: 0.9rem 1rem; border-bottom: 1px solid var(--border); }
-.sgrid { display: flex; flex-direction: column; gap: 0.8rem; }
-.scard {
-  background: #fff; border: 1px solid var(--border);
-  border-radius: 8px; padding: 8px 10px;
-}
-.sval { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; color: var(--ink); line-height: 1; }
-.sval.teal { color: var(--teal); }
-.slbl { font-size: 0.58rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 3px; }
-
-/* use ideas */
-.ideas { flex: 1; overflow-y: auto; padding: 0.5rem; }
-.ideas::-webkit-scrollbar { width: 3px; }
-.idea-item {
-  display: flex; align-items: flex-start; gap: 8px;
-  padding: 7px 8px; border-radius: 8px; cursor: pointer;
-  transition: all 0.12s; margin-bottom: 4px;
-}
-.idea-item:hover { background: var(--warm); }
-.idea-icon { font-size: 1rem; flex-shrink: 0; line-height: 1; margin-top: 1px; }
-.idea-text { font-size: 0.65rem; color: var(--dim); line-height: 1.4; }
-.idea-text strong { color: var(--ink); font-weight: 500; display: block; font-size: 0.68rem; }
-
-/* ── AUTH MODAL ── */
 .modal-wrap {
   position: fixed; inset: 0; z-index: 1000;
   background: rgba(45, 32, 22, 0.72);
@@ -373,12 +149,11 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .modal-wrap.hidden { display: none; }
 .modal {
   background: #fff; border: 1px solid var(--border);
-  width: 100%; max-width: 420px;
+  width: 100%; max-width: 450px;
   border-radius: 20px; overflow: hidden;
   box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-  animation: mIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-height: 90vh; overflow-y: auto;
 }
-@keyframes mIn { from{opacity:0;transform:translateY(20px) scale(0.97)} to{opacity:1;transform:none} }
 
 .modal-hero {
   background: var(--deep); padding: 2rem 2rem 1.5rem;
@@ -389,7 +164,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   color: #fff; margin-bottom: 0.35rem;
 }
 .modal-logo em { color: var(--gold); font-style: italic; }
-.modal-tagline { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; }
 
 .modal-body { padding: 1.75rem 2rem 2rem; }
 .modal-title { 
@@ -416,17 +190,14 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   border-radius: 12px; cursor: pointer; transition: all 0.15s;
   font-family: var(--sans); font-size: 0.85rem; font-weight: 500;
   color: var(--ink); justify-content: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
 }
-.google-signin-btn:hover { border-color: var(--teal); background: var(--teal-lt); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-.google-signin-btn svg { flex-shrink: 0; }
-.auth-note { font-size: 0.62rem; color: var(--muted); text-align: center; }
+.google-signin-btn:hover { border-color: var(--teal); background: var(--teal-lt); }
 .auth-loading { font-size: 0.78rem; color: var(--teal); display: none; text-align: center; padding: 8px 0; }
-.auth-err { font-size: 0.65rem; color: var(--rose); text-align: center; margin-top: 6px; min-height: 1rem; }
+.auth-err { font-size: 0.65rem; color: var(--rose); text-align: center; margin-top: 6px; }
 
 .auth-divider {
   display: flex; align-items: center; gap: 10px;
-  margin: 10px 0; color: var(--muted); font-size: 0.65rem; letter-spacing: 0.06em;
+  margin: 10px 0; color: var(--muted); font-size: 0.65rem;
 }
 .auth-divider::before, .auth-divider::after {
   content: ''; flex: 1; height: 1px; background: var(--border);
@@ -440,249 +211,54 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   color: var(--dim);
 }
 .guest-btn:hover { border-color: var(--muted); color: var(--ink); background: var(--parchmt); }
-.guest-note {
-  font-size: 0.6rem; color: var(--muted); text-align: center; margin-top: 8px;
-  line-height: 1.5;
-}
-
-.guest-banner {
-  display: none; align-items: center; gap: 8px;
-  background: var(--gold-lt); border: 1px solid var(--gold-md);
-  border-radius: 8px; padding: 4px 10px;
-  font-size: 0.65rem; color: var(--dim); font-weight: 500;
-}
-.guest-banner.show { display: flex; }
-.guest-banner a { color: var(--teal); cursor: pointer; text-decoration: underline; }
 
 .modal-foot {
   padding: 0.75rem 2rem; border-top: 1px solid var(--border);
   font-size: 0.62rem; color: var(--muted); text-align: center;
 }
-.modal-foot a { color: var(--teal); text-decoration: none; }
+.modal-foot a { color: var(--teal); text-decoration: none; cursor: pointer; }
 
-.stxt {
-  width: 100%; background: #fff; border: 1px solid var(--border2);
-  color: var(--sub); font-family: var(--sans); font-size: 0.68rem;
-  line-height: 1.55; padding: 0.5rem 0.7rem; resize: none; outline: none;
-  border-radius: 8px; transition: border-color 0.2s;
+.pricing-tab {
+  flex: 1; padding: 1rem; background: none; border: none;
+  border-bottom: 2px solid transparent; color: var(--dim);
+  cursor: pointer; font-family: var(--sans); font-size: 0.75rem;
+  font-weight: 600; transition: all 0.2s; text-transform: uppercase;
 }
-.stxt:focus { border-color: var(--teal); color: var(--ink); }
+.pricing-tab:hover { color: var(--ink); }
+.pricing-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
 
-.success-banner {
-  position: fixed; top: 20px; right: 20px; z-index: 2000;
-  background: var(--sage); color: #fff; padding: 1rem 1.5rem;
-  border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  display: none; align-items: center; gap: 10px; animation: slideIn 0.3s ease;
+.sub-option {
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;
+  cursor: pointer; transition: all 0.2s;
 }
-.success-banner.show { display: flex; }
-@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-/* Mobile industry selector */
-.mobile-industry-bar { display: none; }
-.mobile-industry-label { display: none; }
-.mobile-industry-sel { display: none; }
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .left { width: 180px; }
-  .right { width: 160px; }
-  .bub { max-width: 85%; }
+.sub-option:hover { border-color: var(--teal); }
+.sub-option.selected { border-color: var(--teal); background: var(--teal-lt); }
+.sub-name {
+  font-family: var(--serif); font-size: 1.1rem; font-weight: 600;
+  color: var(--ink); margin-bottom: 0.25rem;
 }
+.sub-price {
+  font-size: 1.4rem; color: var(--teal); font-weight: 700; margin-bottom: 0.5rem;
+}
+.sub-desc {
+  font-size: 0.8rem; color: var(--dim); margin-bottom: 0.75rem; line-height: 1.5;
+}
+
+.pbtn {
+  display: block; width: 100%; font-family: var(--sans);
+  font-size: 0.78rem; font-weight: 600; padding: 0.85rem;
+  background: var(--teal); border: none; color: #fff;
+  cursor: pointer; transition: all 0.15s; border-radius: 12px;
+  margin-top: 1.5rem;
+}
+.pbtn:hover:not(:disabled) { background: #228b7e; }
 
 @media (max-width: 768px) {
-  .left, .right { display: none; }
   .shell { flex-direction: column; }
   .chat-col { width: 100%; }
-  
-  .topbar { 
-    padding: 0.5rem 0.75rem; 
-    height: auto;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    align-content: flex-start;
-  }
-  .topbar > div:first-child {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .wordmark { font-size: 0.95rem; letter-spacing: -0.01em; }
-  .tagline { font-size: 0.45rem; margin-top: 0; }
-  .tuser-name { display: none !important; }
-  .tuser-avatar { width: 22px; height: 22px; }
-  .tbtn { padding: 3px 8px; font-size: 0.55rem; }
-  .tpill { padding: 2px 8px; font-size: 0.6rem; }
-  .tbal { font-size: 0.6rem; }
-  .tbal span { font-size: 0.48rem; }
-  .guest-banner { font-size: 0.6rem; padding: 2px 6px; }
-  .tsep { display: none; }
-  
-  .tuser {
-    display: flex;
-    gap: 0;
-    align-items: center;
-  }
-  
-  .mobile-industry-bar {
-    display: flex;
-    width: 100%;
-    padding: 0.5rem 0;
-    gap: 0.4rem;
-    align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.12);
-    background: transparent;
-    order: 10;
-    margin-top: 0.3rem;
-  }
-  .mobile-industry-label {
-    display: block;
-    font-size: 0.52rem;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    font-weight: 600;
-  }
-  .mobile-industry-sel {
-    display: block;
-    flex: 1;
-    background: #fff;
-    border: 1px solid rgba(255,255,255,0.3);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 0.68rem;
-    padding: 0.45rem 0.55rem;
-    outline: none;
-    cursor: pointer;
-    border-radius: 5px;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233d2f24'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 6px center;
-    background-color: #fff;
-    padding-right: 24px;
-    font-weight: 500;
-    transition: all 0.2s;
-  }
-  .mobile-industry-sel:focus {
-    border-color: var(--teal);
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(42,157,143,0.1);
-  }
-  .mobile-industry-sel option {
-    background: #fff;
-    color: var(--ink);
-    padding: 6px;
-  }
-  
-  .modal { max-width: 90vw; border-radius: 16px; }
-  .modal-body { padding: 1.5rem 1.5rem 1.5rem; }
-  .modal-title { font-size: 1.1rem; }
-  .modal-sub { font-size: 0.7rem; }
-  .vprops { gap: 6px; }
-  .vprop { padding: 6px 10px; }
-  
-  .msgs { padding: 1.25rem 0 0.5rem; }
-  .row { padding: 0.3rem 0.75rem; gap: 8px; max-width: 100%; }
-  .bub { max-width: 90%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
-  .ava { width: 28px; height: 28px; font-size: 0.7rem; }
-  
-  .ibar { padding: 0.6rem 0.75rem; }
-  .iinner { gap: 0.5rem; max-width: 100%; }
-  .prompt { padding: 0.6rem 0.8rem; font-size: 0.85rem; min-height: 44px; }
-  .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; min-width: 50px; }
-  .ifoot { padding: 0.3rem 0.75rem 0; font-size: 0.5rem; }
-  
-  .empty { padding: 0.75rem; }
-  .ehero { font-size: 1.6rem; line-height: 1.2; margin-bottom: 0.25rem; }
-  .esub { font-size: 0.72rem; margin-bottom: 1.25rem; max-width: 100%; line-height: 1.5; }
-  .echips { gap: 6px; max-width: 100%; }
-  .echip { padding: 6px 12px; font-size: 0.65rem; }
-  .echip span { font-size: 0.85rem; }
-  .etagline { font-size: 0.58rem; margin-top: 0.75rem; }
-}
-
-@media (max-width: 480px) {
-  .topbar { height: auto; padding: 0.4rem 0.5rem; gap: 0.3rem; flex-wrap: wrap; }
-  .topbar > div:first-child {
-    flex: 0 0 auto;
-  }
-  .wordmark { font-size: 0.88rem; letter-spacing: -0.02em; }
-  .tagline { font-size: 0.4rem; }
-  .tpill { padding: 2px 6px; font-size: 0.55rem; }
-  .dot { width: 4px; height: 4px; }
-  .tbtn { padding: 2px 6px; font-size: 0.5rem; }
-  .tbal { font-size: 0.55rem; }
-  .tbal span { font-size: 0.45rem; }
-  .guest-banner { font-size: 0.55rem; padding: 1px 5px; gap: 2px; }
-  .tuser { gap: 0; }
-  
-  .mobile-industry-bar {
-    padding: 0.4rem 0;
-    gap: 0.3rem;
-    margin-top: 0.2rem;
-  }
-  .mobile-industry-label {
-    font-size: 0.48rem;
-    padding: 0 0.3rem;
-  }
-  .mobile-industry-sel {
-    font-size: 0.65rem;
-    padding: 0.4rem 0.5rem;
-    padding-right: 22px;
-  }
-  
-  .modal { max-width: 95vw; border-radius: 14px; }
-  .modal-hero { padding: 1.25rem 1.25rem 0.75rem; }
-  .modal-logo { font-size: 1.5rem; margin-bottom: 0.2rem; }
-  .modal-tagline { font-size: 0.6rem; }
-  .modal-body { padding: 1rem 1rem 1.25rem; }
-  .modal-title { font-size: 0.95rem; margin-bottom: 0.15rem; }
-  .modal-sub { font-size: 0.62rem; line-height: 1.4; margin-bottom: 0.75rem; }
-  .vprops { gap: 5px; }
-  .vp-icon { font-size: 0.9rem; }
-  .vp-text { font-size: 0.62rem; }
-  .google-signin-btn { padding: 9px 14px; font-size: 0.75rem; }
-  .guest-btn { padding: 8px 14px; font-size: 0.7rem; }
-  .auth-note { font-size: 0.55rem; }
-  .auth-divider { margin: 6px 0; font-size: 0.56rem; }
-  .guest-note { font-size: 0.52rem; }
-  .modal-foot { padding: 0.5rem 1rem; font-size: 0.54rem; }
-  
-  .msgs { padding: 0.8rem 0 0.3rem; }
-  .row { padding: 0.2rem 0.5rem; gap: 6px; }
-  .ava { width: 26px; height: 26px; font-size: 0.62rem; margin-top: 2px; }
-  .bub { max-width: 92%; font-size: 0.78rem; line-height: 1.45; padding: 0.5rem 0.65rem; }
-  .bub.thinking { font-size: 0.72rem; }
-  .think-dots span { font-size: 0.75rem; }
-  .rmeta { font-size: 0.5rem; gap: 4px; }
-  .rmeta .chip { padding: 0.5px 6px; font-size: 0.5rem; }
-  
-  .suggestions { gap: 4px; margin-top: 3px; max-width: 92%; }
-  .sug { padding: 3px 9px; font-size: 0.62rem; border-radius: 10px; }
-  
-  .ibar { padding: 0.5rem 0.5rem; }
-  .iinner { gap: 0.35rem; }
-  .prompt { padding: 0.5rem 0.65rem; font-size: 0.8rem; min-height: 40px; max-height: 120px; }
-  .send { padding: 0 0.75rem; font-size: 0.62rem; height: 40px; min-width: 45px; }
-  .ifoot { padding: 0.2rem 0.5rem 0; font-size: 0.48rem; gap: 0.4rem; }
-  
-  .empty { padding: 0.5rem; }
-  .ehero { font-size: 1.35rem; line-height: 1.15; margin-bottom: 0.2rem; font-weight: 400; }
-  .ehero em { font-style: normal; }
-  .esub { font-size: 0.68rem; line-height: 1.4; margin-bottom: 0.8rem; }
-  .echips { gap: 4px; max-width: 100%; flex-wrap: wrap; }
-  .echip { padding: 5px 9px; font-size: 0.58rem; border-radius: 14px; }
-  .echip span { font-size: 0.7rem; }
-  .etagline { font-size: 0.52rem; margin-top: 0.5rem; }
-  
-  .success-banner { top: auto; bottom: 15px; right: 8px; left: 8px; padding: 0.65rem 0.9rem; font-size: 0.75rem; border-radius: 9px; }
-}
-
-@media (hover: none) and (pointer: coarse) {
-  button, .pbtn, .qbtn, .echip, .sug, .idea-item { -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1); transition: all 0.2s; }
-  button:active, .pbtn:active, .qbtn:active, .echip:active, .sug:active { opacity: 0.8; }
+  .modal { max-width: 90vw; }
+  .bub { max-width: 92%; }
 }
 
 input, textarea, select { font-size: 16px !important; }
@@ -695,16 +271,15 @@ input, textarea, select { font-size: 16px !important; }
   <div class="modal">
     <div class="modal-hero">
       <div class="modal-logo">NAGOH <em>AI</em></div>
-      <div class="modal-tagline">Your Small Business Assistant</div>
     </div>
     <div class="modal-body">
       <div class="modal-title">Welcome! 👋</div>
-      <div class="modal-sub">Sign in with Google to get started. New users receive 5,000 free tokens instantly.</div>
+      <div class="modal-sub">Sign in with Google or continue as a guest. Upgrade anytime to unlock more tokens.</div>
 
       <div class="vprops">
-        <div class="vprop"><div class="vp-icon">✍️</div><div class="vp-text">Craft professional messages instantly</div></div>
-        <div class="vprop"><div class="vp-icon">📱</div><div class="vp-text">Generate marketing content for your business</div></div>
-        <div class="vprop"><div class="vp-icon">💌</div><div class="vp-text">Reply to customers with confidence</div></div>
+        <div class="vprop"><div class="vp-icon">✍️</div><div class="vp-text">Professional messages instantly</div></div>
+        <div class="vprop"><div class="vp-icon">📱</div><div class="vp-text">Generate marketing content</div></div>
+        <div class="vprop"><div class="vp-icon">💌</div><div class="vp-text">Customer replies that convert</div></div>
       </div>
 
       <div class="google-btn-wrap">
@@ -717,548 +292,160 @@ input, textarea, select { font-size: 16px !important; }
           </svg>
           Continue with Google
         </button>
-        <div class="auth-loading" id="authLoading">⏳ Signing you in…</div>
+        <div class="auth-loading" id="authLoading">⏳ Signing in…</div>
         <div class="auth-err" id="authErr"></div>
-        <div class="auth-note">By signing in you agree to our terms of service. Your data is private and never shared.</div>
 
         <div class="auth-divider">or</div>
 
-        <button class="guest-btn" onclick="continueAsGuest()">
-          👤 Continue as Guest
-        </button>
-        <div class="guest-note">No account needed — get 1,000 free tokens.<br>Tokens don't carry over between visits.</div>
+        <button class="guest-btn" onclick="continueAsGuest()">👤 Continue as Guest (1,000 tokens)</button>
       </div>
     </div>
-    <div class="modal-foot">ai.nagoh.us &nbsp;·&nbsp; <a href="#" onclick="openBuyTokens()">buy tokens</a> &nbsp;·&nbsp; <a href="#">help</a></div>
+    <div class="modal-foot">ai.nagoh.us · <a onclick="showPricingModal()">subscription plans</a> · <a href="#">help</a></div>
   </div>
 </div>
 
-<!-- Success notification -->
-<div class="success-banner" id="successBanner">
-  ✅ <span id="successMsg">Purchase successful! Your tokens have been added.</span>
+<!-- ── PRICING MODAL ── -->
+<div class="modal-wrap" id="pricingWrap" style="display:none;">
+  <div class="modal">
+    <div class="modal-hero">
+      <div class="modal-logo">NAGOH <em>Plans</em></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title">Choose Your Plan</div>
+      <div class="modal-sub">Monthly subscription with automatic monthly token refresh. Cancel anytime.</div>
+
+      <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:1.5rem;">
+        <button class="pricing-tab active" onclick="switchPricingTab(0)">Monthly</button>
+        <button class="pricing-tab" onclick="switchPricingTab(1)">Yearly</button>
+      </div>
+
+      <div id="pricingMonthly">
+        <label class="sub-option" onclick="selectPlan('starter')">
+          <div>
+            <div class="sub-name">Starter</div>
+            <div class="sub-price">$9/mo</div>
+            <div class="sub-desc">10,000 tokens/month. Perfect for testing.</div>
+          </div>
+        </label>
+
+        <label class="sub-option selected" onclick="selectPlan('professional')">
+          <div>
+            <div class="sub-name">⭐ Professional</div>
+            <div class="sub-price">$29/mo</div>
+            <div class="sub-desc">50,000 tokens/month. Most popular for small businesses.</div>
+          </div>
+        </label>
+
+        <label class="sub-option" onclick="selectPlan('business')">
+          <div>
+            <div class="sub-name">Business</div>
+            <div class="sub-price">$79/mo</div>
+            <div class="sub-desc">150,000 tokens/month + team support.</div>
+          </div>
+        </label>
+
+        <label class="sub-option" onclick="selectPlan('enterprise')">
+          <div>
+            <div class="sub-name">Enterprise</div>
+            <div class="sub-price">Custom</div>
+            <div class="sub-desc">500,000+ tokens/month + dedicated support.</div>
+          </div>
+        </label>
+      </div>
+
+      <div id="pricingYearly" style="display:none;">
+        <label class="sub-option" onclick="selectPlan('starter_yearly')">
+          <div>
+            <div class="sub-name">Starter</div>
+            <div class="sub-price">$89/yr</div>
+            <div class="sub-desc">Save $18/year. 10,000 tokens/month.</div>
+          </div>
+        </label>
+
+        <label class="sub-option selected" onclick="selectPlan('professional_yearly')">
+          <div>
+            <div class="sub-name">⭐ Professional</div>
+            <div class="sub-price">$290/yr</div>
+            <div class="sub-desc">Save $58/year. 50,000 tokens/month.</div>
+          </div>
+        </label>
+
+        <label class="sub-option" onclick="selectPlan('business_yearly')">
+          <div>
+            <div class="sub-name">Business</div>
+            <div class="sub-price">$790/yr</div>
+            <div class="sub-desc">Save $158/year. 150,000 tokens/month.</div>
+          </div>
+        </label>
+
+        <label class="sub-option" onclick="selectPlan('enterprise_yearly')">
+          <div>
+            <div class="sub-name">Enterprise</div>
+            <div class="sub-price">Custom</div>
+            <div class="sub-desc">500,000+ tokens/month + dedicated support.</div>
+          </div>
+        </label>
+      </div>
+
+      <button class="pbtn" onclick="startCheckout()">Get Started</button>
+      <div style="text-align:center;font-size:0.7rem;color:var(--muted);margin-top:1rem;">14-day free trial included with all plans</div>
+    </div>
+  </div>
 </div>
 
 <!-- ── TOPBAR ── -->
 <div class="topbar">
-  <div>
-    <div class="wordmark">NAGOH <em>AI</em></div>
-    <div class="tagline">YOUR BUSINESS ASSISTANT</div>
-  </div>
+  <div class="wordmark">NAGOH <em>AI</em></div>
   <div class="tsep"></div>
-  <div class="tbal" id="topBal">— <span>tokens</span></div>
-  <div class="guest-banner" id="guestBanner">
-    👤 Guest &nbsp;·&nbsp; <a onclick="showModal()">Sign in for more tokens</a>
-  </div>
+  <div class="tbal" id="topBal">— tokens</div>
   <div class="tpill">
-    <div class="dot spin" id="led"></div>
+    <div class="dot on" id="led"></div>
     <span id="sstr" style="font-size:0.68rem;">connecting…</span>
   </div>
-  <div class="tuser">
-    <img class="tuser-avatar" id="tuserAvatar" src="" alt="">
-    <span class="tuser-name" id="tuserName"></span>
-  </div>
   <button class="tbtn" onclick="signOut()">Sign out</button>
-  
-  <!-- Mobile Industry Selector -->
-  <div class="mobile-industry-bar">
-    <span class="mobile-industry-label">Industry:</span>
-    <select class="mobile-industry-sel" id="mobileIndustrySel" onchange="onIndustryChange()">
-      <option value="etsy">🛍️ Etsy & Craft Sellers</option>
-      <option value="realtor">🏠 Real Estate Agents</option>
-      <option value="landlord">🏢 Landlords & Property Managers</option>
-      <option value="coffee">☕ Coffee Shops & Cafés</option>
-      <option value="landscaping">🌳 Landscaping & Yard Services</option>
-      <option value="roofing">🏠 Roofing & Construction</option>
-      <option value="plumbing">🔧 Plumbing & HVAC</option>
-      <option value="salon">💇 Hair & Beauty Services</option>
-      <option value="photography">📸 Photography & Creative Services</option>
-      <option value="personal_training">💪 Personal Training & Fitness</option>
-      <option value="consulting">💼 Consulting & Professional Services</option>
-      <option value="general">⭐ General Small Business</option>
-    </select>
-  </div>
 </div>
 
 <!-- ── SHELL ── -->
 <div class="shell">
-
-  <!-- LEFT -->
-  <div class="left">
-    <!-- Industry Selector -->
-    <div class="industry-section">
-      <label class="industry-label">Your Industry</label>
-      <select class="industry-sel" id="industrySel" onchange="onIndustryChange()">
-        <option value="etsy">🛍️ Etsy & Craft Sellers</option>
-        <option value="realtor">🏠 Real Estate Agents</option>
-        <option value="landlord">🏢 Landlords & Property Managers</option>
-        <option value="coffee">☕ Coffee Shops & Cafés</option>
-        <option value="landscaping">🌳 Landscaping & Yard Services</option>
-        <option value="roofing">🏠 Roofing & Construction</option>
-        <option value="plumbing">🔧 Plumbing & HVAC</option>
-        <option value="salon">💇 Hair & Beauty Services</option>
-        <option value="photography">📸 Photography & Creative Services</option>
-        <option value="personal_training">💪 Personal Training & Fitness</option>
-        <option value="consulting">💼 Consulting & Professional Services</option>
-        <option value="general">⭐ General Small Business</option>
-      </select>
-      <div class="industry-badge" id="industryBadge">Etsy & Craft Sellers</div>
-    </div>
-
-    <div class="pblock">
-      <div class="plabel">Your Balance</div>
-      <div class="bal-wrap">
-        <div class="bal-icon">🪙</div>
-        <div>
-          <div class="bal-num" id="balNum">—</div>
-          <div class="bal-sub">NAGOH TOKENS</div>
-        </div>
-      </div>
-      <a class="buy-btn" id="buyLink" href="#" target="_blank" onclick="openBuyTokens(); return false;">+ Buy More Tokens</a>
-    </div>
-
-    <div class="pblock">
-      <div class="plabel">AI Model</div>
-      <select class="msel" id="modelSel" onchange="onModel()">
-        <option value="deepseek-chat">NagohAI Chat (fast)</option>
-        <option value="deepseek-reasoner">NagohAI Reasoner (deep)</option>
-      </select>
-    </div>
-
-    <div class="pblock">
-      <div class="plabel">Quick Starters</div>
-      <div class="qgrid" id="quickGrid"></div>
-    </div>
-
-    <div class="pblock">
-      <button class="pbtn primary" onclick="newChat()">+ New Chat</button>
-      <button class="pbtn danger" onclick="clearAll()">Clear History</button>
-    </div>
-
-    <div class="plabel" style="padding:0.6rem 1rem 0.25rem;font-size:0.52rem;letter-spacing:0.15em;">Past Chats</div>
-    <div class="hscroll" id="hscroll"></div>
-  </div>
-
-  <!-- CHAT -->
   <div class="chat-col">
     <div class="msgs" id="msgs">
-      <div class="empty" id="empty"></div>
+      <div class="empty" id="empty">
+        <div class="ehero">Your AI <em>business partner</em></div>
+      </div>
     </div>
 
     <div class="ibar">
       <div class="iinner">
-        <textarea class="prompt" id="prompt" 
-          placeholder="Ask anything..." 
-          rows="1" onkeydown="onKey(event)" oninput="grow(this)"></textarea>
-        <button class="send" id="sendBtn" onclick="send()" disabled>Send ↑</button>
-      </div>
-      <div class="ifoot">
-        <span>Press <strong>Enter</strong> to send &nbsp;·&nbsp; Shift+Enter for new line</span>
-        <span id="ccount"></span>
+        <textarea class="prompt" id="prompt" placeholder="Ask anything..." rows="1" onkeydown="onKey(event)"></textarea>
+        <button class="send" id="sendBtn" onclick="send()" disabled>Send</button>
       </div>
     </div>
-  </div>
-
-  <!-- RIGHT -->
-  <div class="right">
-    <div class="rblock">
-      <div class="plabel">This Chat</div>
-      <div class="sgrid">
-        <div class="scard"><div class="sval" id="rMsgs">0</div><div class="slbl">messages</div></div>
-        <div class="scard"><div class="sval teal" id="rSpent">0</div><div class="slbl">tokens used</div></div>
-      </div>
-    </div>
-
-    <div class="rblock">
-      <div class="plabel">Tone / Mode</div>
-      <select class="msel" id="toneMode" onchange="updateSysPrompt()">
-        <option value="friendly">😊 Friendly & warm</option>
-        <option value="professional">💼 Professional</option>
-        <option value="playful">🎉 Fun & playful</option>
-        <option value="concise">⚡ Short & snappy</option>
-      </select>
-    </div>
-
-    <div class="rblock" style="display:none;">
-      <div class="plabel">Custom System Prompt</div>
-      <textarea class="stxt" id="sysTxt" rows="4" placeholder="Custom instructions..."></textarea>
-    </div>
-
-    <div class="plabel" style="padding:0.6rem 1rem 0.25rem;font-size:0.52rem;letter-spacing:0.15em;">💡 Ideas to Try</div>
-    <div class="ideas" id="ideas"></div>
   </div>
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────
-// CONFIGURATION — UPDATE THESE VALUES
-// ─────────────────────────────────────────────────────────
-const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
+const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
-const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
-const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
-// ─────────────────────────────────────────────────────────
-
-// Industry-specific configurations
-const INDUSTRIES = {
-  etsy: {
-    name: '🛍️ Etsy & Craft Sellers',
-    placeholder: 'Ask anything — listing copy, captions, pricing, customer replies…',
-    emptyMsg: 'Perfect for selling handmade goods, crafts, and creative items.',
-    quickStarters: [
-      { emoji: '📝', title: 'Product Listing', desc: 'Write descriptions that sell', prompt: 'Write an Etsy product description for: ' },
-      { emoji: '📸', title: 'Social Captions', desc: 'Instagram, Facebook & more', prompt: 'Write 5 Instagram captions for my craft shop that sells: ' },
-      { emoji: '💌', title: 'Customer Reply', desc: 'Handle messages with ease', prompt: 'Write a friendly reply to this customer message: ' },
-      { emoji: '💰', title: 'Pricing Help', desc: 'Price your work fairly', prompt: 'Give me 10 pricing strategies for my craft business that makes: ' },
-      { emoji: '🔍', title: 'SEO & Tags', desc: 'Get found by buyers', prompt: 'Write SEO tags and keywords for my Etsy shop that sells: ' },
-    ],
-    ideas: [
-      { emoji: '🎄', title: 'Holiday announcement', desc: 'Let buyers know your hours' },
-      { emoji: '📅', title: 'Weekly content plan', desc: 'Never run out of post ideas' },
-      { emoji: '💝', title: 'Thank-you note', desc: 'Delight your customers' },
-      { emoji: '🔎', title: 'Trending keywords', desc: 'Improve your SEO' },
-      { emoji: '🛡️', title: 'Handle bad reviews', desc: 'Respond with grace' },
-      { emoji: '🗓️', title: '30-day social plan', desc: 'Stay consistent online' },
-      { emoji: '📦', title: 'Shipping tips', desc: 'Keep buyers happy' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a warm, encouraging assistant for Etsy sellers, crafters, and artists. Be supportive and clear. Use simple language. Help them feel confident about their business and creative work.",
-      professional: "You are NAGOH AI, a professional business assistant for Etsy sellers. Provide clear, well-structured advice about listings, pricing, and customer service.",
-      playful: "You are NAGOH AI, a fun and enthusiastic assistant for creative makers! Be upbeat and make running a craft business feel exciting. Use emojis occasionally.",
-      concise: "You are NAGOH AI, an assistant for Etsy sellers. Be extremely concise. Bullet points preferred. No fluff.",
-    }
-  },
-  realtor: {
-    name: '🏠 Real Estate Agents',
-    placeholder: 'Ask anything — listings, social posts, client follow-ups, property promotions…',
-    emptyMsg: 'Create professional property listings and marketing content.',
-    quickStarters: [
-      { emoji: '🏘️', title: 'Property Listing', desc: 'MLS-ready descriptions', prompt: 'Write a compelling real estate listing description for a house at [address/MLS number]: ' },
-      { emoji: '📸', title: 'Social Post', desc: 'Facebook, Instagram ads', prompt: 'Write a social media post to promote this property: [address]: ' },
-      { emoji: '💌', title: 'Client Follow-up', desc: 'Nurture leads', prompt: 'Write a follow-up email to a client who viewed this property: ' },
-      { emoji: '📊', title: 'Market Analysis', desc: 'Explain neighborhood value', prompt: 'Write a market analysis summary for this neighborhood: ' },
-      { emoji: '🎯', title: 'Open House Invite', desc: 'Drive attendance', prompt: 'Write an open house invitation email for: ' },
-    ],
-    ideas: [
-      { emoji: '🏡', title: 'New listing announcement', desc: 'Alert your sphere' },
-      { emoji: '📍', title: 'Neighborhood guide', desc: 'Show local value' },
-      { emoji: '💼', title: 'Buyer qualification', desc: 'Pre-qualify leads' },
-      { emoji: '🔑', title: 'Closing congrats', desc: 'Build relationships' },
-      { emoji: '🏆', title: 'Success story', desc: 'Share testimonials' },
-      { emoji: '💡', title: 'Investment tips', desc: 'Attract investors' },
-      { emoji: '📞', title: 'Cold outreach', desc: 'Expired/FSBO scripts' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a helpful assistant for real estate professionals. Be warm, professional, and client-focused. Create content that builds trust and showcases properties effectively.",
-      professional: "You are NAGOH AI, a professional real estate assistant. Provide clear, market-smart advice about listings, marketing, and client management.",
-      playful: "You are NAGOH AI, an enthusiastic real estate marketing assistant. Be energetic and make property marketing fun and engaging.",
-      concise: "You are NAGOH AI, a real estate assistant. Be concise and direct. Focus on key selling points and call-to-action.",
-    }
-  },
-  landlord: {
-    name: '🏢 Landlords & Property Managers',
-    placeholder: 'Ask anything — tenant communication, rent reminders, maintenance requests…',
-    emptyMsg: 'Professional communication templates for property management.',
-    quickStarters: [
-      { emoji: '💰', title: 'Late Rent Notice', desc: 'Professional reminder', prompt: 'Write a professional reminder email to a tenant who is [days] days late on rent: ' },
-      { emoji: '⚠️', title: 'Rule Violation', desc: 'Address issues firmly', prompt: 'Write a letter to a tenant about this lease violation: ' },
-      { emoji: '🔧', title: 'Repair Request Reply', desc: 'Acknowledge & schedule', prompt: 'Write a professional response to a tenant maintenance request: ' },
-      { emoji: '📋', title: 'Lease Renewal', desc: 'Terms & options', prompt: 'Write a lease renewal offer email for a tenant: ' },
-      { emoji: '🚪', title: 'Move-out Notice', desc: 'Professional & clear', prompt: 'Write a move-out inspection notification email: ' },
-    ],
-    ideas: [
-      { emoji: '📅', title: 'Rent due reminder', desc: 'Friendly advance notice' },
-      { emoji: '🔒', title: 'Security deposit info', desc: 'Clear expectations' },
-      { emoji: '🏠', title: 'Property update', desc: 'Announce improvements' },
-      { emoji: '📞', title: 'Emergency procedure', desc: 'Tenant communication' },
-      { emoji: '📝', title: 'Lease clarification', desc: 'Prevent disputes' },
-      { emoji: '🎯', title: 'Tenant screening', desc: 'Professional criteria' },
-      { emoji: '🤝', title: 'Dispute resolution', desc: 'De-escalation scripts' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a helpful property management assistant. Be professional yet approachable. Help landlords communicate clearly and fairly with tenants.",
-      professional: "You are NAGOH AI, a professional property management assistant. Provide clear, legally-aware communication templates that protect landlord interests.",
-      playful: "You are NAGOH AI, a property management assistant. Keep tone professional but personable. Make interactions pleasant despite difficult topics.",
-      concise: "You are NAGOH AI, a property management assistant. Be direct and clear. Include key information without unnecessary details.",
-    }
-  },
-  coffee: {
-    name: '☕ Coffee Shops & Cafés',
-    placeholder: 'Ask anything — menu descriptions, promotions, staff communication…',
-    emptyMsg: 'Marketing and communication tools for coffee shops and cafés.',
-    quickStarters: [
-      { emoji: '☕', title: 'Menu Item', desc: 'Appetizing descriptions', prompt: 'Write an appetizing description for this coffee shop menu item: ' },
-      { emoji: '📢', title: 'Promotion Post', desc: 'Social media buzz', prompt: 'Write a social media post promoting our: ' },
-      { emoji: '👥', title: 'Staff Memo', desc: 'Clear instructions', prompt: 'Write a staff memo about: ' },
-      { emoji: '🎁', title: 'Loyalty Program', desc: 'Drive repeat customers', prompt: 'Write copy for our coffee shop loyalty program: ' },
-      { emoji: '🌟', title: 'Event Announcement', desc: 'Live music, tastings…', prompt: 'Write an announcement for our coffee shop event: ' },
-    ],
-    ideas: [
-      { emoji: '📱', title: 'New seasonal drink', desc: 'Build anticipation' },
-      { emoji: '🏆', title: 'Customer spotlight', desc: 'Build community' },
-      { emoji: '🎵', title: 'Live music night', desc: 'Promote entertainment' },
-      { emoji: '💝', title: 'Gift card promo', desc: 'Holiday sales' },
-      { emoji: '☕', title: 'Coffee tasting', desc: 'Educational event' },
-      { emoji: '🤝', title: 'Partnership post', desc: 'Local bakery collab' },
-      { emoji: '📸', title: 'Behind the scenes', desc: 'Show your craft' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a warm and creative assistant for coffee shop owners. Be enthusiastic about coffee culture. Make content feel welcoming and community-focused.",
-      professional: "You are NAGOH AI, a professional business assistant for cafés. Provide clear, consistent messaging that builds brand loyalty.",
-      playful: "You are NAGOH AI, a fun and witty assistant for coffee shops. Use coffee humor and personality. Make customers smile.",
-      concise: "You are NAGOH AI, a coffee shop assistant. Be snappy and memorable. Get people in the door.",
-    }
-  },
-  landscaping: {
-    name: '🌳 Landscaping & Yard Services',
-    placeholder: 'Ask anything — quotes, project descriptions, customer updates…',
-    emptyMsg: 'Marketing and communication for landscaping and outdoor services.',
-    quickStarters: [
-      { emoji: '🌿', title: 'Service Description', desc: 'Explain your work', prompt: 'Write a description of our landscaping service: ' },
-      { emoji: '📸', title: 'Before/After Post', desc: 'Social media showcase', prompt: 'Write social media post describing this transformation: ' },
-      { emoji: '💰', title: 'Estimate Explanation', desc: 'Justify pricing', prompt: 'Write an estimate email for a landscaping project: ' },
-      { emoji: '📋', title: 'Project Timeline', desc: 'Set expectations', prompt: 'Write a project timeline and progress update for: ' },
-      { emoji: '🛠️', title: 'Service Upsell', desc: 'Seasonal offerings', prompt: 'Write about our seasonal landscaping services: ' },
-    ],
-    ideas: [
-      { emoji: '🌱', title: 'Spring cleanup', desc: 'Seasonal promotion' },
-      { emoji: '💡', title: 'Lawn care tips', desc: 'Educational content' },
-      { emoji: '🏡', title: 'Curb appeal guide', desc: 'Drive conversions' },
-      { emoji: '🌸', title: 'Plant selection', desc: 'Design ideas' },
-      { emoji: '⏰', title: 'Maintenance schedule', desc: 'Customer retention' },
-      { emoji: '🎯', title: 'Hardscaping project', desc: 'Upsell opportunities' },
-      { emoji: '👥', title: 'Testimonial request', desc: 'Social proof' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a helpful assistant for landscaping businesses. Be knowledgeable about outdoor work. Help showcase your team's craftsmanship.",
-      professional: "You are NAGOH AI, a professional business assistant for landscaping companies. Provide clear project communication and credible estimates.",
-      playful: "You are NAGOH AI, an enthusiastic landscaping assistant. Celebrate beautiful outdoor spaces. Make yard transformation sound exciting.",
-      concise: "You are NAGOH AI, a landscaping assistant. Be direct about services and pricing. Show value quickly.",
-    }
-  },
-  roofing: {
-    name: '🏠 Roofing & Construction',
-    placeholder: 'Ask anything — inspections, quotes, safety updates…',
-    emptyMsg: 'Professional communication for roofing and construction services.',
-    quickStarters: [
-      { emoji: '🏠', title: 'Inspection Report', desc: 'Explain findings', prompt: 'Write a roof inspection report explaining: ' },
-      { emoji: '💰', title: 'Quote Letter', desc: 'Professional estimates', prompt: 'Write a roofing project quote for: ' },
-      { emoji: '⚠️', title: 'Safety Notice', desc: 'Job site communication', prompt: 'Write a safety update for our roofing crew: ' },
-      { emoji: '📅', title: 'Project Schedule', desc: 'Timeline management', prompt: 'Write a project timeline email for our roofing job: ' },
-      { emoji: '✅', title: 'Completion Notice', desc: 'Hand-off & warranty', prompt: 'Write a project completion email with warranty info: ' },
-    ],
-    ideas: [
-      { emoji: '🔍', title: 'Roof inspection tips', desc: 'Educational content' },
-      { emoji: '🌧️', title: 'Storm damage help', desc: 'Emergency services' },
-      { emoji: '📝', title: 'Insurance claim guide', desc: 'Help customers' },
-      { emoji: '⭐', title: 'Case study', desc: 'Show your work' },
-      { emoji: '🛡️', title: 'Warranty explanation', desc: 'Peace of mind' },
-      { emoji: '💼', title: 'Commercial roofing', desc: 'B2B marketing' },
-      { emoji: '🎯', title: 'Preventive maintenance', desc: 'Recurring revenue' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a helpful assistant for roofing contractors. Be reassuring about safety and quality. Build trust with homeowners.",
-      professional: "You are NAGOH AI, a professional business assistant for construction companies. Provide clear, technical communication.",
-      playful: "You are NAGOH AI, a roofing assistant. Make home protection feel important and manageable.",
-      concise: "You are NAGOH AI, a roofing assistant. Be direct about problems and solutions.",
-    }
-  },
-  plumbing: {
-    name: '🔧 Plumbing & HVAC',
-    placeholder: 'Ask anything — emergency calls, repair quotes, maintenance tips…',
-    emptyMsg: 'Communication tools for plumbing, HVAC, and home services.',
-    quickStarters: [
-      { emoji: '🚰', title: 'Service Description', desc: 'Explain your expertise', prompt: 'Write a description of our plumbing/HVAC service: ' },
-      { emoji: '📞', title: 'Emergency Response', desc: 'Quick callback email', prompt: 'Write an emergency service response email: ' },
-      { emoji: '💰', title: 'Service Estimate', desc: 'Professional quotes', prompt: 'Write a service estimate for: ' },
-      { emoji: '🔧', title: 'Maintenance Tips', desc: 'Educational content', prompt: 'Write maintenance tips for homeowners about: ' },
-      { emoji: '⏰', title: 'Appointment Confirm', desc: 'Reduce no-shows', prompt: 'Write an appointment confirmation email: ' },
-    ],
-    ideas: [
-      { emoji: '❄️', title: 'Winter prep guide', desc: 'Seasonal service' },
-      { emoji: '💧', title: 'Water saving tips', desc: 'Green marketing' },
-      { emoji: '🏠', title: 'System maintenance', desc: 'Recurring revenue' },
-      { emoji: '🆘', title: 'Emergency hotline', desc: 'Highlight availability' },
-      { emoji: '📺', title: 'Video tutorial', desc: 'Educational content' },
-      { emoji: '👥', title: 'Customer spotlight', desc: 'Testimonials' },
-      { emoji: '🎯', title: 'Upgrade options', desc: 'Upsell campaigns' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a helpful assistant for plumbing and HVAC professionals. Be reassuring about home comfort and safety. Help customers understand their systems.",
-      professional: "You are NAGOH AI, a professional business assistant for home service companies. Provide clear, technical communication.",
-      playful: "You are NAGOH AI, a home services assistant. Make plumbing and HVAC feel manageable and important.",
-      concise: "You are NAGOH AI, a plumbing/HVAC assistant. Be direct and clear. Focus on urgency and solutions.",
-    }
-  },
-  salon: {
-    name: '💇 Hair & Beauty Services',
-    placeholder: 'Ask anything — services, bookings, product recommendations…',
-    emptyMsg: 'Marketing and booking tools for salons and beauty services.',
-    quickStarters: [
-      { emoji: '✨', title: 'Service Menu', desc: 'Describe your services', prompt: 'Write a description for our salon service: ' },
-      { emoji: '📸', title: 'Transformation Post', desc: 'Social media showcase', prompt: 'Write a before/after social post for: ' },
-      { emoji: '💇', title: 'Styling Tips', desc: 'Educational content', prompt: 'Write a hair care or styling tip for: ' },
-      { emoji: '🎁', title: 'Gift Card Promo', desc: 'Holiday sales', prompt: 'Write a gift card promotion for our salon: ' },
-      { emoji: '👑', title: 'Special Event', desc: 'Bridal, prom, events', prompt: 'Write about our special occasion services: ' },
-    ],
-    ideas: [
-      { emoji: '🌟', title: 'New stylist intro', desc: 'Build clientele' },
-      { emoji: '💅', title: 'Product launch', desc: 'Retail sales' },
-      { emoji: '📅', title: 'Appointment reminder', desc: 'Reduce no-shows' },
-      { emoji: '👰', title: 'Bridal package', desc: 'Premium service' },
-      { emoji: '🎉', title: 'Grand opening', desc: 'New location buzz' },
-      { emoji: '⭐', title: 'Client testimonial', desc: 'Social proof' },
-      { emoji: '💝', title: 'Loyalty program', desc: 'Repeat customers' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a warm and creative assistant for beauty professionals. Celebrate transformations and self-care. Be enthusiastic about beauty.",
-      professional: "You are NAGOH AI, a professional business assistant for salons. Provide clear, consistent messaging about services and booking.",
-      playful: "You are NAGOH AI, a fun and fabulous salon assistant. Use style and personality. Make beauty feel exciting.",
-      concise: "You are NAGOH AI, a salon assistant. Be snappy and visual. Focus on results and booking.",
-    }
-  },
-  photography: {
-    name: '📸 Photography & Creative Services',
-    placeholder: 'Ask anything — packages, portfolio, client communication…',
-    emptyMsg: 'Marketing and client management for photographers and creative professionals.',
-    quickStarters: [
-      { emoji: '📸', title: 'Package Description', desc: 'Explain your offerings', prompt: 'Write a description for our photography package: ' },
-      { emoji: '💌', title: 'Client Inquiry Reply', desc: 'Professional response', prompt: 'Write a response to a photography inquiry: ' },
-      { emoji: '💰', title: 'Pricing Guide', desc: 'Justify your rates', prompt: 'Write a pricing justification for our photography: ' },
-      { emoji: '🎬', title: 'Portfolio Feature', desc: 'Showcase your work', prompt: 'Write a social post featuring this photography project: ' },
-      { emoji: '👑', title: 'Special Package', desc: 'Weddings, events, etc.', prompt: 'Write about our special event photography services: ' },
-    ],
-    ideas: [
-      { emoji: '💍', title: 'Wedding showcase', desc: 'Featured shoot' },
-      { emoji: '👶', title: 'Family session', desc: 'Seasonal promo' },
-      { emoji: '🎓', title: 'Senior portraits', desc: 'Back-to-school market' },
-      { emoji: '🎉', title: 'Event coverage', desc: 'Show versatility' },
-      { emoji: '📷', title: 'Behind-the-scenes', desc: 'Process content' },
-      { emoji: '⭐', title: 'Client testimonial', desc: 'Social proof' },
-      { emoji: '🎁', title: 'Gift session', desc: 'Holiday sales' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a warm and creative assistant for photographers. Celebrate visual storytelling. Help photographers connect with clients emotionally.",
-      professional: "You are NAGOH AI, a professional business assistant for creative service providers. Provide clear, portfolio-focused communication.",
-      playful: "You are NAGOH AI, a creative assistant for photographers. Be artistic and engaging. Make photography feel special.",
-      concise: "You are NAGOH AI, a photography assistant. Be visual and compelling. Show value in your work.",
-    }
-  },
-  personal_training: {
-    name: '💪 Personal Training & Fitness',
-    placeholder: 'Ask anything — programs, motivation, nutrition tips…',
-    emptyMsg: 'Client communication for fitness professionals and trainers.',
-    quickStarters: [
-      { emoji: '💪', title: 'Program Description', desc: 'Explain your training', prompt: 'Write a description of our fitness program: ' },
-      { emoji: '🥗', title: 'Nutrition Tip', desc: 'Educational content', prompt: 'Write a nutrition tip or meal idea for clients: ' },
-      { emoji: '📈', title: 'Progress Check-in', desc: 'Client motivation', prompt: 'Write a motivational progress check-in message: ' },
-      { emoji: '🎯', title: 'Goal-Setting Guide', desc: 'Help clients plan', prompt: 'Write a guide for setting fitness goals: ' },
-      { emoji: '📅', title: 'Challenge Invite', desc: 'Group motivation', prompt: 'Write an invitation to our fitness challenge: ' },
-    ],
-    ideas: [
-      { emoji: '🏋️', title: 'New class launch', desc: 'Expand offerings' },
-      { emoji: '🔥', title: 'Transformation story', desc: 'Client success' },
-      { emoji: '🥇', title: 'Challenge results', desc: 'Testimonials' },
-      { emoji: '💝', title: 'Gift membership', desc: 'Holiday sales' },
-      { emoji: '🎥', title: 'Workout tutorial', desc: 'Educational content' },
-      { emoji: '⚡', title: 'Quick workout', desc: 'Home fitness tip' },
-      { emoji: '🤝', title: 'Referral program', desc: 'Growth incentive' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a warm and motivational assistant for fitness professionals. Be encouraging and supportive. Help clients feel confident.",
-      professional: "You are NAGOH AI, a professional business assistant for trainers. Provide clear, results-focused communication.",
-      playful: "You are NAGOH AI, an energetic fitness assistant. Be fun and motivating. Make working out feel exciting.",
-      concise: "You are NAGOH AI, a fitness assistant. Be motivational and direct. Get clients moving.",
-    }
-  },
-  consulting: {
-    name: '💼 Consulting & Professional Services',
-    placeholder: 'Ask anything — proposals, client updates, thought leadership…',
-    emptyMsg: 'Business communication for consultants and professionals.',
-    quickStarters: [
-      { emoji: '📋', title: 'Proposal Draft', desc: 'Professional overview', prompt: 'Write a consulting proposal for: ' },
-      { emoji: '📊', title: 'Executive Summary', desc: 'Key findings brief', prompt: 'Write an executive summary for: ' },
-      { emoji: '💌', title: 'Client Update', desc: 'Progress reporting', prompt: 'Write a project status update for: ' },
-      { emoji: '🎯', title: 'Strategy Brief', desc: 'Recommendations', prompt: 'Write a strategic recommendation for: ' },
-      { emoji: '👥', title: 'Thought Leadership', desc: 'Industry insights', prompt: 'Write a thought leadership piece on: ' },
-    ],
-    ideas: [
-      { emoji: '📖', title: 'Case study', desc: 'Show results' },
-      { emoji: '🎓', title: 'Webinar topic', desc: 'Thought leadership' },
-      { emoji: '📰', title: 'Industry insight', desc: 'Market analysis' },
-      { emoji: '💡', title: 'Best practices guide', desc: 'Lead generation' },
-      { emoji: '🤝', title: 'Partnership proposal', desc: 'Joint ventures' },
-      { emoji: '⭐', title: 'Client testimonial', desc: 'Social proof' },
-      { emoji: '📱', title: 'LinkedIn post', desc: 'Professional branding' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a professional assistant for consultants. Be clear and insightful. Help consultants communicate value and build trust.",
-      professional: "You are NAGOH AI, a professional business consultant assistant. Provide strategic, credible, detail-oriented communication.",
-      playful: "You are NAGOH AI, a consulting assistant. Make complex topics accessible and engaging.",
-      concise: "You are NAGOH AI, a consulting assistant. Be direct and strategic. Focus on business impact.",
-    }
-  },
-  general: {
-    name: '⭐ General Small Business',
-    placeholder: 'Ask anything — marketing, customer service, operations…',
-    emptyMsg: 'Your AI assistant for all small business needs.',
-    quickStarters: [
-      { emoji: '📝', title: 'Product/Service', desc: 'Write descriptions', prompt: 'Write a description for our product/service: ' },
-      { emoji: '📢', title: 'Marketing Post', desc: 'Social media content', prompt: 'Write a social media post for: ' },
-      { emoji: '💌', title: 'Customer Message', desc: 'Professional replies', prompt: 'Write a professional response to: ' },
-      { emoji: '💰', title: 'Pricing Strategy', desc: 'Fair & profitable', prompt: 'Help me develop pricing for: ' },
-      { emoji: '📊', title: 'Business Plan', desc: 'Growth strategy', prompt: 'Help me create a plan for: ' },
-    ],
-    ideas: [
-      { emoji: '📱', title: 'Social media post', desc: 'Build audience' },
-      { emoji: '📧', title: 'Email campaign', desc: 'Customer retention' },
-      { emoji: '🎯', title: 'Lead generation', desc: 'Grow your business' },
-      { emoji: '⭐', title: 'Customer review', desc: 'Request testimonials' },
-      { emoji: '🎁', title: 'Promotion idea', desc: 'Drive sales' },
-      { emoji: '📞', title: 'Cold outreach', desc: 'New business' },
-      { emoji: '🎉', title: 'Event planning', desc: 'Customer engagement' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a warm and practical assistant for small business owners. Be supportive and encouraging. Help entrepreneurs succeed.",
-      professional: "You are NAGOH AI, a professional business assistant. Provide clear, strategic business advice.",
-      playful: "You are NAGOH AI, an enthusiastic business assistant. Make entrepreneurship feel exciting and achievable.",
-      concise: "You are NAGOH AI, a business assistant. Be direct and actionable. Focus on results.",
-    }
-  }
-};
 
 let sessionToken = '';
-let currentUser  = null;
-let isGuest      = false;
-let msgs         = [];
-let sessions     = lsGet('nagoh_sessions', []);
-let curSess      = null;
-let busy         = false;
-let balance      = 0;
-let sessSpent    = 0;
-let turns        = 0;
-let currentIndustry = 'etsy';
-
-// ─────────────────────────────────────────────────────────
-// INITIALIZATION
-// ─────────────────────────────────────────────────────────
+let currentUser = null;
+let balance = 0;
+let msgs = [];
+let busy = false;
+let selectedPlan = 'professional';
 
 window.onload = () => {
-  // Check for existing session FIRST before anything else
-  const sessionStored = sessionStorage.getItem('nagoh_session');
-  const localStored = localStorage.getItem('nagoh_session');
-  const saved = sessionStored || localStored;
-  
-  let hasSession = false;
+  const saved = sessionStorage.getItem('nagoh_session') || localStorage.getItem('nagoh_session');
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
       sessionToken = parsed.token;
-      currentUser  = parsed.user;
-      balance      = parsed.balance || 0;
-      hasSession = true;
-    } catch { 
-      hasSession = false;
-    }
+      currentUser = parsed.user;
+      balance = parsed.balance || 0;
+      hideAuthModal();
+      setBalUI(balance);
+      connect();
+    } catch { }
   }
   
   if (typeof google !== 'undefined') {
@@ -1266,136 +453,24 @@ window.onload = () => {
       client_id: GOOGLE_CLIENT_ID,
       callback: handleGoogleCredential,
       auto_select: false,
-      cancel_on_tap_outside: false,
     });
   }
-  
-  // Load saved industry preference
-  currentIndustry = lsGet('nagoh_industry', 'etsy');
-  document.getElementById('industrySel').value = currentIndustry;
-  
-  onIndustryChange();
-  updateSysPrompt();
-  renderHistory();
-  checkPaymentSuccess();
-
-  if (hasSession) {
-    applyUserToUI(currentUser);
-    setBalUI(balance);
-    setLed('on', 'Connected ✓');
-    document.getElementById('sendBtn').disabled = false;
-    hideModal();
-    connect();
-  } else {
-    showModal();
-  }
 };
-
-function onIndustryChange() {
-  const desktopSel = document.getElementById('industrySel');
-  const mobileSel = document.getElementById('mobileIndustrySel');
-  
-  // Get value from whichever selector was changed
-  currentIndustry = desktopSel?.value || mobileSel?.value || 'etsy';
-  
-  // Sync both selectors
-  if (desktopSel) desktopSel.value = currentIndustry;
-  if (mobileSel) mobileSel.value = currentIndustry;
-  
-  lsSet('nagoh_industry', currentIndustry);
-  const ind = INDUSTRIES[currentIndustry];
-  
-  if (ind) {
-    // Update industry badge
-    const badge = document.getElementById('industryBadge');
-    if (badge) badge.textContent = ind.name;
-    
-    // Update placeholder
-    const prompt = document.getElementById('prompt');
-    if (prompt) prompt.placeholder = ind.placeholder;
-    
-    // Render quick starters
-    const grid = document.getElementById('quickGrid');
-    if (grid) {
-      grid.innerHTML = '';
-      ind.quickStarters.forEach(q => {
-        const btn = document.createElement('button');
-        btn.className = 'qbtn';
-        btn.onclick = () => quickPrompt(q.prompt);
-        btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
-        grid.appendChild(btn);
-      });
-    }
-    
-    // Render ideas
-    const ideas = document.getElementById('ideas');
-    if (ideas) {
-      ideas.innerHTML = '';
-      ind.ideas.forEach(idea => {
-        const item = document.createElement('div');
-        item.className = 'idea-item';
-        item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
-        item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
-        ideas.appendChild(item);
-      });
-    }
-    
-    // Update empty state
-    const empty = document.getElementById('empty');
-    if (empty) {
-      empty.innerHTML = `
-        <div class="ehero">Your AI <em>business partner</em><br>is ready to help.</div>
-        <div class="esub">${ind.emptyMsg}</div>
-        <div class="etagline">Use quick starters or type your question below</div>`;
-    }
-    
-    // Update system prompt
-    updateSysPrompt();
-  }
-}
-
-function checkPaymentSuccess() {
-  const params = new URLSearchParams(window.location.search);
-  if (params.get('payment') === 'success') {
-    showSuccessNotification('✅ Purchase successful! Your tokens have been added.');
-    if (sessionToken) {
-      setTimeout(() => { connect(); }, 1000);
-    }
-    window.history.replaceState({}, document.title, window.location.pathname);
-  }
-}
-
-function showSuccessNotification(msg) {
-  const banner = document.getElementById('successBanner');
-  document.getElementById('successMsg').textContent = msg;
-  banner.classList.add('show');
-  setTimeout(() => {
-    banner.classList.remove('show');
-  }, 4000);
-}
-
-// ─────────────────────────────────────────────────────────
-// GOOGLE OAUTH
-// ─────────────────────────────────────────────────────────
 
 function initiateGoogleSignIn() {
   document.getElementById('authErr').textContent = '';
   document.getElementById('authLoading').style.display = 'block';
-  if (typeof google !== 'undefined') {
-    google.accounts.id.prompt();
-  }
+  if (typeof google !== 'undefined') google.accounts.id.prompt();
 }
 
 async function handleGoogleCredential(response) {
-  if (!response || !response.credential) {
+  if (!response?.credential) {
     document.getElementById('authLoading').style.display = 'none';
     document.getElementById('authErr').textContent = 'Sign-in cancelled.';
     return;
   }
   
   document.getElementById('authLoading').style.display = 'block';
-  document.getElementById('authErr').textContent = '';
-
   try {
     const r = await fetch(`${WORKER}/v1/auth/google`, {
       method: 'POST',
@@ -1406,110 +481,117 @@ async function handleGoogleCredential(response) {
     if (!r.ok) throw new Error(d.error || 'Auth failed');
 
     sessionToken = d.session_token;
-    currentUser  = d.user;
-    balance      = d.token_balance;
+    currentUser = d.user;
+    balance = d.token_balance;
 
-    const sessionData = { token: sessionToken, user: currentUser, balance: balance };
+    const sessionData = { token: sessionToken, user: currentUser, balance };
     sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
     localStorage.setItem('nagoh_session', JSON.stringify(sessionData));
 
-    applyUserToUI(currentUser);
     setBalUI(balance);
-    setLed('on', 'Connected ✓');
-    document.getElementById('sendBtn').disabled = false;
-    hideModal();
-
-    if (d.is_new) {
-      setTimeout(() => {
-        addBubble('ai', `Welcome to NAGOH AI, ${currentUser.name.split(' ')[0]}! 🎉 You've received 5,000 free tokens to get started. Choose your industry to see tailored prompts for your business.`, null, null);
-      }, 400);
-    }
+    hideAuthModal();
+    connect();
   } catch (err) {
-    document.getElementById('authErr').textContent = err.message || 'Sign-in failed. Please try again.';
+    document.getElementById('authErr').textContent = err.message || 'Sign-in failed.';
   } finally {
     document.getElementById('authLoading').style.display = 'none';
   }
 }
 
-function applyUserToUI(user) {
-  if (!user) return;
-  const avatar = document.getElementById('tuserAvatar');
-  const name   = document.getElementById('tuserName');
-  if (user.picture) { avatar.src = user.picture; avatar.classList.add('show'); }
-  if (user.name)    { name.textContent = user.name.split(' ')[0]; name.classList.add('show'); }
+async function continueAsGuest() {
+  document.getElementById('authLoading').style.display = 'block';
+  try {
+    const r = await fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' });
+    const d = await r.json();
+    if (d?.session_token) {
+      sessionToken = d.session_token;
+      currentUser = d.user || { name: 'Guest' };
+      balance = d.token_balance;
+      
+      const sessionData = { token: sessionToken, user: currentUser, balance };
+      sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
+      
+      setBalUI(balance);
+      hideAuthModal();
+      connect();
+    }
+  } catch (err) {
+    document.getElementById('authErr').textContent = 'Guest login failed.';
+  } finally {
+    document.getElementById('authLoading').style.display = 'none';
+  }
 }
 
 function signOut() {
-  if (!confirm('Sign out? Your chat history stays saved locally.')) return;
-  sessionToken = ''; currentUser = null; isGuest = false;
+  if (!confirm('Sign out?')) return;
+  sessionToken = ''; currentUser = null;
   sessionStorage.removeItem('nagoh_session');
   localStorage.removeItem('nagoh_session');
-  document.getElementById('guestBanner').classList.remove('show');
-  document.getElementById('sendBtn').disabled = true;
-  document.getElementById('tuserAvatar').classList.remove('show');
-  document.getElementById('tuserName').classList.remove('show');
-  setLed('spin', 'Signed out');
-  setBalUI(0);
-  if (typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
-  showModal();
+  location.reload();
 }
 
-// ─────────────────────────────────────────────────────────
-// STRIPE PAYMENT
-// ─────────────────────────────────────────────────────────
-
-function openBuyTokens() {
-  if (!currentUser) { showModal(); return; }
-  if (isGuest) { showModal(); return; }
-  
-  const stripeUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}&success_url=${STRIPE_SUCCESS_URL}`;
-  window.location.href = stripeUrl;
+function hideAuthModal() {
+  document.getElementById('modalWrap').classList.add('hidden');
 }
 
-// ─────────────────────────────────────────────────────────
-// CONNECTION / SESSION
-// ─────────────────────────────────────────────────────────
+function showPricingModal() {
+  document.getElementById('modalWrap').classList.add('hidden');
+  document.getElementById('pricingWrap').style.display = 'flex';
+}
+
+function switchPricingTab(idx) {
+  document.getElementById('pricingMonthly').style.display = idx === 0 ? 'block' : 'none';
+  document.getElementById('pricingYearly').style.display = idx === 1 ? 'block' : 'none';
+  document.querySelectorAll('.pricing-tab').forEach((t, i) => {
+    t.classList.toggle('active', i === idx);
+  });
+}
+
+function selectPlan(plan) {
+  selectedPlan = plan;
+  document.querySelectorAll('.sub-option').forEach(o => o.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+}
+
+function startCheckout() {
+  if (selectedPlan === 'enterprise' || selectedPlan === 'enterprise_yearly') {
+    alert('Please contact sales@nagoh.us for enterprise pricing');
+    return;
+  }
+  alert(`Starting ${selectedPlan} subscription. Redirect to Stripe coming soon.`);
+}
 
 async function connect() {
-  setLed('spin', 'Connecting…');
   try {
     const r = await fetch(`${WORKER}/v1/balance`, {
       headers: { 'Authorization': `Bearer ${sessionToken}` }
     });
     const d = await r.json();
-    if (!r.ok) { setLed('err', 'Auth error'); showModal(); return; }
+    if (!r.ok) throw new Error('Auth error');
     balance = d.token_balance;
     setBalUI(balance);
-    setLed('on', 'Connected ✓');
     document.getElementById('sendBtn').disabled = false;
   } catch {
-    setLed('err', 'Offline');
+    document.getElementById('modalWrap').classList.remove('hidden');
   }
 }
 
-function showModal() { document.getElementById('modalWrap').classList.remove('hidden'); }
-function hideModal() { document.getElementById('modalWrap').classList.add('hidden'); }
-
-// ─────────────────────────────────────────────────────────
-// CHAT
-// ─────────────────────────────────────────────────────────
+function setBalUI(n) {
+  const fmt = n.toLocaleString();
+  document.getElementById('topBal').textContent = fmt + ' tokens';
+}
 
 async function send() {
-  const box  = document.getElementById('prompt');
+  const box = document.getElementById('prompt');
   const text = box.value.trim();
   if (!text || busy) return;
+  
   busy = true;
   document.getElementById('sendBtn').disabled = true;
-  box.value = ''; box.style.height = 'auto';
-  document.getElementById('ccount').textContent = '';
+  box.value = '';
 
-  hideEmpty();
-  msgs.push({ role: 'user', content: text });
   addBubble('user', text);
-  updateStats();
-
-  const tid = 'T' + Date.now();
-  addThink(tid);
+  msgs.push({ role: 'user', content: text });
 
   try {
     const r = await fetch(`${WORKER}/v1/chat`, {
@@ -1518,39 +600,23 @@ async function send() {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${sessionToken}`,
       },
-      body: JSON.stringify({
-        messages: msgs,
-        system:      document.getElementById('sysTxt').value.trim() || getSystemPrompt(),
-        model:       document.getElementById('modelSel').value,
-        max_tokens:  2048,
-        temperature: 0.75,
-      }),
+      body: JSON.stringify({ messages: msgs, model: 'deepseek-chat' }),
     });
     const data = await r.json();
-    killThink(tid);
 
     if (!r.ok) {
-      addErr(data.error || 'Something went wrong. Please try again.');
+      addBubble('ai', data.error || 'Something went wrong.');
       msgs.pop();
-      if (r.status === 402) addErr('You\'re out of tokens! Click "Buy More Tokens" in the sidebar to top up.');
-      if (r.status === 401) { showModal(); }
     } else {
       const reply = data.message.content;
       msgs.push({ role: 'assistant', content: reply });
-      const suggestions = getSuggestions(text);
-      addBubble('ai', reply, data.nagoh, suggestions);
+      addBubble('ai', reply);
       balance = data.nagoh.tokens_remaining;
-      sessSpent += data.nagoh.tokens_charged;
-      turns++;
       setBalUI(balance);
-      updateStats();
-      saveSession(text);
     }
   } catch (e) {
-    killThink(tid);
-    addErr('Network error — check your connection and try again.');
+    addBubble('ai', 'Network error. Check your connection.');
     msgs.pop();
-    console.error(e);
   }
 
   busy = false;
@@ -1558,224 +624,30 @@ async function send() {
   document.getElementById('prompt').focus();
 }
 
-function getSuggestions(userMsg) {
-  // Simple suggestion logic based on message content
-  const lower = userMsg.toLowerCase();
-  if (lower.includes('list') || lower.includes('product') || lower.includes('service')) {
-    return ['Make it shorter', 'Add more detail', 'Write a second version', 'Make it more professional'];
-  }
-  if (lower.includes('social') || lower.includes('post') || lower.includes('caption')) {
-    return ['Give me more options', 'Make it shorter', 'Add emojis', 'Write a different tone'];
-  }
-  return ['Tell me more', 'Give me another version', 'Make it shorter', 'Can you explain?'];
-}
-
-function hideEmpty() {
-  const e = document.getElementById('empty');
-  if (e) e.style.display = 'none';
-}
-
-function addBubble(role, content, nagoh, suggestions) {
+function addBubble(role, content) {
   const c = document.getElementById('msgs');
+  const empty = document.getElementById('empty');
+  if (empty) empty.style.display = 'none';
+  
   const r = document.createElement('div');
   r.className = `row ${role}`;
-
-  let meta = '';
-  if (nagoh) {
-    meta = `<div class="rmeta"><span class="chip">−${nagoh.tokens_charged} tokens</span><span>${nagoh.tokens_remaining.toLocaleString()} left</span></div>`;
-  }
-
-  let sugsHtml = '';
-  if (suggestions && role === 'ai') {
-    sugsHtml = `<div class="suggestions">${suggestions.map(s => `<button class="sug" onclick="quickSend('${s.replace(/'/g,"\\'")}')">↪ ${esc(s)}</button>`).join('')}</div>`;
-  }
-
-  const avaContent = (role === 'user' && currentUser?.picture)
-    ? `<img src="${currentUser.picture}" alt="">`
-    : (role === 'ai' ? 'N' : 'U');
-
   r.innerHTML = `
-    <div class="ava ${role === 'user' ? 'you' : 'ai'}">${avaContent}</div>
-    <div><div class="bub">${esc(content)}</div>${meta}${sugsHtml}</div>`;
-  c.appendChild(r); c.scrollTop = c.scrollHeight;
+    <div class="ava ${role === 'user' ? 'you' : 'ai'}">${role === 'ai' ? 'N' : 'U'}</div>
+    <div><div class="bub">${escapeHtml(content)}</div></div>`;
+  c.appendChild(r);
+  c.scrollTop = c.scrollHeight;
 }
 
-function addThink(id) {
-  const c = document.getElementById('msgs');
-  const r = document.createElement('div');
-  r.id = id; r.className = 'row ai';
-  r.innerHTML = `<div class="ava ai">N</div><div class="bub thinking">Thinking<span class="think-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
-  c.appendChild(r); c.scrollTop = c.scrollHeight;
-}
-
-function killThink(id) {
-  const el = document.getElementById(id);
-  if (el) el.remove();
-}
-
-function addErr(msg) {
-  const c = document.getElementById('msgs');
-  const r = document.createElement('div');
-  r.className = 'row ai';
-  r.innerHTML = `<div class="ava ai">N</div><div class="bub error">⚠️ ${esc(msg)}</div>`;
-  c.appendChild(r); c.scrollTop = c.scrollHeight;
-}
-
-function esc(s) {
+function escapeHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function setLed(state, label) {
-  document.getElementById('led').className = 'dot ' + state;
-  document.getElementById('sstr').textContent = label;
-}
-
-function setBalUI(n) {
-  const fmt = n.toLocaleString();
-  document.getElementById('balNum').textContent = fmt;
-  document.getElementById('topBal').innerHTML = `${fmt} <span>tokens</span>`;
-}
-
-function onModel() {}
-
-function getSystemPrompt() {
-  const tone = document.getElementById('toneMode').value;
-  const ind = INDUSTRIES[currentIndustry];
-  if (ind && ind.tonePrompts && ind.tonePrompts[tone]) {
-    return ind.tonePrompts[tone];
+function onKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    send();
   }
-  return INDUSTRIES.general.tonePrompts[tone] || INDUSTRIES.general.tonePrompts.friendly;
 }
-
-function updateSysPrompt() {
-  document.getElementById('sysTxt').value = getSystemPrompt();
-}
-
-function updateStats() {
-  document.getElementById('rMsgs').textContent  = msgs.length;
-  document.getElementById('rSpent').textContent = sessSpent;
-}
-
-function saveSession(firstMsg) {
-  if (!curSess) {
-    curSess = { id: Date.now(), title: firstMsg.slice(0, 45), messages: [] };
-    sessions.unshift(curSess);
-    if (sessions.length > 50) sessions.pop();
-  }
-  curSess.messages = [...msgs];
-  lsSet('nagoh_sessions', sessions);
-  renderHistory();
-}
-
-function renderHistory() {
-  const w = document.getElementById('hscroll');
-  w.innerHTML = '';
-  if (!sessions.length) {
-    w.innerHTML = '<div style="font-size:0.62rem;color:var(--muted);padding:0.5rem 0.75rem;">No past chats yet</div>';
-    return;
-  }
-  sessions.forEach(s => {
-    const el = document.createElement('div');
-    el.className = 'hitem' + (curSess?.id === s.id ? ' active' : '');
-    el.textContent = s.title;
-    el.onclick = () => {
-      curSess = s; msgs = [...s.messages];
-      document.getElementById('msgs').innerHTML = '';
-      msgs.forEach(m => addBubble(m.role==='user'?'user':'ai', m.content));
-      turns = Math.floor(msgs.length / 2);
-      updateStats(); renderHistory();
-    };
-    w.appendChild(el);
-  });
-}
-
-function newChat() {
-  curSess = null; msgs = []; sessSpent = 0; turns = 0;
-  const ind = INDUSTRIES[currentIndustry];
-  document.getElementById('msgs').innerHTML = `
-    <div class="empty" id="empty">
-      <div class="ehero">Your AI <em>business partner</em><br>is ready to help.</div>
-      <div class="esub">${ind.emptyMsg}</div>
-      <div class="etagline">Use quick starters or type your question below</div>
-    </div>`;
-  updateStats(); renderHistory();
-}
-
-function clearAll() {
-  if (!confirm('Clear all past chats?')) return;
-  sessions = []; curSess = null; msgs = [];
-  lsSet('nagoh_sessions', []); newChat();
-}
-
-function quickPrompt(text) {
-  const box = document.getElementById('prompt');
-  box.value = text; box.focus();
-  grow(box);
-  box.setSelectionRange(text.length, text.length);
-}
-
-function quickSend(text) {
-  const box = document.getElementById('prompt');
-  box.value = text; send();
-}
-
-function onKey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
-
-function grow(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 160) + 'px';
-  const l = el.value.length;
-  document.getElementById('ccount').textContent = l ? `${l} chars` : '';
-}
-
-function continueAsGuest() {
-  document.getElementById('authLoading').style.display = 'block';
-  document.getElementById('authErr').textContent = '';
-  
-  fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' })
-    .then(r => {
-      if (!r.ok) {
-        throw new Error(`HTTP ${r.status}`);
-      }
-      return r.json();
-    })
-    .then(d => {
-      if (d && d.session_token) {
-        sessionToken = d.session_token;
-        currentUser = d.user;
-        balance = d.token_balance;
-        isGuest = true;
-        
-        const sessionData = { token: sessionToken, user: currentUser, balance: balance };
-        sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
-        
-        applyUserToUI(currentUser);
-        setBalUI(balance);
-        document.getElementById('guestBanner').classList.add('show');
-        setLed('on', 'Connected ✓');
-        document.getElementById('sendBtn').disabled = false;
-        
-        // Initialize industry and system prompt
-        onIndustryChange();
-        updateSysPrompt();
-        renderHistory();
-        
-        hideModal();
-      } else {
-        throw new Error('Invalid response: missing session_token');
-      }
-    })
-    .catch(err => {
-      console.error('Guest auth error:', err);
-      document.getElementById('authErr').textContent = 'Guest login failed. Please try again.';
-    })
-    .finally(() => {
-      document.getElementById('authLoading').style.display = 'none';
-    });
-}
-
-function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
-function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
 </script>
 </body>
 </html>
