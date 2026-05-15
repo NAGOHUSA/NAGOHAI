@@ -489,58 +489,16 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .shell { flex-direction: column; }
   .chat-col { width: 100%; }
   
-  .topbar { padding: 0 1rem; height: auto; flex-wrap: wrap; gap: 0.5rem; }
-  .wordmark { font-size: 1.1rem; }
-  .tagline { font-size: 0.55rem; }
+  .topbar { padding: 0 0.75rem; height: 56px; gap: 0.5rem; }
+  .wordmark { font-size: 1rem; letter-spacing: -0.01em; }
+  .tagline { font-size: 0.48rem; margin-top: 0.1rem; }
   .tuser-name { display: none !important; }
   .tuser-avatar { width: 24px; height: 24px; }
   .tbtn { padding: 4px 10px; font-size: 0.6rem; }
-  
-  .mobile-industry-bar {
-    display: flex;
-    width: 100%;
-    order: 10;
-    gap: 0.5rem;
-    align-items: center;
-    padding: 0.6rem 0;
-    border-top: 1px solid rgba(255,255,255,0.1);
-  }
-  .mobile-industry-label {
-    font-size: 0.55rem;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    padding: 0 0.5rem;
-  }
-  .mobile-industry-sel {
-    flex: 1;
-    background: rgba(255,255,255,0.95);
-    border: 1px solid rgba(255,255,255,0.3);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 0.75rem;
-    padding: 0.5rem 0.6rem;
-    outline: none;
-    cursor: pointer;
-    border-radius: 6px;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233d2f24'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    padding-right: 24px;
-    font-weight: 500;
-    transition: all 0.2s;
-  }
-  .mobile-industry-sel:focus {
-    border-color: var(--teal);
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(42,157,143,0.2);
-  }
-  .mobile-industry-sel option {
-    background: #fff;
-    padding: 8px;
-  }
+  .tpill { padding: 3px 10px; font-size: 0.65rem; }
+  .tbal { font-size: 0.65rem; }
+  .tbal span { font-size: 0.52rem; }
+  .guest-banner { font-size: 0.65rem; padding: 3px 8px; }
   
   .modal { max-width: 90vw; border-radius: 16px; }
   .modal-body { padding: 1.5rem 1.5rem 1.5rem; }
@@ -549,78 +507,82 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .vprops { gap: 6px; }
   .vprop { padding: 6px 10px; }
   
-  .msgs { padding: 1.5rem 0 0.5rem; }
-  .row { padding: 0.3rem 1rem; gap: 8px; }
+  .msgs { padding: 1.25rem 0 0.5rem; }
+  .row { padding: 0.3rem 0.75rem; gap: 8px; max-width: 100%; }
   .bub { max-width: 90%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
   .ava { width: 28px; height: 28px; font-size: 0.7rem; }
   
-  .ibar { padding: 0.65rem 1rem; }
-  .iinner { gap: 0.5rem; }
+  .ibar { padding: 0.6rem 0.75rem; }
+  .iinner { gap: 0.5rem; max-width: 100%; }
   .prompt { padding: 0.6rem 0.8rem; font-size: 0.85rem; min-height: 44px; }
-  .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; }
-  .ifoot { padding: 0.3rem 1rem 0; font-size: 0.52rem; }
+  .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; min-width: 50px; }
+  .ifoot { padding: 0.3rem 0.75rem 0; font-size: 0.5rem; }
   
-  .empty { padding: 1rem; }
-  .ehero { font-size: 1.8rem; margin-bottom: 0.3rem; }
-  .esub { font-size: 0.75rem; margin-bottom: 1.5rem; max-width: 100%; }
-  .echips { gap: 6px; }
+  .empty { padding: 0.75rem; }
+  .ehero { font-size: 1.6rem; line-height: 1.2; margin-bottom: 0.25rem; }
+  .esub { font-size: 0.72rem; margin-bottom: 1.25rem; max-width: 100%; line-height: 1.5; }
+  .echips { gap: 6px; max-width: 100%; }
   .echip { padding: 6px 12px; font-size: 0.65rem; }
   .echip span { font-size: 0.85rem; }
-  .etagline { font-size: 0.6rem; margin-top: 1rem; }
+  .etagline { font-size: 0.58rem; margin-top: 0.75rem; }
 }
 
 @media (max-width: 480px) {
-  .topbar { height: 52px; padding: 0 0.75rem; gap: 0.5rem; }
-  .wordmark { font-size: 0.95rem; }
-  .tagline { font-size: 0.5rem; letter-spacing: 0.04em; }
-  .tpill { padding: 3px 8px; font-size: 0.6rem; }
+  .topbar { height: 50px; padding: 0 0.5rem; gap: 0.4rem; }
+  .wordmark { font-size: 0.9rem; letter-spacing: -0.02em; }
+  .tagline { font-size: 0.42rem; margin-top: 0; }
+  .tpill { padding: 2px 8px; font-size: 0.58rem; }
   .dot { width: 5px; height: 5px; }
-  .tbtn { padding: 3px 8px; font-size: 0.55rem; }
+  .tbtn { padding: 3px 8px; font-size: 0.54rem; }
   .tbal { font-size: 0.6rem; }
+  .tbal span { font-size: 0.48rem; }
+  .guest-banner { font-size: 0.6rem; padding: 2px 6px; gap: 4px; }
   
   .modal { max-width: 95vw; border-radius: 14px; }
-  .modal-hero { padding: 1.5rem 1.5rem 1rem; }
-  .modal-logo { font-size: 1.6rem; margin-bottom: 0.25rem; }
-  .modal-tagline { font-size: 0.65rem; }
-  .modal-body { padding: 1.2rem 1.2rem 1.5rem; }
-  .modal-title { font-size: 1rem; margin-bottom: 0.2rem; }
-  .modal-sub { font-size: 0.65rem; line-height: 1.5; margin-bottom: 1rem; }
-  .vp-icon { font-size: 0.95rem; }
-  .vp-text { font-size: 0.65rem; }
-  .google-signin-btn { padding: 10px 16px; font-size: 0.8rem; }
-  .guest-btn { padding: 8px 16px; font-size: 0.75rem; }
-  .auth-note { font-size: 0.58rem; }
-  .auth-divider { margin: 8px 0; font-size: 0.6rem; }
-  .guest-note { font-size: 0.55rem; }
-  .modal-foot { padding: 0.6rem 1.2rem; font-size: 0.58rem; }
+  .modal-hero { padding: 1.25rem 1.25rem 0.75rem; }
+  .modal-logo { font-size: 1.5rem; margin-bottom: 0.2rem; }
+  .modal-tagline { font-size: 0.6rem; }
+  .modal-body { padding: 1rem 1rem 1.25rem; }
+  .modal-title { font-size: 0.95rem; margin-bottom: 0.15rem; }
+  .modal-sub { font-size: 0.62rem; line-height: 1.4; margin-bottom: 0.75rem; }
+  .vprops { gap: 5px; }
+  .vp-icon { font-size: 0.9rem; }
+  .vp-text { font-size: 0.62rem; }
+  .google-signin-btn { padding: 9px 14px; font-size: 0.75rem; }
+  .guest-btn { padding: 8px 14px; font-size: 0.7rem; }
+  .auth-note { font-size: 0.55rem; }
+  .auth-divider { margin: 6px 0; font-size: 0.56rem; }
+  .guest-note { font-size: 0.52rem; }
+  .modal-foot { padding: 0.5rem 1rem; font-size: 0.54rem; }
   
-  .msgs { padding: 1rem 0 0.5rem; }
-  .row { padding: 0.25rem 0.75rem; gap: 6px; }
-  .ava { width: 26px; height: 26px; font-size: 0.65rem; margin-top: 2px; }
-  .bub { max-width: 92%; font-size: 0.8rem; line-height: 1.5; padding: 0.5rem 0.7rem; }
-  .bub.thinking { font-size: 0.75rem; }
-  .think-dots span { font-size: 0.8rem; }
-  .rmeta { font-size: 0.52rem; gap: 6px; }
-  .rmeta .chip { padding: 1px 6px; font-size: 0.52rem; }
+  .msgs { padding: 0.8rem 0 0.3rem; }
+  .row { padding: 0.2rem 0.5rem; gap: 6px; }
+  .ava { width: 26px; height: 26px; font-size: 0.62rem; margin-top: 2px; }
+  .bub { max-width: 92%; font-size: 0.78rem; line-height: 1.45; padding: 0.5rem 0.65rem; }
+  .bub.thinking { font-size: 0.72rem; }
+  .think-dots span { font-size: 0.75rem; }
+  .rmeta { font-size: 0.5rem; gap: 4px; }
+  .rmeta .chip { padding: 0.5px 6px; font-size: 0.5rem; }
   
-  .suggestions { gap: 4px; margin-top: 4px; max-width: 92%; }
-  .sug { padding: 3px 10px; font-size: 0.65rem; border-radius: 10px; }
+  .suggestions { gap: 4px; margin-top: 3px; max-width: 92%; }
+  .sug { padding: 3px 9px; font-size: 0.62rem; border-radius: 10px; }
   
-  .ibar { padding: 0.5rem 0.75rem; }
-  .iinner { gap: 0.4rem; }
-  .prompt { padding: 0.5rem 0.7rem; font-size: 0.8rem; min-height: 40px; max-height: 120px; }
-  .send { padding: 0 0.8rem; font-size: 0.65rem; height: 40px; }
-  .ifoot { padding: 0.25rem 0.75rem 0; font-size: 0.5rem; gap: 0.5rem; }
+  .ibar { padding: 0.5rem 0.5rem; }
+  .iinner { gap: 0.35rem; }
+  .prompt { padding: 0.5rem 0.65rem; font-size: 0.8rem; min-height: 40px; max-height: 120px; }
+  .send { padding: 0 0.75rem; font-size: 0.62rem; height: 40px; min-width: 45px; }
+  .ifoot { padding: 0.2rem 0.5rem 0; font-size: 0.48rem; gap: 0.4rem; }
   
-  .empty { padding: 0.75rem; }
-  .ehero { font-size: 1.4rem; line-height: 1.1; margin-bottom: 0.25rem; }
-  .esub { font-size: 0.7rem; line-height: 1.6; margin-bottom: 1rem; }
-  .echips { gap: 5px; }
-  .echip { padding: 5px 10px; font-size: 0.6rem; border-radius: 16px; }
-  .echip span { font-size: 0.75rem; }
-  .etagline { font-size: 0.55rem; margin-top: 0.75rem; }
+  .empty { padding: 0.5rem; }
+  .ehero { font-size: 1.35rem; line-height: 1.15; margin-bottom: 0.2rem; font-weight: 400; }
+  .ehero em { font-style: normal; }
+  .esub { font-size: 0.68rem; line-height: 1.4; margin-bottom: 0.8rem; }
+  .echips { gap: 4px; max-width: 100%; flex-wrap: wrap; }
+  .echip { padding: 5px 9px; font-size: 0.58rem; border-radius: 14px; }
+  .echip span { font-size: 0.7rem; }
+  .etagline { font-size: 0.52rem; margin-top: 0.5rem; }
   
-  .success-banner { top: auto; bottom: 20px; right: 10px; left: 10px; padding: 0.75rem 1rem; font-size: 0.8rem; border-radius: 10px; }
+  .success-banner { top: auto; bottom: 15px; right: 8px; left: 8px; padding: 0.65rem 0.9rem; font-size: 0.75rem; border-radius: 9px; }
 }
 
 @media (hover: none) and (pointer: coarse) {
@@ -701,25 +663,6 @@ input, textarea, select { font-size: 16px !important; }
     <span class="tuser-name" id="tuserName"></span>
   </div>
   <button class="tbtn" onclick="signOut()">Sign out</button>
-  
-  <!-- Mobile Industry Selector -->
-  <div class="mobile-industry-bar">
-    <span class="mobile-industry-label">Industry:</span>
-    <select class="mobile-industry-sel" id="mobileIndustrySel" onchange="onIndustryChange()">
-      <option value="etsy">🛍️ Etsy & Craft Sellers</option>
-      <option value="realtor">🏠 Real Estate Agents</option>
-      <option value="landlord">🏢 Landlords & Property Managers</option>
-      <option value="coffee">☕ Coffee Shops & Cafés</option>
-      <option value="landscaping">🌳 Landscaping & Yard Services</option>
-      <option value="roofing">🏠 Roofing & Construction</option>
-      <option value="plumbing">🔧 Plumbing & HVAC</option>
-      <option value="salon">💇 Hair & Beauty Services</option>
-      <option value="photography">📸 Photography & Creative Services</option>
-      <option value="personal_training">💪 Personal Training & Fitness</option>
-      <option value="consulting">💼 Consulting & Professional Services</option>
-      <option value="general">⭐ General Small Business</option>
-    </select>
-  </div>
 </div>
 
 <!-- ── SHELL ── -->
@@ -1215,12 +1158,10 @@ window.onload = () => {
   
   // Load saved industry preference
   currentIndustry = lsGet('nagoh_industry', 'etsy');
-  const desktopSel = document.getElementById('industrySel');
-  const mobileSel = document.getElementById('mobileIndustrySel');
-  if (desktopSel) desktopSel.value = currentIndustry;
-  if (mobileSel) mobileSel.value = currentIndustry;
+  document.getElementById('industrySel').value = currentIndustry;
   
   onIndustryChange();
+  updateSysPrompt();
   renderHistory();
   checkPaymentSuccess();
 
@@ -1237,52 +1178,38 @@ window.onload = () => {
 };
 
 function onIndustryChange() {
-  currentIndustry = document.getElementById('industrySel')?.value || 
-                   document.getElementById('mobileIndustrySel')?.value || 
-                   'etsy';
-  
-  // Sync both selectors
-  const desktopSel = document.getElementById('industrySel');
-  const mobileSel = document.getElementById('mobileIndustrySel');
-  if (desktopSel) desktopSel.value = currentIndustry;
-  if (mobileSel) mobileSel.value = currentIndustry;
-  
+  currentIndustry = document.getElementById('industrySel').value;
   lsSet('nagoh_industry', currentIndustry);
   const ind = INDUSTRIES[currentIndustry];
   
   if (ind) {
     // Update industry badge
-    const badge = document.getElementById('industryBadge');
-    if (badge) badge.textContent = ind.name;
+    document.getElementById('industryBadge').textContent = ind.name;
     
     // Update placeholder
     document.getElementById('prompt').placeholder = ind.placeholder;
     
     // Render quick starters
     const grid = document.getElementById('quickGrid');
-    if (grid) {
-      grid.innerHTML = '';
-      ind.quickStarters.forEach(q => {
-        const btn = document.createElement('button');
-        btn.className = 'qbtn';
-        btn.onclick = () => quickPrompt(q.prompt);
-        btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
-        grid.appendChild(btn);
-      });
-    }
+    grid.innerHTML = '';
+    ind.quickStarters.forEach(q => {
+      const btn = document.createElement('button');
+      btn.className = 'qbtn';
+      btn.onclick = () => quickPrompt(q.prompt);
+      btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
+      grid.appendChild(btn);
+    });
     
     // Render ideas
     const ideas = document.getElementById('ideas');
-    if (ideas) {
-      ideas.innerHTML = '';
-      ind.ideas.forEach(idea => {
-        const item = document.createElement('div');
-        item.className = 'idea-item';
-        item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
-        item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
-        ideas.appendChild(item);
-      });
-    }
+    ideas.innerHTML = '';
+    ind.ideas.forEach(idea => {
+      const item = document.createElement('div');
+      item.className = 'idea-item';
+      item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
+      item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
+      ideas.appendChild(item);
+    });
     
     // Update empty state
     const empty = document.getElementById('empty');
@@ -1292,9 +1219,6 @@ function onIndustryChange() {
         <div class="esub">${ind.emptyMsg}</div>
         <div class="etagline">Use quick starters or type your question below</div>`;
     }
-    
-    // Update system prompt to reflect new industry
-    updateSysPrompt();
   }
 }
 
