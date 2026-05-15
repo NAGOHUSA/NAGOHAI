@@ -733,6 +733,25 @@ input, textarea, select { font-size: 16px !important; }
     <span class="tuser-name" id="tuserName"></span>
   </div>
   <button class="tbtn" onclick="signOut()">Sign out</button>
+  
+  <!-- Mobile Industry Selector -->
+  <div class="mobile-industry-bar">
+    <span class="mobile-industry-label">Industry:</span>
+    <select class="mobile-industry-sel" id="mobileIndustrySel" onchange="onIndustryChange()">
+      <option value="etsy">🛍️ Etsy & Craft Sellers</option>
+      <option value="realtor">🏠 Real Estate Agents</option>
+      <option value="landlord">🏢 Landlords & Property Managers</option>
+      <option value="coffee">☕ Coffee Shops & Cafés</option>
+      <option value="landscaping">🌳 Landscaping & Yard Services</option>
+      <option value="roofing">🏠 Roofing & Construction</option>
+      <option value="plumbing">🔧 Plumbing & HVAC</option>
+      <option value="salon">💇 Hair & Beauty Services</option>
+      <option value="photography">📸 Photography & Creative Services</option>
+      <option value="personal_training">💪 Personal Training & Fitness</option>
+      <option value="consulting">💼 Consulting & Professional Services</option>
+      <option value="general">⭐ General Small Business</option>
+    </select>
+  </div>
 </div>
 
 <!-- ── SHELL ── -->
@@ -1248,38 +1267,53 @@ window.onload = () => {
 };
 
 function onIndustryChange() {
-  currentIndustry = document.getElementById('industrySel').value;
+  const desktopSel = document.getElementById('industrySel');
+  const mobileSel = document.getElementById('mobileIndustrySel');
+  
+  // Get value from whichever selector was changed
+  currentIndustry = desktopSel?.value || mobileSel?.value || 'etsy';
+  
+  // Sync both selectors
+  if (desktopSel) desktopSel.value = currentIndustry;
+  if (mobileSel) mobileSel.value = currentIndustry;
+  
   lsSet('nagoh_industry', currentIndustry);
   const ind = INDUSTRIES[currentIndustry];
   
   if (ind) {
     // Update industry badge
-    document.getElementById('industryBadge').textContent = ind.name;
+    const badge = document.getElementById('industryBadge');
+    if (badge) badge.textContent = ind.name;
     
     // Update placeholder
-    document.getElementById('prompt').placeholder = ind.placeholder;
+    const prompt = document.getElementById('prompt');
+    if (prompt) prompt.placeholder = ind.placeholder;
     
     // Render quick starters
     const grid = document.getElementById('quickGrid');
-    grid.innerHTML = '';
-    ind.quickStarters.forEach(q => {
-      const btn = document.createElement('button');
-      btn.className = 'qbtn';
-      btn.onclick = () => quickPrompt(q.prompt);
-      btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
-      grid.appendChild(btn);
-    });
+    if (grid) {
+      grid.innerHTML = '';
+      ind.quickStarters.forEach(q => {
+        const btn = document.createElement('button');
+        btn.className = 'qbtn';
+        btn.onclick = () => quickPrompt(q.prompt);
+        btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
+        grid.appendChild(btn);
+      });
+    }
     
     // Render ideas
     const ideas = document.getElementById('ideas');
-    ideas.innerHTML = '';
-    ind.ideas.forEach(idea => {
-      const item = document.createElement('div');
-      item.className = 'idea-item';
-      item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
-      item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
-      ideas.appendChild(item);
-    });
+    if (ideas) {
+      ideas.innerHTML = '';
+      ind.ideas.forEach(idea => {
+        const item = document.createElement('div');
+        item.className = 'idea-item';
+        item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
+        item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
+        ideas.appendChild(item);
+      });
+    }
     
     // Update empty state
     const empty = document.getElementById('empty');
@@ -1289,6 +1323,9 @@ function onIndustryChange() {
         <div class="esub">${ind.emptyMsg}</div>
         <div class="etagline">Use quick starters or type your question below</div>`;
     }
+    
+    // Update system prompt
+    updateSysPrompt();
   }
 }
 
@@ -1668,6 +1705,8 @@ function grow(el) {
 
 function continueAsGuest() {
   document.getElementById('authLoading').style.display = 'block';
+  document.getElementById('authErr').textContent = '';
+  
   fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' })
     .then(r => r.json())
     .then(d => {
@@ -1685,8 +1724,20 @@ function continueAsGuest() {
         document.getElementById('guestBanner').classList.add('show');
         setLed('on', 'Connected ✓');
         document.getElementById('sendBtn').disabled = false;
+        
+        // Initialize industry and system prompt
+        onIndustryChange();
+        updateSysPrompt();
+        renderHistory();
+        
         hideModal();
+      } else {
+        document.getElementById('authErr').textContent = 'Guest login failed. Please try again.';
       }
+    })
+    .catch(err => {
+      console.error('Guest auth error:', err);
+      document.getElementById('authErr').textContent = 'Network error. Please check your connection.';
     })
     .finally(() => {
       document.getElementById('authLoading').style.display = 'none';
