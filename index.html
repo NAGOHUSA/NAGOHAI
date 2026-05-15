@@ -1733,9 +1733,14 @@ function continueAsGuest() {
   document.getElementById('authErr').textContent = '';
   
   fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' })
-    .then(r => r.json())
+    .then(r => {
+      if (!r.ok) {
+        throw new Error(`HTTP ${r.status}`);
+      }
+      return r.json();
+    })
     .then(d => {
-      if (d.session_token) {
+      if (d && d.session_token) {
         sessionToken = d.session_token;
         currentUser = d.user;
         balance = d.token_balance;
@@ -1757,12 +1762,12 @@ function continueAsGuest() {
         
         hideModal();
       } else {
-        document.getElementById('authErr').textContent = 'Guest login failed. Please try again.';
+        throw new Error('Invalid response: missing session_token');
       }
     })
     .catch(err => {
       console.error('Guest auth error:', err);
-      document.getElementById('authErr').textContent = 'Network error. Please check your connection.';
+      document.getElementById('authErr').textContent = 'Guest login failed. Please try again.';
     })
     .finally(() => {
       document.getElementById('authLoading').style.display = 'none';
