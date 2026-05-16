@@ -778,25 +778,25 @@ input, textarea, select { font-size: 16px !important; }
         </button>
       </div>
       <div id="pricingMonthly">
-        <div style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;hover:border-color var(--teal);" onclick="selectPlan('starter')">
+        <div class="sub-option" onclick="selectPlan('starter')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
           <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Starter</div>
           <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$4/mo</div>
           <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">10,000 tokens/month. Perfect for testing.</div>
         </div>
         
-        <div style="padding:1rem;border:2px solid var(--teal);border-radius:8px;margin-bottom:1rem;background:var(--teal-lt);cursor:pointer;transition:all 0.2s;" onclick="selectPlan('professional')">
+        <div class="sub-option selected" onclick="selectPlan('professional')" style="padding:1rem;border:2px solid var(--teal);border-radius:8px;margin-bottom:1rem;background:var(--teal-lt);cursor:pointer;transition:all 0.2s;">
           <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">⭐ Professional</div>
           <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$19/mo</div>
           <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">100,000 tokens/month. Most popular for small businesses.</div>
         </div>
         
-        <div style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;" onclick="selectPlan('business')">
+        <div class="sub-option" onclick="selectPlan('business')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
           <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Business</div>
           <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$49/mo</div>
           <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">500,000 tokens/month + priority support.</div>
         </div>
         
-        <div style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;" onclick="selectPlan('enterprise')">
+        <div class="sub-option" onclick="selectPlan('enterprise')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
           <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Enterprise</div>
           <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">Custom</div>
           <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Unlimited tokens + dedicated support. Contact sales.</div>
@@ -804,25 +804,25 @@ input, textarea, select { font-size: 16px !important; }
       </div>
       
       <div id="pricingYearly" style="display:none;">
-        <div style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;" onclick="selectPlan('starter_yearly')">
+        <div class="sub-option" onclick="selectPlan('starter_yearly')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
           <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Starter</div>
           <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$38/yr</div>
           <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Save 20%. 10,000 tokens/month.</div>
         </div>
         
-        <div style="padding:1rem;border:2px solid var(--teal);border-radius:8px;margin-bottom:1rem;background:var(--teal-lt);cursor:pointer;transition:all 0.2s;" onclick="selectPlan('professional_yearly')">
+        <div class="sub-option selected" onclick="selectPlan('professional_yearly')" style="padding:1rem;border:2px solid var(--teal);border-radius:8px;margin-bottom:1rem;background:var(--teal-lt);cursor:pointer;transition:all 0.2s;">
           <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">⭐ Professional</div>
           <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$181/yr</div>
           <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Save 20%. 100,000 tokens/month.</div>
         </div>
         
-        <div style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;" onclick="selectPlan('business_yearly')">
+        <div class="sub-option" onclick="selectPlan('business_yearly')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
           <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Business</div>
           <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$470/yr</div>
           <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Save 20%. 500,000 tokens/month.</div>
         </div>
         
-        <div style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;" onclick="selectPlan('enterprise_yearly')">
+        <div class="sub-option" onclick="selectPlan('enterprise_yearly')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
           <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Enterprise</div>
           <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">Custom</div>
           <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Unlimited tokens + dedicated support. Contact sales.</div>
@@ -1907,8 +1907,17 @@ function switchPricingTab(idx) {
 
 function selectPlan(plan) {
   selectedPlan = plan;
-  document.querySelectorAll('.sub-option').forEach(o => o.classList.remove('selected'));
+  const allOptions = document.querySelectorAll('.sub-option');
+  allOptions.forEach(option => {
+    option.classList.remove('selected');
+    option.style.border = '1px solid var(--border)';
+    option.style.background = '#fff';
+  });
+  
+  // Find and update the clicked option
   event.currentTarget.classList.add('selected');
+  event.currentTarget.style.border = '2px solid var(--teal)';
+  event.currentTarget.style.background = 'var(--teal-lt)';
 }
 
 function startCheckout() {
