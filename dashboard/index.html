@@ -21,10 +21,9 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .wordmark{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:#fff;}
 .wordmark em{color:var(--gold);font-style:italic;}
 .badge{font-size:0.6rem;background:var(--rose);color:#fff;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:0.06em;}
-.main{flex:1;max-width:1400px;margin:0 auto;width:100%;padding:2rem 1.5rem;}
+.main{flex:1;max-width:100%;margin:0 auto;width:100%;padding:2rem 1.5rem;}
 .card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 6px rgba(0,0,0,0.04);}
 .card-title{font-family:var(--serif);font-size:1.1rem;font-weight:500;color:var(--ink);margin-bottom:1rem;}
-.card-subtitle{font-size:0.78rem;color:var(--dim);margin-bottom:1rem;}
 .lock-screen{position:fixed;inset:0;background:var(--deep);display:flex;align-items:center;justify-content:center;z-index:100;}
 .lock-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:360px;text-align:center;}
 .lock-title{font-family:var(--serif);font-size:1.4rem;font-weight:700;margin-bottom:0.5rem;}
@@ -36,6 +35,9 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .fbtn:disabled{opacity:0.4;cursor:not-allowed;}
 .fbtn.gold{background:var(--gold);color:var(--deep);}
 .fbtn.gold:hover:not(:disabled){background:#d48f20;}
+label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:500;margin-bottom:0.3rem;}
+.fgroup{margin-bottom:0.75rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0.75rem;}
 .alert{padding:0.75rem 1rem;border-radius:10px;font-size:0.78rem;margin-top:0.75rem;display:none;}
 .alert.ok{background:var(--sage-lt);border:1px solid var(--sage);color:var(--sage);}
 .alert.err{background:var(--rose-lt);border:1px solid var(--rose-md);color:var(--rose);}
@@ -45,36 +47,36 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .tab.active{color:var(--teal);border-bottom-color:var(--teal);}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem;}
 .stat-card{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;}
 .stat-value{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);}
 .stat-label{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;}
-.stat-secondary{font-size:0.75rem;color:var(--dim);margin-top:0.5rem;}
 .users-table{width:100%;border-collapse:collapse;font-size:0.75rem;}
 .users-table th{text-align:left;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:0.75rem;border-bottom:1px solid var(--border);font-weight:600;background:rgba(255,255,255,0.5);}
 .users-table td{padding:0.75rem;border-bottom:1px solid var(--border);color:var(--dim);}
 .users-table tr:hover{background:var(--cream);}
+.users-table .bal{color:var(--teal);font-weight:600;font-family:var(--serif);}
 .sub-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:600;}
-.sub-free{background:var(--cream);color:var(--muted);}
+.sub-none{color:var(--muted);font-style:italic;}
 .sub-starter{background:var(--gold-lt);color:var(--gold);}
 .sub-professional{background:var(--teal-lt);color:var(--teal);}
 .sub-business{background:var(--sage-lt);color:var(--sage);}
 .sub-enterprise{background:var(--rose-lt);color:var(--rose);}
-.tier-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;margin-top:1rem;}
-.tier-stat{background:var(--cream);border-radius:10px;padding:1rem;text-align:center;}
-.tier-stat-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;}
-.tier-stat-value{font-size:1.5rem;font-weight:700;color:var(--teal);margin:0.5rem 0;}
-.tier-stat-users{font-size:0.75rem;color:var(--dim);}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0.75rem;}
-.fgroup{margin-bottom:0.75rem;}
-label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:500;margin-bottom:0.3rem;}
-.select-ctrl{width:100%;padding:0.6rem;border:1px solid var(--border2);border-radius:8px;font-family:var(--sans);background:#fff;color:var(--ink);}
+.btn-small{padding:0.4rem 0.8rem;font-size:0.65rem;border:none;cursor:pointer;border-radius:6px;transition:all 0.15s;white-space:nowrap;}
+.btn-view{background:var(--teal);color:#fff;}
+.btn-view:hover{background:#228b7e;}
+.btn-delete{background:var(--rose);color:#fff;margin-left:4px;}
+.btn-delete:hover{background:#c63d36;}
+.select-ctrl{width:100%;padding:0.6rem;border:1px solid var(--border2);border-radius:8px;font-family:var(--sans);background:#fff;}
 .select-ctrl:focus{border-color:var(--teal);outline:none;}
-.tier-info{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:0.8rem;}
-.tier-info strong{color:var(--ink);}
-.btn-small{display:inline-block;padding:0.4rem 0.8rem;font-size:0.65rem;background:#e8524a;color:#fff;border:none;border-radius:6px;cursor:pointer;margin-left:0.5rem;}
-.btn-small:hover{background:#d63d38;}
-@media(max-width:768px){.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}.users-table{font-size:0.65rem}.users-table th,.users-table td{padding:0.5rem}.stats-grid{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}}
+.revenue-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin-top:1rem;}
+.revenue-table th,.revenue-table td{padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);}
+.revenue-table th{background:rgba(255,255,255,0.5);font-weight:600;text-transform:uppercase;font-size:0.65rem;}
+.revenue-table tr:hover{background:var(--cream);}
+.tier-stat{display:inline-block;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-right:1rem;margin-bottom:1rem;text-align:center;min-width:100px;}
+.tier-stat-value{font-size:1.5rem;font-weight:700;color:var(--teal);}
+.tier-stat-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;margin-top:0.5rem;}
+@media(max-width:768px){.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}.users-table{font-size:0.65rem}.users-table th,.users-table td{padding:0.5rem}.stats-grid{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}.btn-small{margin-bottom:0.25rem}}
 </style>
 </head>
 <body>
@@ -94,181 +96,188 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
   <div class="badge">ADMIN</div>
 </div>
 
-<div class="main" id="main" style="display:none;">
-  <h1 style="font-family:var(--serif);margin-bottom:2rem;">Admin Dashboard</h1>
+<div class="main" id="mainContent" style="display:none;">
+  <h1 style="font-family:var(--serif);margin-bottom:1rem;">Admin Dashboard</h1>
 
-  <!-- OVERVIEW STATS -->
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-value" id="statUsers">0</div>
       <div class="stat-label">Total Users</div>
-      <div class="stat-secondary" id="statUsersBreak"></div>
     </div>
     <div class="stat-card">
       <div class="stat-value" id="statPaid">0</div>
-      <div class="stat-label">Active Subscriptions</div>
-      <div class="stat-secondary" id="statPaidBreak"></div>
+      <div class="stat-label">Paid Subscribers</div>
     </div>
     <div class="stat-card">
       <div class="stat-value" id="statTokens">0</div>
-      <div class="stat-label">Tokens Spent (All Time)</div>
-      <div class="stat-secondary" id="statTokensBreak"></div>
+      <div class="stat-label">Total Tokens</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value" id="statArr">$0</div>
-      <div class="stat-label">Annual Revenue Run Rate</div>
-      <div class="stat-secondary">Based on active subscriptions</div>
+      <div class="stat-value" id="statMrr">$0</div>
+      <div class="stat-label">Monthly Revenue</div>
     </div>
   </div>
 
-  <!-- TIER BREAKDOWN -->
-  <div class="card">
-    <div class="card-title">📊 Subscription Tier Breakdown</div>
-    <div class="tier-breakdown" id="tierBreakdown">
-      <div class="tier-stat"><div class="tier-stat-label">Free</div><div class="tier-stat-value" id="tier-free-users">0</div><div class="tier-stat-users">users</div></div>
-      <div class="tier-stat"><div class="tier-stat-label">Starter</div><div class="tier-stat-value" id="tier-starter-users">0</div><div class="tier-stat-users">active</div></div>
-      <div class="tier-stat"><div class="tier-stat-label">Professional</div><div class="tier-stat-value" id="tier-professional-users">0</div><div class="tier-stat-users">active</div></div>
-      <div class="tier-stat"><div class="tier-stat-label">Business</div><div class="tier-stat-value" id="tier-business-users">0</div><div class="tier-stat-users">active</div></div>
-      <div class="tier-stat"><div class="tier-stat-label">Enterprise</div><div class="tier-stat-value" id="tier-enterprise-users">0</div><div class="tier-stat-users">active</div></div>
-    </div>
-  </div>
-
-  <!-- TAB NAVIGATION -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab(0)">👥 USERS</button>
-    <button class="tab" onclick="switchTab(1)">💳 SUBSCRIPTIONS</button>
-    <button class="tab" onclick="switchTab(2)">📈 ANALYTICS</button>
-    <button class="tab" onclick="switchTab(3)">🔧 TOOLS</button>
+    <button class="tab active" onclick="switchTab(0)">USERS</button>
+    <button class="tab" onclick="switchTab(1)">MANAGE SUBS</button>
+    <button class="tab" onclick="switchTab(2)">TOOLS</button>
+    <button class="tab" onclick="switchTab(3)">ANALYTICS</button>
   </div>
 
-  <!-- TAB 0: USERS -->
+  <!-- Tab 0: Users -->
   <div class="tab-content active">
     <div class="card">
-      <div class="card-title">All Users & Subscriptions</div>
-      <div class="card-subtitle">Active subscription list with renewal dates</div>
+      <div class="card-title">Gmail Users & Subscriptions</div>
       <table class="users-table">
         <thead>
           <tr>
+            <th>NAME</th>
             <th>EMAIL</th>
-            <th>TIER</th>
-            <th>STATUS</th>
-            <th>PERIOD START</th>
-            <th>PERIOD END</th>
-            <th>AUTO-RENEW</th>
+            <th>SUBSCRIPTION</th>
+            <th>TOKENS</th>
+            <th>CREATED</th>
             <th>ACTIONS</th>
           </tr>
         </thead>
         <tbody id="usersBody">
-          <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted);">Loading...</td></tr>
+          <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- TAB 1: SUBSCRIPTIONS -->
+  <!-- Tab 1: Manage Subscriptions -->
   <div class="tab-content">
     <div class="card">
-      <div class="card-title">💳 Manage Subscriptions</div>
-      <div class="card-subtitle">Assign or change user subscription tiers</div>
-      
+      <div class="card-title">Assign Subscription</div>
       <div class="fgroup">
         <label>Select User</label>
-        <select id="subUserSelect" class="select-ctrl" onchange="updateUserInfo()">
+        <select id="subUserSelect" class="select-ctrl">
           <option value="">-- Select a user --</option>
         </select>
       </div>
-
-      <div id="userInfoBox" style="display:none;">
-        <div class="tier-info">
-          <strong>Current Tier:</strong> <span id="currentTier">-</span><br>
-          <strong>Period End:</strong> <span id="periodEnd">-</span><br>
-          <strong>Auto-Renew:</strong> <span id="autoRenew">-</span>
-        </div>
-      </div>
-
       <div class="fgroup">
-        <label>New Subscription Tier</label>
+        <label>Subscription Tier</label>
         <select id="subTier" class="select-ctrl">
-          <option value="">-- Select tier --</option>
-          <option value="free">Free - 50k tokens/month</option>
-          <option value="starter">Starter - 100k tokens/month ($9.99/mo)</option>
-          <option value="professional" selected>Professional - 500k tokens/month ($29.99/mo)</option>
-          <option value="business">Business - 2M tokens/month ($99.99/mo)</option>
-          <option value="enterprise">Enterprise - Unlimited ($299.99/mo)</option>
+          <option value="free">Free - 50k tokens/mo</option>
+          <option value="starter">Starter - 100k tokens/mo ($9.99)</option>
+          <option value="professional" selected>Professional - 500k tokens/mo ($29.99)</option>
+          <option value="business">Business - 2M tokens/mo ($99.99)</option>
+          <option value="enterprise">Enterprise - 10M tokens/mo ($299.99)</option>
         </select>
       </div>
-
-      <button class="fbtn gold" onclick="assignSubscription()">✅ Assign Subscription</button>
+      <button class="fbtn gold" onclick="assignSubscription()">Assign Subscription</button>
       <div class="alert ok" id="subOk"></div>
       <div class="alert err" id="subErr"></div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
+
+      <div class="card-title" style="margin-top:0;">Update Subscription</div>
+      <div class="fgroup">
+        <label>Select User</label>
+        <select id="updateUserSelect" class="select-ctrl" onchange="updateUserInfo()">
+          <option value="">-- Select a user --</option>
+        </select>
+      </div>
+      <div id="userInfoBox" style="display:none;background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:0.8rem;">
+        <strong>Current Tier:</strong> <span id="currentTier">-</span><br>
+        <strong>Status:</strong> <span id="tierStatus">-</span>
+      </div>
+      <div class="fgroup">
+        <label>New Tier</label>
+        <select id="updateTier" class="select-ctrl">
+          <option value="free">Free</option>
+          <option value="starter">Starter</option>
+          <option value="professional">Professional</option>
+          <option value="business">Business</option>
+          <option value="enterprise">Enterprise</option>
+        </select>
+      </div>
+      <button class="fbtn gold" onclick="updateSubscription()">Update Subscription</button>
+      <div class="alert ok" id="updateOk"></div>
+      <div class="alert err" id="updateErr"></div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
+
+      <div class="card-title" style="margin-top:0;">Delete Subscription</div>
+      <div class="fgroup">
+        <label>Select User</label>
+        <select id="deleteSubSelect" class="select-ctrl">
+          <option value="">-- Select a user --</option>
+        </select>
+      </div>
+      <button class="fbtn" style="background:var(--rose);" onclick="deleteSubscription()">Delete Subscription</button>
+      <div class="alert err" id="deleteErr"></div>
     </div>
   </div>
 
-  <!-- TAB 2: ANALYTICS -->
+  <!-- Tab 2: Tools -->
   <div class="tab-content">
     <div class="card">
-      <div class="card-title">📈 Usage Analytics</div>
-      <div class="card-subtitle">Token usage patterns and revenue breakdown</div>
+      <div class="card-title">Gift Tokens</div>
+      <div class="form-row">
+        <div>
+          <label>User Email</label>
+          <input type="email" id="giftEmail" class="finput" placeholder="user@example.com" style="margin-bottom:0;">
+        </div>
+        <div>
+          <label>Tokens</label>
+          <input type="number" id="giftAmount" class="finput" placeholder="5000" min="1" style="margin-bottom:0;">
+        </div>
+      </div>
+      <button class="fbtn gold" onclick="giftTokens()">Gift Tokens</button>
+      <div class="alert ok" id="giftOk"></div>
+      <div class="alert err" id="giftErr"></div>
+    </div>
 
-      <h3 style="font-size:0.95rem;color:var(--ink);margin-bottom:1rem;">💰 Revenue Breakdown</h3>
-      <table class="users-table">
+    <div class="card">
+      <div class="card-title">Create New User</div>
+      <div class="form-row">
+        <div>
+          <label>Name</label>
+          <input type="text" id="createName" class="finput" placeholder="John Doe" style="margin-bottom:0;">
+        </div>
+        <div>
+          <label>Email</label>
+          <input type="email" id="createEmail" class="finput" placeholder="john@example.com" style="margin-bottom:0;">
+        </div>
+      </div>
+      <div class="fgroup">
+        <label>Initial Tokens</label>
+        <input type="number" id="createTokens" class="finput" placeholder="5000" value="5000" min="0">
+      </div>
+      <button class="fbtn gold" onclick="createUser()">Create User</button>
+      <div class="alert ok" id="createOk"></div>
+      <div class="alert err" id="createErr"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Reset Monthly Tokens</div>
+      <p style="font-size:0.8rem;color:var(--dim);margin-bottom:1rem;">Reset all subscriber tokens to tier amount.</p>
+      <button class="fbtn gold" onclick="resetTokens()">Reset All Tokens</button>
+      <div class="alert ok" id="resetOk"></div>
+      <div class="alert err" id="resetErr"></div>
+    </div>
+  </div>
+
+  <!-- Tab 3: Analytics -->
+  <div class="tab-content">
+    <div class="card">
+      <div class="card-title">Tier Breakdown</div>
+      <div id="tierBreakdown" style="margin-top:1rem;"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Revenue by Tier</div>
+      <table class="revenue-table">
         <thead>
-          <tr>
-            <th>TIER</th>
-            <th>ACTIVE SUBS</th>
-            <th>PRICE/MO</th>
-            <th>MRR</th>
-            <th>ARR</th>
-          </tr>
+          <tr><th>Tier</th><th>Active</th><th>Price</th><th>MRR</th><th>ARR</th></tr>
         </thead>
         <tbody id="revenueBody">
           <tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--muted);">Loading...</td></tr>
         </tbody>
       </table>
-    </div>
-  </div>
-
-  <!-- TAB 3: TOOLS -->
-  <div class="tab-content">
-    <div class="card">
-      <div class="card-title">🔧 Admin Tools</div>
-      <div class="card-subtitle">Advanced management functions</div>
-
-      <h3 style="font-size:0.95rem;color:var(--ink);margin-bottom:1rem;">Gift Tokens to User</h3>
-      <div class="form-row">
-        <div>
-          <label>User Email</label>
-          <input type="email" id="giftEmail" class="finput" placeholder="user@example.com">
-        </div>
-        <div>
-          <label>Tokens to Gift</label>
-          <input type="number" id="giftAmount" class="finput" placeholder="5000" min="1">
-        </div>
-      </div>
-      <button class="fbtn gold" onclick="giftTokens()">🎁 Gift Tokens</button>
-      <div class="alert ok" id="giftOk"></div>
-      <div class="alert err" id="giftErr"></div>
-
-      <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
-
-      <h3 style="font-size:0.95rem;color:var(--ink);margin-bottom:1rem;">Create New User</h3>
-      <div class="form-row">
-        <div>
-          <label>Name</label>
-          <input type="text" id="createName" class="finput" placeholder="John Doe">
-        </div>
-        <div>
-          <label>Email</label>
-          <input type="email" id="createEmail" class="finput" placeholder="john@example.com">
-        </div>
-      </div>
-      <div class="fgroup">
-        <label>Initial Tokens</label>
-        <input type="number" id="createTokens" class="finput" placeholder="5000" min="0" value="5000">
-      </div>
-      <button class="fbtn gold" onclick="createUser()">➕ Create User</button>
-      <div class="alert ok" id="createOk"></div>
-      <div class="alert err" id="createErr"></div>
     </div>
   </div>
 
@@ -280,321 +289,37 @@ let adminPwd = '';
 let allSubs = {};
 let allAnalytics = {};
 
-function switchTab(idx) {
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-content')[idx].classList.add('active');
-  document.querySelectorAll('.tab')[idx].classList.add('active');
-}
+function switchTab(i){document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content')[i].classList.add('active');document.querySelectorAll('.tab')[i].classList.add('active');}
 
-function unlock() {
-  const pwd = document.getElementById('pwdInput').value;
-  if (!pwd) return;
-  adminPwd = pwd;
-  
-  fetch(WORKER + '/admin/api/subscriptions', {
-    headers: { 'X-Admin-Password': pwd }
-  }).then(r => {
-    if (r.status === 401) {
-      document.getElementById('lockErr').style.display = 'block';
-      document.getElementById('lockErr').textContent = 'Incorrect password';
-      adminPwd = '';
-    } else if (!r.ok) {
-      document.getElementById('lockErr').style.display = 'block';
-      document.getElementById('lockErr').textContent = 'Server error: ' + r.status + '. Make sure worker is deployed and ADMIN_PASSWORD is set in environment.';
-      adminPwd = '';
-    } else {
-      document.getElementById('lockScreen').style.display = 'none';
-      document.getElementById('main').style.display = 'block';
-      loadDashboard();
-    }
-  }).catch((e) => {
-    document.getElementById('lockErr').style.display = 'block';
-    document.getElementById('lockErr').textContent = 'Network error: ' + e.message;
-  });
-}
+function unlock(){const p=document.getElementById('pwdInput').value;if(!p)return;adminPwd=p;fetch(WORKER+'/admin/api/subscriptions',{headers:{'X-Admin-Password':p}}).then(r=>{if(r.status===401){document.getElementById('lockErr').textContent='Incorrect password';document.getElementById('lockErr').style.display='block';adminPwd='';}else if(!r.ok){document.getElementById('lockErr').textContent='Server error: '+r.status;document.getElementById('lockErr').style.display='block';adminPwd='';}else{document.getElementById('lockScreen').style.display='none';document.getElementById('mainContent').style.display='block';loadDashboard();}}).catch(e=>{document.getElementById('lockErr').textContent='Error: '+e.message;document.getElementById('lockErr').style.display='block';});}
 
-async function loadDashboard() {
-  try {
-    const [subsRes, analyticsRes] = await Promise.all([
-      fetch(WORKER + '/admin/api/subscriptions', {
-        headers: { 'X-Admin-Password': adminPwd }
-      }),
-      fetch(WORKER + '/admin/api/analytics', {
-        headers: { 'X-Admin-Password': adminPwd }
-      })
-    ]);
+async function loadDashboard(){try{const [sr,ar]=await Promise.all([fetch(WORKER+'/admin/api/subscriptions',{headers:{'X-Admin-Password':adminPwd}}),fetch(WORKER+'/admin/api/analytics',{headers:{'X-Admin-Password':adminPwd}})]);if(sr.ok){const d=await sr.json();allSubs={};(d.subscriptions||[]).forEach(s=>{allSubs[s.user_id]=s;});}if(ar.ok){allAnalytics=await ar.json();}}catch(e){console.error(e);}renderDashboard();}
 
-    if (subsRes.ok) {
-      const sdata = await subsRes.json();
-      allSubs = {};
-      (sdata.subscriptions || []).forEach(s => {
-        allSubs[s.user_id] = s;
-      });
-    } else {
-      console.error('Subscriptions error:', subsRes.status);
-    }
+function renderDashboard(){const p=Object.keys(allSubs).length;const t=allAnalytics.total_users||0;const tk=allAnalytics.total_tokens_spent||0;let m=0;const pr={starter:999,professional:2999,business:9999,enterprise:29999};const tb=allAnalytics.tier_breakdown||{};Object.keys(tb).forEach(tier=>{const c=tb[tier].active_subscriptions||0;m+=c*(pr[tier]||0);});const mr=(m/100).toFixed(2);document.getElementById('statUsers').textContent=t;document.getElementById('statPaid').textContent=p;document.getElementById('statTokens').textContent=tk.toLocaleString();document.getElementById('statMrr').textContent='$'+mr;const tb_div=document.getElementById('tierBreakdown');tb_div.innerHTML='';Object.keys(tb).forEach(tier=>{const u=tb[tier].users||0;const a=tb[tier].active_subscriptions||0;tb_div.innerHTML+=`<div class="tier-stat"><div style="font-weight:600;margin-bottom:0.5rem;">${tier.toUpperCase()}</div><div class="tier-stat-value">${a}</div><div class="tier-stat-label">active</div><div style="font-size:0.7rem;color:var(--dim);margin-top:0.5rem;">${u} users</div></div>`;});const tbody=document.getElementById('usersBody');tbody.innerHTML='';if(Object.keys(allSubs).length===0){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No subscriptions</td></tr>';}else{Object.keys(allSubs).forEach(uid=>{const s=allSubs[uid];const tr=document.createElement('tr');let st='<span class="sub-none">None</span>';if(s&&s.tier){st=`<span class="sub-badge sub-${s.tier}">${s.tier.toUpperCase()}</span>`;}const c=new Date((s.created_at||0)*1000).toLocaleDateString();tr.innerHTML=`<td>${s.email||'N/A'}</td><td>${s.email||'N/A'}</td><td>${st}</td><td class="bal">0</td><td>${c}</td><td><button class="btn-small btn-view" onclick="viewUser('${uid}')">View</button><button class="btn-small btn-delete" onclick="deleteUser('${uid}')">Delete</button></td>`;tbody.appendChild(tr);});}const s1=document.getElementById('subUserSelect');const s2=document.getElementById('updateUserSelect');const s3=document.getElementById('deleteSubSelect');s1.innerHTML='<option>-- Select --</option>';s2.innerHTML='<option>-- Select --</option>';s3.innerHTML='<option>-- Select --</option>';Object.keys(allSubs).forEach(uid=>{const s=allSubs[uid];const o1=document.createElement('option');o1.value=uid;o1.textContent=s.email+' ('+( s.tier||'None')+')';s1.appendChild(o1);const o2=document.createElement('option');o2.value=uid;o2.textContent=s.email+' ('+(s.tier||'None')+')';s2.appendChild(o2);const o3=document.createElement('option');o3.value=uid;o3.textContent=s.email+' ('+(s.tier||'None')+')';s3.appendChild(o3);});renderRevenueTable();}
 
-    if (analyticsRes.ok) {
-      allAnalytics = await analyticsRes.json();
-    } else {
-      console.error('Analytics error:', analyticsRes.status);
-    }
-  } catch (e) {
-    console.error('Error loading data:', e);
-  }
+function renderRevenueTable(){const tb=document.getElementById('revenueBody');tb.innerHTML='';const tb_d=allAnalytics.tier_breakdown||{};const pr={starter:9.99,professional:29.99,business:99.99,enterprise:299.99};Object.keys(pr).forEach(tier=>{const a=tb_d[tier]?.active_subscriptions||0;const p=pr[tier];const m=(a*p).toFixed(2);const y=(m*12).toFixed(2);const tr=document.createElement('tr');tr.innerHTML=`<td><span class="sub-badge sub-${tier}">${tier.toUpperCase()}</span></td><td>${a}</td><td>$${p.toFixed(2)}</td><td>$${m}</td><td>$${y}</td>`;tb.appendChild(tr);});}
 
-  renderDashboard();
-}
+function updateUserInfo(){const u=document.getElementById('updateUserSelect').value;const s=allSubs[u];if(s){document.getElementById('userInfoBox').style.display='block';document.getElementById('currentTier').textContent=(s.tier||'None').toUpperCase();document.getElementById('tierStatus').textContent=s.status||'Active';}else{document.getElementById('userInfoBox').style.display='none';}}
 
-function renderDashboard() {
-  const totalUsers = allAnalytics.total_users || 0;
-  const activeSubs = Object.keys(allSubs).length;
-  const totalTokens = allAnalytics.total_tokens_spent || 0;
-  const tierBreakdown = allAnalytics.tier_breakdown || {};
-  
-  let totalMRR = 0;
-  const prices = { starter: 9.99, professional: 29.99, business: 99.99, enterprise: 299.99 };
-  Object.keys(tierBreakdown).forEach(tier => {
-    const activeCount = tierBreakdown[tier].active_subscriptions || 0;
-    totalMRR += activeCount * (prices[tier] || 0);
-  });
-  const arr = (totalMRR * 12).toFixed(2);
+function viewUser(u){const s=allSubs[u];if(s){alert(s.email+'\nTier: '+(s.tier||'None').toUpperCase()+'\nStatus: '+(s.status||'Active'));}}
 
-  document.getElementById('statUsers').textContent = totalUsers;
-  document.getElementById('statUsersBreak').textContent = '(' + activeSubs + ' paid)';
-  document.getElementById('statPaid').textContent = activeSubs;
-  document.getElementById('statTokens').textContent = totalTokens.toLocaleString();
-  document.getElementById('statArr').textContent = '$' + arr;
+async function deleteUser(u){if(!confirm('Delete user?'))return;const s=allSubs[u];if(!s)return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'DELETE',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({email:s.email})});if(r.ok){loadDashboard();}else{alert('Error');}}catch(e){alert('Error: '+e.message);}}
 
-  Object.keys(tierBreakdown).forEach(tier => {
-    const active = tierBreakdown[tier].active_subscriptions || 0;
-    document.getElementById('tier-' + tier + '-users').textContent = active;
-  });
+async function assignSubscription(){const u=document.getElementById('subUserSelect').value;const t=document.getElementById('subTier').value;if(!u||!t){showAlert('subErr','Select user and tier');return;}const s=allSubs[u];if(!s)return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({email:s.email,tier:t})});const d=await r.json();if(!r.ok){showAlert('subErr',d.error||'Failed');return;}showAlert('subOk','✅ Assigned!');setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('subErr','Error: '+e.message);}}
 
-  const tbody = document.getElementById('usersBody');
-  tbody.innerHTML = '';
-  
-  if (Object.keys(allSubs).length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted);">No active subscriptions</td></tr>';
-  } else {
-    Object.keys(allSubs).forEach(userId => {
-      const sub = allSubs[userId];
-      const tr = document.createElement('tr');
-      
-      const startDate = new Date(sub.current_period_start * 1000).toLocaleDateString();
-      const endDate = new Date(sub.current_period_end * 1000).toLocaleDateString();
-      const renew = sub.auto_renew ? '✅' : '❌';
-      
-      let tierBadge = `<span class="sub-badge sub-${sub.tier}">${sub.tier.toUpperCase()}</span>`;
-      
-      tr.innerHTML = `
-        <td>${sub.email || 'unknown'}</td>
-        <td>${tierBadge}</td>
-        <td>${sub.status}</td>
-        <td>${startDate}</td>
-        <td>${endDate}</td>
-        <td>${renew}</td>
-        <td><button class="btn-small" onclick="deleteSubscription('${sub.email}')">Delete</button></td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
+async function updateSubscription(){const u=document.getElementById('updateUserSelect').value;const t=document.getElementById('updateTier').value;if(!u||!t){showAlert('updateErr','Select user and tier');return;}const s=allSubs[u];if(!s)return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({email:s.email,tier:t})});const d=await r.json();if(!r.ok){showAlert('updateErr',d.error||'Failed');return;}showAlert('updateOk','✅ Updated!');setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('updateErr','Error: '+e.message);}}
 
-  const sel1 = document.getElementById('subUserSelect');
-  sel1.innerHTML = '<option value="">-- Select a user --</option>';
-  
-  Object.keys(allSubs).forEach(userId => {
-    const sub = allSubs[userId];
-    const opt = document.createElement('option');
-    opt.value = userId;
-    opt.textContent = `${sub.email} (${sub.tier})`;
-    sel1.appendChild(opt);
-  });
+async function deleteSubscription(){const u=document.getElementById('deleteSubSelect').value;if(!u){showAlert('deleteErr','Select user');return;}if(!confirm('Delete subscription?'))return;const s=allSubs[u];if(!s)return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'DELETE',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({email:s.email})});if(!r.ok){showAlert('deleteErr','Failed');return;}loadDashboard();}catch(e){showAlert('deleteErr','Error: '+e.message);}}
 
-  renderRevenueTable();
-}
+async function giftTokens(){const e=document.getElementById('giftEmail').value.trim();const a=parseInt(document.getElementById('giftAmount').value,10);if(!e||!a){showAlert('giftErr','Email and amount required');return;}try{const r=await fetch(WORKER+'/admin/api/gift',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({email:e,amount:a})});const d=await r.json();if(!r.ok){showAlert('giftErr',d.error||'Failed');return;}showAlert('giftOk','✅ Gifted '+a.toLocaleString()+'!');document.getElementById('giftEmail').value='';document.getElementById('giftAmount').value='';}catch(e){showAlert('giftErr','Error: '+e.message);}}
 
-function renderRevenueTable() {
-  const tbody = document.getElementById('revenueBody');
-  tbody.innerHTML = '';
-  const tierBreakdown = allAnalytics.tier_breakdown || {};
-  const prices = { starter: 9.99, professional: 29.99, business: 99.99, enterprise: 299.99 };
+async function createUser(){const n=document.getElementById('createName').value.trim();const e=document.getElementById('createEmail').value.trim();const t=parseInt(document.getElementById('createTokens').value,10)||0;if(!n||!e){showAlert('createErr','Name and email required');return;}try{const r=await fetch(WORKER+'/admin/api/users',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({name:n,email:e,initialTokens:t})});const d=await r.json();if(!r.ok){showAlert('createErr',d.error||'Failed');return;}showAlert('createOk','✅ Created!');document.getElementById('createName').value='';document.getElementById('createEmail').value='';document.getElementById('createTokens').value='5000';setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('createErr','Error: '+e.message);}}
 
-  ['starter', 'professional', 'business', 'enterprise'].forEach(tier => {
-    const active = tierBreakdown[tier]?.active_subscriptions || 0;
-    const price = prices[tier] || 0;
-    const mrr = (active * price).toFixed(2);
-    const arr = (mrr * 12).toFixed(2);
+async function resetTokens(){if(!confirm('Reset all tokens?'))return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({reset_all_tokens:true})});if(!r.ok){showAlert('resetErr','Failed');return;}showAlert('resetOk','✅ Reset!');setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('resetErr','Error: '+e.message);}}
 
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><span class="sub-badge sub-${tier}">${tier.toUpperCase()}</span></td>
-      <td>${active}</td>
-      <td>$${price.toFixed(2)}</td>
-      <td>$${mrr}</td>
-      <td>$${arr}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
+function showAlert(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';setTimeout(()=>{el.style.display='none';},5000);}
 
-function updateUserInfo() {
-  const userId = document.getElementById('subUserSelect').value;
-  const sub = allSubs[userId];
-  
-  if (sub) {
-    document.getElementById('userInfoBox').style.display = 'block';
-    document.getElementById('currentTier').textContent = sub.tier.toUpperCase();
-    document.getElementById('periodEnd').textContent = new Date(sub.current_period_end * 1000).toLocaleDateString();
-    document.getElementById('autoRenew').textContent = sub.auto_renew ? '✅ Yes' : '❌ No';
-  } else {
-    document.getElementById('userInfoBox').style.display = 'none';
-  }
-}
-
-async function assignSubscription() {
-  const userId = document.getElementById('subUserSelect').value;
-  const tier = document.getElementById('subTier').value;
-  
-  if (!userId || !tier) { 
-    showAlert('subErr', '❌ Please select a user and tier');
-    return; 
-  }
-  
-  const sub = allSubs[userId];
-  const email = sub?.email;
-  
-  if (!email) { 
-    showAlert('subErr', '❌ Could not find user email');
-    return; 
-  }
-  
-  try {
-    const r = await fetch(WORKER + '/admin/api/subscriptions', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Password': adminPwd
-      },
-      body: JSON.stringify({ email, tier })
-    });
-    
-    const d = await r.json();
-    if (!r.ok) {
-      showAlert('subErr', '❌ Error: ' + (d.error || 'Failed to assign'));
-      return;
-    }
-    
-    showAlert('subOk', '✅ Subscription assigned!');
-    setTimeout(() => { loadDashboard(); }, 1500);
-  } catch (e) {
-    showAlert('subErr', '❌ Error: ' + e.message);
-  }
-}
-
-async function deleteSubscription(email) {
-  if (!confirm('Delete subscription for ' + email + '?')) return;
-  
-  try {
-    const r = await fetch(WORKER + '/admin/api/subscriptions', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Password': adminPwd
-      },
-      body: JSON.stringify({ email })
-    });
-    
-    if (!r.ok) {
-      alert('Error deleting subscription');
-      return;
-    }
-    
-    loadDashboard();
-  } catch (e) {
-    alert('Error: ' + e.message);
-  }
-}
-
-async function giftTokens() {
-  const email = document.getElementById('giftEmail').value.trim();
-  const amount = parseInt(document.getElementById('giftAmount').value, 10);
-  
-  if (!email || !amount) { 
-    showAlert('giftErr', '❌ Enter email and amount');
-    return;
-  }
-  
-  try {
-    const r = await fetch(WORKER + '/admin/api/gift', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Password': adminPwd
-      },
-      body: JSON.stringify({ email, amount })
-    });
-    
-    const d = await r.json();
-    if (!r.ok) {
-      showAlert('giftErr', '❌ Error: ' + (d.error || 'Failed to gift'));
-      return;
-    }
-    
-    showAlert('giftOk', '✅ Gifted ' + amount.toLocaleString() + ' tokens!');
-    document.getElementById('giftEmail').value = '';
-    document.getElementById('giftAmount').value = '';
-  } catch (e) {
-    showAlert('giftErr', '❌ Error: ' + e.message);
-  }
-}
-
-async function createUser() {
-  const name = document.getElementById('createName').value.trim();
-  const email = document.getElementById('createEmail').value.trim();
-  const initialTokens = parseInt(document.getElementById('createTokens').value, 10) || 0;
-  
-  if (!name || !email) { 
-    showAlert('createErr', '❌ Enter name and email');
-    return;
-  }
-  
-  try {
-    const r = await fetch(WORKER + '/admin/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Password': adminPwd
-      },
-      body: JSON.stringify({ name, email, initialTokens })
-    });
-    
-    const d = await r.json();
-    if (!r.ok) {
-      showAlert('createErr', '❌ Error: ' + (d.error || 'Failed to create user'));
-      return;
-    }
-    
-    showAlert('createOk', '✅ User created!');
-    document.getElementById('createName').value = '';
-    document.getElementById('createEmail').value = '';
-    document.getElementById('createTokens').value = '5000';
-    setTimeout(() => { loadDashboard(); }, 1500);
-  } catch (e) {
-    showAlert('createErr', '❌ Error: ' + e.message);
-  }
-}
-
-function showAlert(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; }, 5000);
-}
-
-loadDashboard();
-setInterval(loadDashboard, 60000);
+loadDashboard();setInterval(loadDashboard,60000);
 </script>
 
 </body>
