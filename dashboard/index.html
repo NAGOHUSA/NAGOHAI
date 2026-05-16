@@ -300,7 +300,7 @@ let allAnalytics = {};
 
 function switchTab(i){document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content')[i].classList.add('active');document.querySelectorAll('.tab')[i].classList.add('active');}
 
-function unlock(){const p=document.getElementById('pwdInput').value;if(!p)return;adminPwd=p;fetch(WORKER+'/admin/api/subscriptions',{headers:{'X-Admin-Password':p}}).then(r=>{if(r.status===401){document.getElementById('lockErr').textContent='Incorrect password';document.getElementById('lockErr').style.display='block';adminPwd='';}else if(!r.ok){document.getElementById('lockErr').textContent='Server error: '+r.status;document.getElementById('lockErr').style.display='block';adminPwd='';}else{document.getElementById('lockScreen').style.display='none';document.getElementById('mainContent').style.display='block';loadDashboard();}}).catch(e=>{document.getElementById('lockErr').textContent='Error: '+e.message;document.getElementById('lockErr').style.display='block';});}
+function unlock(){const p=document.getElementById('pwdInput').value;if(!p)return;adminPwd=p;fetch(WORKER+'/admin/api/subscriptions',{headers:{'X-Admin-Password':p}}).then(r=>{if(r.status===401){document.getElementById('lockErr').textContent='Incorrect password';document.getElementById('lockErr').style.display='block';adminPwd='';}else if(!r.ok){document.getElementById('lockErr').textContent='Server error: '+r.status;document.getElementById('lockErr').style.display='block';adminPwd='';}else{localStorage.setItem('nagoh_admin_pwd',p);document.getElementById('lockScreen').style.display='none';document.getElementById('mainContent').style.display='block';loadDashboard();}}).catch(e=>{document.getElementById('lockErr').textContent='Error: '+e.message;document.getElementById('lockErr').style.display='block';});}
 
 async function loadDashboard(){try{const [sr,ar,ur]=await Promise.all([fetch(WORKER+'/admin/api/subscriptions',{headers:{'X-Admin-Password':adminPwd}}),fetch(WORKER+'/admin/api/analytics',{headers:{'X-Admin-Password':adminPwd}}),fetch(WORKER+'/admin/api/users',{headers:{'X-Admin-Password':adminPwd}})]);if(sr.ok){const d=await sr.json();allSubs={};(d.subscriptions||[]).forEach(s=>{allSubs[s.user_id]=s;});}if(ar.ok){allAnalytics=await ar.json();}if(ur.ok){const ud=await ur.json();allUsers=ud.users||[];}}catch(e){console.error(e);}renderDashboard();}
 
@@ -330,7 +330,13 @@ async function rebuildIndex(){if(!confirm('Rebuild users index from KV?'))return
 
 function showAlert(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';setTimeout(()=>{el.style.display='none';},5000);}
 
-loadDashboard();setInterval(loadDashboard,60000);
+// Only load dashboard if already unlocked
+if(adminPwd) loadDashboard();
+// Try to restore password from localStorage
+const savedPwd=localStorage.getItem('nagoh_admin_pwd');
+if(savedPwd){adminPwd=savedPwd;document.getElementById('lockScreen').style.display='none';document.getElementById('mainContent').style.display='block';loadDashboard();}
+// Auto-refresh every 60 seconds when unlocked
+setInterval(()=>{ if(adminPwd) loadDashboard(); },60000);
 </script>
 
 </body>
