@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="https://js.stripe.com/v3/"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -478,11 +477,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .success-banner.show { display: flex; }
 @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* Mobile industry selector */
-.mobile-industry-bar { display: none; }
-.mobile-industry-label { display: none; }
-.mobile-industry-sel { display: none; }
-
 /* RESPONSIVE */
 @media (max-width: 1024px) {
   .left { width: 180px; }
@@ -495,87 +489,12 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .shell { flex-direction: column; }
   .chat-col { width: 100%; }
   
-  .topbar { 
-    padding: 0.5rem 0.75rem; 
-    height: auto;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    align-content: flex-start;
-  }
-  .topbar > div:first-child {
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .wordmark { font-size: 0.95rem; letter-spacing: -0.01em; }
-  .tagline { font-size: 0.45rem; margin-top: 0; }
+  .topbar { padding: 0 1rem; height: 56px; }
+  .wordmark { font-size: 1.1rem; }
+  .tagline { font-size: 0.55rem; }
   .tuser-name { display: none !important; }
-  .tuser-avatar { width: 22px; height: 22px; }
-  .tbtn { padding: 3px 8px; font-size: 0.55rem; }
-  .tpill { padding: 2px 8px; font-size: 0.6rem; }
-  .tbal { font-size: 0.6rem; }
-  .tbal span { font-size: 0.48rem; }
-  .guest-banner { font-size: 0.6rem; padding: 2px 6px; }
-  .tsep { display: none; }
-  
-  .tuser {
-    display: flex;
-    gap: 0;
-    align-items: center;
-  }
-  
-  .mobile-industry-bar {
-    display: flex;
-    width: 100%;
-    padding: 0.5rem 0;
-    gap: 0.4rem;
-    align-items: center;
-    border-top: 1px solid rgba(255,255,255,0.12);
-    background: transparent;
-    order: 10;
-    margin-top: 0.3rem;
-  }
-  .mobile-industry-label {
-    display: block;
-    font-size: 0.52rem;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    font-weight: 600;
-  }
-  .mobile-industry-sel {
-    display: block;
-    flex: 1;
-    background: #fff;
-    border: 1px solid rgba(255,255,255,0.3);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 0.68rem;
-    padding: 0.45rem 0.55rem;
-    outline: none;
-    cursor: pointer;
-    border-radius: 5px;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233d2f24'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 6px center;
-    background-color: #fff;
-    padding-right: 24px;
-    font-weight: 500;
-    transition: all 0.2s;
-  }
-  .mobile-industry-sel:focus {
-    border-color: var(--teal);
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(42,157,143,0.1);
-  }
-  .mobile-industry-sel option {
-    background: #fff;
-    color: var(--ink);
-    padding: 6px;
-  }
+  .tuser-avatar { width: 24px; height: 24px; }
+  .tbtn { padding: 4px 10px; font-size: 0.6rem; }
   
   .modal { max-width: 90vw; border-radius: 16px; }
   .modal-body { padding: 1.5rem 1.5rem 1.5rem; }
@@ -584,101 +503,78 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   .vprops { gap: 6px; }
   .vprop { padding: 6px 10px; }
   
-  .msgs { padding: 1.25rem 0 0.5rem; }
-  .row { padding: 0.3rem 0.75rem; gap: 8px; max-width: 100%; }
+  .msgs { padding: 1.5rem 0 0.5rem; }
+  .row { padding: 0.3rem 1rem; gap: 8px; }
   .bub { max-width: 90%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
   .ava { width: 28px; height: 28px; font-size: 0.7rem; }
   
-  .ibar { padding: 0.6rem 0.75rem; }
-  .iinner { gap: 0.5rem; max-width: 100%; }
+  .ibar { padding: 0.65rem 1rem; }
+  .iinner { gap: 0.5rem; }
   .prompt { padding: 0.6rem 0.8rem; font-size: 0.85rem; min-height: 44px; }
-  .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; min-width: 50px; }
-  .ifoot { padding: 0.3rem 0.75rem 0; font-size: 0.5rem; }
+  .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; }
+  .ifoot { padding: 0.3rem 1rem 0; font-size: 0.52rem; }
   
-  .empty { padding: 0.75rem; }
-  .ehero { font-size: 1.6rem; line-height: 1.2; margin-bottom: 0.25rem; }
-  .esub { font-size: 0.72rem; margin-bottom: 1.25rem; max-width: 100%; line-height: 1.5; }
-  .echips { gap: 6px; max-width: 100%; }
+  .empty { padding: 1rem; }
+  .ehero { font-size: 1.8rem; margin-bottom: 0.3rem; }
+  .esub { font-size: 0.75rem; margin-bottom: 1.5rem; max-width: 100%; }
+  .echips { gap: 6px; }
   .echip { padding: 6px 12px; font-size: 0.65rem; }
   .echip span { font-size: 0.85rem; }
-  .etagline { font-size: 0.58rem; margin-top: 0.75rem; }
+  .etagline { font-size: 0.6rem; margin-top: 1rem; }
 }
 
 @media (max-width: 480px) {
-  .topbar { height: auto; padding: 0.4rem 0.5rem; gap: 0.3rem; flex-wrap: wrap; }
-  .topbar > div:first-child {
-    flex: 0 0 auto;
-  }
-  .wordmark { font-size: 0.88rem; letter-spacing: -0.02em; }
-  .tagline { font-size: 0.4rem; }
-  .tpill { padding: 2px 6px; font-size: 0.55rem; }
-  .dot { width: 4px; height: 4px; }
-  .tbtn { padding: 2px 6px; font-size: 0.5rem; }
-  .tbal { font-size: 0.55rem; }
-  .tbal span { font-size: 0.45rem; }
-  .guest-banner { font-size: 0.55rem; padding: 1px 5px; gap: 2px; }
-  .tuser { gap: 0; }
-  
-  .mobile-industry-bar {
-    padding: 0.4rem 0;
-    gap: 0.3rem;
-    margin-top: 0.2rem;
-  }
-  .mobile-industry-label {
-    font-size: 0.48rem;
-    padding: 0 0.3rem;
-  }
-  .mobile-industry-sel {
-    font-size: 0.65rem;
-    padding: 0.4rem 0.5rem;
-    padding-right: 22px;
-  }
+  .topbar { height: 52px; padding: 0 0.75rem; gap: 0.5rem; }
+  .wordmark { font-size: 0.95rem; }
+  .tagline { font-size: 0.5rem; letter-spacing: 0.04em; }
+  .tpill { padding: 3px 8px; font-size: 0.6rem; }
+  .dot { width: 5px; height: 5px; }
+  .tbtn { padding: 3px 8px; font-size: 0.55rem; }
+  .tbal { font-size: 0.6rem; }
   
   .modal { max-width: 95vw; border-radius: 14px; }
-  .modal-hero { padding: 1.25rem 1.25rem 0.75rem; }
-  .modal-logo { font-size: 1.5rem; margin-bottom: 0.2rem; }
-  .modal-tagline { font-size: 0.6rem; }
-  .modal-body { padding: 1rem 1rem 1.25rem; }
-  .modal-title { font-size: 0.95rem; margin-bottom: 0.15rem; }
-  .modal-sub { font-size: 0.62rem; line-height: 1.4; margin-bottom: 0.75rem; }
-  .vprops { gap: 5px; }
-  .vp-icon { font-size: 0.9rem; }
-  .vp-text { font-size: 0.62rem; }
-  .google-signin-btn { padding: 9px 14px; font-size: 0.75rem; }
-  .guest-btn { padding: 8px 14px; font-size: 0.7rem; }
-  .auth-note { font-size: 0.55rem; }
-  .auth-divider { margin: 6px 0; font-size: 0.56rem; }
-  .guest-note { font-size: 0.52rem; }
-  .modal-foot { padding: 0.5rem 1rem; font-size: 0.54rem; }
+  .modal-hero { padding: 1.5rem 1.5rem 1rem; }
+  .modal-logo { font-size: 1.6rem; margin-bottom: 0.25rem; }
+  .modal-tagline { font-size: 0.65rem; }
+  .modal-body { padding: 1.2rem 1.2rem 1.5rem; }
+  .modal-title { font-size: 1rem; margin-bottom: 0.2rem; }
+  .modal-sub { font-size: 0.65rem; line-height: 1.5; margin-bottom: 1rem; }
+  .vp-icon { font-size: 0.95rem; }
+  .vp-text { font-size: 0.65rem; }
+  .google-signin-btn { padding: 10px 16px; font-size: 0.8rem; }
+  .guest-btn { padding: 8px 16px; font-size: 0.75rem; }
+  .auth-note { font-size: 0.58rem; }
+  .auth-divider { margin: 8px 0; font-size: 0.6rem; }
+  .guest-note { font-size: 0.55rem; }
+  .modal-foot { padding: 0.6rem 1.2rem; font-size: 0.58rem; }
   
-  .msgs { padding: 0.8rem 0 0.3rem; }
-  .row { padding: 0.2rem 0.5rem; gap: 6px; }
-  .ava { width: 26px; height: 26px; font-size: 0.62rem; margin-top: 2px; }
-  .bub { max-width: 92%; font-size: 0.78rem; line-height: 1.45; padding: 0.5rem 0.65rem; }
-  .bub.thinking { font-size: 0.72rem; }
-  .think-dots span { font-size: 0.75rem; }
-  .rmeta { font-size: 0.5rem; gap: 4px; }
-  .rmeta .chip { padding: 0.5px 6px; font-size: 0.5rem; }
+  .msgs { padding: 1rem 0 0.5rem; }
+  .row { padding: 0.25rem 0.75rem; gap: 6px; }
+  .ava { width: 26px; height: 26px; font-size: 0.65rem; margin-top: 2px; }
+  .bub { max-width: 92%; font-size: 0.8rem; line-height: 1.5; padding: 0.5rem 0.7rem; }
+  .bub.thinking { font-size: 0.75rem; }
+  .think-dots span { font-size: 0.8rem; }
+  .rmeta { font-size: 0.52rem; gap: 6px; }
+  .rmeta .chip { padding: 1px 6px; font-size: 0.52rem; }
   
-  .suggestions { gap: 4px; margin-top: 3px; max-width: 92%; }
-  .sug { padding: 3px 9px; font-size: 0.62rem; border-radius: 10px; }
+  .suggestions { gap: 4px; margin-top: 4px; max-width: 92%; }
+  .sug { padding: 3px 10px; font-size: 0.65rem; border-radius: 10px; }
   
-  .ibar { padding: 0.5rem 0.5rem; }
-  .iinner { gap: 0.35rem; }
-  .prompt { padding: 0.5rem 0.65rem; font-size: 0.8rem; min-height: 40px; max-height: 120px; }
-  .send { padding: 0 0.75rem; font-size: 0.62rem; height: 40px; min-width: 45px; }
-  .ifoot { padding: 0.2rem 0.5rem 0; font-size: 0.48rem; gap: 0.4rem; }
+  .ibar { padding: 0.5rem 0.75rem; }
+  .iinner { gap: 0.4rem; }
+  .prompt { padding: 0.5rem 0.7rem; font-size: 0.8rem; min-height: 40px; max-height: 120px; }
+  .send { padding: 0 0.8rem; font-size: 0.65rem; height: 40px; }
+  .ifoot { padding: 0.25rem 0.75rem 0; font-size: 0.5rem; gap: 0.5rem; }
   
-  .empty { padding: 0.5rem; }
-  .ehero { font-size: 1.35rem; line-height: 1.15; margin-bottom: 0.2rem; font-weight: 400; }
-  .ehero em { font-style: normal; }
-  .esub { font-size: 0.68rem; line-height: 1.4; margin-bottom: 0.8rem; }
-  .echips { gap: 4px; max-width: 100%; flex-wrap: wrap; }
-  .echip { padding: 5px 9px; font-size: 0.58rem; border-radius: 14px; }
-  .echip span { font-size: 0.7rem; }
-  .etagline { font-size: 0.52rem; margin-top: 0.5rem; }
+  .empty { padding: 0.75rem; }
+  .ehero { font-size: 1.4rem; line-height: 1.1; margin-bottom: 0.25rem; }
+  .esub { font-size: 0.7rem; line-height: 1.6; margin-bottom: 1rem; }
+  .echips { gap: 5px; }
+  .echip { padding: 5px 10px; font-size: 0.6rem; border-radius: 16px; }
+  .echip span { font-size: 0.75rem; }
+  .etagline { font-size: 0.55rem; margin-top: 0.75rem; }
   
-  .success-banner { top: auto; bottom: 15px; right: 8px; left: 8px; padding: 0.65rem 0.9rem; font-size: 0.75rem; border-radius: 9px; }
+  .success-banner { top: auto; bottom: 20px; right: 10px; left: 10px; padding: 0.75rem 1rem; font-size: 0.8rem; border-radius: 10px; }
 }
 
 @media (hover: none) and (pointer: coarse) {
@@ -687,33 +583,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 
 input, textarea, select { font-size: 16px !important; }
-
-/* ── PRICING MODAL ── */
-.pricing-tab {
-  flex: 1; padding: 1rem; background: none; border: none;
-  border-bottom: 2px solid transparent; color: var(--dim);
-  cursor: pointer; font-family: var(--sans); font-size: 0.75rem;
-  font-weight: 600; transition: all 0.2s; text-transform: uppercase;
-}
-.pricing-tab:hover { color: var(--ink); }
-.pricing-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
-.sub-option {
-  background: #fff; border: 1.5px solid var(--border);
-  border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;
-  cursor: pointer; transition: all 0.2s;
-}
-.sub-option:hover { border-color: var(--teal); }
-.sub-option.selected { border-color: var(--teal); background: var(--teal-lt); }
-.sub-name {
-  font-family: var(--serif); font-size: 1.1rem; font-weight: 600;
-  color: var(--ink); margin-bottom: 0.25rem;
-}
-.sub-price {
-  font-size: 1.4rem; color: var(--teal); font-weight: 700; margin-bottom: 0.5rem;
-}
-.sub-desc {
-  font-size: 0.8rem; color: var(--dim); margin-bottom: 0.75rem; line-height: 1.5;
-}
 </style>
 </head>
 <body>
@@ -761,130 +630,6 @@ input, textarea, select { font-size: 16px !important; }
   </div>
 </div>
 
-<!-- PRICING MODAL -->
-<div class="modal-wrap" id="pricingModal" style="display:none;">
-  <div class="modal">
-    <button onclick="closePricingModal()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);hover:color:var(--ink);">✕</button>
-    <div class="modal-hero">
-      <div class="modal-logo">NAGOH <em>Plans</em></div>
-    </div>
-    <div class="modal-body">
-      <div class="modal-title">Choose Your Plan</div>
-      <div style="display:flex;gap:2rem;margin-bottom:1.5rem;justify-content:center;">
-        <button class="pricing-tab active" onclick="switchPricingTab(0)" style="border:none;background:none;cursor:pointer;font-size:0.85rem;font-weight:600;color:var(--muted);padding:0.5rem 0;border-bottom:3px solid transparent;transition:all 0.2s;">
-          MONTHLY
-        </button>
-        <button class="pricing-tab" onclick="switchPricingTab(1)" style="border:none;background:none;cursor:pointer;font-size:0.85rem;font-weight:600;color:var(--muted);padding:0.5rem 0;border-bottom:3px solid transparent;transition:all 0.2s;">
-          YEARLY
-        </button>
-      </div>
-      <div id="pricingMonthly">
-        <div class="sub-option" onclick="selectPlan('starter')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
-          <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Starter</div>
-          <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$4/mo</div>
-          <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">10,000 tokens/month. Perfect for testing.</div>
-        </div>
-        
-        <div class="sub-option selected" onclick="selectPlan('professional')" style="padding:1rem;border:2px solid var(--teal);border-radius:8px;margin-bottom:1rem;background:var(--teal-lt);cursor:pointer;transition:all 0.2s;">
-          <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">⭐ Professional</div>
-          <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$19/mo</div>
-          <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">100,000 tokens/month. Most popular for small businesses.</div>
-        </div>
-        
-        <div class="sub-option" onclick="selectPlan('business')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
-          <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Business</div>
-          <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$49/mo</div>
-          <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">500,000 tokens/month + priority support.</div>
-        </div>
-        
-        <div class="sub-option" onclick="selectPlan('enterprise')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
-          <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Enterprise</div>
-          <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">Custom</div>
-          <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Unlimited tokens + dedicated support. Contact sales.</div>
-        </div>
-      </div>
-      
-      <div id="pricingYearly" style="display:none;">
-        <div class="sub-option" onclick="selectPlan('starter_yearly')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
-          <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Starter</div>
-          <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$38/yr</div>
-          <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Save 20%. 10,000 tokens/month.</div>
-        </div>
-        
-        <div class="sub-option selected" onclick="selectPlan('professional_yearly')" style="padding:1rem;border:2px solid var(--teal);border-radius:8px;margin-bottom:1rem;background:var(--teal-lt);cursor:pointer;transition:all 0.2s;">
-          <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">⭐ Professional</div>
-          <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$181/yr</div>
-          <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Save 20%. 100,000 tokens/month.</div>
-        </div>
-        
-        <div class="sub-option" onclick="selectPlan('business_yearly')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
-          <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Business</div>
-          <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">$470/yr</div>
-          <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Save 20%. 500,000 tokens/month.</div>
-        </div>
-        
-        <div class="sub-option" onclick="selectPlan('enterprise_yearly')" style="padding:1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:1rem;cursor:pointer;transition:all 0.2s;">
-          <div style="font-weight:600;color:var(--ink);margin-bottom:0.3rem;">Enterprise</div>
-          <div style="font-size:1.5rem;color:var(--teal);font-weight:700;margin-bottom:0.5rem;">Custom</div>
-          <div style="font-size:0.8rem;color:var(--dim);line-height:1.4;">Unlimited tokens + dedicated support. Contact sales.</div>
-        </div>
-      </div>
-      
-      <button class="pbtn primary" onclick="showPaymentForm()" style="width:100%;margin-top:1.5rem;">Get Started</button>
-      <button onclick="closePricingModal()" style="width:100%;margin-top:0.75rem;background:none;border:1px solid var(--border);color:var(--ink);padding:0.75rem;border-radius:6px;cursor:pointer;font-weight:600;transition:all 0.2s;">Cancel</button>
-      <div style="text-align:center;font-size:0.7rem;color:var(--muted);margin-top:0.75rem;">14-day free trial included</div>
-    </div>
-  </div>
-</div>
-
-<!-- PAYMENT FORM MODAL (Stripe Elements) -->
-<div class="modal-wrap" id="paymentModal" style="display:none;">
-  <div class="modal">
-    <button onclick="closePaymentForm()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);">✕</button>
-    <div class="modal-hero">
-      <div class="modal-logo">Complete Purchase</div>
-    </div>
-    <div class="modal-body">
-      <div style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:10px;padding:1rem;margin-bottom:1.5rem;">
-        <div style="font-size:0.8rem;color:var(--dim);margin-bottom:0.5rem;">Selected Plan:</div>
-        <div style="font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--teal);" id="paymentPlanName">NAGOH AI Professional</div>
-        <div style="font-size:0.9rem;color:var(--ink);margin-top:0.5rem;" id="paymentPlanPrice">$19.00/month</div>
-      </div>
-      
-      <form id="paymentForm" style="display:none;">
-        <div style="margin-bottom:1rem;">
-          <label style="display:block;font-size:0.75rem;font-weight:600;color:var(--dim);margin-bottom:0.5rem;">CARD DETAILS</label>
-          <div id="card-element" style="border:1px solid var(--border);border-radius:6px;padding:12px;background:#fff;"></div>
-          <div id="card-errors" style="color:var(--rose);font-size:0.75rem;margin-top:0.5rem;min-height:1rem;"></div>
-        </div>
-        
-        <button type="submit" id="paymentBtn" style="width:100%;padding:0.85rem;background:var(--teal);color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:all 0.2s;font-size:0.9rem;">
-          Pay Now
-        </button>
-      </form>
-      
-      <div id="paymentProcessing" style="display:none;text-align:center;">
-        <div style="font-size:3rem;margin-bottom:1rem;">⏳</div>
-        <div style="color:var(--dim);font-size:0.9rem;">Processing your payment...</div>
-      </div>
-      
-      <div id="paymentSuccess" style="display:none;text-align:center;">
-        <div style="font-size:3rem;margin-bottom:1rem;">✅</div>
-        <div style="color:var(--ink);font-size:1rem;font-weight:600;margin-bottom:0.5rem;">Payment Successful!</div>
-        <div style="color:var(--dim);font-size:0.85rem;">Your subscription is now active. You'll be redirected shortly...</div>
-      </div>
-      
-      <div id="paymentError" style="display:none;">
-        <div style="background:var(--rose-lt);border:1px solid var(--rose-md);color:var(--rose);padding:1rem;border-radius:8px;margin-bottom:1rem;">
-          <div style="font-weight:600;margin-bottom:0.5rem;">Payment Failed</div>
-          <div id="paymentErrorMsg" style="font-size:0.85rem;"></div>
-        </div>
-        <button type="button" onclick="resetPaymentForm()" style="width:100%;padding:0.75rem;background:var(--teal);color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Try Again</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Success notification -->
 <div class="success-banner" id="successBanner">
   ✅ <span id="successMsg">Purchase successful! Your tokens have been added.</span>
@@ -910,25 +655,6 @@ input, textarea, select { font-size: 16px !important; }
     <span class="tuser-name" id="tuserName"></span>
   </div>
   <button class="tbtn" onclick="signOut()">Sign out</button>
-  
-  <!-- Mobile Industry Selector -->
-  <div class="mobile-industry-bar">
-    <span class="mobile-industry-label">Industry:</span>
-    <select class="mobile-industry-sel" id="mobileIndustrySel" onchange="onIndustryChange()">
-      <option value="etsy">🛍️ Etsy & Craft Sellers</option>
-      <option value="realtor">🏠 Real Estate Agents</option>
-      <option value="landlord">🏢 Landlords & Property Managers</option>
-      <option value="coffee">☕ Coffee Shops & Cafés</option>
-      <option value="landscaping">🌳 Landscaping & Yard Services</option>
-      <option value="roofing">🏠 Roofing & Construction</option>
-      <option value="plumbing">🔧 Plumbing & HVAC</option>
-      <option value="salon">💇 Hair & Beauty Services</option>
-      <option value="photography">📸 Photography & Creative Services</option>
-      <option value="personal_training">💪 Personal Training & Fitness</option>
-      <option value="consulting">💼 Consulting & Professional Services</option>
-      <option value="general">⭐ General Small Business</option>
-    </select>
-  </div>
 </div>
 
 <!-- ── SHELL ── -->
@@ -1046,7 +772,6 @@ input, textarea, select { font-size: 16px !important; }
 // ─────────────────────────────────────────────────────────
 const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
-const STRIPE_PUBLISHABLE_KEY = 'pk_live_51TK0JWGUbXtKf7F7FBt5ingZaPPj8oi6n7sk50AS4yWKkoISv6bJHXphJS5ygOX0QQScFuDUskZ6Uq0SCgwBVwnr00GVEiex2f';
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
 const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
 // ─────────────────────────────────────────────────────────
@@ -1445,53 +1170,38 @@ window.onload = () => {
 };
 
 function onIndustryChange() {
-  const desktopSel = document.getElementById('industrySel');
-  const mobileSel = document.getElementById('mobileIndustrySel');
-  
-  // Get value from whichever selector was changed
-  currentIndustry = desktopSel?.value || mobileSel?.value || 'etsy';
-  
-  // Sync both selectors
-  if (desktopSel) desktopSel.value = currentIndustry;
-  if (mobileSel) mobileSel.value = currentIndustry;
-  
+  currentIndustry = document.getElementById('industrySel').value;
   lsSet('nagoh_industry', currentIndustry);
   const ind = INDUSTRIES[currentIndustry];
   
   if (ind) {
     // Update industry badge
-    const badge = document.getElementById('industryBadge');
-    if (badge) badge.textContent = ind.name;
+    document.getElementById('industryBadge').textContent = ind.name;
     
     // Update placeholder
-    const prompt = document.getElementById('prompt');
-    if (prompt) prompt.placeholder = ind.placeholder;
+    document.getElementById('prompt').placeholder = ind.placeholder;
     
     // Render quick starters
     const grid = document.getElementById('quickGrid');
-    if (grid) {
-      grid.innerHTML = '';
-      ind.quickStarters.forEach(q => {
-        const btn = document.createElement('button');
-        btn.className = 'qbtn';
-        btn.onclick = () => quickPrompt(q.prompt);
-        btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
-        grid.appendChild(btn);
-      });
-    }
+    grid.innerHTML = '';
+    ind.quickStarters.forEach(q => {
+      const btn = document.createElement('button');
+      btn.className = 'qbtn';
+      btn.onclick = () => quickPrompt(q.prompt);
+      btn.innerHTML = `<div class="qi">${q.emoji}</div><div><div class="ql">${q.title}</div><div class="qs">${q.desc}</div></div>`;
+      grid.appendChild(btn);
+    });
     
     // Render ideas
     const ideas = document.getElementById('ideas');
-    if (ideas) {
-      ideas.innerHTML = '';
-      ind.ideas.forEach(idea => {
-        const item = document.createElement('div');
-        item.className = 'idea-item';
-        item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
-        item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
-        ideas.appendChild(item);
-      });
-    }
+    ideas.innerHTML = '';
+    ind.ideas.forEach(idea => {
+      const item = document.createElement('div');
+      item.className = 'idea-item';
+      item.onclick = () => quickSend(`${idea.title.toLowerCase()}: `);
+      item.innerHTML = `<div class="idea-icon">${idea.emoji}</div><div class="idea-text"><strong>${idea.title}</strong>${idea.desc}</div>`;
+      ideas.appendChild(item);
+    });
     
     // Update empty state
     const empty = document.getElementById('empty');
@@ -1501,9 +1211,6 @@ function onIndustryChange() {
         <div class="esub">${ind.emptyMsg}</div>
         <div class="etagline">Use quick starters or type your question below</div>`;
     }
-    
-    // Update system prompt
-    updateSysPrompt();
   }
 }
 
@@ -1615,7 +1322,8 @@ function openBuyTokens() {
   if (!currentUser) { showModal(); return; }
   if (isGuest) { showModal(); return; }
   
-  showPricingModal();
+  const stripeUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}&success_url=${STRIPE_SUCCESS_URL}`;
+  window.location.href = stripeUrl;
 }
 
 // ─────────────────────────────────────────────────────────
@@ -1882,17 +1590,10 @@ function grow(el) {
 
 function continueAsGuest() {
   document.getElementById('authLoading').style.display = 'block';
-  document.getElementById('authErr').textContent = '';
-  
   fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' })
-    .then(r => {
-      if (!r.ok) {
-        throw new Error(`HTTP ${r.status}`);
-      }
-      return r.json();
-    })
+    .then(r => r.json())
     .then(d => {
-      if (d && d.session_token) {
+      if (d.session_token) {
         sessionToken = d.session_token;
         currentUser = d.user;
         balance = d.token_balance;
@@ -1906,223 +1607,12 @@ function continueAsGuest() {
         document.getElementById('guestBanner').classList.add('show');
         setLed('on', 'Connected ✓');
         document.getElementById('sendBtn').disabled = false;
-        
-        // Initialize industry and system prompt
-        onIndustryChange();
-        updateSysPrompt();
-        renderHistory();
-        
         hideModal();
-      } else {
-        throw new Error('Invalid response: missing session_token');
       }
-    })
-    .catch(err => {
-      console.error('Guest auth error:', err);
-      document.getElementById('authErr').textContent = 'Guest login failed. Please try again.';
     })
     .finally(() => {
       document.getElementById('authLoading').style.display = 'none';
     });
-}
-
-
-// ─────────────────────────────────────────────────────────────────────────────
-// PRICING MODAL FUNCTIONS
-// ─────────────────────────────────────────────────────────────────────────────
-
-let selectedPlan = 'professional';
-
-function closePricingModal() {
-  document.getElementById('pricingModal').style.display = 'none';
-}
-
-function showPricingModal() {
-  document.getElementById('pricingModal').style.display = 'flex';
-}
-
-function switchPricingTab(idx) {
-  document.getElementById('pricingMonthly').style.display = idx === 0 ? 'block' : 'none';
-  document.getElementById('pricingYearly').style.display = idx === 1 ? 'block' : 'none';
-  
-  const tabs = document.querySelectorAll('.pricing-tab');
-  tabs.forEach((t, i) => {
-    if (i === idx) {
-      t.classList.add('active');
-      t.style.color = 'var(--teal)';
-      t.style.borderBottomColor = 'var(--teal)';
-    } else {
-      t.classList.remove('active');
-      t.style.color = 'var(--muted)';
-      t.style.borderBottomColor = 'transparent';
-    }
-  });
-}
-
-function selectPlan(plan) {
-  selectedPlan = plan;
-  const allOptions = document.querySelectorAll('.sub-option');
-  allOptions.forEach(option => {
-    option.classList.remove('selected');
-    option.style.border = '1px solid var(--border)';
-    option.style.background = '#fff';
-  });
-  
-  // Find and update the clicked option
-  event.currentTarget.classList.add('selected');
-  event.currentTarget.style.border = '2px solid var(--teal)';
-  event.currentTarget.style.background = 'var(--teal-lt)';
-}
-
-// Payment form globals
-let stripe, cardElement;
-let currentPaymentPlan = null;
-
-function initializeStripe() {
-  if (!stripe) {
-    stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-    const elements = stripe.elements();
-    cardElement = elements.create('card');
-    cardElement.mount('#card-element');
-    
-    cardElement.on('change', (event) => {
-      const displayError = document.getElementById('card-errors');
-      if (event.error) {
-        displayError.textContent = event.error.message;
-      } else {
-        displayError.textContent = '';
-      }
-    });
-    
-    document.getElementById('paymentForm').addEventListener('submit', handlePaymentSubmit);
-  }
-}
-
-function showPaymentForm() {
-  if (!currentUser) { showModal(); return; }
-  if (isGuest) { alert('Please sign in to subscribe'); showModal(); return; }
-  
-  if (selectedPlan === 'enterprise' || selectedPlan === 'enterprise_yearly') {
-    alert('Please contact sales@nagoh.us for enterprise pricing');
-    return;
-  }
-  
-  // Map plan to display info
-  const planMap = {
-    'starter': { name: 'Starter', price: '$4.00', period: '/month', tier: 'starter', billing: 'monthly' },
-    'starter_yearly': { name: 'Starter', price: '$38.00', period: '/year', tier: 'starter', billing: 'yearly' },
-    'professional': { name: 'Professional', price: '$19.00', period: '/month', tier: 'professional', billing: 'monthly' },
-    'professional_yearly': { name: 'Professional', price: '$181.00', period: '/year', tier: 'professional', billing: 'yearly' },
-    'business': { name: 'Business', price: '$49.00', period: '/month', tier: 'business', billing: 'monthly' },
-    'business_yearly': { name: 'Business', price: '$470.00', period: '/year', tier: 'business', billing: 'yearly' },
-  };
-  
-  const planInfo = planMap[selectedPlan];
-  if (!planInfo) { alert('Invalid plan'); return; }
-  
-  currentPaymentPlan = planInfo;
-  
-  // Update payment modal with plan info
-  document.getElementById('paymentPlanName').textContent = `NAGOH AI ${planInfo.name}`;
-  document.getElementById('paymentPlanPrice').textContent = `${planInfo.price}${planInfo.period}`;
-  
-  // Reset form state
-  document.getElementById('paymentForm').style.display = 'block';
-  document.getElementById('paymentProcessing').style.display = 'none';
-  document.getElementById('paymentSuccess').style.display = 'none';
-  document.getElementById('paymentError').style.display = 'none';
-  
-  // Initialize Stripe if not done yet
-  initializeStripe();
-  
-  // Close pricing modal and open payment modal
-  closePricingModal();
-  document.getElementById('paymentModal').style.display = 'flex';
-}
-
-function closePaymentForm() {
-  document.getElementById('paymentModal').style.display = 'none';
-}
-
-function resetPaymentForm() {
-  document.getElementById('paymentForm').style.display = 'block';
-  document.getElementById('paymentError').style.display = 'none';
-  cardElement.clear();
-}
-
-async function handlePaymentSubmit(e) {
-  e.preventDefault();
-  
-  if (!currentPaymentPlan) { alert('Invalid plan'); return; }
-  
-  document.getElementById('paymentForm').style.display = 'none';
-  document.getElementById('paymentProcessing').style.display = 'block';
-  
-  try {
-    const token = localStorage.getItem('sessionToken') || sessionToken;
-    
-    if (!token) {
-      throw new Error('Not authenticated. Please sign in again.');
-    }
-    
-    // Create payment intent on your backend
-    const r = await fetch(`${WORKER}/v1/create-payment-intent`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        tier: currentPaymentPlan.tier,
-        billing_period: currentPaymentPlan.billing,
-        amount_cents: getPriceInCents(currentPaymentPlan.tier, currentPaymentPlan.billing),
-      }),
-    });
-    
-    const data = await r.json();
-    
-    if (!r.ok) {
-      throw new Error(data.error || 'Failed to create payment');
-    }
-    
-    // Confirm payment with card
-    const result = await stripe.confirmCardPayment(data.client_secret, {
-      payment_method: {
-        card: cardElement,
-        billing_details: { email: currentUser.email },
-      },
-    });
-    
-    if (result.error) {
-      throw new Error(result.error.message);
-    }
-    
-    if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
-      document.getElementById('paymentProcessing').style.display = 'none';
-      document.getElementById('paymentSuccess').style.display = 'block';
-      
-      setTimeout(() => {
-        closePaymentForm();
-        setLed('on', 'Connected ✓');
-        showSuccessNotification('✅ Subscription activated! Your tokens are ready to use.');
-      }, 2000);
-    } else {
-      throw new Error('Payment not completed');
-    }
-  } catch (error) {
-    document.getElementById('paymentProcessing').style.display = 'none';
-    document.getElementById('paymentError').style.display = 'block';
-    document.getElementById('paymentErrorMsg').textContent = error.message;
-  }
-}
-
-function getPriceInCents(tier, billing) {
-  const prices = {
-    'starter': { monthly: 400, yearly: 3800 },
-    'professional': { monthly: 1900, yearly: 18100 },
-    'business': { monthly: 4900, yearly: 47000 },
-  };
-  return prices[tier]?.[billing] || 0;
 }
 
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
