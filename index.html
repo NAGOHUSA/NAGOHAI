@@ -764,6 +764,7 @@ input, textarea, select { font-size: 16px !important; }
 <!-- PRICING MODAL -->
 <div class="modal-wrap" id="pricingModal" style="display:none;">
   <div class="modal">
+    <button onclick="closePricingModal()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);hover:color:var(--ink);">✕</button>
     <div class="modal-hero">
       <div class="modal-logo">NAGOH <em>Plans</em></div>
     </div>
@@ -830,6 +831,7 @@ input, textarea, select { font-size: 16px !important; }
       </div>
       
       <button class="pbtn primary" onclick="startCheckout()" style="width:100%;margin-top:1.5rem;">Get Started</button>
+      <button onclick="closePricingModal()" style="width:100%;margin-top:0.75rem;background:none;border:1px solid var(--border);color:var(--ink);padding:0.75rem;border-radius:6px;cursor:pointer;font-weight:600;transition:all 0.2s;">Cancel</button>
       <div style="text-align:center;font-size:0.7rem;color:var(--muted);margin-top:0.75rem;">14-day free trial included</div>
     </div>
   </div>
@@ -1883,6 +1885,10 @@ function continueAsGuest() {
 
 let selectedPlan = 'professional';
 
+function closePricingModal() {
+  document.getElementById('pricingModal').style.display = 'none';
+}
+
 function showPricingModal() {
   document.getElementById('pricingModal').style.display = 'flex';
 }
@@ -1948,12 +1954,25 @@ function startCheckout() {
 
 async function createCheckoutSession(tier, billing) {
   try {
+    // Get session token from localStorage (set during login)
+    const token = localStorage.getItem('sessionToken') || sessionToken;
+    
+    if (!token) {
+      alert('Error: Not authenticated. Please sign in again.');
+      return;
+    }
+    
+    if (!currentUser || !currentUser.user_id) {
+      alert('Error: User not found. Please sign in again.');
+      return;
+    }
+    
     // Call your worker to create a Stripe checkout session
     const r = await fetch(`${WORKER}/v1/checkout/session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionToken}`,
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
         tier: tier,
