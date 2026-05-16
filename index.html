@@ -678,6 +678,7 @@ input, textarea, select { font-size: 16px !important; }
         <option value="salon">💇 Hair & Beauty Services</option>
         <option value="photography">📸 Photography & Creative Services</option>
         <option value="personal_training">💪 Personal Training & Fitness</option>
+        <option value="insurance">🛡️ Insurance Agents</option>
         <option value="consulting">💼 Consulting & Professional Services</option>
         <option value="general">⭐ General Small Business</option>
       </select>
@@ -1049,6 +1050,34 @@ const INDUSTRIES = {
       professional: "You are NAGOH AI, a professional business assistant for trainers. Provide clear, results-focused communication.",
       playful: "You are NAGOH AI, an energetic fitness assistant. Be fun and motivating. Make working out feel exciting.",
       concise: "You are NAGOH AI, a fitness assistant. Be motivational and direct. Get clients moving.",
+    }
+  },
+  insurance: {
+    name: '🛡️ Insurance Agents',
+    placeholder: 'Ask anything — policy explanations, client outreach, claims support, renewal reminders…',
+    emptyMsg: 'Professional communication tools for independent and captive insurance agents.',
+    quickStarters: [
+      { emoji: '📋', title: 'Policy Explanation', desc: 'Clarify coverage to clients', prompt: 'Write a clear explanation of this insurance coverage: ' },
+      { emoji: '💌', title: 'New Client Welcome', desc: 'Build trust and rapport', prompt: 'Write a welcome email for a new insurance client: ' },
+      { emoji: '📞', title: 'Renewal Reminder', desc: 'Drive policy renewals', prompt: 'Write a professional renewal reminder email for: ' },
+      { emoji: '💰', title: 'Quote Explanation', desc: 'Justify your rates', prompt: 'Write an explanation of why a client\'s insurance quote is [price]: ' },
+      { emoji: '🚗', title: 'Claims Support', desc: 'Help during difficult times', prompt: 'Write a supportive message to help a client with a claim: ' },
+    ],
+    ideas: [
+      { emoji: '🏠', title: 'Home safety tips', desc: 'Reduce claims risk' },
+      { emoji: '🚗', title: 'Driving safety tips', desc: 'Prevent accidents' },
+      { emoji: '📊', title: 'Coverage needs analysis', desc: 'Identify gaps' },
+      { emoji: '💡', title: 'Life event planning', desc: 'New baby, marriage, home' },
+      { emoji: '🎓', title: 'Policy comparison', desc: 'Explain differences' },
+      { emoji: '⭐', title: 'Client testimonial', desc: 'Social proof' },
+      { emoji: '🆘', title: 'Disaster recovery guide', desc: 'Crisis communication' },
+      { emoji: '💎', title: 'Premium discount guide', desc: 'Show savings options' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a warm and trustworthy assistant for insurance professionals. Be approachable and reassuring. Help agents explain complex policies clearly and build lasting client relationships.",
+      professional: "You are NAGOH AI, a professional business assistant for insurance agents. Provide clear, compliant communication about policies, coverage, and claims.",
+      playful: "You are NAGOH AI, a helpful insurance assistant. Make insurance conversations less intimidating and more personable. Use light humor appropriately.",
+      concise: "You are NAGOH AI, an insurance assistant. Be direct and clear. Get to the point quickly. Focus on key benefits and action items.",
     }
   },
   consulting: {
