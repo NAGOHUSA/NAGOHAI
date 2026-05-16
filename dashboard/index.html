@@ -259,6 +259,14 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
       <div class="alert ok" id="resetOk"></div>
       <div class="alert err" id="resetErr"></div>
     </div>
+
+    <div class="card">
+      <div class="card-title">Rebuild Users Index</div>
+      <p style="font-size:0.8rem;color:var(--dim);margin-bottom:1rem;">Scan KV and rebuild the users:index. Use if users are missing from the list.</p>
+      <button class="fbtn gold" onclick="rebuildIndex()">Rebuild Index</button>
+      <div class="alert ok" id="rebuildOk"></div>
+      <div class="alert err" id="rebuildErr"></div>
+    </div>
   </div>
 
   <!-- Tab 3: Analytics -->
@@ -317,6 +325,8 @@ async function giftTokens(){const e=document.getElementById('giftEmail').value.t
 async function createUser(){const n=document.getElementById('createName').value.trim();const e=document.getElementById('createEmail').value.trim();const t=parseInt(document.getElementById('createTokens').value,10)||0;if(!n||!e){showAlert('createErr','Name and email required');return;}try{const r=await fetch(WORKER+'/admin/api/users',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({name:n,email:e,initialTokens:t})});const d=await r.json();if(!r.ok){showAlert('createErr',d.error||'Failed');return;}showAlert('createOk','✅ Created!');document.getElementById('createName').value='';document.getElementById('createEmail').value='';document.getElementById('createTokens').value='5000';setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('createErr','Error: '+e.message);}}
 
 async function resetTokens(){if(!confirm('Reset all tokens?'))return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({reset_all_tokens:true})});if(!r.ok){showAlert('resetErr','Failed');return;}showAlert('resetOk','✅ Reset!');setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('resetErr','Error: '+e.message);}}
+
+async function rebuildIndex(){if(!confirm('Rebuild users index from KV?'))return;try{const r=await fetch(WORKER+'/admin/api/rebuild-index',{method:'POST',headers:{'X-Admin-Password':adminPwd}});const d=await r.json();if(!r.ok){showAlert('rebuildErr',d.error||'Failed');return;}showAlert('rebuildOk','✅ Rebuilt! Found '+d.total_users+' users');setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('rebuildErr','Error: '+e.message);}}
 
 function showAlert(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';setTimeout(()=>{el.style.display='none';},5000);}
 
