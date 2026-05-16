@@ -280,6 +280,7 @@ function renderDashboard() {
       <td>${created}</td>
       <td>
         <button class="btn-small btn-view" onclick="viewUser('${u.user_id}')">View</button>
+        <button class="btn-small btn-gold" onclick="openAssignModal('${u.user_id}', '${(u.email || 'Guest').replace(/'/g, "\\'")}', '${(u.name || 'N/A').replace(/'/g, "\\'")}')">Assign</button>
         <button class="btn-small btn-delete" onclick="deleteUser('${u.user_id}', '${u.name || 'User'}')">Delete</button>
       </td>
     `;
