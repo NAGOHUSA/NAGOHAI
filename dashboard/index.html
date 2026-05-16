@@ -36,15 +36,9 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .fbtn:disabled{opacity:0.4;cursor:not-allowed;}
 .fbtn.gold{background:var(--gold);color:var(--deep);}
 .fbtn.gold:hover:not(:disabled){background:#d48f20;}
-.fbtn.danger{background:var(--rose);color:#fff;width:auto;}
-.fbtn.danger:hover:not(:disabled){background:#c63d36;}
-.fbtn.small{width:auto;padding:0.4rem 0.8rem;font-size:0.65rem;}
-label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:500;margin-bottom:0.3rem;}
-.fgroup{margin-bottom:0.75rem;}
 .alert{padding:0.75rem 1rem;border-radius:10px;font-size:0.78rem;margin-top:0.75rem;display:none;}
 .alert.ok{background:var(--sage-lt);border:1px solid var(--sage);color:var(--sage);}
 .alert.err{background:var(--rose-lt);border:1px solid var(--rose-md);color:var(--rose);}
-.alert.warn{background:var(--gold-lt);border:1px solid var(--gold-md);color:var(--gold);}
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;overflow-x:auto;}
 .tab{flex:0 0 auto;padding:0.75rem 1.5rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--dim);cursor:pointer;font-family:var(--sans);font-size:0.75rem;font-weight:600;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
 .tab:hover{color:var(--ink);}
@@ -60,38 +54,24 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
 .users-table th{text-align:left;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:0.75rem;border-bottom:1px solid var(--border);font-weight:600;background:rgba(255,255,255,0.5);}
 .users-table td{padding:0.75rem;border-bottom:1px solid var(--border);color:var(--dim);}
 .users-table tr:hover{background:var(--cream);}
-.users-table .bal{color:var(--teal);font-weight:600;font-family:var(--serif);}
 .sub-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:600;}
-.sub-none{color:var(--muted);font-style:italic;}
 .sub-free{background:var(--cream);color:var(--muted);}
 .sub-starter{background:var(--gold-lt);color:var(--gold);}
 .sub-professional{background:var(--teal-lt);color:var(--teal);}
 .sub-business{background:var(--sage-lt);color:var(--sage);}
 .sub-enterprise{background:var(--rose-lt);color:var(--rose);}
-.btn-small{padding:0.4rem 0.8rem;font-size:0.65rem;border:none;cursor:pointer;border-radius:6px;transition:all 0.15s;margin-right:4px;}
-.btn-view{background:var(--teal);color:#fff;}
-.btn-view:hover{background:#228b7e;}
-.btn-upgrade{background:var(--gold);color:var(--deep);}
-.btn-upgrade:hover{background:#d48f20;}
-.btn-delete{background:var(--rose);color:#fff;}
-.btn-delete:hover{background:#c63d36;}
-.select-ctrl{width:100%;padding:0.6rem;border:1px solid var(--border2);border-radius:8px;font-family:var(--sans);background:#fff;color:var(--ink);}
-.select-ctrl:focus{border-color:var(--teal);outline:none;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0.75rem;}
-.form-row.full{grid-template-columns:1fr;}
-.tier-info{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:0.8rem;}
-.tier-info strong{color:var(--ink);}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:200;align-items:center;justify-content:center;}
-.modal.show{display:flex;}
-.modal-box{background:#fff;border-radius:16px;padding:2rem;max-width:500px;width:95%;max-height:90vh;overflow-y:auto;}
-.modal-title{font-family:var(--serif);font-size:1.2rem;font-weight:700;margin-bottom:1rem;}
-.modal-close{float:right;font-size:1.5rem;cursor:pointer;color:var(--dim);}
-.chart-container{width:100%;height:300px;margin:1rem 0;}
 .tier-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;margin-top:1rem;}
 .tier-stat{background:var(--cream);border-radius:10px;padding:1rem;text-align:center;}
 .tier-stat-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;}
 .tier-stat-value{font-size:1.5rem;font-weight:700;color:var(--teal);margin:0.5rem 0;}
 .tier-stat-users{font-size:0.75rem;color:var(--dim);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0.75rem;}
+.fgroup{margin-bottom:0.75rem;}
+label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:500;margin-bottom:0.3rem;}
+.select-ctrl{width:100%;padding:0.6rem;border:1px solid var(--border2);border-radius:8px;font-family:var(--sans);background:#fff;color:var(--ink);}
+.select-ctrl:focus{border-color:var(--teal);outline:none;}
+.tier-info{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:0.8rem;}
+.tier-info strong{color:var(--ink);}
 @media(max-width:768px){.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}.users-table{font-size:0.65rem}.users-table th,.users-table td{padding:0.5rem}.stats-grid{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}}
 </style>
 </head>
@@ -133,7 +113,7 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
       <div class="stat-secondary" id="statTokensBreak"></div>
     </div>
     <div class="stat-card">
-      <div class="stat-value" id="statMrr">$0</div>
+      <div class="stat-value" id="statArr">$0</div>
       <div class="stat-label">Annual Revenue Run Rate</div>
       <div class="stat-secondary">Based on active subscriptions</div>
     </div>
@@ -155,26 +135,24 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
   <div class="tabs">
     <button class="tab active" onclick="switchTab(0)">👥 USERS</button>
     <button class="tab" onclick="switchTab(1)">💳 SUBSCRIPTIONS</button>
-    <button class="tab" onclick="switchTab(2)">⏰ AUTO-RENEWAL</button>
-    <button class="tab" onclick="switchTab(3)">⬆️ UPGRADES</button>
-    <button class="tab" onclick="switchTab(4)">📈 ANALYTICS</button>
-    <button class="tab" onclick="switchTab(5)">🔧 TOOLS</button>
+    <button class="tab" onclick="switchTab(2)">📈 ANALYTICS</button>
+    <button class="tab" onclick="switchTab(3)">🔧 TOOLS</button>
   </div>
 
   <!-- TAB 0: USERS -->
   <div class="tab-content active">
     <div class="card">
-      <div class="card-title">All Users</div>
-      <div class="card-subtitle">View and manage all registered users</div>
+      <div class="card-title">All Subscriptions</div>
+      <div class="card-subtitle">Active subscription list with renewal dates</div>
       <table class="users-table">
         <thead>
           <tr>
-            <th>NAME</th>
             <th>EMAIL</th>
             <th>TIER</th>
-            <th>TOKENS</th>
-            <th>CREATED</th>
-            <th>ACTIONS</th>
+            <th>STATUS</th>
+            <th>PERIOD START</th>
+            <th>PERIOD END</th>
+            <th>AUTO-RENEW</th>
           </tr>
         </thead>
         <tbody id="usersBody">
@@ -209,7 +187,7 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
         <label>New Subscription Tier</label>
         <select id="subTier" class="select-ctrl">
           <option value="">-- Select tier --</option>
-          <option value="free">Free - 50k tokens/month (No charge)</option>
+          <option value="free">Free - 50k tokens/month</option>
           <option value="starter">Starter - 100k tokens/month ($9.99/mo)</option>
           <option value="professional" selected>Professional - 500k tokens/month ($29.99/mo)</option>
           <option value="business">Business - 2M tokens/month ($99.99/mo)</option>
@@ -223,88 +201,13 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
     </div>
   </div>
 
-  <!-- TAB 2: AUTO-RENEWAL -->
-  <div class="tab-content">
-    <div class="card">
-      <div class="card-title">⏰ Auto-Renewal Status</div>
-      <div class="card-subtitle">Monthly automatic renewal (1st of month, 1:00 AM UTC)</div>
-
-      <div class="tier-info" style="background:var(--teal-lt);border-color:var(--teal);color:var(--teal);">
-        <strong>Next Scheduled Renewal:</strong> 1st of next month at 1:00 AM UTC<br>
-        Automatically renews all active subscriptions and resets monthly token limits.
-      </div>
-
-      <h3 style="font-size:0.95rem;color:var(--ink);margin-top:1.5rem;margin-bottom:1rem;">📋 Subscriptions Expiring Soon</h3>
-      <table class="users-table">
-        <thead>
-          <tr>
-            <th>USER</th>
-            <th>TIER</th>
-            <th>PERIOD ENDS</th>
-            <th>DAYS LEFT</th>
-          </tr>
-        </thead>
-        <tbody id="renewalBody">
-          <tr><td colspan="4" style="text-align:center;padding:1.5rem;color:var(--muted);">Loading...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- TAB 3: UPGRADES -->
-  <div class="tab-content">
-    <div class="card">
-      <div class="card-title">⬆️ Subscription Upgrades</div>
-      <div class="card-subtitle">Upgrade user subscriptions with pro-rata token adjustments</div>
-
-      <div class="fgroup">
-        <label>Select User</label>
-        <select id="upgradeUserSelect" class="select-ctrl" onchange="updateUpgradeInfo()">
-          <option value="">-- Select a user --</option>
-        </select>
-      </div>
-
-      <div id="upgradeInfoBox" style="display:none;">
-        <div class="tier-info">
-          <strong>Current Tier:</strong> <span id="upgradeTier">-</span><br>
-          <strong>Days Into Period:</strong> <span id="upgradeDays">-</span>/30<br>
-          <strong>Projected Bonus Tokens:</strong> <span id="bonusTokens">-</span>
-        </div>
-      </div>
-
-      <div class="fgroup">
-        <label>Upgrade To Tier</label>
-        <select id="upgradeTier" class="select-ctrl">
-          <option value="">-- Select tier --</option>
-          <option value="starter">Starter - 100k tokens/month</option>
-          <option value="professional">Professional - 500k tokens/month</option>
-          <option value="business">Business - 2M tokens/month</option>
-          <option value="enterprise">Enterprise - Unlimited</option>
-        </select>
-      </div>
-
-      <button class="fbtn gold" onclick="upgradeSubscription()">⬆️ Upgrade Now</button>
-      <div class="alert ok" id="upgradeOk"></div>
-      <div class="alert err" id="upgradeErr"></div>
-    </div>
-  </div>
-
-  <!-- TAB 4: ANALYTICS -->
+  <!-- TAB 2: ANALYTICS -->
   <div class="tab-content">
     <div class="card">
       <div class="card-title">📈 Usage Analytics</div>
-      <div class="card-subtitle">Token usage patterns and subscription insights</div>
+      <div class="card-subtitle">Token usage patterns and revenue breakdown</div>
 
-      <h3 style="font-size:0.95rem;color:var(--ink);margin-bottom:1rem;">Tokens Spent by Tier</h3>
-      <div class="tier-breakdown" id="analyticsByTier">
-        <div class="tier-stat"><div class="tier-stat-label">Free</div><div class="tier-stat-value" id="anal-free-tokens">0</div><div class="tier-stat-users">tokens</div></div>
-        <div class="tier-stat"><div class="tier-stat-label">Starter</div><div class="tier-stat-value" id="anal-starter-tokens">0</div><div class="tier-stat-users">tokens</div></div>
-        <div class="tier-stat"><div class="tier-stat-label">Professional</div><div class="tier-stat-value" id="anal-professional-tokens">0</div><div class="tier-stat-users">tokens</div></div>
-        <div class="tier-stat"><div class="tier-stat-label">Business</div><div class="tier-stat-value" id="anal-business-tokens">0</div><div class="tier-stat-users">tokens</div></div>
-        <div class="tier-stat"><div class="tier-stat-label">Enterprise</div><div class="tier-stat-value" id="anal-enterprise-tokens">0</div><div class="tier-stat-users">tokens</div></div>
-      </div>
-
-      <h3 style="font-size:0.95rem;color:var(--ink);margin-top:2rem;margin-bottom:1rem;">💰 Revenue Breakdown</h3>
+      <h3 style="font-size:0.95rem;color:var(--ink);margin-bottom:1rem;">💰 Revenue Breakdown</h3>
       <table class="users-table">
         <thead>
           <tr>
@@ -322,11 +225,11 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
     </div>
   </div>
 
-  <!-- TAB 5: TOOLS -->
+  <!-- TAB 3: TOOLS -->
   <div class="tab-content">
     <div class="card">
       <div class="card-title">🔧 Admin Tools</div>
-      <div class="card-subtitle">Advanced management and maintenance functions</div>
+      <div class="card-subtitle">Advanced management functions</div>
 
       <h3 style="font-size:0.95rem;color:var(--ink);margin-bottom:1rem;">Gift Tokens to User</h3>
       <div class="form-row">
@@ -338,10 +241,6 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
           <label>Tokens to Gift</label>
           <input type="number" id="giftAmount" class="finput" placeholder="5000" min="1">
         </div>
-      </div>
-      <div class="fgroup">
-        <label>Reason (optional)</label>
-        <input type="text" id="giftNote" class="finput" placeholder="Promo, support gift, etc">
       </div>
       <button class="fbtn gold" onclick="giftTokens()">🎁 Gift Tokens</button>
       <div class="alert ok" id="giftOk"></div>
@@ -360,53 +259,21 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
           <input type="email" id="createEmail" class="finput" placeholder="john@example.com">
         </div>
       </div>
-      <div class="form-row">
-        <div>
-          <label>Initial Tokens</label>
-          <input type="number" id="createTokens" class="finput" placeholder="5000" min="0" value="5000">
-        </div>
-        <div>
-          <label>Subscription Tier</label>
-          <select id="createTier" class="select-ctrl">
-            <option value="free">Free</option>
-            <option value="starter">Starter</option>
-            <option value="professional">Professional</option>
-            <option value="business">Business</option>
-            <option value="enterprise">Enterprise</option>
-          </select>
-        </div>
+      <div class="fgroup">
+        <label>Initial Tokens</label>
+        <input type="number" id="createTokens" class="finput" placeholder="5000" min="0" value="5000">
       </div>
       <button class="fbtn gold" onclick="createUser()">➕ Create User</button>
       <div class="alert ok" id="createOk"></div>
       <div class="alert err" id="createErr"></div>
-
-      <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
-
-      <h3 style="font-size:0.95rem;color:var(--ink);margin-bottom:1rem;">Pending Payments</h3>
-      <div class="card-subtitle">Abandoned checkouts (tracked for 24 hours)</div>
-      <table class="users-table">
-        <thead>
-          <tr>
-            <th>USER</th>
-            <th>TIER</th>
-            <th>AMOUNT</th>
-            <th>CREATED</th>
-            <th>EXPIRES</th>
-          </tr>
-        </thead>
-        <tbody id="pendingBody">
-          <tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--muted);">No pending payments</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
 </div>
 
 <script>
-const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
+const WORKER = location.origin;
 let adminPwd = '';
-let allUsers = [];
 let allSubs = {};
 let allAnalytics = {};
 
@@ -434,17 +301,14 @@ function unlock() {
       loadDashboard();
     }
   }).catch(() => {
-    document.getElementById('lockScreen').style.display = 'none';
-    loadDashboard();
+    document.getElementById('lockErr').style.display = 'block';
+    document.getElementById('lockErr').textContent = 'Network error';
   });
 }
 
 async function loadDashboard() {
   try {
-    const [usersRes, subsRes, analyticsRes] = await Promise.all([
-      fetch(WORKER + '/admin/api/user', {
-        headers: { 'X-Admin-Password': adminPwd }
-      }),
+    const [subsRes, analyticsRes] = await Promise.all([
       fetch(WORKER + '/admin/api/subscriptions', {
         headers: { 'X-Admin-Password': adminPwd }
       }),
@@ -472,8 +336,7 @@ async function loadDashboard() {
 }
 
 function renderDashboard() {
-  // Stats
-  const totalUsers = Object.keys(allSubs).length > 0 ? Object.keys(allSubs).length : 1;
+  const totalUsers = allAnalytics.total_users || 0;
   const activeSubs = Object.keys(allSubs).length;
   const totalTokens = allAnalytics.total_tokens_spent || 0;
   const tierBreakdown = allAnalytics.tier_breakdown || {};
@@ -487,15 +350,13 @@ function renderDashboard() {
   const arr = (totalMRR * 12).toFixed(2);
 
   document.getElementById('statUsers').textContent = totalUsers;
-  document.getElementById('statUsersBreak').textContent = '(' + Object.keys(allSubs).length + ' paid)';
+  document.getElementById('statUsersBreak').textContent = '(' + activeSubs + ' paid)';
   document.getElementById('statPaid').textContent = activeSubs;
   document.getElementById('statTokens').textContent = totalTokens.toLocaleString();
-  document.getElementById('statTokensBreak').textContent = 'All time';
-  document.getElementById('statMrr').textContent = '$' + arr;
+  document.getElementById('statArr').textContent = '$' + arr;
 
   // Tier breakdown
   Object.keys(tierBreakdown).forEach(tier => {
-    const users = tierBreakdown[tier].users || 0;
     const active = tierBreakdown[tier].active_subscriptions || 0;
     document.getElementById('tier-' + tier + '-users').textContent = active;
   });
@@ -505,82 +366,43 @@ function renderDashboard() {
   tbody.innerHTML = '';
   
   if (Object.keys(allSubs).length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading or no subscriptions yet...</td></tr>';
-    return;
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">No active subscriptions</td></tr>';
+  } else {
+    Object.keys(allSubs).forEach(userId => {
+      const sub = allSubs[userId];
+      const tr = document.createElement('tr');
+      
+      const startDate = new Date(sub.current_period_start * 1000).toLocaleDateString();
+      const endDate = new Date(sub.current_period_end * 1000).toLocaleDateString();
+      const renew = sub.auto_renew ? '✅' : '❌';
+      
+      let tierBadge = `<span class="sub-badge sub-${sub.tier}">${sub.tier.toUpperCase()}</span>`;
+      
+      tr.innerHTML = `
+        <td>${sub.email || 'unknown'}</td>
+        <td>${tierBadge}</td>
+        <td>${sub.status}</td>
+        <td>${startDate}</td>
+        <td>${endDate}</td>
+        <td>${renew}</td>
+      `;
+      tbody.appendChild(tr);
+    });
   }
-
-  Object.keys(allSubs).forEach(userId => {
-    const sub = allSubs[userId];
-    const tr = document.createElement('tr');
-    
-    let tierBadge = `<span class="sub-badge sub-${sub.tier}">${sub.tier.toUpperCase()}</span>`;
-    const created = new Date(sub.created_at * 1000).toLocaleDateString();
-    
-    tr.innerHTML = `
-      <td>${sub.email ? sub.email.split('@')[0] : 'Unknown'}</td>
-      <td>${sub.email || '-'}</td>
-      <td>${tierBadge}</td>
-      <td>-</td>
-      <td>${created}</td>
-      <td>
-        <button class="btn-small btn-upgrade" onclick="showUserDetails('${userId}')">Info</button>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
 
   // Populate dropdowns
   const sel1 = document.getElementById('subUserSelect');
-  const sel2 = document.getElementById('upgradeUserSelect');
   sel1.innerHTML = '<option value="">-- Select a user --</option>';
-  sel2.innerHTML = '<option value="">-- Select a user --</option>';
   
   Object.keys(allSubs).forEach(userId => {
     const sub = allSubs[userId];
-    const opt1 = document.createElement('option');
-    opt1.value = userId;
-    opt1.textContent = `${sub.email}`;
-    sel1.appendChild(opt1);
-    
-    const opt2 = document.createElement('option');
-    opt2.value = userId;
-    opt2.textContent = `${sub.email} (${sub.tier})`;
-    sel2.appendChild(opt2);
+    const opt = document.createElement('option');
+    opt.value = userId;
+    opt.textContent = `${sub.email} (${sub.tier})`;
+    sel1.appendChild(opt);
   });
 
-  renderRenewalTable();
   renderRevenueTable();
-  renderAnalytics();
-}
-
-function renderRenewalTable() {
-  const tbody = document.getElementById('renewalBody');
-  tbody.innerHTML = '';
-  const now = Math.floor(Date.now() / 1000);
-
-  let count = 0;
-  Object.keys(allSubs).forEach(userId => {
-    const sub = allSubs[userId];
-    if (sub.current_period_end && sub.current_period_end > now) {
-      count++;
-      const daysLeft = Math.ceil((sub.current_period_end - now) / 86400);
-      if (daysLeft <= 7) {
-        const tr = document.createElement('tr');
-        const endDate = new Date(sub.current_period_end * 1000).toLocaleDateString();
-        tr.innerHTML = `
-          <td>${sub.email || 'Unknown'}</td>
-          <td><span class="sub-badge sub-${sub.tier}">${sub.tier.toUpperCase()}</span></td>
-          <td>${endDate}</td>
-          <td>${daysLeft} days</td>
-        `;
-        tbody.appendChild(tr);
-      }
-    }
-  });
-
-  if (count === 0) {
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:1.5rem;color:var(--muted);">No subscriptions expiring in next 7 days</td></tr>';
-  }
 }
 
 function renderRevenueTable() {
@@ -607,15 +429,6 @@ function renderRevenueTable() {
   });
 }
 
-function renderAnalytics() {
-  const tokensByTier = allAnalytics.tokens_by_tier || {};
-  ['free', 'starter', 'professional', 'business', 'enterprise'].forEach(tier => {
-    const tokens = tokensByTier[tier] || 0;
-    const el = document.getElementById('anal-' + tier + '-tokens');
-    if (el) el.textContent = (tokens / 1000000).toFixed(2) + 'M';
-  });
-}
-
 function updateUserInfo() {
   const userId = document.getElementById('subUserSelect').value;
   const sub = allSubs[userId];
@@ -627,24 +440,6 @@ function updateUserInfo() {
     document.getElementById('autoRenew').textContent = sub.auto_renew ? '✅ Yes' : '❌ No';
   } else {
     document.getElementById('userInfoBox').style.display = 'none';
-  }
-}
-
-function updateUpgradeInfo() {
-  const userId = document.getElementById('upgradeUserSelect').value;
-  const sub = allSubs[userId];
-  
-  if (sub) {
-    const now = Math.floor(Date.now() / 1000);
-    const daysUsed = Math.floor((now - sub.current_period_start) / 86400);
-    const bonus = Math.floor((500000 - 100000) * (1 - daysUsed / 30));
-    
-    document.getElementById('upgradeInfoBox').style.display = 'block';
-    document.getElementById('upgradeTier').textContent = sub.tier.toUpperCase();
-    document.getElementById('upgradeDays').textContent = daysUsed;
-    document.getElementById('bonusTokens').textContent = Math.max(0, bonus).toLocaleString();
-  } else {
-    document.getElementById('upgradeInfoBox').style.display = 'none';
   }
 }
 
@@ -661,7 +456,7 @@ async function assignSubscription() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ user_id: userId, new_tier: tier })
+      body: JSON.stringify({ new_tier: tier })
     });
     
     const d = await r.json();
@@ -677,39 +472,9 @@ async function assignSubscription() {
   }
 }
 
-async function upgradeSubscription() {
-  const userId = document.getElementById('upgradeUserSelect').value;
-  const tier = document.getElementById('upgradeTier').value;
-  
-  if (!userId || !tier) { alert('Select user and tier'); return; }
-  
-  try {
-    const r = await fetch(WORKER + '/v1/subscription/upgrade', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Password': adminPwd
-      },
-      body: JSON.stringify({ new_tier: tier })
-    });
-    
-    const d = await r.json();
-    if (!r.ok) {
-      showAlert('upgradeErr', 'Error: ' + d.error);
-      return;
-    }
-    
-    showAlert('upgradeOk', '✅ Upgraded! +' + d.token_adjustment.toLocaleString() + ' bonus tokens');
-    setTimeout(() => { loadDashboard(); }, 1500);
-  } catch (e) {
-    showAlert('upgradeErr', 'Error: ' + e.message);
-  }
-}
-
 async function giftTokens() {
   const email = document.getElementById('giftEmail').value.trim();
   const amount = parseInt(document.getElementById('giftAmount').value, 10);
-  const note = document.getElementById('giftNote').value.trim();
   
   if (!email || !amount) { alert('Enter email and amount'); return; }
   
@@ -720,7 +485,7 @@ async function giftTokens() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ email, amount, note })
+      body: JSON.stringify({ email, amount })
     });
     
     const d = await r.json();
@@ -730,8 +495,8 @@ async function giftTokens() {
     }
     
     showAlert('giftOk', '✅ Gifted ' + amount.toLocaleString() + ' tokens!');
+    document.getElementById('giftEmail').value = '';
     document.getElementById('giftAmount').value = '';
-    document.getElementById('giftNote').value = '';
   } catch (e) {
     showAlert('giftErr', 'Error: ' + e.message);
   }
@@ -740,8 +505,7 @@ async function giftTokens() {
 async function createUser() {
   const name = document.getElementById('createName').value.trim();
   const email = document.getElementById('createEmail').value.trim();
-  const tokens = parseInt(document.getElementById('createTokens').value, 10) || 0;
-  const tier = document.getElementById('createTier').value;
+  const initialTokens = parseInt(document.getElementById('createTokens').value, 10) || 0;
   
   if (!name || !email) { alert('Enter name and email'); return; }
   
@@ -752,7 +516,7 @@ async function createUser() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ name, email, initialTokens: tokens })
+      body: JSON.stringify({ name, email, initialTokens })
     });
     
     const d = await r.json();
@@ -770,14 +534,6 @@ async function createUser() {
   }
 }
 
-function showUserDetails(userId) {
-  const sub = allSubs[userId];
-  if (sub) {
-    const endDate = new Date(sub.current_period_end * 1000).toLocaleString();
-    alert(`${sub.email}\nTier: ${sub.tier.toUpperCase()}\nPeriod Ends: ${endDate}\nAuto-Renew: ${sub.auto_renew ? 'Yes' : 'No'}`);
-  }
-}
-
 function showAlert(id, msg) {
   const el = document.getElementById(id);
   el.textContent = msg;
@@ -786,7 +542,7 @@ function showAlert(id, msg) {
 
 // Load on startup
 loadDashboard();
-setInterval(loadDashboard, 60000); // Refresh every minute
+setInterval(loadDashboard, 60000);
 </script>
 
 </body>
