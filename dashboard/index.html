@@ -35,8 +35,6 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .fbtn:disabled{opacity:0.4;cursor:not-allowed;}
 .fbtn.gold{background:var(--gold);color:var(--deep);}
 .fbtn.gold:hover:not(:disabled){background:#d48f20;}
-.fbtn.danger{background:var(--rose);color:#fff;}
-.fbtn.danger:hover:not(:disabled){background:#c63d36;}
 label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:500;margin-bottom:0.3rem;}
 .fgroup{margin-bottom:0.75rem;}
 .alert{padding:0.75rem 1rem;border-radius:10px;font-size:0.78rem;margin-top:0.75rem;display:none;}
@@ -57,14 +55,20 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
 .users-table td{padding:0.75rem;border-bottom:1px solid var(--border);color:var(--dim);}
 .users-table tr:hover{background:var(--cream);}
 .users-table .bal{color:var(--teal);font-weight:600;font-family:var(--serif);}
-.users-table .sub-none{color:var(--muted);font-style:italic;}
-.users-table .sub-active{color:var(--sage);font-weight:600;background:var(--sage-lt);padding:2px 8px;border-radius:6px;display:inline-block;}
+.sub-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:600;}
+.sub-none{color:var(--muted);font-style:italic;}
+.sub-starter{background:var(--gold-lt);color:var(--gold);}
+.sub-professional{background:var(--teal-lt);color:var(--teal);}
+.sub-business{background:var(--sage-lt);color:var(--sage);}
+.sub-enterprise{background:var(--rose-lt);color:var(--rose);}
 .btn-small{padding:0.4rem 0.8rem;font-size:0.65rem;border:none;cursor:pointer;border-radius:6px;transition:all 0.15s;}
 .btn-view{background:var(--teal);color:#fff;}
 .btn-view:hover{background:#228b7e;}
 .btn-delete{background:var(--rose);color:#fff;margin-left:4px;}
 .btn-delete:hover{background:#c63d36;}
-@media(max-width:768px){.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}.users-table{font-size:0.65rem}.users-table th,.users-table td{padding:0.5rem}}
+.select-ctrl{width:100%;padding:0.6rem;border:1px solid var(--border2);border-radius:8px;font-family:var(--sans);background:#fff;}
+.select-ctrl:focus{border-color:var(--teal);outline:none;}
+@media(max-width:768px){.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}.users-table{font-size:0.65rem}.users-table th,.users-table td{padding:0.5rem}.stats-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -141,17 +145,17 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
       <div class="card-title">Assign Subscription</div>
       <div class="fgroup">
         <label>Select User</label>
-        <select id="subUserSelect" style="width:100%;padding:0.6rem;border:1px solid var(--border2);border-radius:8px;font-family:var(--sans);">
+        <select id="subUserSelect" class="select-ctrl">
           <option value="">-- Select a user --</option>
         </select>
       </div>
       <div class="fgroup">
         <label>Subscription Tier</label>
-        <select id="subTier" style="width:100%;padding:0.6rem;border:1px solid var(--border2);border-radius:8px;font-family:var(--sans);">
-          <option value="starter">Starter - 10k tokens/mo ($4)</option>
-          <option value="professional" selected>Professional - 100k tokens/mo ($19)</option>
-          <option value="business">Business - 500k tokens/mo ($49)</option>
-          <option value="enterprise">Enterprise - 1M tokens/mo (Custom)</option>
+        <select id="subTier" class="select-ctrl">
+          <option value="starter">Starter - 100k tokens/mo ($9)</option>
+          <option value="professional" selected>Professional - 500k tokens/mo ($29)</option>
+          <option value="business">Business - 2M tokens/mo ($99)</option>
+          <option value="enterprise">Enterprise - 10M tokens/mo (Custom)</option>
         </select>
       </div>
       <button class="fbtn gold" onclick="assignSubscription()">Assign Subscription</button>
@@ -177,6 +181,7 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
 const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
 let adminPwd = '';
 let allUsers = [];
+let allSubs = {};
 
 function switchTab(idx) {
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -189,89 +194,115 @@ function unlock() {
   const pwd = document.getElementById('pwdInput').value;
   if (!pwd) return;
   adminPwd = pwd;
-  fetch(WORKER + '/admin/api/user?email=test@check.invalid', {
+  
+  fetch(WORKER + '/admin/api/users', {
     headers: { 'X-Admin-Password': pwd }
   }).then(r => {
     if (r.status === 401) {
+      document.getElementById('lockErr').textContent = 'Incorrect password';
       document.getElementById('lockErr').style.display = 'block';
       adminPwd = '';
     } else {
       document.getElementById('lockScreen').style.display = 'none';
-      loadUsers();
+      loadDashboard();
     }
   }).catch(() => {
     document.getElementById('lockScreen').style.display = 'none';
-    loadUsers();
+    loadDashboard();
   });
 }
 
-async function loadUsers() {
+async function loadDashboard() {
+  // Load users
   try {
-    const r = await fetch(WORKER + '/admin/api/users', {
+    const ur = await fetch(WORKER + '/admin/api/users', {
       headers: { 'X-Admin-Password': adminPwd }
     });
-    const d = await r.json();
-    
-    allUsers = d.users || [];
-    
-    // Update stats
-    const paidCount = allUsers.filter(u => {
-      const sub = u.subscription;
-      return sub && sub.tier;
-    }).length;
-    const totalTokens = allUsers.reduce((sum, u) => sum + (u.token_balance || 0), 0);
-    const mrr = paidCount > 0 ? (paidCount * 19) : 0; // Avg $19/mo
-    
-    document.getElementById('statUsers').textContent = allUsers.length;
-    document.getElementById('statPaid').textContent = paidCount;
-    document.getElementById('statTokens').textContent = totalTokens.toLocaleString();
-    document.getElementById('statMrr').textContent = '$' + mrr.toLocaleString();
-    
-    // Render users table
-    const tbody = document.getElementById('usersBody');
-    tbody.innerHTML = '';
-    
-    allUsers.forEach(u => {
-      const tr = document.createElement('tr');
-      const sub = u.subscription;
-      const subText = sub && sub.tier ? `<span class="sub-active">${sub.tier.toUpperCase()}</span>` : '<span class="sub-none">None</span>';
-      const created = new Date(u.created_at || 0).toLocaleDateString();
-      
-      tr.innerHTML = `
-        <td>${u.name || 'N/A'}</td>
-        <td>${u.email || 'Guest'}</td>
-        <td>${subText}</td>
-        <td>${u.industry || '-'}</td>
-        <td class="bal">${(u.token_balance || 0).toLocaleString()}</td>
-        <td>${created}</td>
-        <td>
-          <button class="btn-small btn-view" onclick="viewUser('${u.user_id}')">View</button>
-          <button class="btn-small btn-delete" onclick="deleteUser('${u.user_id}', '${u.name}')">Delete</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-    
-    // Populate subscription dropdown
-    const sel = document.getElementById('subUserSelect');
-    sel.innerHTML = '<option value="">-- Select a user --</option>';
-    allUsers.forEach(u => {
-      const opt = document.createElement('option');
-      opt.value = u.user_id;
-      opt.textContent = `${u.name} (${u.email})`;
-      sel.appendChild(opt);
-    });
-    
+    const ud = await ur.json();
+    allUsers = ud.users || [];
   } catch (e) {
     console.error('Error loading users:', e);
-    document.getElementById('usersBody').innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--rose);">Error loading users</td></tr>`;
+    allUsers = [];
   }
+  
+  // Load subscriptions
+  try {
+    const sr = await fetch(WORKER + '/admin/api/subscriptions', {
+      headers: { 'X-Admin-Password': adminPwd }
+    });
+    const sd = await sr.json();
+    allSubs = {};
+    (sd.subscriptions || []).forEach(s => {
+      allSubs[s.user_id] = s;
+    });
+  } catch (e) {
+    console.error('Error loading subscriptions:', e);
+    allSubs = {};
+  }
+  
+  renderDashboard();
+}
+
+function renderDashboard() {
+  // Update stats
+  const paidCount = Object.keys(allSubs).length;
+  const totalTokens = allUsers.reduce((sum, u) => sum + (u.token_balance || 0), 0);
+  const mrrCents = paidCount > 0 ? (paidCount * 2900) : 0;
+  const mrr = (mrrCents / 100).toFixed(2);
+  
+  document.getElementById('statUsers').textContent = allUsers.length;
+  document.getElementById('statPaid').textContent = paidCount;
+  document.getElementById('statTokens').textContent = totalTokens.toLocaleString();
+  document.getElementById('statMrr').textContent = '$' + mrr;
+  
+  // Render users table
+  const tbody = document.getElementById('usersBody');
+  tbody.innerHTML = '';
+  
+  allUsers.forEach(u => {
+    const tr = document.createElement('tr');
+    const sub = allSubs[u.user_id];
+    
+    let subHtml = '<span class="sub-none">None</span>';
+    if (sub && sub.tier) {
+      const tier = sub.tier.toLowerCase();
+      subHtml = `<span class="sub-badge sub-${tier}">${sub.tier.toUpperCase()}</span>`;
+    }
+    
+    const created = new Date(u.created_at || 0).toLocaleDateString();
+    
+    tr.innerHTML = `
+      <td>${u.name || 'N/A'}</td>
+      <td>${u.email || 'Guest'}</td>
+      <td>${subHtml}</td>
+      <td>${u.industry || '-'}</td>
+      <td class="bal">${(u.token_balance || 0).toLocaleString()}</td>
+      <td>${created}</td>
+      <td>
+        <button class="btn-small btn-view" onclick="viewUser('${u.user_id}')">View</button>
+        <button class="btn-small btn-delete" onclick="deleteUser('${u.user_id}', '${u.name || 'User'}')">Delete</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+  
+  // Populate subscription dropdown
+  const sel = document.getElementById('subUserSelect');
+  sel.innerHTML = '<option value="">-- Select a user --</option>';
+  allUsers.forEach(u => {
+    const opt = document.createElement('option');
+    opt.value = u.user_id;
+    opt.textContent = `${u.name || 'Guest'} (${u.email || 'N/A'})`;
+    sel.appendChild(opt);
+  });
 }
 
 function viewUser(userId) {
   const user = allUsers.find(u => u.user_id === userId);
+  const sub = allSubs[userId];
   if (user) {
-    alert(`${user.name}\n${user.email}\nTokens: ${user.token_balance}\nSubscription: ${user.subscription?.tier || 'None'}`);
+    const subText = sub && sub.tier ? sub.tier.toUpperCase() : 'NONE';
+    alert(`${user.name}\n${user.email}\nTokens: ${(user.token_balance || 0).toLocaleString()}\nSubscription: ${subText}`);
   }
 }
 
@@ -284,7 +315,7 @@ function deleteUser(userId, name) {
   }).then(r => {
     if (r.ok) {
       alert('User deleted');
-      loadUsers();
+      loadDashboard();
     } else {
       alert('Delete failed');
     }
@@ -300,6 +331,8 @@ async function assignSubscription() {
   const user = allUsers.find(u => u.user_id === userId);
   if (!user) return;
   
+  clearAlert('sub');
+  
   try {
     const r = await fetch(WORKER + '/admin/api/subscriptions', {
       method: 'POST',
@@ -312,23 +345,24 @@ async function assignSubscription() {
     
     const d = await r.json();
     if (!r.ok) {
-      document.getElementById('subErr').style.display = 'block';
-      document.getElementById('subErr').textContent = d.error;
+      showAlert('subErr', d.error);
       return;
     }
     
-    document.getElementById('subOk').style.display = 'block';
-    document.getElementById('subOk').textContent = `✅ Subscription assigned to ${user.name}!`;
-    document.getElementById('subErr').style.display = 'none';
-    setTimeout(() => loadUsers(), 1000);
+    showAlert('subOk', `✅ Subscription assigned to ${user.name}!`);
+    setTimeout(() => { 
+      loadDashboard();
+      clearAlert('sub');
+    }, 1500);
   } catch (e) {
-    document.getElementById('subErr').style.display = 'block';
-    document.getElementById('subErr').textContent = 'Error: ' + e.message;
+    showAlert('subErr', 'Error: ' + e.message);
   }
 }
 
 async function resetTokens() {
   if (!confirm('Reset all tokens for all subscribers?')) return;
+  
+  clearAlert('reset');
   
   try {
     const r = await fetch(WORKER + '/admin/api/tokens/reset-monthly', {
@@ -338,19 +372,29 @@ async function resetTokens() {
     
     const d = await r.json();
     if (!r.ok) {
-      document.getElementById('resetErr').style.display = 'block';
-      document.getElementById('resetErr').textContent = d.error;
+      showAlert('resetErr', d.error);
       return;
     }
     
-    document.getElementById('resetOk').style.display = 'block';
-    document.getElementById('resetOk').textContent = `✅ Reset tokens for ${d.count} users!`;
-    document.getElementById('resetErr').style.display = 'none';
-    setTimeout(() => loadUsers(), 1000);
+    showAlert('resetOk', `✅ Reset tokens for ${d.count} users!`);
+    setTimeout(() => { 
+      loadDashboard();
+      clearAlert('reset');
+    }, 1500);
   } catch (e) {
-    document.getElementById('resetErr').style.display = 'block';
-    document.getElementById('resetErr').textContent = 'Error: ' + e.message;
+    showAlert('resetErr', 'Error: ' + e.message);
   }
+}
+
+function showAlert(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function clearAlert(prefix) {
+  document.getElementById(prefix + 'Ok').style.display = 'none';
+  document.getElementById(prefix + 'Err').style.display = 'none';
 }
 </script>
 
