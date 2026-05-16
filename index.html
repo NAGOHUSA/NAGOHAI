@@ -830,9 +830,57 @@ input, textarea, select { font-size: 16px !important; }
         </div>
       </div>
       
-      <button class="pbtn primary" onclick="startCheckout()" style="width:100%;margin-top:1.5rem;">Get Started</button>
+      <button class="pbtn primary" onclick="showPaymentForm()" style="width:100%;margin-top:1.5rem;">Get Started</button>
       <button onclick="closePricingModal()" style="width:100%;margin-top:0.75rem;background:none;border:1px solid var(--border);color:var(--ink);padding:0.75rem;border-radius:6px;cursor:pointer;font-weight:600;transition:all 0.2s;">Cancel</button>
       <div style="text-align:center;font-size:0.7rem;color:var(--muted);margin-top:0.75rem;">14-day free trial included</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT FORM MODAL (Stripe Elements) -->
+<div class="modal-wrap" id="paymentModal" style="display:none;">
+  <div class="modal">
+    <button onclick="closePaymentForm()" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);">✕</button>
+    <div class="modal-hero">
+      <div class="modal-logo">Complete Purchase</div>
+    </div>
+    <div class="modal-body">
+      <div style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:10px;padding:1rem;margin-bottom:1.5rem;">
+        <div style="font-size:0.8rem;color:var(--dim);margin-bottom:0.5rem;">Selected Plan:</div>
+        <div style="font-family:var(--serif);font-size:1.5rem;font-weight:700;color:var(--teal);" id="paymentPlanName">NAGOH AI Professional</div>
+        <div style="font-size:0.9rem;color:var(--ink);margin-top:0.5rem;" id="paymentPlanPrice">$19.00/month</div>
+      </div>
+      
+      <form id="paymentForm" style="display:none;">
+        <div style="margin-bottom:1rem;">
+          <label style="display:block;font-size:0.75rem;font-weight:600;color:var(--dim);margin-bottom:0.5rem;">CARD DETAILS</label>
+          <div id="card-element" style="border:1px solid var(--border);border-radius:6px;padding:12px;background:#fff;"></div>
+          <div id="card-errors" style="color:var(--rose);font-size:0.75rem;margin-top:0.5rem;min-height:1rem;"></div>
+        </div>
+        
+        <button type="submit" id="paymentBtn" style="width:100%;padding:0.85rem;background:var(--teal);color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:all 0.2s;font-size:0.9rem;">
+          Pay Now
+        </button>
+      </form>
+      
+      <div id="paymentProcessing" style="display:none;text-align:center;">
+        <div style="font-size:3rem;margin-bottom:1rem;">⏳</div>
+        <div style="color:var(--dim);font-size:0.9rem;">Processing your payment...</div>
+      </div>
+      
+      <div id="paymentSuccess" style="display:none;text-align:center;">
+        <div style="font-size:3rem;margin-bottom:1rem;">✅</div>
+        <div style="color:var(--ink);font-size:1rem;font-weight:600;margin-bottom:0.5rem;">Payment Successful!</div>
+        <div style="color:var(--dim);font-size:0.85rem;">Your subscription is now active. You'll be redirected shortly...</div>
+      </div>
+      
+      <div id="paymentError" style="display:none;">
+        <div style="background:var(--rose-lt);border:1px solid var(--rose-md);color:var(--rose);padding:1rem;border-radius:8px;margin-bottom:1rem;">
+          <div style="font-weight:600;margin-bottom:0.5rem;">Payment Failed</div>
+          <div id="paymentErrorMsg" style="font-size:0.85rem;"></div>
+        </div>
+        <button type="button" onclick="resetPaymentForm()" style="width:100%;padding:0.75rem;background:var(--teal);color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;">Try Again</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1926,7 +1974,31 @@ function selectPlan(plan) {
   event.currentTarget.style.background = 'var(--teal-lt)';
 }
 
-function startCheckout() {
+// Payment form globals
+let stripe, cardElement;
+let currentPaymentPlan = null;
+
+function initializeStripe() {
+  if (!stripe) {
+    stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+    const elements = stripe.elements();
+    cardElement = elements.create('card');
+    cardElement.mount('#card-element');
+    
+    cardElement.on('change', (event) => {
+      const displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+    
+    document.getElementById('paymentForm').addEventListener('submit', handlePaymentSubmit);
+  }
+}
+
+function showPaymentForm() {
   if (!currentUser) { showModal(); return; }
   if (isGuest) { alert('Please sign in to subscribe'); showModal(); return; }
   
@@ -1935,75 +2007,122 @@ function startCheckout() {
     return;
   }
   
-  // Map selected plan to tier and billing period
+  // Map plan to display info
   const planMap = {
-    'starter': { tier: 'starter', billing: 'monthly' },
-    'starter_yearly': { tier: 'starter', billing: 'yearly' },
-    'professional': { tier: 'professional', billing: 'monthly' },
-    'professional_yearly': { tier: 'professional', billing: 'yearly' },
-    'business': { tier: 'business', billing: 'monthly' },
-    'business_yearly': { tier: 'business', billing: 'yearly' },
+    'starter': { name: 'Starter', price: '$4.00', period: '/month', tier: 'starter', billing: 'monthly' },
+    'starter_yearly': { name: 'Starter', price: '$38.00', period: '/year', tier: 'starter', billing: 'yearly' },
+    'professional': { name: 'Professional', price: '$19.00', period: '/month', tier: 'professional', billing: 'monthly' },
+    'professional_yearly': { name: 'Professional', price: '$181.00', period: '/year', tier: 'professional', billing: 'yearly' },
+    'business': { name: 'Business', price: '$49.00', period: '/month', tier: 'business', billing: 'monthly' },
+    'business_yearly': { name: 'Business', price: '$470.00', period: '/year', tier: 'business', billing: 'yearly' },
   };
   
   const planInfo = planMap[selectedPlan];
   if (!planInfo) { alert('Invalid plan'); return; }
   
-  // Create Stripe checkout session via your worker
-  createCheckoutSession(planInfo.tier, planInfo.billing);
+  currentPaymentPlan = planInfo;
+  
+  // Update payment modal with plan info
+  document.getElementById('paymentPlanName').textContent = `NAGOH AI ${planInfo.name}`;
+  document.getElementById('paymentPlanPrice').textContent = `${planInfo.price}${planInfo.period}`;
+  
+  // Reset form state
+  document.getElementById('paymentForm').style.display = 'block';
+  document.getElementById('paymentProcessing').style.display = 'none';
+  document.getElementById('paymentSuccess').style.display = 'none';
+  document.getElementById('paymentError').style.display = 'none';
+  
+  // Initialize Stripe if not done yet
+  initializeStripe();
+  
+  // Close pricing modal and open payment modal
+  closePricingModal();
+  document.getElementById('paymentModal').style.display = 'flex';
 }
 
-async function createCheckoutSession(tier, billing) {
+function closePaymentForm() {
+  document.getElementById('paymentModal').style.display = 'none';
+}
+
+function resetPaymentForm() {
+  document.getElementById('paymentForm').style.display = 'block';
+  document.getElementById('paymentError').style.display = 'none';
+  cardElement.clear();
+}
+
+async function handlePaymentSubmit(e) {
+  e.preventDefault();
+  
+  if (!currentPaymentPlan) { alert('Invalid plan'); return; }
+  
+  document.getElementById('paymentForm').style.display = 'none';
+  document.getElementById('paymentProcessing').style.display = 'block';
+  
   try {
-    // Get session token from localStorage (set during login)
     const token = localStorage.getItem('sessionToken') || sessionToken;
     
     if (!token) {
-      alert('Error: Not authenticated. Please sign in again.');
-      return;
+      throw new Error('Not authenticated. Please sign in again.');
     }
     
-    if (!currentUser || !currentUser.user_id) {
-      alert('Error: User not found. Please sign in again.');
-      return;
-    }
-    
-    // Call your worker to create a Stripe checkout session
-    const r = await fetch(`${WORKER}/v1/checkout/session`, {
+    // Create payment intent on your backend
+    const r = await fetch(`${WORKER}/v1/create-payment-intent`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({
-        tier: tier,
-        billing_period: billing,
-        user_id: currentUser.user_id,
-        user_email: currentUser.email,
+        tier: currentPaymentPlan.tier,
+        billing_period: currentPaymentPlan.billing,
+        amount_cents: getPriceInCents(currentPaymentPlan.tier, currentPaymentPlan.billing),
       }),
     });
     
     const data = await r.json();
     
     if (!r.ok) {
-      alert('Error creating checkout: ' + (data.error || 'Unknown error'));
-      return;
+      throw new Error(data.error || 'Failed to create payment');
     }
     
-    if (data.sessionId) {
-      // Redirect to Stripe checkout
-      const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
-      stripe.redirectToCheckout({ sessionId: data.sessionId }).then(result => {
-        if (result.error) {
-          alert('Error: ' + result.error.message);
-        }
-      });
-    } else {
-      alert('Error: No session ID returned');
+    // Confirm payment with card
+    const result = await stripe.confirmCardPayment(data.client_secret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: { email: currentUser.email },
+      },
+    });
+    
+    if (result.error) {
+      throw new Error(result.error.message);
     }
-  } catch (e) {
-    console.error('Checkout error:', e);
-    alert('Error: ' + e.message);
+    
+    if (result.paymentIntent && result.paymentIntent.status === 'succeeded') {
+      document.getElementById('paymentProcessing').style.display = 'none';
+      document.getElementById('paymentSuccess').style.display = 'block';
+      
+      setTimeout(() => {
+        closePaymentForm();
+        setLed('on', 'Connected ✓');
+        showSuccessNotification('✅ Subscription activated! Your tokens are ready to use.');
+      }, 2000);
+    } else {
+      throw new Error('Payment not completed');
+    }
+  } catch (error) {
+    document.getElementById('paymentProcessing').style.display = 'none';
+    document.getElementById('paymentError').style.display = 'block';
+    document.getElementById('paymentErrorMsg').textContent = error.message;
   }
+}
+
+function getPriceInCents(tier, billing) {
+  const prices = {
+    'starter': { monthly: 400, yearly: 3800 },
+    'professional': { monthly: 1900, yearly: 18100 },
+    'business': { monthly: 4900, yearly: 47000 },
+  };
+  return prices[tier]?.[billing] || 0;
 }
 
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
