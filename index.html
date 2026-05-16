@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://js.stripe.com/v3/"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -772,6 +773,7 @@ input, textarea, select { font-size: 16px !important; }
 // ─────────────────────────────────────────────────────────
 const WORKER          = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
+const STRIPE_PUBLISHABLE_KEY = 'pk_live_51TK0JWGUbXtKf7F7FBt5ingZaPPj8oi6n7sk50AS4yWKkoISv6bJHXphJS5ygOX0QQScFuDUskZ6Uq0SCgwBVwnr00GVEiex2f';
 const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
 const STRIPE_SUCCESS_URL  = encodeURIComponent('https://ai.nagoh.us/?payment=success');
 // ─────────────────────────────────────────────────────────
@@ -1315,15 +1317,178 @@ function signOut() {
 }
 
 // ─────────────────────────────────────────────────────────
-// STRIPE PAYMENT
+// STRIPE PAYMENT — EMBEDDED CHECKOUT
 // ─────────────────────────────────────────────────────────
+
+const PRICING_TIERS = {
+  starter_monthly: { name: 'Starter', price: 900, tokens: '100,000', period: 'month', tier: 'starter', billing: 'monthly' },
+  starter_annual: { name: 'Starter Annual', price: 8500, tokens: '100,000', period: 'month', tier: 'starter', billing: 'annual' },
+  professional_monthly: { name: 'Professional', price: 2900, tokens: '500,000', period: 'month', tier: 'professional', billing: 'monthly' },
+  professional_annual: { name: 'Professional Annual', price: 27500, tokens: '500,000', period: 'month', tier: 'professional', billing: 'annual' },
+  business_monthly: { name: 'Business', price: 9900, tokens: '2,000,000', period: 'month', tier: 'business', billing: 'monthly' },
+  business_annual: { name: 'Business Annual', price: 94000, tokens: '2,000,000', period: 'month', tier: 'business', billing: 'annual' },
+};
 
 function openBuyTokens() {
   if (!currentUser) { showModal(); return; }
   if (isGuest) { showModal(); return; }
   
-  const stripeUrl = `${STRIPE_PAYMENT_LINK}?client_reference_id=${encodeURIComponent(currentUser.user_id)}&success_url=${STRIPE_SUCCESS_URL}`;
-  window.location.href = stripeUrl;
+  // Show pricing modal
+  showPricingModal();
+}
+
+function showPricingModal() {
+  const html = `
+    <div style="position:fixed;inset:0;z-index:2000;background:rgba(45,32,22,0.8);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);" id="pricingOverlay" onclick="if(event.target.id==='pricingOverlay')closePricingModal()">
+      <div style="background:#fff;border:1px solid var(--border);border-radius:20px;width:100%;max-width:600px;padding:2rem;box-shadow:0 20px 60px rgba(0,0,0,0.15);max-height:90vh;overflow-y:auto;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+          <div style="font-family:var(--serif);font-size:1.5rem;font-weight:600;color:var(--ink);">Upgrade Your Plan</div>
+          <button onclick="closePricingModal()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--dim);">×</button>
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;">
+          <!-- Monthly Plans -->
+          <div onclick="selectPlan('starter_monthly')" style="border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;text-align:center;" class="pricing-card">
+            <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;">Starter</div>
+            <div style="font-family:var(--serif);font-size:1.8rem;font-weight:700;color:var(--teal);">$9<span style="font-size:0.8rem;color:var(--dim);">/mo</span></div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;">100,000 tokens</div>
+          </div>
+          
+          <div onclick="selectPlan('professional_monthly')" style="border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;text-align:center;" class="pricing-card">
+            <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;">Professional</div>
+            <div style="font-family:var(--serif);font-size:1.8rem;font-weight:700;color:var(--teal);">$29<span style="font-size:0.8rem;color:var(--dim);">/mo</span></div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;">500,000 tokens</div>
+          </div>
+          
+          <div onclick="selectPlan('business_monthly')" style="border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;text-align:center;" class="pricing-card">
+            <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;">Business</div>
+            <div style="font-family:var(--serif);font-size:1.8rem;font-weight:700;color:var(--teal);">$99<span style="font-size:0.8rem;color:var(--dim);">/mo</span></div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;">2,000,000 tokens</div>
+          </div>
+          
+          <div onclick="selectPlan('starter_annual')" style="border:2px solid var(--gold);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;text-align:center;position:relative;" class="pricing-card">
+            <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--deep);padding:2px 10px;border-radius:10px;font-size:0.6rem;font-weight:600;">SAVE 6%</div>
+            <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;">Starter Annual</div>
+            <div style="font-family:var(--serif);font-size:1.8rem;font-weight:700;color:var(--teal);">$85<span style="font-size:0.8rem;color:var(--dim);">/yr</span></div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem;">100,000 tokens/mo</div>
+          </div>
+        </div>
+        
+        <div id="stripeContainer"></div>
+        
+        <button id="submitBtn" onclick="submitCheckout()" style="width:100%;padding:0.75rem;background:var(--teal);border:none;color:#fff;font-weight:600;border-radius:10px;cursor:pointer;font-size:1rem;margin-top:1rem;display:none;">Pay Now</button>
+        <div id="paymentMessage" style="text-align:center;margin-top:1rem;font-size:0.75rem;color:var(--muted);">Select a plan to begin checkout</div>
+      </div>
+    </div>
+  `;
+  
+  document.body.insertAdjacentHTML('beforeend', html);
+  
+  // Add hover effects
+  document.querySelectorAll('.pricing-card').forEach(card => {
+    card.addEventListener('mouseover', function() {
+      this.style.borderColor = 'var(--teal)';
+      this.style.boxShadow = '0 4px 12px rgba(42,157,143,0.2)';
+    });
+    card.addEventListener('mouseout', function() {
+      this.style.borderColor = 'var(--border)';
+      this.style.boxShadow = 'none';
+    });
+  });
+}
+
+function closePricingModal() {
+  const overlay = document.getElementById('pricingOverlay');
+  if (overlay) overlay.remove();
+  selectedPlan = null;
+}
+
+let selectedPlan = null;
+
+function selectPlan(planKey) {
+  selectedPlan = PRICING_TIERS[planKey];
+  
+  document.querySelectorAll('.pricing-card').forEach(card => {
+    card.style.borderColor = 'var(--border)';
+    card.style.background = 'transparent';
+  });
+  
+  event.currentTarget.style.borderColor = 'var(--teal)';
+  event.currentTarget.style.background = 'var(--teal-lt)';
+  
+  document.getElementById('submitBtn').style.display = 'block';
+  document.getElementById('paymentMessage').textContent = `Ready to checkout for ${selectedPlan.name}`;
+  
+  // Initialize Stripe Elements if not already done
+  if (!window.stripeElements) {
+    const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+    const elements = stripe.elements();
+    window.stripe = stripe;
+    window.stripeElements = elements;
+    
+    const cardElement = elements.create('card');
+    cardElement.mount('#stripeContainer');
+    window.cardElement = cardElement;
+  }
+}
+
+async function submitCheckout() {
+  if (!selectedPlan) return;
+  
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Processing...';
+  
+  try {
+    const r = await fetch(`${WORKER}/v1/checkout/session`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionToken}`,
+      },
+      body: JSON.stringify({
+        tier: selectedPlan.tier,
+        billing_period: selectedPlan.billing,
+        price_cents: selectedPlan.price,
+        user_id: currentUser.user_id,
+        user_email: currentUser.email,
+      }),
+    });
+    
+    const data = await r.json();
+    
+    if (!r.ok) {
+      alert('Error: ' + (data.error || 'Unknown error'));
+      btn.disabled = false;
+      btn.textContent = 'Pay Now';
+      return;
+    }
+    
+    if (data.clientSecret) {
+      // Use the client secret to confirm payment
+      const { paymentIntent, error } = await window.stripe.confirmCardPayment(data.clientSecret, {
+        payment_method: {
+          card: window.cardElement,
+          billing_details: { email: currentUser.email }
+        }
+      });
+      
+      if (error) {
+        alert('Payment error: ' + error.message);
+        btn.disabled = false;
+        btn.textContent = 'Pay Now';
+      } else if (paymentIntent.status === 'succeeded') {
+        showSuccessNotification(`✅ Purchase complete! ${selectedPlan.price / 100} tokens added.`);
+        closePricingModal();
+        connect();
+      }
+    }
+  } catch (e) {
+    console.error('Checkout error:', e);
+    alert('Error: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Pay Now';
+  }
 }
 
 // ─────────────────────────────────────────────────────────
