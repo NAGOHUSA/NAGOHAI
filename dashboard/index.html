@@ -38,31 +38,36 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .lock-sub{font-size:0.78rem;color:var(--dim);margin-bottom:1.25rem;}
 .finput{width:100%;background:var(--cream);border:1.5px solid var(--border2);color:var(--ink);font-family:var(--sans);font-size:0.85rem;padding:0.65rem 0.85rem;outline:none;margin-bottom:0.75rem;border-radius:10px;transition:border-color 0.2s;}
 .finput:focus{border-color:var(--teal);}
+.fselect{width:100%;background:var(--cream);border:1.5px solid var(--border2);color:var(--ink);font-family:var(--sans);font-size:0.85rem;padding:0.65rem 0.85rem;outline:none;margin-bottom:0.75rem;border-radius:10px;transition:border-color 0.2s;cursor:pointer;}
+.fselect:focus{border-color:var(--teal);}
 .fbtn{font-family:var(--sans);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:var(--teal);border:none;color:#fff;cursor:pointer;border-radius:10px;transition:all 0.15s;}
 .fbtn:hover:not(:disabled){background:#228b7e;}
 .fbtn:disabled{opacity:0.4;cursor:not-allowed;}
 .fbtn.gold{background:var(--gold);color:var(--deep);}
 .fbtn.gold:hover:not(:disabled){background:#d48f20;}
-.fbtn.danger{background:var(--rose);color:#fff;width:auto;}
+.fbtn.danger{background:var(--rose);color:#fff;}
 .fbtn.danger:hover:not(:disabled){background:#c63d36;}
 .fbtn.full{width:100%;}
 .alert{padding:0.75rem 1rem;border-radius:10px;font-size:0.78rem;margin-top:0.75rem;display:none;}
 .alert.ok{background:var(--sage-lt);border:1px solid var(--sage);color:var(--sage);}
 .alert.err{background:var(--rose-lt);border:1px solid var(--rose-md);color:var(--rose);}
 .alert.show{display:block;}
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
-.tab{flex:1;padding:0.75rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--dim);cursor:pointer;font-family:var(--sans);font-size:0.75rem;font-weight:600;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em;}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.5rem;flex-wrap:wrap;}
+.tab{flex:1;min-width:120px;padding:0.75rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--dim);cursor:pointer;font-family:var(--sans);font-size:0.75rem;font-weight:600;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
 .tab:hover{color:var(--ink);}
 .tab.active{color:var(--teal);border-bottom-color:var(--teal);}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
 .card{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 6px rgba(0,0,0,0.04);}
 .card-title{font-family:var(--serif);font-size:1.25rem;font-weight:500;color:var(--ink);margin-bottom:1rem;}
-.users-table{width:100%;border-collapse:collapse;font-size:0.8rem;margin-top:1rem;}
+.users-table{width:100%;border-collapse:collapse;font-size:0.78rem;margin-top:1rem;overflow-x:auto;display:block;}
+.users-table-wrapper{overflow-x:auto;margin-top:1rem;}
+.users-table{width:100%;border-collapse:collapse;font-size:0.78rem;}
 .users-table th{text-align:left;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:0.75rem;border-bottom:1px solid var(--border);font-weight:600;background:rgba(255,255,255,0.5);}
 .users-table td{padding:0.75rem;border-bottom:1px solid var(--border);color:var(--dim);}
 .users-table tr:hover{background:var(--cream);}
 .users-table .bal{color:var(--teal);font-weight:600;font-family:var(--serif);}
+.users-table .btn-sm{padding:0.4rem 0.8rem;font-size:0.7rem;margin:0 2px;}
 .users-empty{padding:2rem;text-align:center;color:var(--muted);font-size:0.8rem;}
 .loading{text-align:center;padding:2rem;color:var(--dim);}
 .spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin 1s linear infinite;}
@@ -70,12 +75,16 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:0.3rem;}
 .fgroup{margin-bottom:0.75rem;}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;}
 .modal.show{display:flex;}
-.modal-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:400px;position:relative;}
+.modal-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:500px;position:relative;max-height:90vh;overflow-y:auto;}
 .modal-title{font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:1rem;}
 .modal-close{position:absolute;right:1.5rem;top:1.5rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--dim);}
-@media(max-width:768px){.row2{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}}
+.search-box{width:100%;padding:0.65rem 0.85rem;border:1.5px solid var(--border2);border-radius:10px;font-size:0.85rem;margin-bottom:1rem;}
+.chip{display:inline-block;background:var(--teal-lt);color:var(--teal);padding:0.3rem 0.8rem;border-radius:10px;font-size:0.7rem;margin-right:0.5rem;margin-bottom:0.5rem;}
+.chip.gold{background:var(--gold-lt);color:var(--ink);}
+@media(max-width:768px){.row2{grid-template-columns:1fr}.row3{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}.users-table{font-size:0.7rem}.users-table td{padding:0.5rem}.tab{min-width:80px;padding:0.5rem;font-size:0.65rem;}}
 </style>
 </head>
 <body>
@@ -84,7 +93,7 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
   <div class="lock-box">
     <div class="lock-title">🔐 Admin Only</div>
     <div class="lock-sub">Enter your admin password</div>
-    <input class="finput" id="pwdInput" type="password" placeholder="Admin password" autofocus>
+    <input class="finput" id="pwdInput" type="password" placeholder="Admin password" autofocus onkeydown="if(event.key==='Enter')unlock()">
     <button class="fbtn full" onclick="unlock()">Unlock</button>
     <div class="alert err show" id="lockErr"></div>
   </div>
@@ -101,7 +110,7 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
 <div class="main">
   <div class="header">
     <div class="page-title">Admin Dashboard</div>
-    <div class="page-sub">User & Token Management</div>
+    <div class="page-sub">User & Subscription Management</div>
   </div>
 
   <div class="stats-grid">
@@ -110,160 +119,141 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
       <div class="stat-label">Total Users</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value" id="statActive">0</div>
-      <div class="stat-label">Active Users</div>
+      <div class="stat-value" id="statPaid">0</div>
+      <div class="stat-label">Paid Subscribers</div>
     </div>
     <div class="stat-card">
       <div class="stat-value" id="statTokens">0</div>
-      <div class="stat-label">Tokens Distributed</div>
+      <div class="stat-label">Total Tokens</div>
     </div>
     <div class="stat-card">
-      <div class="stat-value" id="statAvg">0</div>
-      <div class="stat-label">Avg Tokens/User</div>
+      <div class="stat-value" id="statRevenue">$0</div>
+      <div class="stat-label">MRR</div>
     </div>
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="switchTab(0)">USERS</button>
-    <button class="tab" onclick="switchTab(1)">ADD USER</button>
-    <button class="tab" onclick="switchTab(2)">AWARD TOKENS</button>
-    <button class="tab" onclick="switchTab(3)">SUBSCRIPTIONS</button>
+    <button class="tab active" onclick="switchTab(0)">Users</button>
+    <button class="tab" onclick="switchTab(1)">Manage Subscription</button>
+    <button class="tab" onclick="switchTab(2)">Reset Tokens</button>
+    <button class="tab" onclick="switchTab(3)">Settings</button>
   </div>
 
   <!-- Tab 0: Users List -->
   <div class="tab-content active">
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
-        <div class="card-title" style="margin:0;">User Management</div>
-        <label style="margin:0;display:flex;gap:0.5rem;align-items:center;font-size:0.75rem;cursor:pointer;">
-          <input type="checkbox" id="hideGuests" onchange="toggleGuestFilter()">
-          Hide Guests
-        </label>
-      </div>
+      <div class="card-title">Gmail Users</div>
+      <input type="text" class="search-box" id="searchBox" placeholder="Search by name or email..." onkeyup="filterUsers()">
       <div id="usersLoading" class="loading"><div class="spinner"></div> Loading users...</div>
-      <div id="usersEmpty" class="users-empty" style="display:none;">No users found</div>
-      <div id="deleteGuestsBox" style="display:none;margin-bottom:1rem;padding:1rem;background:var(--rose-lt);border:1px solid var(--rose-md);border-radius:10px;">
-        <div style="font-size:0.8rem;color:var(--rose);margin-bottom:0.5rem;"><strong id="guestCount">0</strong> guest sessions found</div>
-        <button class="fbtn danger" onclick="deleteAllGuests()">Delete All Guests</button>
+      <div id="usersEmpty" class="users-empty" style="display:none;">No Gmail users found</div>
+      <div class="users-table-wrapper">
+        <table class="users-table" id="usersTable" style="display:none;">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Subscription</th>
+              <th>Industry</th>
+              <th>Tokens</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody"></tbody>
+        </table>
       </div>
-      <table class="users-table" id="usersTable" style="display:none;">
-        <thead>
-          <tr><th>Name</th><th>Email</th><th>Tokens</th><th>Created</th><th>Action</th></tr>
-        </thead>
-        <tbody id="usersBody"></tbody>
-      </table>
     </div>
   </div>
 
-  <!-- Tab 1: Add User -->
+  <!-- Tab 1: Manage Subscription -->
   <div class="tab-content">
     <div class="card">
-      <div class="card-title">Add User</div>
+      <div class="card-title">Assign Subscription Plan</div>
       <div class="fgroup">
-        <label>Full Name</label>
-        <input class="finput" id="addName" type="text" placeholder="John Doe">
+        <label>Select User</label>
+        <select class="fselect" id="subUserSelect" onchange="populateSubForm()">
+          <option value="">-- Choose a user --</option>
+        </select>
       </div>
-      <div class="fgroup">
-        <label>Email</label>
-        <input class="finput" id="addEmail" type="email" placeholder="john@example.com">
+      <div id="subFormFields" style="display:none;">
+        <div class="row2">
+          <div class="fgroup">
+            <label>Subscription Tier</label>
+            <select class="fselect" id="subTier">
+              <option value="">-- None --</option>
+              <option value="starter">Starter - $4/mo (10k tokens)</option>
+              <option value="professional">Professional - $19/mo (100k tokens)</option>
+              <option value="business">Business - $49/mo (500k tokens)</option>
+            </select>
+          </div>
+          <div class="fgroup">
+            <label>Billing Period</label>
+            <select class="fselect" id="subPeriod">
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+          </div>
+        </div>
+        <button class="fbtn gold full" onclick="assignSubscription()" id="assignSubBtn">Assign Subscription</button>
+        <div class="alert ok" id="subOk"></div>
+        <div class="alert err" id="subErr"></div>
       </div>
-      <div class="fgroup">
-        <label>Initial Tokens</label>
-        <input class="finput" id="addTokens" type="number" placeholder="5000" min="0" value="5000">
-      </div>
-      <button class="fbtn full" onclick="addUser()">Create User</button>
-      <div class="alert ok" id="addOk"></div>
-      <div class="alert err" id="addErr"></div>
     </div>
   </div>
 
-  <!-- Tab 2: Award Tokens -->
+  <!-- Tab 2: Reset Tokens -->
   <div class="tab-content">
     <div class="card">
-      <div class="card-title">Award Tokens</div>
-      <div class="fgroup">
-        <label>User Email</label>
-        <input class="finput" id="awardEmail" type="email" placeholder="user@example.com">
-      </div>
-      <div class="fgroup">
-        <label>Tokens to Award</label>
-        <input class="finput" id="awardAmount" type="number" placeholder="1000" min="1">
-      </div>
-      <div class="fgroup">
-        <label>Reason (optional)</label>
-        <input class="finput" id="awardReason" type="text" placeholder="Bonus, support...">
-      </div>
-      <button class="fbtn gold full" onclick="awardTokens()">Award Tokens</button>
-      <div class="alert ok" id="awardOk"></div>
-      <div class="alert err" id="awardErr"></div>
-    </div>
-  </div>
-</div>
-
-<!-- Tab 3: Subscriptions -->
-<div class="tab-content">
-  <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-      <div class="card-title" style="margin:0;">Subscription Management</div>
-    </div>
-    <div style="margin-bottom:2rem;">
-      <h3 style="font-size:0.9rem;font-weight:600;margin-bottom:1rem;color:var(--ink);">Assign Subscription</h3>
-      <div class="fgroup">
-        <label>User Email</label>
-        <input class="finput" id="subEmail" type="email" placeholder="user@example.com">
-      </div>
-      <div class="row2">
+      <div class="card-title">Monthly Token Reset</div>
+      <p style="font-size:0.85rem;color:var(--dim);margin-bottom:1rem;">Automatically resets all subscriber tokens to their plan limit on the 1st of each month. Run this manually if needed.</p>
+      <button class="fbtn full" onclick="resetMonthlyTokens()">Reset All Tokens Now</button>
+      <div class="alert ok" id="resetOk"></div>
+      <div class="alert err" id="resetErr"></div>
+      
+      <div style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);">
+        <div class="card-title" style="font-size:1rem;">Manual Token Adjustment</div>
         <div class="fgroup">
-          <label>Tier</label>
-          <select class="finput" id="subTier">
-            <option value="starter">Starter (10k tokens/mo)</option>
-            <option value="professional" selected>Professional (50k tokens/mo)</option>
-            <option value="business">Business (150k tokens/mo)</option>
-            <option value="enterprise">Enterprise (custom)</option>
+          <label>Select User</label>
+          <select class="fselect" id="tokenUserSelect" onchange="populateTokenForm()">
+            <option value="">-- Choose a user --</option>
           </select>
         </div>
-        <div class="fgroup">
-          <label>Trial Days</label>
-          <input class="finput" id="subTrialDays" type="number" placeholder="14" min="0" value="14">
+        <div id="tokenFormFields" style="display:none;">
+          <div class="fgroup">
+            <label>Token Adjustment</label>
+            <input type="number" class="finput" id="tokenAmount" placeholder="Enter positive or negative amount">
+          </div>
+          <div class="fgroup">
+            <label>Reason (optional)</label>
+            <input type="text" class="finput" id="tokenReason" placeholder="e.g., Customer refund, bonus">
+          </div>
+          <button class="fbtn gold full" onclick="adjustTokens()">Adjust Tokens</button>
+          <div class="alert ok" id="tokenOk"></div>
+          <div class="alert err" id="tokenErr"></div>
         </div>
       </div>
-      <button class="fbtn full" onclick="assignSubscription()">Assign</button>
-      <div class="alert ok" id="subOk"></div>
-      <div class="alert err" id="subErr"></div>
     </div>
-    <div>
-      <h3 style="font-size:0.9rem;font-weight:600;margin-bottom:1rem;color:var(--ink);">Active Subscriptions</h3>
-      <table class="users-table">
-        <thead>
-          <tr><th>Name</th><th>Email</th><th>Tier</th><th>Period End</th><th>Action</th></tr>
-        </thead>
-        <tbody id="subsBody"></tbody>
-      </table>
-      <div class="users-empty" id="subsEmpty" style="display:none;">No active subscriptions</div>
+  </div>
+
+  <!-- Tab 3: Settings -->
+  <div class="tab-content">
+    <div class="card">
+      <div class="card-title">Danger Zone</div>
+      <p style="font-size:0.85rem;color:var(--dim);margin-bottom:1rem;">These actions cannot be undone.</p>
+      <button class="fbtn danger full" onclick="deleteAllGuests()" style="margin-bottom:0.75rem;">Delete All Guest Sessions</button>
+      <button class="fbtn danger full" onclick="deleteAllUsers()" style="margin-bottom:0.75rem;">Delete All Users (IRREVERSIBLE)</button>
+      <div class="alert ok" id="settingsOk"></div>
+      <div class="alert err" id="settingsErr"></div>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
-<div class="modal" id="tokenModal">
+<!-- User Details Modal -->
+<div class="modal" id="userModal">
   <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <div class="modal-title">Assign Tokens</div>
-    <div style="margin-bottom:1rem;">
-      <p style="font-size:0.85rem;margin-bottom:0.5rem;"><strong id="modalUserName"></strong></p>
-      <p style="font-size:0.75rem;color:var(--dim);" id="modalUserEmail"></p>
-    </div>
-    <div class="fgroup">
-      <label>Amount to Assign</label>
-      <input class="finput" id="modalTokens" type="number" placeholder="1000" min="1">
-    </div>
-    <div class="fgroup">
-      <label>Note (optional)</label>
-      <input class="finput" id="modalNote" type="text" placeholder="Reason for assignment">
-    </div>
-    <button class="fbtn gold full" onclick="confirmAssignTokens()">Assign</button>
-    <div class="alert ok" id="modalOk"></div>
-    <div class="alert err" id="modalErr"></div>
+    <button class="modal-close" onclick="closeUserModal()">×</button>
+    <div class="modal-title">User Details</div>
+    <div id="userModalContent"></div>
   </div>
 </div>
 
@@ -271,50 +261,37 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
 const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
 let adminPwd = localStorage.getItem('adminPwd') || '';
 let allUsers = [];
-let selectedUserId = null;
-let hideGuestsEnabled = localStorage.getItem('hideGuests') === 'true';
+let filteredUsers = [];
+let currentSelectedUser = null;
 
 function switchTab(idx) {
-  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
-  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content')[idx].classList.add('active');
   document.querySelectorAll('.tab')[idx].classList.add('active');
-  if (idx === 3) loadSubscriptions();
-}
-
-function toggleGuestFilter() {
-  hideGuestsEnabled = document.getElementById('hideGuests').checked;
-  localStorage.setItem('hideGuests', hideGuestsEnabled);
-  renderUsers();
+  
+  if (idx === 1) loadUsersForSubscription();
+  if (idx === 2) loadUsersForTokens();
 }
 
 async function unlock() {
   const pwd = document.getElementById('pwdInput').value.trim();
-  if (!pwd) { showErr('lockErr', 'Enter password'); return; }
-
+  if (!pwd) return;
+  adminPwd = pwd;
+  
   try {
-    const r = await fetch(WORKER + '/api/admin/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password: pwd })
+    const r = await fetch(WORKER + '/admin/api/users', {
+      headers: { 'X-Admin-Password': pwd }
     });
-
     if (r.status === 401) {
-      showErr('lockErr', 'Incorrect password');
+      document.getElementById('lockErr').textContent = 'Incorrect password';
       return;
     }
-
-    if (!r.ok) {
-      showErr('lockErr', 'Login failed');
-      return;
-    }
-
-    adminPwd = pwd;
     localStorage.setItem('adminPwd', pwd);
     document.getElementById('lockScreen').style.display = 'none';
     loadAllUsers();
   } catch (e) {
-    showErr('lockErr', 'Error: ' + e.message);
+    document.getElementById('lockErr').textContent = 'Error: ' + e.message;
   }
 }
 
@@ -327,11 +304,12 @@ async function loadAllUsers() {
     const r = await fetch(WORKER + '/admin/api/users', {
       headers: { 'X-Admin-Password': adminPwd }
     });
-
     if (!r.ok) throw new Error('Failed to load users');
-    const data = await r.json();
     
-    allUsers = data.users || [];
+    const data = await r.json();
+    allUsers = (data.users || []).filter(u => u.email && u.email.includes('@gmail.com'));
+    filteredUsers = [...allUsers];
+    
     document.getElementById('usersLoading').style.display = 'none';
     renderUsers();
     updateStats();
@@ -341,24 +319,20 @@ async function loadAllUsers() {
   }
 }
 
+function filterUsers() {
+  const search = document.getElementById('searchBox').value.toLowerCase();
+  filteredUsers = allUsers.filter(u => 
+    (u.name || '').toLowerCase().includes(search) ||
+    (u.email || '').toLowerCase().includes(search)
+  );
+  renderUsers();
+}
+
 function renderUsers() {
   const tbody = document.getElementById('usersBody');
   tbody.innerHTML = '';
 
-  // Filter guests if enabled
-  const usersToShow = hideGuestsEnabled ? allUsers.filter(u => !u.is_guest) : allUsers;
-  const guestCount = allUsers.filter(u => u.is_guest).length;
-
-  // Show/hide delete guests box
-  const deleteBox = document.getElementById('deleteGuestsBox');
-  if (guestCount > 0 && !hideGuestsEnabled) {
-    deleteBox.style.display = 'block';
-    document.getElementById('guestCount').textContent = guestCount;
-  } else {
-    deleteBox.style.display = 'none';
-  }
-
-  if (usersToShow.length === 0) {
+  if (filteredUsers.length === 0) {
     document.getElementById('usersEmpty').style.display = 'block';
     document.getElementById('usersTable').style.display = 'none';
     return;
@@ -367,199 +341,260 @@ function renderUsers() {
   document.getElementById('usersTable').style.display = 'table';
   document.getElementById('usersEmpty').style.display = 'none';
 
-  usersToShow.forEach(function(u) {
+  filteredUsers.forEach(u => {
     const tr = document.createElement('tr');
     const date = new Date(u.created_at || 0).toLocaleDateString();
     const name = u.name || 'N/A';
     const email = u.email || 'Guest';
     const balance = (u.token_balance || 0).toLocaleString();
-    const isGuest = u.is_guest ? ' (guest)' : '';
+    const tier = u.subscription?.tier ? u.subscription.tier.toUpperCase() : '-';
+    const industry = u.industry || '-';
     
-    let actionBtn = '<button class="fbtn" style="width:auto;padding:0.5rem 1rem;font-size:0.7rem;" onclick="openTokenModal(\'' + u.user_id + '\',\'' + name.replace(/'/g, "\\'") + '\',\'' + email.replace(/'/g, "\\'") + '\')">+ Tokens</button>';
-    
-    if (u.is_guest) {
-      actionBtn += ' <button class="fbtn" style="width:auto;padding:0.5rem 1rem;font-size:0.7rem;background:var(--rose);color:#fff;margin-left:0.5rem;" onclick="deleteUser(\'' + u.user_id + '\')">Delete</button>';
-    }
-    
-    tr.innerHTML = '<td>' + name + isGuest + '</td><td>' + email + '</td><td class="bal">' + balance + '</td><td>' + date + '</td><td>' + actionBtn + '</td>';
+    tr.innerHTML = `
+      <td>${name}</td>
+      <td>${email}</td>
+      <td><span class="chip ${u.subscription ? 'gold' : ''}">${tier}</span></td>
+      <td>${industry}</td>
+      <td class="bal">${balance}</td>
+      <td>${date}</td>
+      <td>
+        <button class="fbtn btn-sm" onclick="viewUser('${u.user_id}')">View</button>
+        <button class="fbtn danger btn-sm" onclick="deleteUser('${u.user_id}', '${name}')">Delete</button>
+      </td>
+    `;
     tbody.appendChild(tr);
   });
 }
 
-function updateStats() {
-  const total = allUsers.reduce(function(sum, u) { return sum + (u.token_balance || 0); }, 0);
-  const active = allUsers.filter(function(u) { return !u.is_guest; }).length;
-  document.getElementById('statUsers').textContent = allUsers.length;
-  document.getElementById('statActive').textContent = active;
-  document.getElementById('statTokens').textContent = total.toLocaleString();
-  document.getElementById('statAvg').textContent = allUsers.length > 0 ? Math.round(total / allUsers.length).toLocaleString() : '0';
+function viewUser(userId) {
+  const user = allUsers.find(u => u.user_id === userId);
+  if (!user) return;
+  
+  const sub = user.subscription || {};
+  const content = `
+    <div style="margin-bottom:1rem;">
+      <p><strong>${user.name}</strong></p>
+      <p style="font-size:0.8rem;color:var(--dim);margin-top:0.5rem;">${user.email}</p>
+      <p style="font-size:0.8rem;color:var(--dim);">ID: ${user.user_id}</p>
+    </div>
+    
+    <div style="background:var(--teal-lt);padding:1rem;border-radius:8px;margin-bottom:1rem;">
+      <p style="font-size:0.75rem;color:var(--dim);margin-bottom:0.5rem;">SUBSCRIPTION</p>
+      <p style="font-size:1rem;color:var(--teal);font-weight:600;">${sub.tier ? sub.tier.toUpperCase() : 'NONE'}</p>
+      ${sub.current_period_end ? `<p style="font-size:0.75rem;color:var(--dim);margin-top:0.5rem;">Renews: ${new Date(sub.current_period_end).toLocaleDateString()}</p>` : ''}
+    </div>
+    
+    <div style="background:var(--gold-lt);padding:1rem;border-radius:8px;margin-bottom:1rem;">
+      <p style="font-size:0.75rem;color:var(--dim);margin-bottom:0.5rem;">TOKENS</p>
+      <p style="font-size:1.5rem;color:var(--teal);font-weight:700;">${(user.token_balance || 0).toLocaleString()}</p>
+    </div>
+    
+    <div style="background:var(--cream);padding:1rem;border-radius:8px;">
+      <p style="font-size:0.75rem;color:var(--dim);margin-bottom:0.5rem;">INDUSTRY</p>
+      <p style="font-size:0.9rem;font-weight:600;">${user.industry || 'Not set'}</p>
+    </div>
+    
+    <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);font-size:0.75rem;color:var(--dim);">
+      <p>Created: ${new Date(user.created_at || 0).toLocaleDateString()}</p>
+      <p>Last active: ${user.last_active ? new Date(user.last_active).toLocaleDateString() : 'Never'}</p>
+    </div>
+  `;
+  
+  document.getElementById('userModalContent').innerHTML = content;
+  document.getElementById('userModal').classList.add('show');
 }
 
-function openTokenModal(userId, name, email) {
-  selectedUserId = userId;
-  document.getElementById('modalUserName').textContent = name;
-  document.getElementById('modalUserEmail').textContent = email;
-  document.getElementById('modalTokens').value = '';
-  document.getElementById('modalNote').value = '';
-  document.getElementById('modalOk').classList.remove('show');
-  document.getElementById('modalErr').classList.remove('show');
-  document.getElementById('tokenModal').classList.add('show');
+function closeUserModal() {
+  document.getElementById('userModal').classList.remove('show');
 }
 
-function closeModal() {
-  document.getElementById('tokenModal').classList.remove('show');
-  selectedUserId = null;
+async function deleteUser(userId, name) {
+  if (!confirm(`Delete ${name}? This cannot be undone.`)) return;
+  
+  try {
+    const r = await fetch(WORKER + '/admin/api/users/' + userId, {
+      method: 'DELETE',
+      headers: { 'X-Admin-Password': adminPwd }
+    });
+    if (!r.ok) { alert('Delete failed'); return; }
+    alert('User deleted');
+    loadAllUsers();
+  } catch (e) { alert('Error: ' + e.message); }
 }
 
-async function confirmAssignTokens() {
-  const amount = parseInt(document.getElementById('modalTokens').value, 10);
-  const note = document.getElementById('modalNote').value.trim();
+async function loadUsersForSubscription() {
+  const select = document.getElementById('subUserSelect');
+  select.innerHTML = '<option value="">-- Choose a user --</option>';
+  allUsers.forEach(u => {
+    const opt = document.createElement('option');
+    opt.value = u.user_id;
+    opt.textContent = `${u.name} (${u.email})`;
+    select.appendChild(opt);
+  });
+}
 
-  if (!amount || amount <= 0) {
-    showErr('modalErr', 'Enter a positive amount');
+function populateSubForm() {
+  const userId = document.getElementById('subUserSelect').value;
+  if (!userId) {
+    document.getElementById('subFormFields').style.display = 'none';
     return;
   }
+  
+  const user = allUsers.find(u => u.user_id === userId);
+  currentSelectedUser = user;
+  
+  if (user.subscription) {
+    document.getElementById('subTier').value = user.subscription.tier || '';
+    document.getElementById('subPeriod').value = user.subscription.billing_period || 'monthly';
+  }
+  
+  document.getElementById('subFormFields').style.display = 'block';
+}
 
+async function assignSubscription() {
+  const userId = document.getElementById('subUserSelect').value;
+  const tier = document.getElementById('subTier').value;
+  const billing = document.getElementById('subPeriod').value;
+  
+  if (!userId || !tier) { alert('Select user and tier'); return; }
+  
   try {
-    const r = await fetch(WORKER + '/admin/api/tokens/award', {
+    const r = await fetch(WORKER + '/admin/api/subscriptions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ userId: selectedUserId, amount: amount, reason: note })
+      body: JSON.stringify({ userId, tier, billing_period: billing })
     });
-
+    
     const d = await r.json();
-    if (!r.ok) { showErr('modalErr', d.error); return; }
-
-    showOk('modalOk', 'Assigned ' + amount.toLocaleString() + ' tokens');
-    setTimeout(function() { closeModal(); loadAllUsers(); }, 1500);
-  } catch (e) {
-    showErr('modalErr', 'Error: ' + e.message);
-  }
+    if (!r.ok) { showErr('subErr', d.error); return; }
+    
+    showOk('subOk', `✅ Subscription assigned! Next reset: ${new Date(d.current_period_end).toLocaleDateString()}`);
+    setTimeout(() => { loadAllUsers(); }, 1000);
+  } catch (e) { showErr('subErr', e.message); }
 }
 
-async function deleteUser(userId) {
-  if (!confirm('Delete this user? This cannot be undone.')) return;
+async function loadUsersForTokens() {
+  const select = document.getElementById('tokenUserSelect');
+  select.innerHTML = '<option value="">-- Choose a user --</option>';
+  allUsers.forEach(u => {
+    const opt = document.createElement('option');
+    opt.value = u.user_id;
+    opt.textContent = `${u.name} (${u.email})`;
+    select.appendChild(opt);
+  });
+}
 
+function populateTokenForm() {
+  const userId = document.getElementById('tokenUserSelect').value;
+  if (!userId) {
+    document.getElementById('tokenFormFields').style.display = 'none';
+    return;
+  }
+  document.getElementById('tokenFormFields').style.display = 'block';
+  document.getElementById('tokenAmount').value = '';
+  document.getElementById('tokenReason').value = '';
+}
+
+async function adjustTokens() {
+  const userId = document.getElementById('tokenUserSelect').value;
+  const amount = parseInt(document.getElementById('tokenAmount').value, 10);
+  const reason = document.getElementById('tokenReason').value.trim();
+  
+  if (!userId || !amount) { alert('Enter user and amount'); return; }
+  
   try {
-    const r = await fetch(WORKER + '/admin/api/users', {
-      method: 'DELETE',
+    const r = await fetch(WORKER + '/admin/api/tokens/adjust', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ user_id: userId })
+      body: JSON.stringify({ userId, amount, reason })
     });
-
+    
     const d = await r.json();
-    if (!r.ok) { alert('Error: ' + (d.error || 'Delete failed')); return; }
+    if (!r.ok) { showErr('tokenErr', d.error); return; }
+    
+    showOk('tokenOk', `✅ Adjusted! New balance: ${d.new_balance.toLocaleString()} tokens`);
+    setTimeout(() => { loadAllUsers(); }, 1000);
+  } catch (e) { showErr('tokenErr', e.message); }
+}
 
-    loadAllUsers();
-  } catch (e) {
-    alert('Error: ' + e.message);
-  }
+async function resetMonthlyTokens() {
+  if (!confirm('Reset tokens for all subscribers to their plan limits?')) return;
+  
+  try {
+    const r = await fetch(WORKER + '/admin/api/tokens/reset-monthly', {
+      method: 'POST',
+      headers: { 'X-Admin-Password': adminPwd }
+    });
+    
+    const d = await r.json();
+    if (!r.ok) { showErr('resetErr', d.error); return; }
+    
+    showOk('resetOk', `✅ Reset complete! ${d.count} users updated`);
+    setTimeout(() => { loadAllUsers(); }, 1000);
+  } catch (e) { showErr('resetErr', e.message); }
 }
 
 async function deleteAllGuests() {
-  const guestCount = allUsers.filter(u => u.is_guest).length;
-  if (!confirm('Delete all ' + guestCount + ' guest sessions? This cannot be undone.')) return;
+  if (!confirm('Delete all guest sessions?')) return;
+  
+  try {
+    const r = await fetch(WORKER + '/admin/api/guests/delete-all', {
+      method: 'POST',
+      headers: { 'X-Admin-Password': adminPwd }
+    });
+    
+    const d = await r.json();
+    if (!r.ok) { showErr('settingsErr', d.error); return; }
+    
+    showOk('settingsOk', `✅ Deleted ${d.count} guest sessions`);
+  } catch (e) { showErr('settingsErr', e.message); }
+}
 
-  const guestIds = allUsers.filter(u => u.is_guest).map(u => u.user_id);
-  let deleted = 0;
+async function deleteAllUsers() {
+  if (!confirm('DELETE ALL USERS? This cannot be undone! Type DELETE to confirm:')) return;
+  const confirm2 = prompt('Type DELETE to confirm:');
+  if (confirm2 !== 'DELETE') return;
+  
+  try {
+    const r = await fetch(WORKER + '/admin/api/users/delete-all', {
+      method: 'DELETE',
+      headers: { 'X-Admin-Password': adminPwd }
+    });
+    
+    const d = await r.json();
+    if (!r.ok) { showErr('settingsErr', d.error); return; }
+    
+    showOk('settingsOk', `✅ Deleted all users`);
+    setTimeout(() => { loadAllUsers(); }, 1000);
+  } catch (e) { showErr('settingsErr', e.message); }
+}
 
-  for (const userId of guestIds) {
-    try {
-      const r = await fetch(WORKER + '/admin/api/users', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Admin-Password': adminPwd
-        },
-        body: JSON.stringify({ user_id: userId })
-      });
-      if (r.ok) deleted++;
-    } catch (e) {
-      console.error('Failed to delete guest:', e);
+function updateStats() {
+  const total = allUsers.length;
+  const paid = allUsers.filter(u => u.subscription && u.subscription.tier).length;
+  const tokens = allUsers.reduce((sum, u) => sum + (u.token_balance || 0), 0);
+  
+  // Calculate MRR
+  const tiers = { starter: 4, professional: 19, business: 49 };
+  let mrr = 0;
+  allUsers.forEach(u => {
+    if (u.subscription && u.subscription.tier) {
+      const price = tiers[u.subscription.tier] || 0;
+      const yearly = u.subscription.billing_period === 'yearly';
+      mrr += yearly ? price / 12 : price;
     }
-  }
-
-  alert('Deleted ' + deleted + ' guest sessions');
-  loadAllUsers();
-}
-
-async function addUser() {
-  const name = document.getElementById('addName').value.trim();
-  const email = document.getElementById('addEmail').value.trim();
-  const tokens = parseInt(document.getElementById('addTokens').value, 10) || 0;
-
-  if (!name || !email) {
-    showErr('addErr', 'Enter name and email');
-    return;
-  }
-
-  try {
-    const r = await fetch(WORKER + '/admin/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Password': adminPwd
-      },
-      body: JSON.stringify({ name: name, email: email, initialTokens: tokens })
-    });
-
-    const d = await r.json();
-    if (!r.ok) { showErr('addErr', d.error); return; }
-
-    showOk('addOk', 'Created ' + name);
-    document.getElementById('addName').value = '';
-    document.getElementById('addEmail').value = '';
-    document.getElementById('addTokens').value = '5000';
-    setTimeout(function() { loadAllUsers(); }, 1000);
-  } catch (e) {
-    showErr('addErr', 'Error: ' + e.message);
-  }
-}
-
-async function awardTokens() {
-  const email = document.getElementById('awardEmail').value.trim();
-  const amount = parseInt(document.getElementById('awardAmount').value, 10);
-  const reason = document.getElementById('awardReason').value.trim();
-
-  if (!email || !amount || amount <= 0) {
-    showErr('awardErr', 'Enter email and positive amount');
-    return;
-  }
-
-  try {
-    const r = await fetch(WORKER + '/admin/api/gift', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Admin-Password': adminPwd
-      },
-      body: JSON.stringify({ email: email, amount: amount, note: reason })
-    });
-
-    const d = await r.json();
-    if (!r.ok) { showErr('awardErr', d.error); return; }
-
-    showOk('awardOk', 'Awarded ' + amount.toLocaleString() + ' tokens');
-    document.getElementById('awardEmail').value = '';
-    document.getElementById('awardAmount').value = '';
-    document.getElementById('awardReason').value = '';
-    setTimeout(function() { loadAllUsers(); }, 1000);
-  } catch (e) {
-    showErr('awardErr', 'Error: ' + e.message);
-  }
-}
-
-function logout() {
-  if (!confirm('Sign out?')) return;
-  adminPwd = '';
-  localStorage.removeItem('adminPwd');
-  location.reload();
+  });
+  
+  document.getElementById('statUsers').textContent = total;
+  document.getElementById('statPaid').textContent = paid;
+  document.getElementById('statTokens').textContent = tokens.toLocaleString();
+  document.getElementById('statRevenue').textContent = '$' + Math.round(mrr);
 }
 
 function showErr(id, msg) {
@@ -576,8 +611,14 @@ function showOk(id, msg) {
   el.textContent = msg;
 }
 
+function logout() {
+  if (!confirm('Sign out?')) return;
+  adminPwd = '';
+  localStorage.removeItem('adminPwd');
+  location.reload();
+}
+
 window.addEventListener('load', function() {
-  document.getElementById('hideGuests').checked = hideGuestsEnabled;
   if (adminPwd) {
     document.getElementById('lockScreen').style.display = 'none';
     loadAllUsers();
@@ -587,112 +628,6 @@ window.addEventListener('load', function() {
 document.getElementById('pwdInput').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') unlock();
 });
-
-// ─────────────────────────────────────────────────────────────────────────────
-// SUBSCRIPTION MANAGEMENT
-// ─────────────────────────────────────────────────────────────────────────────
-
-async function loadSubscriptions() {
-  const tbody = document.getElementById('subsBody');
-  const empty = document.getElementById('subsEmpty');
-  tbody.innerHTML = '';
-  empty.style.display = 'block';
-  
-  try {
-    const r = await fetch(WORKER + '/admin/api/subscriptions', {
-      headers: { 'X-Admin-Password': adminPwd }
-    });
-    const d = await r.json();
-    if (!r.ok) { console.error('Load subs failed:', d.error); return; }
-    
-    const subs = d.subscriptions || [];
-    if (!subs.length) { empty.style.display = 'block'; return; }
-    
-    empty.style.display = 'none';
-    subs.forEach(function(sub) {
-      const periodEnd = new Date(sub.current_period_end * 1000).toLocaleDateString();
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${sub.name || 'N/A'}</td>
-        <td>${sub.email}</td>
-        <td><strong>${sub.tier}</strong></td>
-        <td>${periodEnd}</td>
-        <td>
-          <button class="fbtn" style="padding:0.4rem 0.8rem;font-size:0.65rem;margin-right:0.25rem;" onclick="editSub('${sub.user_id}','${sub.tier}')">Edit</button>
-          <button class="fbtn danger" style="padding:0.4rem 0.8rem;font-size:0.65rem;" onclick="deleteSub('${sub.user_id}')">Cancel</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-  } catch (e) {
-    console.error('Error loading subs:', e);
-  }
-}
-
-async function assignSubscription() {
-  const email = document.getElementById('subEmail').value.trim();
-  const tier = document.getElementById('subTier').value;
-  const trialDays = parseInt(document.getElementById('subTrialDays').value, 10) || 0;
-  
-  if (!email) { showErr('subErr', 'Enter email'); return; }
-  
-  try {
-    const r = await fetch(WORKER + '/admin/api/subscriptions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd },
-      body: JSON.stringify({ email, tier, trial_days: trialDays })
-    });
-    
-    const d = await r.json();
-    if (!r.ok) { showErr('subErr', d.error); return; }
-    
-    showOk('subOk', 'Assigned ' + tier + ' to ' + email);
-    document.getElementById('subEmail').value = '';
-    setTimeout(function() { loadSubscriptions(); }, 1000);
-  } catch (e) {
-    showErr('subErr', 'Error: ' + e.message);
-  }
-}
-
-async function editSub(userId, tier) {
-  const newTier = prompt('New tier (starter/professional/business/enterprise):', tier);
-  if (!newTier) return;
-  
-  try {
-    const r = await fetch(WORKER + '/admin/api/subscriptions', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd },
-      body: JSON.stringify({ user_id: userId, tier: newTier })
-    });
-    
-    const d = await r.json();
-    if (!r.ok) { alert('Error: ' + d.error); return; }
-    
-    alert('Updated to ' + newTier);
-    loadSubscriptions();
-  } catch (e) {
-    alert('Error: ' + e.message);
-  }
-}
-
-async function deleteSub(userId) {
-  if (!confirm('Cancel this subscription?')) return;
-  
-  try {
-    const r = await fetch(WORKER + '/admin/api/subscriptions', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd },
-      body: JSON.stringify({ user_id: userId })
-    });
-    
-    if (!r.ok) { alert('Error cancelling'); return; }
-    
-    alert('Subscription cancelled');
-    loadSubscriptions();
-  } catch (e) {
-    alert('Error: ' + e.message);
-  }
-}
 </script>
 </body>
 </html>
