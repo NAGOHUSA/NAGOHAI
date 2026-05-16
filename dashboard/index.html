@@ -458,6 +458,10 @@ async function assignSubscription() {
   
   if (!userId || !tier) { alert('Select user and tier'); return; }
   
+  // Get user email
+  const user = allUsers.find(u => u.user_id === userId);
+  if (!user || !user.email) { alert('User not found'); return; }
+  
   try {
     const r = await fetch(WORKER + '/admin/api/subscriptions', {
       method: 'POST',
@@ -465,13 +469,13 @@ async function assignSubscription() {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ userId, tier, billing_period: billing })
+      body: JSON.stringify({ email: user.email, tier: tier, trial_days: 0 })
     });
     
     const d = await r.json();
     if (!r.ok) { showErr('subErr', d.error); return; }
     
-    showOk('subOk', `✅ Subscription assigned! Next reset: ${new Date(d.current_period_end).toLocaleDateString()}`);
+    showOk('subOk', `✅ Subscription assigned to ${user.name}!`);
     setTimeout(() => { loadAllUsers(); }, 1000);
   } catch (e) { showErr('subErr', e.message); }
 }
