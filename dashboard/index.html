@@ -296,13 +296,16 @@ function unlock() {
       document.getElementById('lockErr').style.display = 'block';
       document.getElementById('lockErr').textContent = 'Incorrect password';
       adminPwd = '';
-    } else {
+    } else if (r.ok) {
       document.getElementById('lockScreen').style.display = 'none';
       loadDashboard();
+    } else {
+      document.getElementById('lockErr').style.display = 'block';
+      document.getElementById('lockErr').textContent = 'Server error: ' + r.status;
     }
-  }).catch(() => {
+  }).catch((e) => {
     document.getElementById('lockErr').style.display = 'block';
-    document.getElementById('lockErr').textContent = 'Network error';
+    document.getElementById('lockErr').textContent = 'Network error: ' + e.message;
   });
 }
 
@@ -323,16 +326,21 @@ async function loadDashboard() {
       (sdata.subscriptions || []).forEach(s => {
         allSubs[s.user_id] = s;
       });
+    } else {
+      console.error('Subscriptions error:', subsRes.status);
     }
 
     if (analyticsRes.ok) {
       allAnalytics = await analyticsRes.json();
+    } else {
+      console.error('Analytics error:', analyticsRes.status);
     }
+
+    renderDashboard();
   } catch (e) {
     console.error('Error loading data:', e);
+    alert('Failed to load dashboard: ' + e.message);
   }
-
-  renderDashboard();
 }
 
 function renderDashboard() {
@@ -447,28 +455,40 @@ async function assignSubscription() {
   const userId = document.getElementById('subUserSelect').value;
   const tier = document.getElementById('subTier').value;
   
-  if (!userId || !tier) { alert('Select user and tier'); return; }
+  if (!userId || !tier) { 
+    showAlert('subErr', '❌ Please select a user and tier');
+    return; 
+  }
+  
+  // Get email from selected subscription
+  const sub = allSubs[userId];
+  const email = sub?.email;
+  
+  if (!email) { 
+    showAlert('subErr', '❌ Could not find user email');
+    return; 
+  }
   
   try {
-    const r = await fetch(WORKER + '/v1/subscription/upgrade', {
-      method: 'POST',
+    const r = await fetch(WORKER + '/admin/api/subscriptions', {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'X-Admin-Password': adminPwd
       },
-      body: JSON.stringify({ new_tier: tier })
+      body: JSON.stringify({ email, tier })
     });
     
     const d = await r.json();
     if (!r.ok) {
-      showAlert('subErr', 'Error: ' + d.error);
+      showAlert('subErr', '❌ Error: ' + (d.error || 'Failed to assign'));
       return;
     }
     
-    showAlert('subOk', '✅ Subscription assigned!');
+    showAlert('subOk', '✅ Subscription assigned to ' + email + ' → ' + tier.toUpperCase() + '!');
     setTimeout(() => { loadDashboard(); }, 1500);
   } catch (e) {
-    showAlert('subErr', 'Error: ' + e.message);
+    showAlert('subErr', '❌ Error: ' + e.message);
   }
 }
 
@@ -476,7 +496,10 @@ async function giftTokens() {
   const email = document.getElementById('giftEmail').value.trim();
   const amount = parseInt(document.getElementById('giftAmount').value, 10);
   
-  if (!email || !amount) { alert('Enter email and amount'); return; }
+  if (!email || !amount) { 
+    showAlert('giftErr', '❌ Enter email and amount');
+    return;
+  }
   
   try {
     const r = await fetch(WORKER + '/admin/api/gift', {
@@ -490,7 +513,7 @@ async function giftTokens() {
     
     const d = await r.json();
     if (!r.ok) {
-      showAlert('giftErr', 'Error: ' + d.error);
+      showAlert('giftErr', '❌ Error: ' + (d.error || 'Failed to gift'));
       return;
     }
     
@@ -498,7 +521,7 @@ async function giftTokens() {
     document.getElementById('giftEmail').value = '';
     document.getElementById('giftAmount').value = '';
   } catch (e) {
-    showAlert('giftErr', 'Error: ' + e.message);
+    showAlert('giftErr', '❌ Error: ' + e.message);
   }
 }
 
@@ -507,7 +530,10 @@ async function createUser() {
   const email = document.getElementById('createEmail').value.trim();
   const initialTokens = parseInt(document.getElementById('createTokens').value, 10) || 0;
   
-  if (!name || !email) { alert('Enter name and email'); return; }
+  if (!name || !email) { 
+    showAlert('createErr', '❌ Enter name and email');
+    return;
+  }
   
   try {
     const r = await fetch(WORKER + '/admin/api/users', {
@@ -521,16 +547,17 @@ async function createUser() {
     
     const d = await r.json();
     if (!r.ok) {
-      showAlert('createErr', 'Error: ' + d.error);
+      showAlert('createErr', '❌ Error: ' + (d.error || 'Failed to create user'));
       return;
     }
     
     showAlert('createOk', '✅ User created!');
     document.getElementById('createName').value = '';
     document.getElementById('createEmail').value = '';
+    document.getElementById('createTokens').value = '5000';
     setTimeout(() => { loadDashboard(); }, 1500);
   } catch (e) {
-    showAlert('createErr', 'Error: ' + e.message);
+    showAlert('createErr', '❌ Error: ' + e.message);
   }
 }
 
@@ -538,6 +565,7 @@ function showAlert(id, msg) {
   const el = document.getElementById(id);
   el.textContent = msg;
   el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 5000);
 }
 
 // Load on startup
