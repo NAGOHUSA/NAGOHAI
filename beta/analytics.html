@@ -94,7 +94,7 @@
 <script>
 let analyticsCharts = {};
 
-function renderAnalyticsCharts() {
+window.renderAnalyticsCharts = function() {
   // Trend Chart
   if (!analyticsCharts.trend && document.getElementById('trendChart')) {
     analyticsCharts.trend = new Chart(document.getElementById('trendChart'), {
@@ -163,7 +163,7 @@ function renderAnalyticsCharts() {
   }
 }
 
-function changePeriod(period) {
+window.changePeriod = function(period) {
   document.querySelectorAll('.period-btn').forEach(btn => btn.style.background = '#fff');
   event.target.style.background = 'var(--teal)';
   event.target.style.color = '#fff';
@@ -173,9 +173,9 @@ function changePeriod(period) {
       if (chart) chart.destroy();
     });
     analyticsCharts = {};
-    renderAnalyticsCharts();
+    window.renderAnalyticsCharts();
   }, 200);
 }
 
-setTimeout(() => renderAnalyticsCharts(), 100);
+setTimeout(() => window.renderAnalyticsCharts(), 100);
 </script>
