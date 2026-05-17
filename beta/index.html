@@ -1,1 +1,802 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAGOH AI - Small Business Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #faf8f5 0%, #f5ede5 100%);
+      color: #2d2d2d;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Auth Modal */
+    #authModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.3s;
+    }
+
+    #authModal.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .auth-box {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .auth-box h1 {
+      font-family: 'Fraunces', serif;
+      font-size: 32px;
+      margin-bottom: 12px;
+      color: #8b6f47;
+    }
+
+    .auth-box p {
+      color: #666;
+      margin-bottom: 28px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .google-signin-btn {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .guest-btn {
+      width: 100%;
+      padding: 12px;
+      background: #f0e8d8;
+      border: 2px solid #d4c4a8;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      color: #8b6f47;
+      transition: all 0.2s;
+    }
+
+    .guest-btn:hover {
+      background: #e8dcc8;
+      border-color: #b5a58a;
+    }
+
+    /* Top Navigation Bar */
+    .topbar {
+      background: white;
+      border-bottom: 1px solid #e5dcd1;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 60px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #8b6f47;
+      text-decoration: none;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav-tab {
+      padding: 6px 12px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      color: #888;
+      transition: all 0.2s;
+    }
+
+    .nav-tab:hover {
+      color: #8b6f47;
+    }
+
+    .nav-tab.active {
+      color: #8b6f47;
+      border-bottom-color: #d4a574;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    #topBal {
+      font-size: 12px;
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    #topBal span {
+      font-size: 10px;
+      color: #999;
+    }
+
+    .user-menu-btn {
+      background: #f0e8d8;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      color: #8b6f47;
+      transition: all 0.2s;
+    }
+
+    .user-menu-btn:hover {
+      background: #e8dcc8;
+    }
+
+    /* Main Layout */
+    .main-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: white;
+      border-right: 1px solid #e5dcd1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .sidebar.hidden {
+      display: none;
+    }
+
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #faf8f5;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      padding: 12px 16px;
+      border-radius: 8px;
+      max-width: 70%;
+      word-wrap: break-word;
+      line-height: 1.4;
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background: #8b6f47;
+      color: white;
+    }
+
+    .message.ai {
+      align-self: flex-start;
+      background: white;
+      color: #2d2d2d;
+      border: 1px solid #e5dcd1;
+    }
+
+    .loading-spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #e5dcd1;
+      border-top-color: #8b6f47;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .input-area {
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #e5dcd1;
+      display: flex;
+      gap: 8px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #e5dcd1;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+    }
+
+    .input-area button {
+      padding: 12px 20px;
+      background: #8b6f47;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .input-area button:hover:not(:disabled) {
+      background: #6f5835;
+    }
+
+    .input-area button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Sidebar Elements */
+    .sidebar-section {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-title {
+      font-family: 'Fraunces', serif;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    .industry-select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e5dcd1;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .quick-starter {
+      padding: 12px;
+      background: #f9f6f1;
+      border: 1px solid #e5dcd1;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+
+    .quick-starter:hover {
+      background: #f0e8d8;
+      border-color: #d4a574;
+    }
+
+    .quick-starter-title {
+      font-weight: 500;
+      font-size: 12px;
+      color: #2d2d2d;
+    }
+
+    .quick-starter-desc {
+      font-size: 11px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    .ideas-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .idea-item {
+      padding: 8px;
+      background: #f9f6f1;
+      border: 1px solid #e5dcd1;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .idea-item:hover {
+      background: #f0e8d8;
+      border-color: #d4a574;
+    }
+
+    .idea-emoji {
+      font-size: 20px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .idea-text {
+      font-size: 10px;
+      color: #666;
+    }
+
+    /* Success Banner */
+    #successBanner {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #4caf50;
+      color: white;
+      padding: 16px 20px;
+      border-radius: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    #successBanner.show {
+      opacity: 1;
+    }
+
+    /* Content Area (for other pages) */
+    .page-content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .page-content.active {
+      display: block;
+    }
+
+    /* Dropdown menu */
+    .dropdown-menu {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: white;
+      border: 1px solid #e5dcd1;
+      border-radius: 8px;
+      min-width: 180px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 100;
+      display: none;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-menu button {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+      font-size: 13px;
+      color: #2d2d2d;
+      transition: background 0.2s;
+    }
+
+    .dropdown-menu button:hover {
+      background: #f9f6f1;
+    }
+
+    .dropdown-menu button:last-child {
+      border-top: 1px solid #e5dcd1;
+      color: #d32f2f;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .message {
+        max-width: 90%;
+      }
+      .topbar {
+        flex-wrap: wrap;
+        height: auto;
+        gap: 12px;
+      }
+      .nav-tabs {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Auth Modal -->
+  <div id="authModal">
+    <div class="auth-box">
+      <h1>NAGOH AI</h1>
+      <p>Your AI assistant for small business content, copywriting, and customer communication.</p>
+      <div id="googleButton"></div>
+      <button class="guest-btn" onclick="startAsGuest()">Continue as Guest</button>
+    </div>
+  </div>
+
+  <!-- Top Navigation -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="/" class="logo">NAGOH AI</a>
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('chat')">💬 Chat</button>
+        <button class="nav-tab" onclick="switchTab('templates')">📋 Templates</button>
+        <button class="nav-tab" onclick="switchTab('trending')">🔥 Trending</button>
+        <button class="nav-tab" onclick="switchTab('analytics')">📊 Analytics</button>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div id="topBal">0 <span>tokens</span></div>
+      <div style="position: relative;">
+        <button class="user-menu-btn" onclick="toggleUserMenu()">Menu</button>
+        <div id="userMenu" class="dropdown-menu">
+          <button onclick="openBalance()">View Balance</button>
+          <button onclick="logout()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Left Sidebar -->
+    <div class="sidebar" id="leftSidebar">
+      <div class="sidebar-section">
+        <label class="sidebar-title">Industry</label>
+        <select class="industry-select" id="industrySelect" onchange="changeIndustry()">
+          <option value="etsy">🛍️ Etsy & Craft Sellers</option>
+          <option value="realtor">🏠 Real Estate Agents</option>
+          <option value="general">⭐ General Small Business</option>
+        </select>
+      </div>
+
+      <div class="sidebar-section">
+        <label class="sidebar-title">Quick Start</label>
+        <div id="quickStartersContainer"></div>
+      </div>
+
+      <div class="sidebar-section">
+        <label class="sidebar-title">Content Ideas</label>
+        <div class="ideas-list" id="ideasContainer"></div>
+      </div>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="chat-area" id="chatArea">
+      <div class="messages" id="messagesContainer"></div>
+      <div class="input-area">
+        <input id="messageInput" type="text" placeholder="Ask anything..." onkeypress="handleEnter(event)">
+        <button id="sendBtn" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <!-- Other Pages (Templates, Trending, Analytics) -->
+    <div class="page-content" id="templatesContent"></div>
+    <div class="page-content" id="trendingContent"></div>
+    <div class="page-content" id="analyticsContent"></div>
+  </div>
+
+  <!-- Success Banner -->
+  <div id="successBanner">
+    <div id="successMsg"></div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    // Chat variables
+    let chatHistory = [];
+    let isLoading = false;
+    const maxMessages = 50;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+      getSession();
+      
+      if (isLoggedIn()) {
+        document.getElementById('authModal').classList.add('hidden');
+        initChatUI();
+        loadBalance();
+      } else {
+        renderGoogleButton();
+      }
+    });
+
+    // Google Sign-In Handler
+    window.onGoogleSignIn = (result) => {
+      document.getElementById('authModal').classList.add('hidden');
+      initChatUI();
+      loadBalance();
+    };
+
+    window.onGoogleSignInError = (err) => {
+      alert('Sign-in failed: ' + err);
+    };
+
+    function renderGoogleButton() {
+      if (typeof google !== 'undefined') {
+        google.accounts.id.renderButton(
+          document.getElementById('googleButton'),
+          { theme: 'outline', size: 'large', width: '100%' }
+        );
+      }
+    }
+
+    async function startAsGuest() {
+      const result = await guestAuth();
+      if (result.success) {
+        document.getElementById('authModal').classList.add('hidden');
+        initChatUI();
+        loadBalance();
+      } else {
+        alert('Guest login failed: ' + result.error);
+      }
+    }
+
+    function initChatUI() {
+      currentIndustry = lsGet('nagoh_industry', 'etsy');
+      document.getElementById('industrySelect').value = currentIndustry;
+      renderIndustryUI();
+      loadChatHistory();
+    }
+
+    function renderIndustryUI() {
+      const industry = INDUSTRIES[currentIndustry];
+      if (!industry) return;
+
+      // Render quick starters
+      const quickContainer = document.getElementById('quickStartersContainer');
+      quickContainer.innerHTML = industry.quickStarters.map(qs => `
+        <div class="quick-starter" onclick="startQuickPrompt('${esc(qs.prompt)}')">
+          <div class="quick-starter-title">${qs.emoji} ${qs.title}</div>
+          <div class="quick-starter-desc">${qs.desc}</div>
+        </div>
+      `).join('');
+
+      // Render ideas
+      const ideasContainer = document.getElementById('ideasContainer');
+      ideasContainer.innerHTML = industry.ideas.map(idea => `
+        <div class="idea-item" title="${idea.desc}">
+          <div class="idea-emoji">${idea.emoji}</div>
+          <div class="idea-text">${idea.title}</div>
+        </div>
+      `).join('');
+    }
+
+    function changeIndustry() {
+      currentIndustry = document.getElementById('industrySelect').value;
+      lsSet('nagoh_industry', currentIndustry);
+      renderIndustryUI();
+    }
+
+    function startQuickPrompt(prompt) {
+      document.getElementById('messageInput').value = prompt;
+      document.getElementById('messageInput').focus();
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const msg = input.value.trim();
+      if (!msg || isLoading) return;
+
+      if (balance <= 0) {
+        alert('Out of tokens. Please upgrade your subscription.');
+        return;
+      }
+
+      // Add user message
+      chatHistory.push({ role: 'user', content: msg });
+      addMessageToUI(msg, 'user');
+      input.value = '';
+
+      isLoading = true;
+      document.getElementById('sendBtn').disabled = true;
+      const msgDiv = addLoadingToUI();
+
+      // Build system prompt
+      const industry = INDUSTRIES[currentIndustry];
+      const toneMode = lsGet('nagoh_tone', 'friendly');
+      const systemPrompt = industry?.tonePrompts?.[toneMode] || industry?.tonePrompts?.friendly || 'You are NAGOH AI, a helpful small business assistant.';
+
+      // Send to API
+      const result = await sendChat(chatHistory, systemPrompt);
+
+      if (result.success) {
+        chatHistory.push({ role: 'assistant', content: result.reply });
+        msgDiv.textContent = result.reply;
+        msgDiv.classList.remove('loading-spinner');
+        balance = result.nagoh.tokens_remaining;
+        setBalUI(balance);
+        lsSet('nagoh_chat_' + new Date().toDateString(), chatHistory.slice(-maxMessages));
+        trackAnalytic('message_sent', { tokens_used: result.nagoh.tokens_used });
+      } else {
+        msgDiv.textContent = 'Error: ' + result.error;
+        msgDiv.classList.remove('loading-spinner');
+        chatHistory.pop(); // Remove failed message
+      }
+
+      isLoading = false;
+      document.getElementById('sendBtn').disabled = false;
+      document.getElementById('messageInput').focus();
+    }
+
+    function addMessageToUI(text, role) {
+      const container = document.getElementById('messagesContainer');
+      const div = document.createElement('div');
+      div.className = 'message ' + role;
+      div.textContent = text;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function addLoadingToUI() {
+      const container = document.getElementById('messagesContainer');
+      const div = document.createElement('div');
+      div.className = 'message ai loading-spinner';
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+      return div;
+    }
+
+    function loadChatHistory() {
+      const today = new Date().toDateString();
+      const saved = lsGet('nagoh_chat_' + today, []);
+      chatHistory = saved;
+      const container = document.getElementById('messagesContainer');
+      container.innerHTML = '';
+      saved.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = 'message ' + msg.role;
+        div.textContent = msg.content;
+        container.appendChild(div);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function handleEnter(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    async function loadBalance() {
+      const result = await getBalance();
+      if (result.token_balance !== undefined) {
+        balance = result.token_balance;
+        setBalUI(balance);
+      }
+    }
+
+    function toggleUserMenu() {
+      const menu = document.getElementById('userMenu');
+      menu.classList.toggle('show');
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.topbar-right')) {
+          menu.classList.remove('show');
+        }
+      }, { once: true });
+    }
+
+    function openBalance() {
+      alert('Token Balance: ' + balance.toLocaleString() + '\nUpgrade at https://ai.nagoh.us');
+    }
+
+    function logout() {
+      clearSession();
+      location.reload();
+    }
+
+    function switchTab(tab) {
+      // Update nav tabs
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+
+      // Show/hide chat area and sidebars
+      const chatArea = document.getElementById('chatArea');
+      const leftSidebar = document.getElementById('leftSidebar');
+
+      if (tab === 'chat') {
+        chatArea.style.display = 'flex';
+        leftSidebar.style.display = 'block';
+        document.getElementById('templatesContent').classList.remove('active');
+        document.getElementById('trendingContent').classList.remove('active');
+        document.getElementById('analyticsContent').classList.remove('active');
+      } else {
+        chatArea.style.display = 'none';
+        leftSidebar.style.display = 'none';
+        document.getElementById('templatesContent').classList.remove('active');
+        document.getElementById('trendingContent').classList.remove('active');
+        document.getElementById('analyticsContent').classList.remove('active');
+
+        if (tab === 'templates') {
+          document.getElementById('templatesContent').classList.add('active');
+          loadTemplatesPage();
+        } else if (tab === 'trending') {
+          document.getElementById('trendingContent').classList.add('active');
+          loadTrendingPage();
+        } else if (tab === 'analytics') {
+          document.getElementById('analyticsContent').classList.add('active');
+          loadAnalyticsPage();
+        }
+      }
+    }
+
+    async function loadTemplatesPage() {
+      const content = document.getElementById('templatesContent');
+      content.innerHTML = '<p style="padding: 20px;">Loading templates...</p>';
+      const html = await fetch('templates.html').then(r => r.text()).catch(() => '<p>Could not load templates page.</p>');
+      content.innerHTML = html;
+    }
+
+    async function loadTrendingPage() {
+      const content = document.getElementById('trendingContent');
+      content.innerHTML = '<p style="padding: 20px;">Loading trending topics...</p>';
+      const html = await fetch('trending.html').then(r => r.text()).catch(() => '<p>Could not load trending page.</p>');
+      content.innerHTML = html;
+    }
+
+    async function loadAnalyticsPage() {
+      const content = document.getElementById('analyticsContent');
+      content.innerHTML = '<p style="padding: 20px;">Loading analytics...</p>';
+      const html = await fetch('analytics.html').then(r => r.text()).catch(() => '<p>Could not load analytics page.</p>');
+      content.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
