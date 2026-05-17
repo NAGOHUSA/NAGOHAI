@@ -758,26 +758,31 @@ let analyticsCharts = {};
 // ─────────────────────────────────────────────────────────
 
 window.onload = () => {
-  const hasSession = getSession();
-  
-  currentIndustry = lsGet('nagoh_industry', 'etsy');
-  document.getElementById('industrySel').value = currentIndustry;
-  
-  onIndustryChange();
-  updateSysPrompt();
-  renderHistory();
-  checkPaymentSuccess();
+  // Delay slightly to ensure shared.js is fully loaded
+  setTimeout(() => {
+    const hasSession = getSession();
+    
+    currentIndustry = lsGet('nagoh_industry', 'etsy');
+    const sel = document.getElementById('industrySel');
+    if (sel) sel.value = currentIndustry;
+    
+    onIndustryChange();
+    updateSysPrompt();
+    renderHistory();
+    checkPaymentSuccess();
 
-  if (hasSession) {
-    applyUserToUI(currentUser);
-    setBalUI(balance);
-    setLed('on', 'Connected ✓');
-    document.getElementById('sendBtn').disabled = false;
-    hideModal();
-    connect();
-  } else {
-    showModal();
-  }
+    if (hasSession) {
+      applyUserToUI(currentUser);
+      setBalUI(balance);
+      setLed('on', 'Connected ✓');
+      const sendBtn = document.getElementById('sendBtn');
+      if (sendBtn) sendBtn.disabled = false;
+      hideModal();
+      connect();
+    } else {
+      showModal();
+    }
+  }, 100);
 };
 
 // ─────────────────────────────────────────────────────────
@@ -1209,29 +1214,8 @@ function checkPaymentSuccess() {
   }
 }
 
-function continueAsGuest() {
-  document.getElementById('authLoading').style.display = 'block';
-  authGuest().then(result => {
-    if (result.ok && result.data.session_token) {
-      saveSession(result.data.session_token, result.data.user, result.data.token_balance);
-      applyUserToUI(currentUser);
-      setBalUI(balance);
-      document.getElementById('guestBanner').classList.add('show');
-      setLed('on', 'Connected ✓');
-      document.getElementById('sendBtn').disabled = false;
-      hideModal();
-    }
-    document.getElementById('authLoading').style.display = 'none';
-  });
-}
-
-function showModal() {
-  document.getElementById('modalWrap').classList.remove('hidden');
-}
-
-function hideModal() {
-  document.getElementById('modalWrap').classList.add('hidden');
-}
+// Note: continueAsGuest, showModal, hideModal, initiateGoogleSignIn, handleGoogleCredential
+// are all defined in shared.js as window.* functions
 </script>
 </body>
 </html>
