@@ -1,199 +1,111 @@
+<h2 style="margin-bottom:1.5rem;">📋 Templates & Tools</h2>
 
-<div style="max-width: 1000px; margin: 0 auto; padding: 20px;">
-  <h1 style="font-family: 'Fraunces', serif; font-size: 28px; color: #8b6f47; margin-bottom: 8px;">Templates & Tools</h1>
-  <p style="color: #666; margin-bottom: 24px;">Save time with pre-built templates and smart content suggestions.</p>
-
-  <div style="display: flex; gap: 12px; margin-bottom: 24px; border-bottom: 1px solid #e5dcd1; padding-bottom: 12px;">
-    <button class="tab-btn" data-tab="templates" style="padding: 8px 12px; background: none; border: none; border-bottom: 2px solid #8b6f47; cursor: pointer; color: #8b6f47; font-weight: 500;" onclick="switchTemplateTab(event, 'templates')">My Templates</button>
-    <button class="tab-btn" data-tab="quote" style="padding: 8px 12px; background: none; border: none; cursor: pointer; color: #888;" onclick="switchTemplateTab(event, 'quote')">Quote Generator</button>
-    <button class="tab-btn" data-tab="suggestions" style="padding: 8px 12px; background: none; border: none; cursor: pointer; color: #888;" onclick="switchTemplateTab(event, 'suggestions')">Smart Suggestions</button>
+<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px,1fr));gap:1.5rem;">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+    <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">💼 Your Templates</h3>
+    <div id="customTemplates"></div>
+    <button class="pbtn primary" onclick="showNewTemplateModal()" style="margin-top:1rem;width:100%;">+ New Template</button>
   </div>
 
-  <div id="templatesTab" class="tab-content" style="display: block;">
-    <h2 style="font-family: 'Fraunces', serif; font-size: 20px; color: #2d2d2d; margin-bottom: 16px;">Built-in Templates</h2>
-    <div id="builtinTemplates" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 32px;"></div>
-    <h2 style="font-family: 'Fraunces', serif; font-size: 20px; color: #2d2d2d; margin-bottom: 16px;">Your Custom Templates</h2>
-    <button onclick="openCreateTemplate()" style="padding: 12px 20px; background: #8b6f47; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; margin-bottom: 16px;">+ Create New</button>
-    <div id="customTemplates" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;"></div>
-  </div>
-
-  <div id="quoteTab" class="tab-content" style="display: none;">
-    <h2 style="font-family: 'Fraunces', serif; font-size: 20px; color: #2d2d2d; margin-bottom: 20px;">Professional Quote Generator</h2>
-    <div style="background: white; padding: 24px; border-radius: 12px; border: 1px solid #e5dcd1; max-width: 500px;">
-      <div style="margin-bottom: 16px;">
-        <label style="display: block; font-weight: 500; margin-bottom: 6px; color: #2d2d2d;">Client Name</label>
-        <input id="quoteName" type="text" placeholder="John Smith" style="width: 100%; padding: 10px; border: 1px solid #e5dcd1; border-radius: 6px; font-size: 14px;">
-      </div>
-      <div style="margin-bottom: 16px;">
-        <label style="display: block; font-weight: 500; margin-bottom: 6px; color: #2d2d2d;">Service</label>
-        <input id="quoteService" type="text" placeholder="Website Design" style="width: 100%; padding: 10px; border: 1px solid #e5dcd1; border-radius: 6px; font-size: 14px;">
-      </div>
-      <div style="margin-bottom: 16px;">
-        <label style="display: block; font-weight: 500; margin-bottom: 6px; color: #2d2d2d;">Scope of Work</label>
-        <textarea id="quoteScope" placeholder="E.g., 5 pages, custom design, mobile" style="width: 100%; padding: 10px; border: 1px solid #e5dcd1; border-radius: 6px; font-size: 14px; height: 80px; font-family: 'DM Sans';"></textarea>
-      </div>
-      <div style="margin-bottom: 16px;">
-        <label style="display: block; font-weight: 500; margin-bottom: 6px; color: #2d2d2d;">Budget/Price</label>
-        <input id="quoteBudget" type="text" placeholder="$2,500" style="width: 100%; padding: 10px; border: 1px solid #e5dcd1; border-radius: 6px; font-size: 14px;">
-      </div>
-      <button onclick="generateQuotePreview()" style="width: 100%; padding: 12px; background: #8b6f47; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Generate Quote</button>
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+    <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">💰 Quote Generator</h3>
+    <div style="display:flex;flex-direction:column;gap:0.75rem;font-size:0.85rem;">
+      <input type="text" placeholder="Client name" id="quoteName" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+      <input type="text" placeholder="Service type" id="quoteService" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+      <input type="text" placeholder="Scope" id="quoteScope" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+      <input type="text" placeholder="Budget range" id="quoteBudget" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+      <button class="pbtn primary" onclick="generateQuote()" style="width:100%;">Generate Quote</button>
     </div>
-    <div id="quoteOutput" style="margin-top: 20px;"></div>
+    <div id="quoteOutput" style="margin-top:1rem;"></div>
   </div>
 
-  <div id="suggestionsTab" class="tab-content" style="display: none;">
-    <h2 style="font-family: 'Fraunces', serif; font-size: 20px; color: #2d2d2d; margin-bottom: 20px;">Smart Content Suggestions</h2>
-    <div style="background: white; padding: 24px; border-radius: 12px; border: 1px solid #e5dcd1; margin-bottom: 20px;">
-      <label style="display: block; font-weight: 500; margin-bottom: 6px; color: #2d2d2d;">Paste your content</label>
-      <textarea id="suggestionsInput" placeholder="Paste your social post, email, or article..." style="width: 100%; padding: 12px; border: 1px solid #e5dcd1; border-radius: 6px; font-size: 14px; height: 120px; font-family: 'DM Sans';"></textarea>
-      <button onclick="getSuggestionsPreview()" style="margin-top: 12px; padding: 12px 20px; background: #8b6f47; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Get Suggestions</button>
-    </div>
-    <div id="suggestionsOutput" style="background: white; padding: 24px; border-radius: 12px; border: 1px solid #e5dcd1;"></div>
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+    <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">✨ Smart Suggestions</h3>
+    <textarea placeholder="Paste your content here..." id="suggestContent" style="width:100%;padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;min-height:80px;resize:none;"></textarea>
+    <button class="pbtn primary" onclick="getSuggestions()" style="width:100%;margin-top:0.75rem;">Get Suggestions</button>
+    <div id="suggestOutput" style="margin-top:1rem;font-size:0.8rem;"></div>
   </div>
+</div>
 
-  <div id="createTemplateModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000;">
-    <div style="background: white; padding: 24px; border-radius: 12px; max-width: 500px; width: 90%;">
-      <h2 style="font-family: 'Fraunces', serif; color: #8b6f47; margin-bottom: 16px;">Create Template</h2>
-      <div style="margin-bottom: 16px;">
-        <label style="display: block; font-weight: 500; margin-bottom: 6px;">Name</label>
-        <input id="templateName" type="text" placeholder="e.g., Welcome Email" style="width: 100%; padding: 10px; border: 1px solid #e5dcd1; border-radius: 6px; font-size: 14px;">
-      </div>
-      <div style="margin-bottom: 16px;">
-        <label style="display: block; font-weight: 500; margin-bottom: 6px;">Content</label>
-        <textarea id="templateContent" placeholder="Enter template text..." style="width: 100%; padding: 10px; border: 1px solid #e5dcd1; border-radius: 6px; font-size: 14px; height: 120px; font-family: 'DM Sans';"></textarea>
-      </div>
-      <div style="display: flex; gap: 12px;">
-        <button onclick="saveTemplate()" style="flex: 1; padding: 12px; background: #8b6f47; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500;">Save</button>
-        <button onclick="closeCreateTemplate()" style="flex: 1; padding: 12px; background: #f0e8d8; color: #8b6f47; border: 1px solid #d4a574; border-radius: 6px; cursor: pointer; font-weight: 500;">Cancel</button>
-      </div>
-    </div>
+<h3 style="margin:2rem 0 1rem;color:var(--ink);">📚 Default Templates</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px,1fr));gap:1.5rem;">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="useTemplate('📱\\nSocial Media Post\\n\\n[HOOK]\\n\\n[BODY]\\n\\n[CTA]\\n\\n#hashtags')">
+    <div style="font-size:1.8rem;margin-bottom:0.5rem;">📱</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Social Media Post</div>
+    <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">LinkedIn, Twitter, Instagram</div>
+  </div>
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="useTemplate('📧\\nEmail Campaign\\n\\nHi [NAME],\\n\\n[GREETING]\\n\\n[BODY]\\n\\n[CTA]\\n\\nBest,\\n[YOUR NAME]')">
+    <div style="font-size:1.8rem;margin-bottom:0.5rem;">📧</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Email Campaign</div>
+    <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Cold outreach or nurture</div>
+  </div>
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="useTemplate('💰\\nProject Quote\\n\\nCLIENT: [NAME]\\nSERVICE: [SERVICE]\\nSCOPE: [SCOPE]\\nBUDGET: [BUDGET]\\nTERMS: 50% deposit, 50% on completion')">
+    <div style="font-size:1.8rem;margin-bottom:0.5rem;">💰</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Project Quote</div>
+    <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Professional pricing</div>
+  </div>
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="useTemplate('📝\\nBlog Post Outline\\n\\nTITLE: [HEADLINE]\\n\\nINTRO: [HOOK + PROMISE]\\n\\n1. [POINT 1]\\n2. [POINT 2]\\n3. [POINT 3]\\n\\nCONCLUSION: [SUMMARY + CTA]')">
+    <div style="font-size:1.8rem;margin-bottom:0.5rem;">📝</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Blog Post Outline</div>
+    <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Structured content</div>
   </div>
 </div>
 
 <script>
-  const DEFAULT_TEMPLATES = [
-    { id: 'social-post', name: 'Social Post', desc: 'Social media post', content: '[HOOK]\n\n[BODY]\n\n[CTA]\n\n#hashtags' },
-    { id: 'email', name: 'Email', desc: 'Professional email', content: 'Hi [NAME],\n\n[GREETING]\n\n[BODY]\n\n[CTA]\n\nBest,\n[YOUR NAME]' },
-    { id: 'quote', name: 'Quote', desc: 'Professional quote', content: 'QUOTE FOR [CLIENT]\n\nService: [SERVICE]\nScope: [SCOPE]\nPrice: [PRICE]' },
-    { id: 'blog', name: 'Blog Outline', desc: 'Blog post structure', content: 'Title: [HEADLINE]\n\nIntro: [HOOK]\n\n1. [POINT 1]\n2. [POINT 2]\n3. [POINT 3]\n\nConclusion: [CTA]' }
-  ];
-
-  function switchTemplateTab(e, tab) {
-    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-    document.querySelectorAll('.tab-btn').forEach(el => { el.style.color = '#888'; el.style.borderBottom = 'none'; });
-    
-    const tabMap = { templates: 'templatesTab', quote: 'quoteTab', suggestions: 'suggestionsTab' };
-    document.getElementById(tabMap[tab]).style.display = 'block';
-    e.target.style.color = '#8b6f47';
-    e.target.style.borderBottom = '2px solid #8b6f47';
-
-    if (tab === 'templates') renderTemplates();
+function useTemplate(template) {
+  const prompt = document.getElementById('prompt');
+  if (prompt) {
+    prompt.value = template;
+    prompt.focus();
+    if (switchTab) switchTab('chat');
   }
+}
 
-  function renderTemplates() {
-    const builtinContainer = document.getElementById('builtinTemplates');
-    builtinContainer.innerHTML = DEFAULT_TEMPLATES.map(t => `
-      <div style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e5dcd1; cursor: pointer;" onclick="copyTemplate(\`${escapeBacktick(t.content)}\`)">
-        <h3 style="font-weight: 600; color: #2d2d2d; margin-bottom: 6px;">${t.name}</h3>
-        <p style="font-size: 12px; color: #999;">${t.desc}</p>
-      </div>
-    `).join('');
-
-    const customTemplates = lsGet('nagoh_custom_templates', []);
-    const customContainer = document.getElementById('customTemplates');
-    if (customTemplates.length === 0) {
-      customContainer.innerHTML = '<p style="color: #999; grid-column: 1/-1;">No custom templates yet!</p>';
-    } else {
-      customContainer.innerHTML = customTemplates.map((t, i) => `
-        <div style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e5dcd1;">
-          <h3 style="font-weight: 600; color: #2d2d2d; margin-bottom: 8px;">${t.name}</h3>
-          <p style="font-size: 12px; color: #666; margin-bottom: 8px; white-space: pre-wrap; max-height: 60px; overflow: hidden;">${esc(t.content)}</p>
-          <div style="display: flex; gap: 8px;">
-            <button onclick="copyTemplate(\`${escapeBacktick(t.content)}\`)" style="flex: 1; padding: 6px; background: #f0e8d8; border: 1px solid #d4a574; border-radius: 4px; cursor: pointer; font-size: 12px;">Use</button>
-            <button onclick="deleteTemplate(${i})" style="flex: 1; padding: 6px; background: #ffebee; border: 1px solid #f48fb1; border-radius: 4px; cursor: pointer; font-size: 12px; color: #d32f2f;">Delete</button>
-          </div>
-        </div>
-      `).join('');
-    }
+function generateQuote() {
+  const name = document.getElementById('quoteName').value;
+  const service = document.getElementById('quoteService').value;
+  const scope = document.getElementById('quoteScope').value;
+  const budget = document.getElementById('quoteBudget').value;
+  
+  if (!name || !service) {
+    alert('Please fill in client name and service type');
+    return;
   }
+  
+  const quote = `PROJECT QUOTE\n\nDate: ${new Date().toLocaleDateString()}\nClient: ${name}\n\nService: ${service}\nScope: ${scope}\nBudget: ${budget}\n\nTerms: 50% deposit, 50% on completion\nTimeline: TBD based on scope\n\nThank you for your business!`;
+  
+  const output = document.getElementById('quoteOutput');
+  output.innerHTML = `
+    <div style="background:var(--gold-lt);border:1px solid var(--gold-md);border-radius:8px;padding:1rem;font-size:0.8rem;white-space:pre-wrap;margin-bottom:0.75rem;">${quote}</div>
+    <button class="pbtn primary" onclick="copyQuote('${quote.replace(/'/g,"\\'")}')">📋 Copy</button>
+  `;
+}
 
-  function copyTemplate(content) {
-    navigator.clipboard.writeText(content);
-    showSuccessNotification('Template copied!');
-  }
-
-  function openCreateTemplate() {
-    document.getElementById('createTemplateModal').style.display = 'flex';
-    document.getElementById('templateName').focus();
-  }
-
-  function closeCreateTemplate() {
-    document.getElementById('createTemplateModal').style.display = 'none';
-    document.getElementById('templateName').value = '';
-    document.getElementById('templateContent').value = '';
-  }
-
-  function saveTemplate() {
-    const name = document.getElementById('templateName').value.trim();
-    const content = document.getElementById('templateContent').value.trim();
-    
-    if (!name || !content) { alert('Fill all fields'); return; }
-    
-    const customTemplates = lsGet('nagoh_custom_templates', []);
-    customTemplates.push({ name, content });
-    lsSet('nagoh_custom_templates', customTemplates);
-    
-    closeCreateTemplate();
-    renderTemplates();
-    showSuccessNotification('Template saved!');
-  }
-
-  function deleteTemplate(index) {
-    if (!confirm('Delete template?')) return;
-    const customTemplates = lsGet('nagoh_custom_templates', []);
-    customTemplates.splice(index, 1);
-    lsSet('nagoh_custom_templates', customTemplates);
-    renderTemplates();
-  }
-
-  async function generateQuotePreview() {
-    const name = document.getElementById('quoteName').value.trim();
-    const service = document.getElementById('quoteService').value.trim();
-    const scope = document.getElementById('quoteScope').value.trim();
-    const budget = document.getElementById('quoteBudget').value.trim();
-    if (!name || !service || !scope || !budget) { alert('Fill all fields'); return; }
-    
-    const result = await generateQuote(name, service, scope, budget);
-    const output = document.getElementById('quoteOutput');
-    if (result.quote) {
-      output.innerHTML = `<div style="background: white; padding: 24px; border-radius: 8px; border: 1px solid #e5dcd1;"><pre style="font-family: 'DM Sans'; white-space: pre-wrap; margin-bottom: 16px;">${esc(result.quote)}</pre><button onclick="copyQuote(\`${escapeBacktick(result.quote)}\`)" style="padding: 10px 16px; background: #8b6f47; color: white; border: none; border-radius: 6px; cursor: pointer;">Copy Quote</button></div>`;
-      trackAnalytic('quote_generated', { tokens_used: 50 });
-    } else {
-      output.innerHTML = '<p style="color: #d32f2f;">Error: ' + esc(result.error) + '</p>';
-    }
-  }
-
-  function copyQuote(text) {
-    navigator.clipboard.writeText(text);
+function copyQuote(text) {
+  navigator.clipboard.writeText(text).then(() => {
     showSuccessNotification('Quote copied!');
+  });
+}
+
+function getSuggestions() {
+  const content = document.getElementById('suggestContent').value;
+  if (!content) return;
+  
+  const suggestions = [];
+  if (content.includes('utilize')) suggestions.push('Replace "utilize" with "use"');
+  if (content.length > 500) suggestions.push('Consider breaking this into shorter sections');
+  if (/[A-Z]{5,}/.test(content)) suggestions.push('Reduce ALL-CAPS for friendlier tone');
+  if (content.split('.').length < 3) suggestions.push('Add more specific examples');
+  
+  const output = document.getElementById('suggestOutput');
+  if (suggestions.length > 0) {
+    output.innerHTML = suggestions.map(s => `<div style="padding:0.5rem;background:var(--teal-lt);border-radius:6px;margin-bottom:0.5rem;">✨ ${s}</div>`).join('');
+  } else {
+    output.innerHTML = '<div style="color:var(--teal);">✅ Content looks great!</div>';
   }
+}
 
-  async function getSuggestionsPreview() {
-    const content = document.getElementById('suggestionsInput').value.trim();
-    if (!content) { alert('Paste some content'); return; }
-    
-    const result = await getSuggestions(content);
-    const output = document.getElementById('suggestionsOutput');
-    if (result.suggestions) {
-      output.innerHTML = `<h3 style="font-weight: 600; margin-bottom: 12px; color: #2d2d2d;">Suggestions</h3><ul style="margin-left: 20px; line-height: 1.6;">${result.suggestions.map(s => '<li>' + esc(s) + '</li>').join('')}</ul>`;
-      trackAnalytic('suggestion_generated');
-    } else {
-      output.innerHTML = '<p style="color: #d32f2f;">Error: ' + esc(result.error) + '</p>';
-    }
-  }
-
-  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function escapeBacktick(s) { return String(s).replace(/`/g, '\\`'); }
-
-  renderTemplates();
+function showNewTemplateModal() {
+  alert('Template creation coming soon!');
+}
 </script>
