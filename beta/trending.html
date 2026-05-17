@@ -1,1 +1,41 @@
+<h2 style="margin-bottom:1.5rem;">🔥 Trending Topics for Your Industry</h2>
+<div id="trendingTopics"></div>
 
+<script>
+function renderTrendingTopics() {
+  const container = document.getElementById('trendingTopics');
+  const trending = INDUSTRY_TRENDING[currentIndustry === 'realtor' || currentIndustry === 'etsy' ? 'ecommerce' : 'general'];
+  
+  container.innerHTML = '';
+  trending.forEach(topic => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:#fff;border:1px solid var(--border);border-radius:10px;padding:1rem;cursor:pointer;transition:all 0.2s;';
+    card.onmouseover = function() { this.style.borderColor = 'var(--teal)'; this.style.background = 'var(--teal-lt)'; };
+    card.onmouseout = function() { this.style.borderColor = 'var(--border)'; this.style.background = '#fff'; };
+    
+    card.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;">
+        <div style="font-size:1.4rem;">${topic.emoji}</div>
+        <div style="flex:1;">
+          <div style="font-weight:600;color:var(--ink);">${topic.title}</div>
+          <div style="font-size:0.6rem;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--gold-lt);color:var(--dim);display:inline-block;">${topic.momentum}</div>
+        </div>
+      </div>
+      <div style="font-size:0.7rem;color:var(--dim);line-height:1.5;">${topic.context}</div>
+    `;
+    
+    card.onclick = () => {
+      const prompt = document.getElementById('prompt');
+      if (prompt) {
+        prompt.value = `Create content about ${topic.title.toLowerCase()}: `;
+        prompt.focus();
+        if (switchTab) switchTab('chat');
+      }
+    };
+    
+    container.appendChild(card);
+  });
+}
+
+renderTrendingTopics();
+</script>
