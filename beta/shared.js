@@ -1,5 +1,5 @@
 // ═════════════════════════════════════════════════════════════════════════════
-// NAGOH AI — Shared Utilities, Config & API Calls
+// NAGOH AI — Shared Utilities, Config & API Calls (FIXED)
 // ═════════════════════════════════════════════════════════════════════════════
 
 // Configuration
@@ -181,14 +181,13 @@ async function callAPI(endpoint, method = 'GET', body = null) {
 }
 
 async function sendChat(messages, systemPrompt, model = 'deepseek-chat') {
-  const result = await callAPI('/v1/chat', 'POST', {
+  return await callAPI('/v1/chat', 'POST', {
     messages,
     system: systemPrompt,
     model,
     max_tokens: 2048,
     temperature: 0.75,
   });
-  return result;
 }
 
 async function getBalance() {
@@ -263,6 +262,100 @@ function applyUserToUI(user) {
   if (user.picture && avatar) { avatar.src = user.picture; avatar.classList.add('show'); }
   if (user.name && name) { name.textContent = user.name.split(' ')[0]; name.classList.add('show'); }
 }
+
+function showModal() {
+  const modal = document.getElementById('modalWrap');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function hideModal() {
+  const modal = document.getElementById('modalWrap');
+  if (modal) modal.classList.add('hidden');
+}
+
+// ─────────────────────────────────────────────────────────
+// WINDOW FUNCTIONS (called from index.html)
+// ─────────────────────────────────────────────────────────
+
+window.handleGoogleCredential = async (response) => {
+  if (!response || !response.credential) {
+    const authErr = document.getElementById('authErr');
+    if (authErr) authErr.textContent = 'Sign-in cancelled.';
+    const authLoading = document.getElementById('authLoading');
+    if (authLoading) authLoading.style.display = 'none';
+    return;
+  }
+  
+  const authLoading = document.getElementById('authLoading');
+  const authErr = document.getElementById('authErr');
+  if (authLoading) authLoading.style.display = 'block';
+  if (authErr) authErr.textContent = '';
+
+  try {
+    const result = await authGoogle(response.credential);
+
+    if (!result.ok) throw new Error(result.data?.error || 'Auth failed');
+
+    saveSession(result.data.session_token, result.data.user, result.data.token_balance);
+
+    if (typeof applyUserToUI === 'function') applyUserToUI(currentUser);
+    if (typeof setBalUI === 'function') setBalUI(balance);
+    if (typeof setLed === 'function') setLed('on', 'Connected ✓');
+    const sendBtn = document.getElementById('sendBtn');
+    if (sendBtn) sendBtn.disabled = false;
+    hideModal();
+  } catch (err) {
+    if (authErr) authErr.textContent = err.message || 'Sign-in failed.';
+  } finally {
+    if (authLoading) authLoading.style.display = 'none';
+  }
+};
+
+window.continueAsGuest = async () => {
+  const authLoading = document.getElementById('authLoading');
+  if (authLoading) authLoading.style.display = 'block';
+  
+  try {
+    const result = await authGuest();
+    
+    if (result.ok && result.data && result.data.session_token) {
+      saveSession(result.data.session_token, result.data.user, result.data.token_balance);
+      
+      if (typeof applyUserToUI === 'function') applyUserToUI(currentUser);
+      if (typeof setBalUI === 'function') setBalUI(balance);
+      
+      const guestBanner = document.getElementById('guestBanner');
+      if (guestBanner) guestBanner.classList.add('show');
+      
+      if (typeof setLed === 'function') setLed('on', 'Connected ✓');
+      
+      const sendBtn = document.getElementById('sendBtn');
+      if (sendBtn) sendBtn.disabled = false;
+      
+      hideModal();
+    } else {
+      throw new Error((result.data && result.data.error) || 'Guest auth failed');
+    }
+  } catch (err) {
+    console.error('Guest auth error:', err);
+    const authErr = document.getElementById('authErr');
+    if (authErr) authErr.textContent = 'Guest sign-in failed: ' + (err.message || 'Unknown error');
+  } finally {
+    if (authLoading) authLoading.style.display = 'none';
+  }
+};
+
+window.initiateGoogleSignIn = () => {
+  const authErr = document.getElementById('authErr');
+  if (authErr) authErr.textContent = '';
+  
+  const authLoading = document.getElementById('authLoading');
+  if (authLoading) authLoading.style.display = 'block';
+  
+  if (typeof google !== 'undefined') {
+    google.accounts.id.prompt();
+  }
+};
 
 // ─────────────────────────────────────────────────────────
 // GOOGLE OAUTH SETUP
