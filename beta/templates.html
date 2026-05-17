@@ -75,17 +75,45 @@ window.generateQuote = function() {
   const quote = `PROJECT QUOTE\n\nDate: ${new Date().toLocaleDateString()}\nClient: ${name}\n\nService: ${service}\nScope: ${scope}\nBudget: ${budget}\n\nTerms: 50% deposit, 50% on completion\nTimeline: TBD based on scope\n\nThank you for your business!`;
   
   const output = document.getElementById('quoteOutput');
+  const quoteId = 'quote_' + Date.now();
   output.innerHTML = `
-    <div style="background:var(--gold-lt);border:1px solid var(--gold-md);border-radius:8px;padding:1rem;font-size:0.8rem;white-space:pre-wrap;margin-bottom:0.75rem;">${quote}</div>
-    <button class="pbtn primary" onclick="window.copyQuote('${quote.replace(/'/g,"\\'")}')">📋 Copy</button>
+    <div style="background:var(--gold-lt);border:1px solid var(--gold-md);border-radius:8px;padding:1rem;font-size:0.8rem;white-space:pre-wrap;margin-bottom:0.75rem;" id="${quoteId}">${quote.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+    <button class="pbtn primary" onclick="window.copyQuoteFromElement('${quoteId}')">📋 Copy</button>
   `;
 }
 
 window.copyQuote = function(text) {
+  // Decode the text (it comes from onclick with escaped quotes)
+  const decoded = text
+    .replace(/\\n/g, '\n')
+    .replace(/\\'/g, "'")
+    .replace(/&quot;/g, '"');
+  
+  navigator.clipboard.writeText(decoded).then(() => {
+    if (typeof showSuccessNotification === 'function') {
+      showSuccessNotification('Quote copied!');
+    }
+  }).catch(err => {
+    console.error('Copy failed:', err);
+    alert('Failed to copy. Please try again.');
+  });
+}
+
+window.copyQuoteFromElement = function(elementId) {
+  const element = document.getElementById(elementId);
+  if (!element) {
+    alert('Quote not found');
+    return;
+  }
+  
+  const text = element.textContent;
   navigator.clipboard.writeText(text).then(() => {
     if (typeof showSuccessNotification === 'function') {
       showSuccessNotification('Quote copied!');
     }
+  }).catch(err => {
+    console.error('Copy failed:', err);
+    alert('Failed to copy. Please try again.');
   });
 }
 
