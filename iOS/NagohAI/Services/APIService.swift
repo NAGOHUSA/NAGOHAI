@@ -26,8 +26,8 @@ enum APIError: LocalizedError {
 actor APIService {
     static let shared = APIService()
 
-    // Worker base URL
-    private let base = "https://nagohai.gregoryhogan.workers.dev"
+    // Worker base URL — see Config.swift
+    private let base = Config.workerBaseURL
 
     private func request<T: Decodable>(
         _ path: String,

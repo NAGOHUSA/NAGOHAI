@@ -204,7 +204,7 @@ struct UpgradeView: View {
                 } else {
                     // Fallback to direct Stripe payment link
                     await MainActor.run {
-                        if let url = URL(string: "https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06") {
+                        if let url = URL(string: Config.stripePaymentLink) {
                             openURL(url)
                             onDismiss()
                         }

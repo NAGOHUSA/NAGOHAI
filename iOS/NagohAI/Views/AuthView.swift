@@ -196,8 +196,8 @@ struct AuthView: View {
         // 571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com
         // An iOS-specific OAuth client ID is recommended for production.
 
-        let clientID = "571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com"
-        let redirectURI = "nagoh-ai://oauth2redirect"
+        let clientID = Config.googleClientID
+        let redirectURI = "\(Config.urlScheme)://oauth2redirect"
         let nonce = UUID().uuidString.replacingOccurrences(of: "-", with: "")
 
         var components = URLComponents(string: "https://accounts.google.com/o/oauth2/v2/auth")!

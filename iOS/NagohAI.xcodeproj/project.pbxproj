@@ -21,6 +21,7 @@
 		A1000000000000000000030B /* SettingsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000020B /* SettingsSheet.swift */; };
 		A1000000000000000000030C /* UpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000020C /* UpgradeView.swift */; };
 		A1000000000000000000030D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000020D /* Assets.xcassets */; };
+		A1000000000000000000030E /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000021F /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		A1000000000000000000020C /* UpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeView.swift; sourceTree = "<group>"; };
 		A1000000000000000000020D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1000000000000000000020E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1000000000000000000021F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				A10000000000000000000200 /* NagohAIApp.swift */,
 				A10000000000000000000201 /* ContentView.swift */,
 				A10000000000000000000202 /* Theme.swift */,
+				A1000000000000000000021F /* Config.swift */,
 				A10000000000000000000101 /* Models */,
 				A10000000000000000000102 /* Services */,
 				A10000000000000000000103 /* Views */,
@@ -184,6 +187,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000000000000000000030E /* Config.swift in Sources */,
 				A10000000000000000000300 /* NagohAIApp.swift in Sources */,
 				A10000000000000000000301 /* ContentView.swift in Sources */,
 				A10000000000000000000302 /* Theme.swift in Sources */,

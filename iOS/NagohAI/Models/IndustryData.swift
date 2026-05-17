@@ -348,7 +348,7 @@ let INDUSTRIES: [Industry: IndustryConfig] = [
         ideas: [
             IdeaItem(emoji: "🏠", title: "Home insurance tips",  desc: "Educational content"),
             IdeaItem(emoji: "🚗", title: "Auto policy review",   desc: "Seasonal check-in"),
-            IdeaItem(emoji: "👨‍👩‍👧", title: "Life insurance guide", desc: "Family protection"),
+            IdeaItem(emoji: "👪", title: "Life insurance guide", desc: "Family protection"),
             IdeaItem(emoji: "💼", title: "Business coverage",    desc: "Commercial market"),
             IdeaItem(emoji: "📋", title: "Claims walkthrough",   desc: "Client education"),
             IdeaItem(emoji: "⭐", title: "Google review ask",    desc: "Reputation building"),
