@@ -4,7 +4,7 @@
   <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
     <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">💼 Your Templates</h3>
     <div id="customTemplates"></div>
-    <button class="pbtn primary" onclick="showNewTemplateModal()" style="margin-top:1rem;width:100%;">+ New Template</button>
+    <button class="pbtn primary" onclick="window.showNewTemplateModal()" style="margin-top:1rem;width:100%;">+ New Template</button>
   </div>
 
   <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
@@ -14,7 +14,7 @@
       <input type="text" placeholder="Service type" id="quoteService" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
       <input type="text" placeholder="Scope" id="quoteScope" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
       <input type="text" placeholder="Budget range" id="quoteBudget" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
-      <button class="pbtn primary" onclick="generateQuote()" style="width:100%;">Generate Quote</button>
+      <button class="pbtn primary" onclick="window.generateQuote()" style="width:100%;">Generate Quote</button>
     </div>
     <div id="quoteOutput" style="margin-top:1rem;"></div>
   </div>
@@ -22,29 +22,29 @@
   <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
     <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">✨ Smart Suggestions</h3>
     <textarea placeholder="Paste your content here..." id="suggestContent" style="width:100%;padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;min-height:80px;resize:none;"></textarea>
-    <button class="pbtn primary" onclick="getSuggestions()" style="width:100%;margin-top:0.75rem;">Get Suggestions</button>
+    <button class="pbtn primary" onclick="window.getSuggestions()" style="width:100%;margin-top:0.75rem;">Get Suggestions</button>
     <div id="suggestOutput" style="margin-top:1rem;font-size:0.8rem;"></div>
   </div>
 </div>
 
 <h3 style="margin:2rem 0 1rem;color:var(--ink);">📚 Default Templates</h3>
 <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px,1fr));gap:1.5rem;">
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="useTemplate('📱\\nSocial Media Post\\n\\n[HOOK]\\n\\n[BODY]\\n\\n[CTA]\\n\\n#hashtags')">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('📱\\nSocial Media Post\\n\\n[HOOK]\\n\\n[BODY]\\n\\n[CTA]\\n\\n#hashtags')">
     <div style="font-size:1.8rem;margin-bottom:0.5rem;">📱</div>
     <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Social Media Post</div>
     <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">LinkedIn, Twitter, Instagram</div>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="useTemplate('📧\\nEmail Campaign\\n\\nHi [NAME],\\n\\n[GREETING]\\n\\n[BODY]\\n\\n[CTA]\\n\\nBest,\\n[YOUR NAME]')">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('📧\\nEmail Campaign\\n\\nHi [NAME],\\n\\n[GREETING]\\n\\n[BODY]\\n\\n[CTA]\\n\\nBest,\\n[YOUR NAME]')">
     <div style="font-size:1.8rem;margin-bottom:0.5rem;">📧</div>
     <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Email Campaign</div>
     <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Cold outreach or nurture</div>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="useTemplate('💰\\nProject Quote\\n\\nCLIENT: [NAME]\\nSERVICE: [SERVICE]\\nSCOPE: [SCOPE]\\nBUDGET: [BUDGET]\\nTERMS: 50% deposit, 50% on completion')">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('💰\\nProject Quote\\n\\nCLIENT: [NAME]\\nSERVICE: [SERVICE]\\nSCOPE: [SCOPE]\\nBUDGET: [BUDGET]\\nTERMS: 50% deposit, 50% on completion')">
     <div style="font-size:1.8rem;margin-bottom:0.5rem;">💰</div>
     <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Project Quote</div>
     <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Professional pricing</div>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="useTemplate('📝\\nBlog Post Outline\\n\\nTITLE: [HEADLINE]\\n\\nINTRO: [HOOK + PROMISE]\\n\\n1. [POINT 1]\\n2. [POINT 2]\\n3. [POINT 3]\\n\\nCONCLUSION: [SUMMARY + CTA]')">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('📝\\nBlog Post Outline\\n\\nTITLE: [HEADLINE]\\n\\nINTRO: [HOOK + PROMISE]\\n\\n1. [POINT 1]\\n2. [POINT 2]\\n3. [POINT 3]\\n\\nCONCLUSION: [SUMMARY + CTA]')">
     <div style="font-size:1.8rem;margin-bottom:0.5rem;">📝</div>
     <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Blog Post Outline</div>
     <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Structured content</div>
