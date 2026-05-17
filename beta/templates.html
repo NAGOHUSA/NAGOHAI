@@ -52,16 +52,16 @@
 </div>
 
 <script>
-function useTemplate(template) {
+window.useTemplate = function(template) {
   const prompt = document.getElementById('prompt');
   if (prompt) {
     prompt.value = template;
     prompt.focus();
-    if (switchTab) switchTab('chat');
+    if (typeof switchTab === 'function') switchTab('chat');
   }
 }
 
-function generateQuote() {
+window.generateQuote = function() {
   const name = document.getElementById('quoteName').value;
   const service = document.getElementById('quoteService').value;
   const scope = document.getElementById('quoteScope').value;
@@ -77,17 +77,19 @@ function generateQuote() {
   const output = document.getElementById('quoteOutput');
   output.innerHTML = `
     <div style="background:var(--gold-lt);border:1px solid var(--gold-md);border-radius:8px;padding:1rem;font-size:0.8rem;white-space:pre-wrap;margin-bottom:0.75rem;">${quote}</div>
-    <button class="pbtn primary" onclick="copyQuote('${quote.replace(/'/g,"\\'")}')">📋 Copy</button>
+    <button class="pbtn primary" onclick="window.copyQuote('${quote.replace(/'/g,"\\'")}')">📋 Copy</button>
   `;
 }
 
-function copyQuote(text) {
+window.copyQuote = function(text) {
   navigator.clipboard.writeText(text).then(() => {
-    showSuccessNotification('Quote copied!');
+    if (typeof showSuccessNotification === 'function') {
+      showSuccessNotification('Quote copied!');
+    }
   });
 }
 
-function getSuggestions() {
+window.getSuggestions = function() {
   const content = document.getElementById('suggestContent').value;
   if (!content) return;
   
@@ -105,7 +107,7 @@ function getSuggestions() {
   }
 }
 
-function showNewTemplateModal() {
+window.showNewTemplateModal = function() {
   alert('Template creation coming soon!');
 }
 </script>
