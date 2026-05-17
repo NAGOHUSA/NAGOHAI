@@ -676,6 +676,7 @@ input, textarea, select { font-size: 16px !important; }
         <option value="roofing">🏠 Roofing & Construction</option>
         <option value="plumbing">🔧 Plumbing & HVAC</option>
         <option value="salon">💇 Hair & Beauty Services</option>
+        <option value="massage">💆 Massage Therapists</option>
         <option value="photography">📸 Photography & Creative Services</option>
         <option value="personal_training">💪 Personal Training & Fitness</option>
         <option value="insurance">🛡️ Insurance Agents</option>
@@ -996,6 +997,33 @@ const INDUSTRIES = {
       professional: "You are NAGOH AI, a professional business assistant for salons. Provide clear, consistent messaging about services and booking.",
       playful: "You are NAGOH AI, a fun and fabulous salon assistant. Use style and personality. Make beauty feel exciting.",
       concise: "You are NAGOH AI, a salon assistant. Be snappy and visual. Focus on results and booking.",
+    }
+  },
+  massage: {
+    name: '💆 Massage Therapists',
+    placeholder: 'Ask anything — services, booking, wellness tips, client communication…',
+    emptyMsg: 'Marketing and client management tools for massage therapy practices.',
+    quickStarters: [
+      { emoji: '💆', title: 'Service Menu', desc: 'Describe your treatments', prompt: 'Write a description for our massage therapy service: ' },
+      { emoji: '📸', title: 'Wellness Post', desc: 'Educational content', prompt: 'Write a post about the benefits of massage therapy: ' },
+      { emoji: '🧘', title: 'Relaxation Tips', desc: 'Stress relief advice', prompt: 'Write wellness tips for massage therapy clients: ' },
+      { emoji: '💝', title: 'Gift Certificate', desc: 'Holiday promotions', prompt: 'Write a gift certificate promotion for our massage practice: ' },
+      { emoji: '📅', title: 'Appointment Reminder', desc: 'Reduce no-shows', prompt: 'Write a friendly appointment reminder text for massage clients: ' },
+    ],
+    ideas: [
+      { emoji: '🧖', title: 'New therapy intro', desc: 'Expand services' },
+      { emoji: '💪', title: 'Sports massage info', desc: 'Athlete targeting' },
+      { emoji: '🤰', title: 'Prenatal massage', desc: 'Pregnancy wellness' },
+      { emoji: '⭐', title: 'Client testimonial', desc: 'Social proof' },
+      { emoji: '🌿', title: 'Wellness workshop', desc: 'Build community' },
+      { emoji: '👥', title: 'Referral program', desc: 'Grow your practice' },
+      { emoji: '🎁', title: 'Package deal', desc: 'Session bundles' },
+    ],
+    tonePrompts: {
+      friendly: "You are NAGOH AI, a warm and calming assistant for massage therapists. Be supportive about wellness and self-care. Help clients feel valued and relaxed.",
+      professional: "You are NAGOH AI, a professional business assistant for massage practices. Provide clear, credible messaging about health benefits and services.",
+      playful: "You are NAGOH AI, a wellness-focused assistant for massage therapists. Be uplifting and make relaxation feel achievable and deserved.",
+      concise: "You are NAGOH AI, a massage therapist assistant. Be clear and soothing. Focus on benefits and booking.",
     }
   },
   photography: {
