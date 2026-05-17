@@ -1,1 +1,222 @@
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+  <h1 style="font-family: 'Fraunces', serif; font-size: 28px; color: #8b6f47; margin-bottom: 8px;">📊 Analytics Dashboard</h1>
+  <p style="color: #666; margin-bottom: 24px;">Track your content generation and engagement metrics.</p>
 
+  <!-- Period Selector -->
+  <div style="display: flex; gap: 8px; margin-bottom: 24px;">
+    <button class="period-btn" data-period="day" style="padding: 8px 14px; background: #8b6f47; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" onclick="changePeriod(event, 'day')">Today</button>
+    <button class="period-btn" data-period="week" style="padding: 8px 14px; background: #f0e8d8; color: #8b6f47; border: 1px solid #d4a574; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" onclick="changePeriod(event, 'week')">Week</button>
+    <button class="period-btn" data-period="month" style="padding: 8px 14px; background: #f0e8d8; color: #8b6f47; border: 1px solid #d4a574; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500;" onclick="changePeriod(event, 'month')">Month</button>
+  </div>
+
+  <!-- Stats Grid -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px;">
+    <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5dcd1;">
+      <p style="color: #999; font-size: 12px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Content Generated</p>
+      <p style="font-family: 'Fraunces', serif; font-size: 28px; color: #8b6f47; font-weight: 600;" id="statContent">127</p>
+      <p style="color: #666; font-size: 11px; margin-top: 8px;">+12% from last period</p>
+    </div>
+    <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5dcd1;">
+      <p style="color: #999; font-size: 12px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Engagement Rate</p>
+      <p style="font-family: 'Fraunces', serif; font-size: 28px; color: #8b6f47; font-weight: 600;" id="statEngagement">42%</p>
+      <p style="color: #666; font-size: 11px; margin-top: 8px;">Average audience response</p>
+    </div>
+    <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5dcd1;">
+      <p style="color: #999; font-size: 12px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Tokens Used</p>
+      <p style="font-family: 'Fraunces', serif; font-size: 28px; color: #8b6f47; font-weight: 600;" id="statTokens">18,450</p>
+      <p style="color: #666; font-size: 11px; margin-top: 8px;">API requests</p>
+    </div>
+    <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5dcd1;">
+      <p style="color: #999; font-size: 12px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Avg Response Time</p>
+      <p style="font-family: 'Fraunces', serif; font-size: 28px; color: #8b6f47; font-weight: 600;" id="statResponseTime">2.3s</p>
+      <p style="color: #666; font-size: 11px; margin-top: 8px;">Per request</p>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px;">
+    <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5dcd1;">
+      <h3 style="font-weight: 600; color: #2d2d2d; margin-bottom: 16px;">Content Generation Trend</h3>
+      <canvas id="trendChart" height="150"></canvas>
+    </div>
+    <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5dcd1;">
+      <h3 style="font-weight: 600; color: #2d2d2d; margin-bottom: 16px;">Engagement Breakdown</h3>
+      <canvas id="engagementChart" height="150"></canvas>
+    </div>
+    <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5dcd1;">
+      <h3 style="font-weight: 600; color: #2d2d2d; margin-bottom: 16px;">Content by Type</h3>
+      <canvas id="typeChart" height="150"></canvas>
+    </div>
+    <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5dcd1;">
+      <h3 style="font-weight: 600; color: #2d2d2d; margin-bottom: 16px;">Top Topics</h3>
+      <canvas id="topicsChart" height="150"></canvas>
+    </div>
+  </div>
+
+  <!-- Performance Table -->
+  <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid #e5dcd1; overflow-x: auto;">
+    <h3 style="font-weight: 600; color: #2d2d2d; margin-bottom: 16px;">Recent Content</h3>
+    <table style="width: 100%; font-size: 13px;">
+      <thead>
+        <tr style="border-bottom: 2px solid #e5dcd1;">
+          <th style="text-align: left; padding: 12px; color: #999; font-weight: 500;">Type</th>
+          <th style="text-align: left; padding: 12px; color: #999; font-weight: 500;">Title</th>
+          <th style="text-align: left; padding: 12px; color: #999; font-weight: 500;">Date</th>
+          <th style="text-align: left; padding: 12px; color: #999; font-weight: 500;">Tokens</th>
+          <th style="text-align: left; padding: 12px; color: #999; font-weight: 500;">Status</th>
+        </tr>
+      </thead>
+      <tbody id="performanceTable">
+        <tr><td colspan="5" style="text-align: center; padding: 20px; color: #999;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+  let analyticsCharts = {};
+  let currentPeriod = 'day';
+
+  const mockData = {
+    stats: {
+      content_generated: 127,
+      engagement_rate: 42,
+      tokens_used: 18450,
+      avg_response_time: 2.3
+    },
+    trend: [25, 32, 28, 41, 35, 48, 52],
+    engagement: [340, 120, 80],
+    types: [45, 32, 28, 22],
+    topics: [28, 24, 20, 18, 15],
+    recent: [
+      { type: 'Social Post', title: 'Summer Sale Announcement', date: 'Today', tokens: 245, status: '✓ Published' },
+      { type: 'Email', title: 'Welcome Sequence', date: 'Yesterday', tokens: 1520, status: '✓ Sent' },
+      { type: 'Blog', title: '5 Tips for E-commerce', date: '2 days ago', tokens: 3240, status: '✓ Posted' },
+      { type: 'Quote', title: 'Web Design Project', date: '3 days ago', tokens: 340, status: '✓ Approved' },
+      { type: 'Product Copy', title: 'New Product Launch', date: '4 days ago', tokens: 890, status: '✓ Live' },
+    ]
+  };
+
+  async function loadAnalyticsData() {
+    const result = await getAnalyticsDashboard(currentPeriod);
+
+    if (result.error) {
+      console.error('Analytics error:', result.error);
+      // Use mock data
+    }
+
+    const data = result.data || mockData;
+
+    // Update stats
+    document.getElementById('statContent').textContent = data.stats.content_generated;
+    document.getElementById('statEngagement').textContent = data.stats.engagement_rate + '%';
+    document.getElementById('statTokens').textContent = data.stats.tokens_used.toLocaleString();
+    document.getElementById('statResponseTime').textContent = data.stats.avg_response_time + 's';
+
+    // Render charts
+    renderCharts(data);
+
+    // Render table
+    const tbody = document.getElementById('performanceTable');
+    tbody.innerHTML = data.recent.map(row => `
+      <tr style="border-bottom: 1px solid #e5dcd1;">
+        <td style="padding: 12px; color: #666;">${esc(row.type)}</td>
+        <td style="padding: 12px; color: #2d2d2d;"><strong>${esc(row.title)}</strong></td>
+        <td style="padding: 12px; color: #999;">${esc(row.date)}</td>
+        <td style="padding: 12px; color: #666;">${row.tokens.toLocaleString()}</td>
+        <td style="padding: 12px; color: #4caf50;">${row.status}</td>
+      </tr>
+    `).join('');
+
+    trackAnalytic('viewed_analytics');
+  }
+
+  function renderCharts(data) {
+    const ctx = document.getElementById;
+
+    // Destroy existing charts
+    Object.keys(analyticsCharts).forEach(key => {
+      if (analyticsCharts[key]) analyticsCharts[key].destroy();
+    });
+    analyticsCharts = {};
+
+    // Trend Chart
+    analyticsCharts.trend = new Chart(ctx('trendChart'), {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Items Generated',
+          data: data.trend,
+          borderColor: '#8b6f47',
+          backgroundColor: 'rgba(139, 111, 71, 0.05)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 4,
+          pointBackgroundColor: '#8b6f47',
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+
+    // Engagement Chart
+    analyticsCharts.engagement = new Chart(ctx('engagementChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Clicks', 'Shares', 'Comments'],
+        datasets: [{
+          data: data.engagement,
+          backgroundColor: ['#8b6f47', '#d4a574', '#e8dcc8'],
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+
+    // Type Chart
+    analyticsCharts.types = new Chart(ctx('typeChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Social', 'Email', 'Blog', 'Other'],
+        datasets: [{
+          label: 'Count',
+          data: data.types,
+          backgroundColor: '#8b6f47',
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
+    });
+
+    // Topics Chart
+    analyticsCharts.topics = new Chart(ctx('topicsChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Marketing', 'Sales', 'Support', 'Product', 'Other'],
+        datasets: [{
+          label: 'Posts',
+          data: data.topics,
+          backgroundColor: '#8b6f47',
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
+    });
+  }
+
+  function changePeriod(e, period) {
+    document.querySelectorAll('.period-btn').forEach(btn => {
+      btn.style.background = '#f0e8d8';
+      btn.style.color = '#8b6f47';
+      btn.style.border = '1px solid #d4a574';
+    });
+    e.target.style.background = '#8b6f47';
+    e.target.style.color = 'white';
+    e.target.style.border = 'none';
+
+    currentPeriod = period;
+    loadAnalyticsData();
+  }
+
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  loadAnalyticsData();
+</script>
