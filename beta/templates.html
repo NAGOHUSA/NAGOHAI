@@ -119,15 +119,25 @@ window.copyQuoteFromElement = function(elementId) {
 
 window.getSuggestions = function() {
   const content = document.getElementById('suggestContent').value;
-  if (!content) return;
+  const output = document.getElementById('suggestOutput');
+  
+  if (!content || content.trim() === '') {
+    output.innerHTML = '<div style="color:var(--dim);padding:0.5rem;">📝 Paste some content to get suggestions!</div>';
+    return;
+  }
   
   const suggestions = [];
+  
+  // Check for common issues
   if (content.includes('utilize')) suggestions.push('Replace "utilize" with "use"');
+  if (content.includes('leverage')) suggestions.push('Replace "leverage" with "use" or "apply"');
   if (content.length > 500) suggestions.push('Consider breaking this into shorter sections');
   if (/[A-Z]{5,}/.test(content)) suggestions.push('Reduce ALL-CAPS for friendlier tone');
   if (content.split('.').length < 3) suggestions.push('Add more specific examples');
+  if (content.match(/\b(very|really|quite|quite|so)\b/gi)) suggestions.push('Remove filler words like "very" or "really"');
+  if (content.match(/\b(however|therefore|thus)\b/gi)) suggestions.push('Use simpler transitions like "but" or "so"');
+  if (content.includes('!') === false && content.includes('?') === false) suggestions.push('Consider adding a question or exclamation for engagement');
   
-  const output = document.getElementById('suggestOutput');
   if (suggestions.length > 0) {
     output.innerHTML = suggestions.map(s => `<div style="padding:0.5rem;background:var(--teal-lt);border-radius:6px;margin-bottom:0.5rem;">✨ ${s}</div>`).join('');
   } else {
