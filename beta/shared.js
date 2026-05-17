@@ -1,11 +1,13 @@
 // ═════════════════════════════════════════════════════════════════════════════
-// NAGOH AI — Shared Utilities & Constants
+// NAGOH AI — Shared Utilities, Config & API Calls
 // ═════════════════════════════════════════════════════════════════════════════
 
+// Configuration
 const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
 const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
 const STRIPE_PUBLISHABLE_KEY = 'pk_live_51TK0JWGUbXtKf7F7FBt5ingZaPPj8oi6n7sk50AS4yWKkoISv6bJHXphJS5ygOX0QQScFuDUskZ6Uq0SCgwBVwnr00GVEiex2f';
 
+// Industry-specific configurations
 const INDUSTRIES = {
   etsy: {
     name: '🛍️ Etsy & Craft Sellers',
@@ -28,9 +30,9 @@ const INDUSTRIES = {
       { emoji: '📦', title: 'Shipping tips', desc: 'Keep buyers happy' },
     ],
     tonePrompts: {
-      friendly: "You are NAGOH AI, a warm, encouraging assistant for Etsy sellers, crafters, and artists. Be supportive and clear. Use simple language.",
+      friendly: "You are NAGOH AI, a warm, encouraging assistant for Etsy sellers, crafters, and artists. Be supportive and clear. Use simple language. Help them feel confident about their business and creative work.",
       professional: "You are NAGOH AI, a professional business assistant for Etsy sellers. Provide clear, well-structured advice about listings, pricing, and customer service.",
-      playful: "You are NAGOH AI, a fun and enthusiastic assistant for creative makers! Be upbeat and make running a craft business feel exciting.",
+      playful: "You are NAGOH AI, a fun and enthusiastic assistant for creative makers! Be upbeat and make running a craft business feel exciting. Use emojis occasionally.",
       concise: "You are NAGOH AI, an assistant for Etsy sellers. Be extremely concise. Bullet points preferred. No fluff.",
     }
   },
@@ -39,11 +41,11 @@ const INDUSTRIES = {
     placeholder: 'Ask anything — listings, social posts, client follow-ups, property promotions…',
     emptyMsg: 'Create professional property listings and marketing content.',
     quickStarters: [
-      { emoji: '🏘️', title: 'Property Listing', desc: 'MLS-ready descriptions', prompt: 'Write a compelling real estate listing description: ' },
-      { emoji: '📸', title: 'Social Post', desc: 'Facebook, Instagram ads', prompt: 'Write a social media post to promote this property: ' },
-      { emoji: '💌', title: 'Client Follow-up', desc: 'Nurture leads', prompt: 'Write a follow-up email to a client: ' },
+      { emoji: '🏘️', title: 'Property Listing', desc: 'MLS-ready descriptions', prompt: 'Write a compelling real estate listing description for a house at [address/MLS number]: ' },
+      { emoji: '📸', title: 'Social Post', desc: 'Facebook, Instagram ads', prompt: 'Write a social media post to promote this property: [address]: ' },
+      { emoji: '💌', title: 'Client Follow-up', desc: 'Nurture leads', prompt: 'Write a follow-up email to a client who viewed this property: ' },
       { emoji: '📊', title: 'Market Analysis', desc: 'Explain neighborhood value', prompt: 'Write a market analysis summary for this neighborhood: ' },
-      { emoji: '🎯', title: 'Open House Invite', desc: 'Drive attendance', prompt: 'Write an open house invitation email: ' },
+      { emoji: '🎯', title: 'Open House Invite', desc: 'Drive attendance', prompt: 'Write an open house invitation email for: ' },
     ],
     ideas: [
       { emoji: '🏡', title: 'New listing announcement', desc: 'Alert your sphere' },
@@ -55,10 +57,10 @@ const INDUSTRIES = {
       { emoji: '📞', title: 'Cold outreach', desc: 'Expired/FSBO scripts' },
     ],
     tonePrompts: {
-      friendly: "You are NAGOH AI, a helpful assistant for real estate professionals. Be warm, professional, and client-focused.",
-      professional: "You are NAGOH AI, a professional real estate assistant. Provide clear, market-smart advice.",
-      playful: "You are NAGOH AI, an enthusiastic real estate marketing assistant. Be energetic and engaging.",
-      concise: "You are NAGOH AI, a real estate assistant. Be concise and direct.",
+      friendly: "You are NAGOH AI, a helpful assistant for real estate professionals. Be warm, professional, and client-focused. Create content that builds trust and showcases properties effectively.",
+      professional: "You are NAGOH AI, a professional real estate assistant. Provide clear, market-smart advice about listings, marketing, and client management.",
+      playful: "You are NAGOH AI, an enthusiastic real estate marketing assistant. Be energetic and make property marketing fun and engaging.",
+      concise: "You are NAGOH AI, a real estate assistant. Be concise and direct. Focus on key selling points and call-to-action.",
     }
   },
   general: {
@@ -82,14 +84,15 @@ const INDUSTRIES = {
       { emoji: '🎉', title: 'Event planning', desc: 'Customer engagement' },
     ],
     tonePrompts: {
-      friendly: "You are NAGOH AI, a warm and practical assistant for small business owners. Be supportive and encouraging.",
-      professional: "You are NAGOH AI, a professional business assistant. Provide clear, strategic advice.",
-      playful: "You are NAGOH AI, an enthusiastic business assistant. Make entrepreneurship feel exciting.",
-      concise: "You are NAGOH AI, a business assistant. Be direct and actionable.",
+      friendly: "You are NAGOH AI, a warm and practical assistant for small business owners. Be supportive and encouraging. Help entrepreneurs succeed.",
+      professional: "You are NAGOH AI, a professional business assistant. Provide clear, strategic business advice.",
+      playful: "You are NAGOH AI, an enthusiastic business assistant. Make entrepreneurship feel exciting and achievable.",
+      concise: "You are NAGOH AI, a business assistant. Be direct and actionable. Focus on results.",
     }
   }
 };
 
+// Trending topics
 const INDUSTRY_TRENDING = {
   ecommerce: [
     { title: 'Post-Purchase Sequences', emoji: '📧', momentum: 'trending', context: 'Follow-up emails drive repeat purchases by 40%.' },
@@ -107,28 +110,16 @@ const INDUSTRY_TRENDING = {
   ]
 };
 
-// Session state
+// Global state
 let sessionToken = '';
 let currentUser = null;
 let isGuest = false;
 let balance = 0;
 let currentIndustry = 'etsy';
 
-function getSession() {
-  const sessionStored = sessionStorage.getItem('nagoh_session');
-  const localStored = localStorage.getItem('nagoh_session');
-  const saved = sessionStored || localStored;
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      sessionToken = parsed.token;
-      currentUser = parsed.user;
-      balance = parsed.balance || 0;
-      return true;
-    } catch { return false; }
-  }
-  return false;
-}
+// ─────────────────────────────────────────────────────────
+// SESSION MANAGEMENT
+// ─────────────────────────────────────────────────────────
 
 function saveSession(token, user, bal) {
   sessionToken = token;
@@ -139,6 +130,25 @@ function saveSession(token, user, bal) {
   localStorage.setItem('nagoh_session', JSON.stringify(sessionData));
 }
 
+function getSession() {
+  const sessionStored = sessionStorage.getItem('nagoh_session');
+  const localStored = localStorage.getItem('nagoh_session');
+  const saved = sessionStored || localStored;
+  
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      sessionToken = parsed.token;
+      currentUser = parsed.user;
+      balance = parsed.balance || 0;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  return false;
+}
+
 function clearSession() {
   sessionToken = '';
   currentUser = null;
@@ -147,169 +157,95 @@ function clearSession() {
   localStorage.removeItem('nagoh_session');
 }
 
-function isLoggedIn() {
-  return !!sessionToken && !!currentUser;
-}
+// ─────────────────────────────────────────────────────────
+// API CALLS
+// ─────────────────────────────────────────────────────────
 
-// API calls
-async function handleGoogleCredential(response) {
-  if (!response || !response.credential) return { error: 'Sign-in cancelled.' };
-  try {
-    const r = await fetch(`${WORKER}/v1/auth/google`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id_token: response.credential }),
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error || 'Auth failed');
-    saveSession(d.session_token, d.user, d.token_balance);
-    return { success: true, user: d.user, balance: d.token_balance };
-  } catch (err) {
-    return { error: err.message || 'Sign-in failed.' };
-  }
-}
-
-async function guestAuth() {
-  try {
-    const r = await fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' });
-    const d = await r.json();
-    if (d.session_token) {
-      saveSession(d.session_token, d.user, d.token_balance);
-      isGuest = true;
-      return { success: true, user: d.user, balance: d.token_balance };
+async function callAPI(endpoint, method = 'GET', body = null) {
+  const options = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${sessionToken}`,
     }
-  } catch (err) {
-    return { error: err.message };
-  }
-}
-
-async function getBalance() {
+  };
+  if (body) options.body = JSON.stringify(body);
+  
   try {
-    const r = await fetch(`${WORKER}/v1/balance`, {
-      headers: { 'Authorization': `Bearer ${sessionToken}` }
-    });
+    const r = await fetch(`${WORKER}${endpoint}`, options);
     const d = await r.json();
-    if (!r.ok) throw new Error(d.error);
-    balance = d.token_balance;
-    return d;
-  } catch (err) {
-    return { error: err.message };
+    return { ok: r.ok, status: r.status, data: d };
+  } catch (e) {
+    return { ok: false, status: 0, error: e.message };
   }
 }
 
 async function sendChat(messages, systemPrompt, model = 'deepseek-chat') {
-  try {
-    const r = await fetch(`${WORKER}/v1/chat`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionToken}`,
-      },
-      body: JSON.stringify({ messages, system: systemPrompt, model, max_tokens: 2048, temperature: 0.75 }),
-    });
-    const data = await r.json();
-    if (!r.ok) return { error: data.error || 'API error', status: r.status };
-    balance = data.nagoh.tokens_remaining;
-    return { success: true, reply: data.message.content, nagoh: data.nagoh };
-  } catch (err) {
-    return { error: err.message };
-  }
+  const result = await callAPI('/v1/chat', 'POST', {
+    messages,
+    system: systemPrompt,
+    model,
+    max_tokens: 2048,
+    temperature: 0.75,
+  });
+  return result;
 }
 
-async function trackAnalytic(event, data = {}) {
-  try {
-    await fetch(`${WORKER}/v1/analytics/track`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionToken}`,
-      },
-      body: JSON.stringify({ event, ...data }),
-    });
-  } catch (err) {
-    console.error('Analytics error:', err);
-  }
+async function getBalance() {
+  const result = await callAPI('/v1/balance');
+  if (result.ok) balance = result.data.token_balance;
+  return result;
 }
 
-async function getAnalyticsDashboard(period = 'week') {
-  try {
-    const r = await fetch(`${WORKER}/v1/analytics/dashboard?period=${period}`, {
-      headers: { 'Authorization': `Bearer ${sessionToken}` }
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error);
-    return d;
-  } catch (err) {
-    return { error: err.message };
-  }
+async function authGoogle(idToken) {
+  return await callAPI('/v1/auth/google', 'POST', { id_token: idToken });
 }
 
-async function getTrendingTopics() {
-  try {
-    const r = await fetch(`${WORKER}/v1/trending`, {
-      headers: { 'Authorization': `Bearer ${sessionToken}` }
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error);
-    return d;
-  } catch (err) {
-    return { error: err.message };
-  }
+async function authGuest() {
+  return await callAPI('/v1/auth/guest', 'POST', {});
 }
 
-async function generateQuote(clientName, service, scope, budget, details = '') {
-  try {
-    const r = await fetch(`${WORKER}/v1/quotes`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionToken}`,
-      },
-      body: JSON.stringify({ client_name: clientName, service, scope, budget, details }),
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error);
-    return { quote: d.quote };
-  } catch (err) {
-    return { error: err.message };
-  }
+// ─────────────────────────────────────────────────────────
+// LOCAL STORAGE HELPERS
+// ─────────────────────────────────────────────────────────
+
+function lsSet(k, v) { 
+  try { localStorage.setItem(k, JSON.stringify(v)); } catch {} 
 }
 
-async function getSuggestions(content, type = 'general') {
-  try {
-    const r = await fetch(`${WORKER}/v1/suggestions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionToken}`,
-      },
-      body: JSON.stringify({ content, type }),
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error);
-    return d;
-  } catch (err) {
-    return { error: err.message };
-  }
+function lsGet(k, d) { 
+  try { 
+    const v = localStorage.getItem(k); 
+    return v ? JSON.parse(v) : d; 
+  } catch { 
+    return d; 
+  } 
 }
 
-// Local storage helpers
-function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
-function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
-function lsDel(k) { try { localStorage.removeItem(k); } catch {} }
+// ─────────────────────────────────────────────────────────
+// UI HELPERS
+// ─────────────────────────────────────────────────────────
 
-// UI helpers
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 function showSuccessNotification(msg) {
   const banner = document.getElementById('successBanner');
   if (banner) {
     document.getElementById('successMsg').textContent = msg;
     banner.classList.add('show');
-    setTimeout(() => banner.classList.remove('show'), 4000);
+    setTimeout(() => {
+      banner.classList.remove('show');
+    }, 4000);
   }
 }
 
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function setLed(state, label) {
+  const led = document.getElementById('led');
+  const sstr = document.getElementById('sstr');
+  if (led) led.className = 'dot ' + state;
+  if (sstr) sstr.textContent = label;
 }
 
 function setBalUI(n) {
@@ -320,15 +256,23 @@ function setBalUI(n) {
   if (topBal) topBal.innerHTML = `${fmt} <span>tokens</span>`;
 }
 
+function applyUserToUI(user) {
+  if (!user) return;
+  const avatar = document.getElementById('tuserAvatar');
+  const name = document.getElementById('tuserName');
+  if (user.picture && avatar) { avatar.src = user.picture; avatar.classList.add('show'); }
+  if (user.name && name) { name.textContent = user.name.split(' ')[0]; name.classList.add('show'); }
+}
+
+// ─────────────────────────────────────────────────────────
+// GOOGLE OAUTH SETUP
+// ─────────────────────────────────────────────────────────
+
 function initGoogle() {
   if (typeof google !== 'undefined') {
     google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
-      callback: async (response) => {
-        const result = await handleGoogleCredential(response);
-        if (result.success && window.onGoogleSignIn) window.onGoogleSignIn(result);
-        else if (result.error && window.onGoogleSignInError) window.onGoogleSignInError(result.error);
-      },
+      callback: window.handleGoogleCredential,
       auto_select: false,
       cancel_on_tap_outside: false,
     });
