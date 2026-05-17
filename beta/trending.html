@@ -2,7 +2,7 @@
 <div id="trendingTopics"></div>
 
 <script>
-function renderTrendingTopics() {
+window.renderTrendingTopics = function() {
   const container = document.getElementById('trendingTopics');
   const trending = INDUSTRY_TRENDING[currentIndustry === 'realtor' || currentIndustry === 'etsy' ? 'ecommerce' : 'general'];
   
@@ -29,7 +29,7 @@ function renderTrendingTopics() {
       if (prompt) {
         prompt.value = `Create content about ${topic.title.toLowerCase()}: `;
         prompt.focus();
-        if (switchTab) switchTab('chat');
+        if (typeof switchTab === 'function') switchTab('chat');
       }
     };
     
@@ -37,5 +37,5 @@ function renderTrendingTopics() {
   });
 }
 
-renderTrendingTopics();
+window.renderTrendingTopics();
 </script>
