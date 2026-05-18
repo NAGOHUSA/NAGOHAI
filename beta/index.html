@@ -579,7 +579,7 @@ input, textarea, select { font-size: 16px !important; }
 <div class="topbar">
   <div>
     <div class="wordmark">NAGOH <em>AI</em></div>
-    <div class="tagline">YOUR BUSINESS ASSISTANT</div>
+    <div class="tagline">YOUR BUSINESS ASSISTANT <span style="font-size:0.6rem;color:var(--dim);">v1.0</span></div>
   </div>
   <div class="tsep"></div>
   <div class="tbal" id="topBal">— <span>tokens</span></div>
@@ -825,13 +825,35 @@ async function loadTemplatesPage() {
   const container = document.getElementById('templatesContainer');
   container.innerHTML = '<p>Loading templates...</p>';
   try {
-    const html = await fetch('templates.html').then(r => r.text());
+    const timestamp = new Date().getTime();
+    const html = await fetch(`templates.html?v=${timestamp}`).then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.text();
+    });
+    
+    // Insert HTML
     container.innerHTML = html;
-    // Eval any scripts in the loaded HTML
+    console.log('✅ Templates HTML injected');
+    
+    // Extract and execute scripts with proper error handling
     const scripts = container.querySelectorAll('script');
-    scripts.forEach(script => eval(script.textContent));
+    console.log(`📝 Found ${scripts.length} scripts to execute`);
+    
+    for (let script of scripts) {
+      try {
+        // Use Function constructor instead of eval for better scope access
+        const fn = new Function(script.textContent);
+        fn.call(window);
+        console.log('✅ Script executed successfully');
+      } catch (scriptError) {
+        console.error('❌ Script execution error:', scriptError);
+        throw scriptError;
+      }
+    }
+    
   } catch (e) {
-    container.innerHTML = '<p>Could not load templates. Make sure templates.html exists.</p>';
+    console.error('❌ Templates load error:', e);
+    container.innerHTML = `<p>Could not load templates. Error: ${e.message}</p><p style="font-size:0.8rem;color:#999;">Check console for details.</p>`;
   }
 }
 
@@ -839,10 +861,22 @@ async function loadTrendingPage() {
   const container = document.getElementById('trendingContainer');
   container.innerHTML = '<p>Loading trending...</p>';
   try {
-    const html = await fetch('trending.html').then(r => r.text());
+    const timestamp = new Date().getTime();
+    const html = await fetch(`trending.html?v=${timestamp}`).then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.text();
+    });
     container.innerHTML = html;
     const scripts = container.querySelectorAll('script');
-    scripts.forEach(script => eval(script.textContent));
+    for (let script of scripts) {
+      try {
+        const fn = new Function(script.textContent);
+        fn.call(window);
+      } catch (scriptError) {
+        console.error('❌ Trending script error:', scriptError);
+        throw scriptError;
+      }
+    }
   } catch (e) {
     container.innerHTML = '<p>Could not load trending. Make sure trending.html exists.</p>';
   }
@@ -852,10 +886,22 @@ async function loadAnalyticsPage() {
   const container = document.getElementById('analyticsContainer');
   container.innerHTML = '<p>Loading analytics...</p>';
   try {
-    const html = await fetch('analytics.html').then(r => r.text());
+    const timestamp = new Date().getTime();
+    const html = await fetch(`analytics.html?v=${timestamp}`).then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.text();
+    });
     container.innerHTML = html;
     const scripts = container.querySelectorAll('script');
-    scripts.forEach(script => eval(script.textContent));
+    for (let script of scripts) {
+      try {
+        const fn = new Function(script.textContent);
+        fn.call(window);
+      } catch (scriptError) {
+        console.error('❌ Analytics script error:', scriptError);
+        throw scriptError;
+      }
+    }
   } catch (e) {
     container.innerHTML = '<p>Could not load analytics. Make sure analytics.html exists.</p>';
   }
