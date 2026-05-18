@@ -211,26 +211,6 @@ function renderTrendingTopics(topics) {
   });
 }
 
-function sendTopicToChat(title, emoji, context) {
-  console.log(`📤 Sending to chat: ${title}`);
-  const chatPrompt = document.getElementById('prompt');
-  if (chatPrompt) {
-    const prompt = `Topic: ${title} ${emoji}\n\nContext: ${context}\n\nHelp me create 3 variations of content about this topic optimized for my audience.`;
-    chatPrompt.value = prompt;
-    chatPrompt.focus();
-    
-    if (typeof switchTab === 'function') {
-      switchTab('chat');
-    }
-    
-    if (typeof showSuccessNotification === 'function') {
-      showSuccessNotification('✅ Topic added to chat!');
-    }
-  } else {
-    console.error('Chat prompt element not found');
-  }
-}
-
 // Wait for currentIndustry to be available
 function initTrending() {
   if (typeof currentIndustry === 'undefined') {
