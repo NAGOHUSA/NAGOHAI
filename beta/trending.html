@@ -99,12 +99,21 @@ function sendTopicToChat(topic) {
   }
 }
 
-// Load trending topics immediately when page loads
+// Load trending topics when page loads - wait for currentIndustry to be defined
 console.log('🚀 Trending page loaded');
-loadTrendingTopics();
 
-// Also hook into the industry change event
-setTimeout(() => {
+// Wait for currentIndustry to be available
+function initTrending() {
+  if (typeof currentIndustry === 'undefined') {
+    console.log('⏳ Waiting for currentIndustry...');
+    setTimeout(initTrending, 100);
+    return;
+  }
+  
+  console.log('✅ currentIndustry ready:', currentIndustry);
+  loadTrendingTopics();
+  
+  // Hook into the industry change event
   const originalOnIndustryChange = window.onIndustryChange;
   window.onIndustryChange = function() {
     console.log('🔄 Industry changed, reloading trends');
@@ -116,5 +125,7 @@ setTimeout(() => {
       loadTrendingTopics();
     }, 100);
   };
-}, 500);
+}
+
+initTrending();
 </script>
