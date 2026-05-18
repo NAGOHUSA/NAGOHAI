@@ -678,36 +678,37 @@ function initTemplates() {
 }
 
 function renderTemplates() {
-  const industryKey = (currentIndustry || 'default').toLowerCase();
-  const config = industryTemplates[industryKey] || industryTemplates.default;
-  
-  // Safety checks - log which elements are missing
-  const titleEl = document.getElementById('templatesTitle');
-  const descEl = document.getElementById('templatesDescription');
-  const headingEl = document.getElementById('templatesHeading');
-  const quoteEl = document.getElementById('quoteToolTitle');
-  const templatesContainer = document.getElementById('templatesContainer');
-  const strategiesContainer = document.getElementById('strategiesContainer');
-  
-  if (!titleEl) console.error('❌ templatesTitle is null');
-  if (!descEl) console.error('❌ templatesDescription is null');
-  if (!headingEl) console.error('❌ templatesHeading is null');
-  if (!quoteEl) console.error('❌ quoteToolTitle is null');
-  if (!templatesContainer) console.error('❌ templatesContainer is null');
-  if (!strategiesContainer) console.error('❌ strategiesContainer is null');
-  
-  // Only proceed if all elements exist
-  if (!titleEl || !descEl || !headingEl || !quoteEl || !templatesContainer || !strategiesContainer) {
-    console.log('⏳ Elements still not ready, retrying...');
-    setTimeout(renderTemplates, 200);
-    return;
-  }
-  
-  // Update titles
-  titleEl.textContent = config.title;
-  descEl.textContent = config.description;
-  headingEl.textContent = 'Templates for ' + config.title;
-  quoteEl.textContent = config.quoteTitle;
+  try {
+    const industryKey = (currentIndustry || 'default').toLowerCase();
+    const config = industryTemplates[industryKey] || industryTemplates.default;
+    
+    // Safety checks - log which elements are missing
+    const titleEl = document.getElementById('templatesTitle');
+    const descEl = document.getElementById('templatesDescription');
+    const headingEl = document.getElementById('templatesHeading');
+    const quoteEl = document.getElementById('quoteToolTitle');
+    const templatesContainer = document.getElementById('templatesContainer');
+    const strategiesContainer = document.getElementById('strategiesContainer');
+    
+    if (!titleEl) console.error('❌ templatesTitle is null');
+    if (!descEl) console.error('❌ templatesDescription is null');
+    if (!headingEl) console.error('❌ templatesHeading is null');
+    if (!quoteEl) console.error('❌ quoteToolTitle is null');
+    if (!templatesContainer) console.error('❌ templatesContainer is null');
+    if (!strategiesContainer) console.error('❌ strategiesContainer is null');
+    
+    // Only proceed if all elements exist
+    if (!titleEl || !descEl || !headingEl || !quoteEl || !templatesContainer || !strategiesContainer) {
+      console.log('⏳ Elements still not ready, retrying...');
+      setTimeout(renderTemplates, 200);
+      return;
+    }
+    
+    // Update titles
+    titleEl.textContent = config.title;
+    descEl.textContent = config.description;
+    headingEl.textContent = 'Templates for ' + config.title;
+    quoteEl.textContent = config.quoteTitle;
   
   // Render template cards
   templatesContainer.innerHTML = config.templates.map(template => `
@@ -732,23 +733,66 @@ function renderTemplates() {
       <button style="width:100%;padding:0.5rem;background:var(--teal);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.75rem;font-weight:600;">➕ Use Strategy</button>
     </div>
   `).join('');
+  } catch (error) {
+    console.error('❌ Error in renderTemplates:', error);
+    console.error('Stack:', error.stack);
+  }
 }
 
 // Global functions
 window.copyText = function(elementId) {
   const el = document.getElementById(elementId);
-  if (!el) return;
+  if (!el) {
+    alert('Element not found');
+    return;
+  }
   
   const text = el.textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = event.target;
-    const original = btn.textContent;
-    btn.textContent = '✅ Copied!';
-    setTimeout(() => { btn.textContent = original; }, 2000);
-  }).catch(() => {
-    alert('Copy failed. Please try again.');
-  });
+  
+  // Try modern clipboard API first
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = event.target;
+      const original = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.textContent = original; }, 2000);
+      console.log('✅ Copied via clipboard API');
+    }).catch((err) => {
+      console.error('Clipboard API error:', err);
+      fallbackCopy(text);
+    });
+  } else {
+    // Fallback for older browsers
+    fallbackCopy(text);
+  }
 };
+
+// Fallback copy method
+function fallbackCopy(text) {
+  try {
+    // Create temporary textarea
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    // Copy to clipboard
+    const success = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    
+    if (success) {
+      alert('✅ Copied to clipboard!');
+      console.log('✅ Copied via fallback method');
+    } else {
+      alert('❌ Copy failed. Please try again.');
+    }
+  } catch (err) {
+    console.error('Fallback copy error:', err);
+    alert('❌ Copy failed: ' + err.message);
+  }
+}
 
 window.pasteToChat = function(elementId) {
   const el = document.getElementById(elementId);
@@ -838,26 +882,44 @@ window.getSuggestions = function() {
 
 console.log('🚀 Templates page loaded');
 
-// Wait for DOM elements to be accessible before initializing
+// Aggressively wait for DOM to be completely ready
 function safeInitTemplates() {
+  // Wait for currentIndustry
   if (typeof currentIndustry === 'undefined') {
     console.log('⏳ Waiting for currentIndustry...');
     setTimeout(safeInitTemplates, 100);
     return;
   }
   
-  // Check if required DOM elements exist
-  if (!document.getElementById('templatesTitle') || 
-      !document.getElementById('templatesContainer') || 
-      !document.getElementById('strategiesContainer')) {
-    console.log('⏳ Waiting for DOM elements to be ready...');
-    setTimeout(safeInitTemplates, 100);
-    return;
+  // Wait for all DOM elements to exist AND be in the DOM tree
+  try {
+    const titleEl = document.getElementById('templatesTitle');
+    const descEl = document.getElementById('templatesDescription');
+    const headingEl = document.getElementById('templatesHeading');
+    const quoteEl = document.getElementById('quoteToolTitle');
+    const templatesContainerEl = document.getElementById('templatesContainer');
+    const strategiesContainerEl = document.getElementById('strategiesContainer');
+    
+    // Check if they exist AND are actually in the document
+    if (!titleEl || !titleEl.parentElement ||
+        !descEl || !descEl.parentElement ||
+        !headingEl || !headingEl.parentElement ||
+        !quoteEl || !quoteEl.parentElement ||
+        !templatesContainerEl || !templatesContainerEl.parentElement ||
+        !strategiesContainerEl || !strategiesContainerEl.parentElement) {
+      console.log('⏳ DOM elements not ready or not in document tree, retrying...');
+      setTimeout(safeInitTemplates, 150);
+      return;
+    }
+    
+    console.log('✅ DOM ready, initializing templates');
+    initTemplates();
+  } catch (e) {
+    console.error('⏳ Error checking DOM, retrying:', e.message);
+    setTimeout(safeInitTemplates, 150);
   }
-  
-  console.log('✅ DOM ready, initializing templates');
-  initTemplates();
 }
 
-safeInitTemplates();
+// Give DOM extra time to settle before checking
+setTimeout(safeInitTemplates, 300);
 </script>
