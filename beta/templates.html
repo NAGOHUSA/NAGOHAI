@@ -681,14 +681,35 @@ function renderTemplates() {
   const industryKey = (currentIndustry || 'default').toLowerCase();
   const config = industryTemplates[industryKey] || industryTemplates.default;
   
+  // Safety checks - log which elements are missing
+  const titleEl = document.getElementById('templatesTitle');
+  const descEl = document.getElementById('templatesDescription');
+  const headingEl = document.getElementById('templatesHeading');
+  const quoteEl = document.getElementById('quoteToolTitle');
+  const templatesContainer = document.getElementById('templatesContainer');
+  const strategiesContainer = document.getElementById('strategiesContainer');
+  
+  if (!titleEl) console.error('❌ templatesTitle is null');
+  if (!descEl) console.error('❌ templatesDescription is null');
+  if (!headingEl) console.error('❌ templatesHeading is null');
+  if (!quoteEl) console.error('❌ quoteToolTitle is null');
+  if (!templatesContainer) console.error('❌ templatesContainer is null');
+  if (!strategiesContainer) console.error('❌ strategiesContainer is null');
+  
+  // Only proceed if all elements exist
+  if (!titleEl || !descEl || !headingEl || !quoteEl || !templatesContainer || !strategiesContainer) {
+    console.log('⏳ Elements still not ready, retrying...');
+    setTimeout(renderTemplates, 200);
+    return;
+  }
+  
   // Update titles
-  document.getElementById('templatesTitle').textContent = config.title;
-  document.getElementById('templatesDescription').textContent = config.description;
-  document.getElementById('templatesHeading').textContent = 'Templates for ' + config.title;
-  document.getElementById('quoteToolTitle').textContent = config.quoteTitle;
+  titleEl.textContent = config.title;
+  descEl.textContent = config.description;
+  headingEl.textContent = 'Templates for ' + config.title;
+  quoteEl.textContent = config.quoteTitle;
   
   // Render template cards
-  const templatesContainer = document.getElementById('templatesContainer');
   templatesContainer.innerHTML = config.templates.map(template => `
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(42,157,143,0.15)'" onmouseout="this.style.boxShadow='none'">
       <div style="font-size:2rem;margin-bottom:0.5rem;">${template.emoji}</div>
@@ -703,7 +724,6 @@ function renderTemplates() {
   `).join('');
   
   // Render strategy cards
-  const strategiesContainer = document.getElementById('strategiesContainer');
   strategiesContainer.innerHTML = config.strategies.map((strategy, idx) => `
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;transition:all 0.2s;cursor:pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(42,157,143,0.15)';this.style.borderColor='var(--teal)'" onmouseout="this.style.boxShadow='none';this.style.borderColor='var(--border)'" onclick="window.sendStrategyToChat('${strategy.prompt.replace(/'/g, "\\'")}')">
       <div style="font-size:1.8rem;margin-bottom:0.5rem;">${strategy.emoji}</div>
