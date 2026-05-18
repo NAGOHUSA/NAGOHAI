@@ -1,155 +1,270 @@
 <h2 style="margin-bottom:1.5rem;">📋 Templates & Tools</h2>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px,1fr));gap:1.5rem;">
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-    <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">💼 Your Templates</h3>
-    <div id="customTemplates"></div>
-    <button class="pbtn primary" onclick="window.showNewTemplateModal()" style="margin-top:1rem;width:100%;">+ New Template</button>
+<!-- Quote Generator -->
+<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;">
+  <h3 style="font-size:0.95rem;margin-bottom:1rem;color:var(--ink);">💰 Quote Generator</h3>
+  <div style="display:flex;flex-direction:column;gap:0.75rem;font-size:0.85rem;">
+    <input type="text" placeholder="Client name" id="quoteName" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+    <input type="text" placeholder="Service type" id="quoteService" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+    <input type="text" placeholder="Scope" id="quoteScope" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+    <input type="text" placeholder="Budget range" id="quoteBudget" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+    <button class="pbtn primary" onclick="genQuote()" style="width:100%;">Generate Quote</button>
   </div>
-
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-    <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">💰 Quote Generator</h3>
-    <div style="display:flex;flex-direction:column;gap:0.75rem;font-size:0.85rem;">
-      <input type="text" placeholder="Client name" id="quoteName" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
-      <input type="text" placeholder="Service type" id="quoteService" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
-      <input type="text" placeholder="Scope" id="quoteScope" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
-      <input type="text" placeholder="Budget range" id="quoteBudget" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
-      <button class="pbtn primary" onclick="window.generateQuote()" style="width:100%;">Generate Quote</button>
-    </div>
-    <div id="quoteOutput" style="margin-top:1rem;"></div>
-  </div>
-
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-    <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">✨ Smart Suggestions</h3>
-    <textarea placeholder="Paste your content here..." id="suggestContent" style="width:100%;padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;min-height:80px;resize:none;"></textarea>
-    <button class="pbtn primary" onclick="window.getSuggestions()" style="width:100%;margin-top:0.75rem;">Get Suggestions</button>
-    <div id="suggestOutput" style="margin-top:1rem;font-size:0.8rem;"></div>
-  </div>
+  <div id="quoteBox" style="margin-top:1rem;"></div>
 </div>
 
-<h3 style="margin:2rem 0 1rem;color:var(--ink);">📚 Default Templates</h3>
-<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px,1fr));gap:1.5rem;">
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('Write a social media post about: ')">
-    <div style="font-size:1.8rem;margin-bottom:0.5rem;">📱</div>
-    <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Social Media Post</div>
-    <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">LinkedIn, Twitter, Instagram</div>
+<!-- Smart Suggestions -->
+<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;">
+  <h3 style="font-size:0.95rem;margin-bottom:1rem;color:var(--ink);">✨ Smart Suggestions</h3>
+  <textarea placeholder="Paste your content here..." id="suggestArea" style="width:100%;padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;min-height:80px;resize:none;"></textarea>
+  <button class="pbtn primary" onclick="getSuggestions()" style="width:100%;margin-top:0.75rem;">Get Suggestions</button>
+  <div id="suggestBox" style="margin-top:1rem;font-size:0.8rem;"></div>
+</div>
+
+<!-- Quick Templates -->
+<h3 style="margin:2rem 0 1rem;color:var(--ink);">📚 Quick Templates</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(250px,1fr));gap:1.5rem;">
+  <!-- Social Post -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+    <div style="font-size:1.6rem;margin-bottom:0.5rem;">📱</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;font-size:0.9rem;">Social Media Post</div>
+    <div id="socialBox" style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:6px;padding:0.75rem;font-size:0.75rem;white-space:pre-wrap;font-family:monospace;margin-bottom:0.75rem;max-height:200px;overflow:auto;">Write a social media post about: [TOPIC]
+
+Hook: [Your attention-grabbing opening]
+Body: [Main message]
+CTA: [Call to action]
+Hashtags: [Relevant tags]</div>
+    <button class="pbtn" onclick="copyText('socialBox')" style="width:100%;margin-bottom:0.5rem;">📋 Copy Template</button>
+    <button class="pbtn primary" onclick="pasteToChat('socialBox')" style="width:100%;">📤 Paste to Chat</button>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('Write a professional email about: ')">
-    <div style="font-size:1.8rem;margin-bottom:0.5rem;">📧</div>
-    <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Email Campaign</div>
-    <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Cold outreach or nurture</div>
+
+  <!-- Email -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+    <div style="font-size:1.6rem;margin-bottom:0.5rem;">📧</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;font-size:0.9rem;">Email Campaign</div>
+    <div id="emailBox" style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:6px;padding:0.75rem;font-size:0.75rem;white-space:pre-wrap;font-family:monospace;margin-bottom:0.75rem;max-height:200px;overflow:auto;">Subject: [Compelling subject]
+
+Hi [NAME],
+
+[Greeting - personalize the opening]
+
+[Main message - 2-3 sentences]
+
+[Call to action - what do you want them to do?]
+
+Best,
+[Your name]</div>
+    <button class="pbtn" onclick="copyText('emailBox')" style="width:100%;margin-bottom:0.5rem;">📋 Copy Template</button>
+    <button class="pbtn primary" onclick="pasteToChat('emailBox')" style="width:100%;">📤 Paste to Chat</button>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('Generate a professional project quote for: ')">
-    <div style="font-size:1.8rem;margin-bottom:0.5rem;">💰</div>
-    <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Project Quote</div>
-    <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Professional pricing</div>
+
+  <!-- Blog Outline -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+    <div style="font-size:1.6rem;margin-bottom:0.5rem;">📝</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;font-size:0.9rem;">Blog Post Outline</div>
+    <div id="blogBox" style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:6px;padding:0.75rem;font-size:0.75rem;white-space:pre-wrap;font-family:monospace;margin-bottom:0.75rem;max-height:200px;overflow:auto;">TITLE: [Your headline]
+
+INTRO:
+[Hook - grab attention]
+[Promise - what will they learn?]
+
+SECTION 1: [Point 1]
+- Detail
+- Detail
+
+SECTION 2: [Point 2]
+- Detail
+- Detail
+
+SECTION 3: [Point 3]
+- Detail
+- Detail
+
+CONCLUSION:
+[Summary]
+[Final CTA]</div>
+    <button class="pbtn" onclick="copyText('blogBox')" style="width:100%;margin-bottom:0.5rem;">📋 Copy Template</button>
+    <button class="pbtn primary" onclick="pasteToChat('blogBox')" style="width:100%;">📤 Paste to Chat</button>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('Create a blog post outline for: ')">
-    <div style="font-size:1.8rem;margin-bottom:0.5rem;">📝</div>
-    <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Blog Post Outline</div>
-    <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Structured content</div>
+
+  <!-- Product Description -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+    <div style="font-size:1.6rem;margin-bottom:0.5rem;">🛍️</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;font-size:0.9rem;">Product Description</div>
+    <div id="productBox" style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:6px;padding:0.75rem;font-size:0.75rem;white-space:pre-wrap;font-family:monospace;margin-bottom:0.75rem;max-height:200px;overflow:auto;">PRODUCT NAME: [Name]
+
+HEADLINE: [Catchy benefit statement]
+
+WHAT IT IS:
+[Clear, simple description]
+
+KEY BENEFITS:
+• Benefit 1
+• Benefit 2
+• Benefit 3
+
+WHO IT'S FOR:
+[Your ideal customer]
+
+CALL TO ACTION:
+[Link/button text]</div>
+    <button class="pbtn" onclick="copyText('productBox')" style="width:100%;margin-bottom:0.5rem;">📋 Copy Template</button>
+    <button class="pbtn primary" onclick="pasteToChat('productBox')" style="width:100%;">📤 Paste to Chat</button>
+  </div>
+
+  <!-- Landing Page -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+    <div style="font-size:1.6rem;margin-bottom:0.5rem;">🎯</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;font-size:0.9rem;">Landing Page Copy</div>
+    <div id="landingBox" style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:6px;padding:0.75rem;font-size:0.75rem;white-space:pre-wrap;font-family:monospace;margin-bottom:0.75rem;max-height:200px;overflow:auto;">HEADLINE: [Powerful, benefit-driven]
+
+SUBHEADLINE: [What problem do you solve?]
+
+HERO IMAGE: [Description of visual]
+
+SECTION 1 - THE PROBLEM:
+[What's your customer's pain point?]
+
+SECTION 2 - YOUR SOLUTION:
+[How do you solve it?]
+
+SECTION 3 - BENEFITS:
+✓ Benefit 1
+✓ Benefit 2
+✓ Benefit 3
+
+SOCIAL PROOF:
+[Testimonial or stat]
+
+CTA: [Primary call-to-action button]</div>
+    <button class="pbtn" onclick="copyText('landingBox')" style="width:100%;margin-bottom:0.5rem;">📋 Copy Template</button>
+    <button class="pbtn primary" onclick="pasteToChat('landingBox')" style="width:100%;">📤 Paste to Chat</button>
+  </div>
+
+  <!-- Case Study -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+    <div style="font-size:1.6rem;margin-bottom:0.5rem;">📊</div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;font-size:0.9rem;">Case Study</div>
+    <div id="caseBox" style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:6px;padding:0.75rem;font-size:0.75rem;white-space:pre-wrap;font-family:monospace;margin-bottom:0.75rem;max-height:200px;overflow:auto;">TITLE: How [CLIENT] achieved [RESULT]
+
+BACKGROUND:
+Company: [Name & industry]
+Challenge: [Problem they faced]
+
+THE SOLUTION:
+What you did: [Your approach]
+Timeline: [How long it took]
+
+RESULTS:
+• Result 1: [Specific metric]
+• Result 2: [Specific metric]
+• Result 3: [Specific metric]
+
+KEY INSIGHT:
+[What made the difference?]
+
+TESTIMONIAL:
+"[Quote from client]" - [Client name]
+
+NEXT STEPS:
+[Call to action]</div>
+    <button class="pbtn" onclick="copyText('caseBox')" style="width:100%;margin-bottom:0.5rem;">📋 Copy Template</button>
+    <button class="pbtn primary" onclick="pasteToChat('caseBox')" style="width:100%;">📤 Paste to Chat</button>
   </div>
 </div>
 
 <script>
-window.useTemplate = function(prompt) {
-  const chatPrompt = document.getElementById('prompt');
-  if (chatPrompt) {
-    chatPrompt.value = prompt;
-    chatPrompt.focus();
-    if (typeof switchTab === 'function') switchTab('chat');
-  }
-}
-
-window.generateQuote = function() {
-  const name = document.getElementById('quoteName').value;
-  const service = document.getElementById('quoteService').value;
-  const scope = document.getElementById('quoteScope').value;
-  const budget = document.getElementById('quoteBudget').value;
+function genQuote() {
+  const name = document.getElementById('quoteName').value.trim();
+  const service = document.getElementById('quoteService').value.trim();
+  const scope = document.getElementById('quoteScope').value.trim();
+  const budget = document.getElementById('quoteBudget').value.trim();
   
   if (!name || !service) {
     alert('Please fill in client name and service type');
     return;
   }
   
-  const quote = `PROJECT QUOTE\n\nDate: ${new Date().toLocaleDateString()}\nClient: ${name}\n\nService: ${service}\nScope: ${scope}\nBudget: ${budget}\n\nTerms: 50% deposit, 50% on completion\nTimeline: TBD based on scope\n\nThank you for your business!`;
+  const quote = `PROJECT QUOTE
+
+Date: ${new Date().toLocaleDateString()}
+Client: ${name}
+
+Service: ${service}
+Scope: ${scope}
+Budget: ${budget}
+
+Terms: 50% deposit, 50% on completion
+Timeline: TBD based on scope
+
+Thank you for your business!`;
   
-  const output = document.getElementById('quoteOutput');
-  output.innerHTML = `
-    <div style="background:var(--gold-lt);border:1px solid var(--gold-md);border-radius:8px;padding:1rem;font-size:0.8rem;white-space:pre-wrap;margin-bottom:0.75rem;">${quote.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-    <button class="pbtn primary" onclick="window.moveQuoteToChat('${quote.replace(/'/g, "\\'")}')">📤 Move to Chat</button>
+  const box = document.getElementById('quoteBox');
+  box.innerHTML = `
+    <div style="background:var(--gold-lt);border:1px solid var(--gold);border-radius:6px;padding:0.75rem;font-size:0.75rem;white-space:pre-wrap;font-family:monospace;margin-bottom:0.75rem;" id="generatedQuote">${quote}</div>
+    <button class="pbtn" onclick="copyText('generatedQuote')" style="width:100%;">📋 Copy Quote</button>
   `;
 }
 
-window.moveQuoteToChat = function(quoteText) {
-  const chatPrompt = document.getElementById('prompt');
-  if (chatPrompt) {
-    // Decode the escaped quote
-    const decoded = quoteText
-      .replace(/\\n/g, '\n')
-      .replace(/\\'/g, "'");
-    
-    chatPrompt.value = decoded;
-    chatPrompt.focus();
-    
-    // Scroll to chat tab
-    if (typeof switchTab === 'function') switchTab('chat');
-    
-    // Auto-scroll to chat area
-    setTimeout(() => {
-      const chatArea = document.getElementById('msgs');
-      if (chatArea) chatArea.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-  }
-}
-
-window.getSuggestions = function() {
-  const content = document.getElementById('suggestContent').value;
-  const output = document.getElementById('suggestOutput');
+function getSuggestions() {
+  const content = document.getElementById('suggestArea').value;
+  const box = document.getElementById('suggestBox');
   
-  if (!content || content.trim() === '') {
-    output.innerHTML = '<div style="color:var(--dim);padding:0.5rem;">📝 Paste some content to get suggestions!</div>';
+  if (!content.trim()) {
+    box.innerHTML = '<div style="color:var(--dim);">📝 Paste content to get suggestions</div>';
     return;
   }
   
-  const suggestions = [];
+  const tips = [];
+  if (content.includes('utilize')) tips.push('✨ Replace "utilize" with "use"');
+  if (content.includes('leverage')) tips.push('✨ Replace "leverage" with "apply"');
+  if (/[A-Z]{5,}/.test(content)) tips.push('✨ Reduce ALL-CAPS for friendlier tone');
+  if (content.length > 500) tips.push('✨ Break into shorter sections');
+  if (content.split('.').length < 3) tips.push('✨ Add more specific examples');
+  if (content.match(/\b(very|really|quite)\b/gi)) tips.push('✨ Remove filler words');
   
-  // Check for common writing issues
-  if (content.includes('utilize')) suggestions.push('Replace "utilize" with "use"');
-  if (content.includes('leverage')) suggestions.push('Replace "leverage" with "use" or "apply"');
-  if (content.length > 500) suggestions.push('Consider breaking this into shorter sections');
-  if (/[A-Z]{5,}/.test(content)) suggestions.push('Reduce ALL-CAPS for friendlier tone');
-  if (content.split('.').length < 3) suggestions.push('Add more specific examples');
-  if (content.match(/\b(very|really|quite|so)\b/gi)) suggestions.push('Remove filler words like "very" or "really"');
-  if (content.match(/\b(however|therefore|thus)\b/gi)) suggestions.push('Use simpler transitions like "but" or "so"');
-  if (!content.includes('!') && !content.includes('?')) suggestions.push('Consider adding a question or exclamation for engagement');
-  
-  if (suggestions.length > 0) {
-    output.innerHTML = suggestions.map(s => `<div style="padding:0.5rem;background:var(--teal-lt);border-radius:6px;margin-bottom:0.5rem;">✨ ${s}</div>`).join('');
+  if (tips.length === 0) {
+    box.innerHTML = '<div style="color:var(--teal);">✅ Content looks great!</div>';
   } else {
-    output.innerHTML = '<div style="color:var(--teal);">✅ Content looks great!</div>';
+    box.innerHTML = tips.map(t => `<div style="padding:0.5rem;background:var(--teal-lt);border-radius:4px;margin-bottom:0.5rem;">${t}</div>`).join('');
   }
 }
 
-window.showNewTemplateModal = function() {
-  const name = prompt('Template name:');
-  if (!name) return;
+function copyText(elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
   
-  const content = prompt('Template content (use [BRACKETS] for placeholders):');
-  if (!content) return;
-  
-  const templates = JSON.parse(localStorage.getItem('nagoh_custom_templates') || '[]');
-  templates.push({
-    id: 'tpl_' + Date.now(),
-    name: name,
-    content: content,
-    icon: '📝'
+  const text = el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const original = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  }).catch(() => {
+    alert('Copy failed. Please try again.');
   });
+}
+
+function pasteToChat(elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
   
-  localStorage.setItem('nagoh_custom_templates', JSON.stringify(templates));
+  const text = el.textContent;
+  const chatPrompt = document.getElementById('prompt');
   
-  if (typeof showSuccessNotification === 'function') {
-    showSuccessNotification(`✅ Template "${name}" created!`);
+  if (chatPrompt) {
+    chatPrompt.value = text;
+    chatPrompt.focus();
+    
+    // Switch to chat tab
+    if (typeof switchTab === 'function') switchTab('chat');
+    
+    // Show success notification
+    if (typeof showSuccessNotification === 'function') {
+      showSuccessNotification('Template pasted to chat!');
+    }
+  } else {
+    alert('Chat input not found. Please switch to Chat tab first.');
   }
 }
 </script>
