@@ -373,3 +373,35 @@ function initGoogle() {
 }
 
 document.addEventListener('DOMContentLoaded', initGoogle);
+
+// ─────────────────────────────────────────────────────────
+// GLOBAL TRENDING & CONTENT FUNCTIONS
+// ─────────────────────────────────────────────────────────
+
+/**
+ * Send a trending topic to the chat input
+ * @param {string} title - Topic title
+ * @param {string} emoji - Topic emoji
+ * @param {string} context - Topic context/description
+ */
+window.sendTopicToChat = function(title, emoji, context) {
+  console.log(`📤 Sending to chat: ${title}`);
+  const chatPrompt = document.getElementById('prompt');
+  if (chatPrompt) {
+    const prompt = `Topic: ${title} ${emoji}\n\nContext: ${context}\n\nHelp me create 3 variations of content about this topic optimized for my audience.`;
+    chatPrompt.value = prompt;
+    chatPrompt.focus();
+    
+    if (typeof switchTab === 'function') {
+      switchTab('chat');
+    }
+    
+    if (typeof showSuccessNotification === 'function') {
+      showSuccessNotification('✅ Topic added to chat!');
+    }
+    
+    console.log(`✅ Topic prompt ready: "${prompt.substring(0, 50)}..."`);
+  } else {
+    console.error('❌ Chat prompt element not found');
+  }
+};
