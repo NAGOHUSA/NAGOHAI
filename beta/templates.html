@@ -817,5 +817,27 @@ window.getSuggestions = function() {
 };
 
 console.log('🚀 Templates page loaded');
-initTemplates();
+
+// Wait for DOM elements to be accessible before initializing
+function safeInitTemplates() {
+  if (typeof currentIndustry === 'undefined') {
+    console.log('⏳ Waiting for currentIndustry...');
+    setTimeout(safeInitTemplates, 100);
+    return;
+  }
+  
+  // Check if required DOM elements exist
+  if (!document.getElementById('templatesTitle') || 
+      !document.getElementById('templatesContainer') || 
+      !document.getElementById('strategiesContainer')) {
+    console.log('⏳ Waiting for DOM elements to be ready...');
+    setTimeout(safeInitTemplates, 100);
+    return;
+  }
+  
+  console.log('✅ DOM ready, initializing templates');
+  initTemplates();
+}
+
+safeInitTemplates();
 </script>
