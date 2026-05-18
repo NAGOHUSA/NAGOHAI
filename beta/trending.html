@@ -2,53 +2,75 @@
 <div id="trendingTopics" style="display:flex;flex-direction:column;gap:1rem;"></div>
 
 <script>
+// Global function to load trending topics from API
 async function loadTrendingTopics() {
   const container = document.getElementById('trendingTopics');
   const industry = currentIndustry || 'general';
   
+  console.log(`📡 Loading trending topics for industry: ${industry}`);
+  
   try {
     // Show loading state
-    container.innerHTML = '<div style="text-align:center;color:var(--dim);padding:2rem;">📡 Loading trending topics...</div>';
+    container.innerHTML = '<div style="text-align:center;color:var(--dim);padding:2rem;">📡 Loading trending topics for ' + industry + '...</div>';
     
     // Fetch fresh trending data from API
-    const response = await fetch(`/v1/trending?industry=${encodeURIComponent(industry)}`);
+    const url = `/v1/trending?industry=${encodeURIComponent(industry)}`;
+    console.log(`🔗 Fetching: ${url}`);
+    
+    const response = await fetch(url);
+    
+    console.log(`📊 Response status: ${response.status}`);
     
     if (!response.ok) {
-      throw new Error('Failed to load trending topics');
+      throw new Error(`API returned ${response.status}`);
     }
     
     const trending = await response.json();
+    console.log(`✅ Got ${trending.length} trending topics:`, trending);
+    
+    if (!trending || trending.length === 0) {
+      container.innerHTML = '<div style="text-align:center;color:var(--dim);padding:2rem;">No trending topics available</div>';
+      return;
+    }
     
     // Render trending topic cards
-    container.innerHTML = trending.map(topic => `
-      <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.25rem;cursor:pointer;transition:all 0.2s;" 
-           onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" 
-           onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" 
-           onclick="sendTopicToChat('${topic.title.replace(/'/g, "\\'")}')">
-        <div style="display:flex;align-items:flex-start;gap:1rem;">
-          <div style="font-size:2rem;flex-shrink:0;">${topic.emoji}</div>
-          <div style="flex:1;">
-            <div style="font-weight:600;color:var(--ink);font-size:0.95rem;margin-bottom:0.25rem;">${topic.title}</div>
-            <div style="font-size:0.65rem;font-weight:600;padding:3px 8px;border-radius:12px;background:${
-              topic.momentum === 'trending' ? 'var(--gold-lt);color:var(--gold-dk)' :
-              topic.momentum === 'steady' ? 'var(--teal-lt);color:var(--teal-dk)' :
-              'var(--dim-bg);color:var(--dim)'
-            };display:inline-block;margin-bottom:0.75rem;">${topic.momentum.toUpperCase()}</div>
-            <div style="font-size:0.8rem;color:var(--dim);line-height:1.5;">${topic.context}</div>
-            <div style="font-size:0.7rem;color:var(--border);margin-top:0.75rem;">💬 Click to add to chat</div>
+    let html = '';
+    trending.forEach(topic => {
+      const momentumColor = 
+        topic.momentum === 'trending' ? 'var(--gold-lt);color:var(--gold-dk)' :
+        topic.momentum === 'steady' ? 'var(--teal-lt);color:var(--teal-dk)' :
+        'var(--dim-bg);color:var(--dim)';
+      
+      html += `
+        <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.25rem;cursor:pointer;transition:all 0.2s;" 
+             onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" 
+             onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" 
+             onclick="sendTopicToChat('${(topic.title || '').replace(/'/g, "\\'")}')">
+          <div style="display:flex;align-items:flex-start;gap:1rem;">
+            <div style="font-size:2rem;flex-shrink:0;">${topic.emoji || '🔥'}</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;color:var(--ink);font-size:0.95rem;margin-bottom:0.25rem;">${topic.title || 'Topic'}</div>
+              <div style="font-size:0.65rem;font-weight:600;padding:3px 8px;border-radius:12px;background:${momentumColor};display:inline-block;margin-bottom:0.75rem;">${(topic.momentum || 'steady').toUpperCase()}</div>
+              <div style="font-size:0.8rem;color:var(--dim);line-height:1.5;">${topic.context || ''}</div>
+              <div style="font-size:0.7rem;color:var(--border);margin-top:0.75rem;">💬 Click to add to chat</div>
+            </div>
           </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    });
+    
+    container.innerHTML = html;
   } catch (error) {
-    console.error('Trending load error:', error);
+    console.error('❌ Trending load error:', error);
     container.innerHTML = `<div style="text-align:center;color:var(--dim);padding:2rem;">
-      ⚠️ Could not load trending topics. Please try again later.
+      ⚠️ Could not load trending topics. Error: ${error.message}
     </div>`;
   }
 }
 
+// Function to send topic to chat
 function sendTopicToChat(topic) {
+  console.log(`📤 Sending to chat: ${topic}`);
   const chatPrompt = document.getElementById('prompt');
   if (chatPrompt) {
     chatPrompt.value = `I'd like ideas about: ${topic}`;
@@ -61,14 +83,27 @@ function sendTopicToChat(topic) {
     if (typeof showSuccessNotification === 'function') {
       showSuccessNotification('✅ Topic added to chat!');
     }
+  } else {
+    console.error('Chat prompt element not found');
   }
 }
 
-// Load trending topics when this page loads
+// Load trending topics immediately when page loads
+console.log('🚀 Trending page loaded');
 loadTrendingTopics();
 
-// Reload when user changes industry
-window.onIndustryChangeCallback = function() {
-  loadTrendingTopics();
-};
+// Also hook into the industry change event
+setTimeout(() => {
+  const originalOnIndustryChange = window.onIndustryChange;
+  window.onIndustryChange = function() {
+    console.log('🔄 Industry changed, reloading trends');
+    if (originalOnIndustryChange) {
+      originalOnIndustryChange.apply(this, arguments);
+    }
+    // Reload trending topics after industry change
+    setTimeout(() => {
+      loadTrendingTopics();
+    }, 100);
+  };
+}, 500);
 </script>
