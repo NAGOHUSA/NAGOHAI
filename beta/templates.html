@@ -1,39 +1,83 @@
-==========================================================
-   STEP 5: DAEMON REFRESH & SERVICE STARTUP
-==========================================================
- -> Refreshing systemd unit file registries...
- -> Restarting NetBIOS interface daemon (nmb)...
-Failed to restart nmb.service: Unit nmb.service not found.
- -> Restarting local network share profiles (smb)...
-Failed to restart smb.service: Unit smb.service not found.
- -> Pausing for internal network runtime stabilizer...
+# 🚀 DEPLOYMENT FIX - Templates Not Loading
 
-==========================================================
-          OCR SYSTEM VERIFICATION DASHBOARD
-==========================================================
+## ⚠️ The Problem
+The error "Could not load templates. Make sure templates.html exists" means:
+- ✅ templates.html exists locally (27KB)
+- ❌ templates.html NOT uploaded to ai.nagoh.us/beta/
 
-[1/4] PATH MAPPING CHECK:
-  [FAIL] /OCR-Out is NOT a symbolic link or is missing.
-  [FAIL] /OCR-Scanning is NOT a symbolic link or is missing.
+## ✅ The Fix
 
-[2/4] ACTIVE SERVICE CHECK:
-  [FAIL] OCR Services (haimsocr) are NOT running.
-  [FAIL] Samba (smb) service is INACTIVE.
-  [FAIL] NetBIOS (nmb) service is INACTIVE.
+### STEP 1: Upload templates.html to GitHub Pages
+1. Go to your GitHub repo (NAGOHAI)
+2. Navigate to `/beta/` folder
+3. Upload **templates.html** (from /mnt/user-data/outputs/)
+4. Commit with message: "Add: Industry-specific templates v3.0"
+5. Wait for GitHub to publish (usually instant)
 
-[3/4] SOFTWARE & LIBRARY CHECK:
-  [PASS] Tesseract is INSTALLED and LINKED (tesseract 4.1.1)
+### STEP 2: Verify All 5 Frontend Files Are Uploaded
+Check that THESE 5 files exist in your `/beta/` folder:
+- ✅ index.html (v1.0)
+- ✅ shared.js (globals & auth)
+- ✅ templates.html (v3.0) ← **THIS ONE MIGHT BE MISSING**
+- ✅ trending.html (v2.1)
+- ✅ analytics.html (v2.0)
 
-[4/4] PERMISSIONS CHECK:
-  [FAIL] /OCR/OCR-Out directory is NOT writable.
-==========================================================
-                SYSTEM INTEGRITY SUMMARY
-==========================================================
-  Passed Verification Checks : 1
-  Failed Verification Checks : 6
-----------------------------------------------------------
-?? OVERALL STATUS            : STATUS RED (Degraded System Infrastructure)
-==========================================================
+### STEP 3: Hard Refresh Your Browser
+1. Go to https://ai.nagoh.us/beta/
+2. Hard refresh: **Ctrl+Shift+R** (Windows) or **Cmd+Shift+R** (Mac)
+3. Clear cache if needed (DevTools → Storage → Clear Site Data)
 
-Segmentation fault
-[admin@ottesseract-dev2 ~]$
+### STEP 4: Verify
+1. Open DevTools (F12)
+2. Go to **Console** tab
+3. You should see:
+   ```
+   ✅ Templates page loaded
+   ✅ currentIndustry ready: etsy
+   🔄 Industry changed, reloading templates
+   ```
+4. Click **Templates** tab → Should now show templates with cards!
+
+---
+
+## 📋 Files Ready to Deploy
+
+All these are in `/mnt/user-data/outputs/`:
+- ✅ index.html (46 KB)
+- ✅ shared.js (18 KB)
+- ✅ templates.html (27 KB) ← **UPLOAD THIS**
+- ✅ trending.html (12 KB)
+- ✅ analytics.html (18 KB)
+
+---
+
+## 🔍 Troubleshooting
+
+### If error persists after uploading:
+1. Check GitHub repo - verify templates.html is actually there
+2. Try incognito/private browsing window
+3. Wait 5 minutes for GitHub Pages to fully propagate
+4. Check Network tab (F12) - see if fetch to templates.html succeeds
+
+### If templates still don't render:
+1. Copy `templates.html` content
+2. Paste into browser DevTools Console:
+   ```javascript
+   console.log(document.getElementById('templatesContainer'));
+   ```
+3. Should return the container element
+
+---
+
+## 📞 Summary
+
+**The issue:** templates.html hasn't been uploaded to GitHub Pages yet.
+
+**The fix:** 
+1. Upload templates.html to your `/beta/` folder on GitHub
+2. Commit & push
+3. Wait for GitHub to publish
+4. Hard refresh your browser
+5. Done! ✨
+
+All files are ready in `/mnt/user-data/outputs/` - just upload templates.html!
