@@ -29,22 +29,22 @@
 
 <h3 style="margin:2rem 0 1rem;color:var(--ink);">📚 Default Templates</h3>
 <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px,1fr));gap:1.5rem;">
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('📱\\nSocial Media Post\\n\\n[HOOK]\\n\\n[BODY]\\n\\n[CTA]\\n\\n#hashtags')">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('Write a social media post about: ')">
     <div style="font-size:1.8rem;margin-bottom:0.5rem;">📱</div>
     <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Social Media Post</div>
     <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">LinkedIn, Twitter, Instagram</div>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('📧\\nEmail Campaign\\n\\nHi [NAME],\\n\\n[GREETING]\\n\\n[BODY]\\n\\n[CTA]\\n\\nBest,\\n[YOUR NAME]')">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('Write a professional email about: ')">
     <div style="font-size:1.8rem;margin-bottom:0.5rem;">📧</div>
     <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Email Campaign</div>
     <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Cold outreach or nurture</div>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('💰\\nProject Quote\\n\\nCLIENT: [NAME]\\nSERVICE: [SERVICE]\\nSCOPE: [SCOPE]\\nBUDGET: [BUDGET]\\nTERMS: 50% deposit, 50% on completion')">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('Generate a professional project quote for: ')">
     <div style="font-size:1.8rem;margin-bottom:0.5rem;">💰</div>
     <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Project Quote</div>
     <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Professional pricing</div>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('📝\\nBlog Post Outline\\n\\nTITLE: [HEADLINE]\\n\\nINTRO: [HOOK + PROMISE]\\n\\n1. [POINT 1]\\n2. [POINT 2]\\n3. [POINT 3]\\n\\nCONCLUSION: [SUMMARY + CTA]')">
+  <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="window.useTemplate('Create a blog post outline for: ')">
     <div style="font-size:1.8rem;margin-bottom:0.5rem;">📝</div>
     <div style="font-weight:600;color:var(--ink);margin-bottom:0.25rem;">Blog Post Outline</div>
     <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">Structured content</div>
@@ -52,11 +52,11 @@
 </div>
 
 <script>
-window.useTemplate = function(template) {
-  const prompt = document.getElementById('prompt');
-  if (prompt) {
-    prompt.value = template;
-    prompt.focus();
+window.useTemplate = function(prompt) {
+  const chatPrompt = document.getElementById('prompt');
+  if (chatPrompt) {
+    chatPrompt.value = prompt;
+    chatPrompt.focus();
     if (typeof switchTab === 'function') switchTab('chat');
   }
 }
@@ -75,46 +75,32 @@ window.generateQuote = function() {
   const quote = `PROJECT QUOTE\n\nDate: ${new Date().toLocaleDateString()}\nClient: ${name}\n\nService: ${service}\nScope: ${scope}\nBudget: ${budget}\n\nTerms: 50% deposit, 50% on completion\nTimeline: TBD based on scope\n\nThank you for your business!`;
   
   const output = document.getElementById('quoteOutput');
-  const quoteId = 'quote_' + Date.now();
   output.innerHTML = `
-    <div style="background:var(--gold-lt);border:1px solid var(--gold-md);border-radius:8px;padding:1rem;font-size:0.8rem;white-space:pre-wrap;margin-bottom:0.75rem;" id="${quoteId}">${quote.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-    <button class="pbtn primary" onclick="window.copyQuoteFromElement('${quoteId}')">📋 Copy</button>
+    <div style="background:var(--gold-lt);border:1px solid var(--gold-md);border-radius:8px;padding:1rem;font-size:0.8rem;white-space:pre-wrap;margin-bottom:0.75rem;">${quote.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+    <button class="pbtn primary" onclick="window.moveQuoteToChat('${quote.replace(/'/g, "\\'")}')">📤 Move to Chat</button>
   `;
 }
 
-window.copyQuote = function(text) {
-  // Decode the text (it comes from onclick with escaped quotes)
-  const decoded = text
-    .replace(/\\n/g, '\n')
-    .replace(/\\'/g, "'")
-    .replace(/&quot;/g, '"');
-  
-  navigator.clipboard.writeText(decoded).then(() => {
-    if (typeof showSuccessNotification === 'function') {
-      showSuccessNotification('Quote copied!');
-    }
-  }).catch(err => {
-    console.error('Copy failed:', err);
-    alert('Failed to copy. Please try again.');
-  });
-}
-
-window.copyQuoteFromElement = function(elementId) {
-  const element = document.getElementById(elementId);
-  if (!element) {
-    alert('Quote not found');
-    return;
+window.moveQuoteToChat = function(quoteText) {
+  const chatPrompt = document.getElementById('prompt');
+  if (chatPrompt) {
+    // Decode the escaped quote
+    const decoded = quoteText
+      .replace(/\\n/g, '\n')
+      .replace(/\\'/g, "'");
+    
+    chatPrompt.value = decoded;
+    chatPrompt.focus();
+    
+    // Scroll to chat tab
+    if (typeof switchTab === 'function') switchTab('chat');
+    
+    // Auto-scroll to chat area
+    setTimeout(() => {
+      const chatArea = document.getElementById('msgs');
+      if (chatArea) chatArea.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
   }
-  
-  const text = element.textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    if (typeof showSuccessNotification === 'function') {
-      showSuccessNotification('Quote copied!');
-    }
-  }).catch(err => {
-    console.error('Copy failed:', err);
-    alert('Failed to copy. Please try again.');
-  });
 }
 
 window.getSuggestions = function() {
@@ -128,15 +114,15 @@ window.getSuggestions = function() {
   
   const suggestions = [];
   
-  // Check for common issues
+  // Check for common writing issues
   if (content.includes('utilize')) suggestions.push('Replace "utilize" with "use"');
   if (content.includes('leverage')) suggestions.push('Replace "leverage" with "use" or "apply"');
   if (content.length > 500) suggestions.push('Consider breaking this into shorter sections');
   if (/[A-Z]{5,}/.test(content)) suggestions.push('Reduce ALL-CAPS for friendlier tone');
   if (content.split('.').length < 3) suggestions.push('Add more specific examples');
-  if (content.match(/\b(very|really|quite|quite|so)\b/gi)) suggestions.push('Remove filler words like "very" or "really"');
+  if (content.match(/\b(very|really|quite|so)\b/gi)) suggestions.push('Remove filler words like "very" or "really"');
   if (content.match(/\b(however|therefore|thus)\b/gi)) suggestions.push('Use simpler transitions like "but" or "so"');
-  if (content.includes('!') === false && content.includes('?') === false) suggestions.push('Consider adding a question or exclamation for engagement');
+  if (!content.includes('!') && !content.includes('?')) suggestions.push('Consider adding a question or exclamation for engagement');
   
   if (suggestions.length > 0) {
     output.innerHTML = suggestions.map(s => `<div style="padding:0.5rem;background:var(--teal-lt);border-radius:6px;margin-bottom:0.5rem;">✨ ${s}</div>`).join('');
@@ -146,6 +132,24 @@ window.getSuggestions = function() {
 }
 
 window.showNewTemplateModal = function() {
-  alert('Template creation coming soon!');
+  const name = prompt('Template name:');
+  if (!name) return;
+  
+  const content = prompt('Template content (use [BRACKETS] for placeholders):');
+  if (!content) return;
+  
+  const templates = JSON.parse(localStorage.getItem('nagoh_custom_templates') || '[]');
+  templates.push({
+    id: 'tpl_' + Date.now(),
+    name: name,
+    content: content,
+    icon: '📝'
+  });
+  
+  localStorage.setItem('nagoh_custom_templates', JSON.stringify(templates));
+  
+  if (typeof showSuccessNotification === 'function') {
+    showSuccessNotification(`✅ Template "${name}" created!`);
+  }
 }
 </script>
