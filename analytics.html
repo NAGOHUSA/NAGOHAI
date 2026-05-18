@@ -5,7 +5,15 @@
       Track how your content performs across different formats. Understanding your audience's engagement helps you create more effective marketing materials.
     </p>
   </div>
-  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;">
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;align-items:center;">
+    <!-- Demo Data Toggle -->
+    <div style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem 1rem;background:#f5ede0;border:1px solid var(--border);border-radius:8px;margin-right:0.5rem;">
+      <label style="font-size:0.75rem;color:var(--dim);cursor:pointer;user-select:none;">
+        <input type="checkbox" id="demoDataToggle" onchange="window.toggleDemoData()" style="margin-right:0.5rem;cursor:pointer;">
+        Demo Data
+      </label>
+    </div>
+    <!-- Period Buttons -->
     <button class="period-btn active" onclick="window.changePeriod('week')" style="padding:0.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.75rem;transition:all 0.2s;">7 Days</button>
     <button class="period-btn" onclick="window.changePeriod('month')" style="padding:0.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.75rem;transition:all 0.2s;">30 Days</button>
     <button class="period-btn" onclick="window.changePeriod('quarter')" style="padding:0.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.75rem;transition:all 0.2s;">90 Days</button>
@@ -139,6 +147,42 @@
 <script>
 let analyticsCharts = {};
 let currentAnalyticsData = null;
+let useDemoData = false;  // ← Toggle state
+
+// Demo data object (for testing/showcase)
+const DEMO_ANALYTICS_DATA = {
+  total_content: 127,
+  avg_engagement: 42,
+  best_format: 'Social',
+  avg_creation_time: '2m',
+  trend_labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+  trend_data: [12, 19, 8, 15, 22, 18, 14],
+  engagement_labels: ['Social', 'Email', 'Quote', 'Blog'],
+  engagement_data: [42, 38, 45, 52],
+  editing_labels: ['Tone', 'Length', 'Detail', 'Format'],
+  editing_data: [45, 38, 25, 32],
+  topic_labels: ['Marketing', 'Sales', 'Support', 'Product', 'Other'],
+  topic_data: [38, 32, 28, 19, 10],
+  breakdown: [
+    { type: 'Social Post', count: 45, edits: 23, engagement: 42, exports: 18 },
+    { type: 'Email', count: 32, edits: 14, engagement: 38, exports: 12 },
+    { type: 'Quote', count: 28, edits: 8, engagement: 45, exports: 8 },
+    { type: 'Blog Post', count: 19, edits: 12, engagement: 52, exports: 6 }
+  ],
+  period: 'week',
+  month_key: '2024-05',
+  tokens_used_this_month: 45000,
+  tokens_limit_this_month: 50000
+};
+
+// Toggle demo data on/off
+window.toggleDemoData = function() {
+  useDemoData = document.getElementById('demoDataToggle').checked;
+  console.log(`📊 Demo data ${useDemoData ? 'ENABLED' : 'DISABLED'}`);
+  
+  // Reload analytics with new mode
+  loadAnalyticsData();
+};
 
 // Industry-specific descriptions
 const industryDescriptions = {
@@ -172,36 +216,47 @@ const industryDescriptions = {
   }
 };
 
-// Load analytics data from Worker API
+// Load analytics data from Worker API (or demo data)
 async function loadAnalyticsData() {
   const loadingState = document.getElementById('analyticsLoadingState');
   const analyticsContent = document.getElementById('analyticsContent');
   
   console.log('📊 Loading analytics data...');
-  console.log(`🔑 Using sessionToken: ${sessionToken ? 'YES' : 'NO'}`);
+  console.log(`📋 Using demo data: ${useDemoData ? 'YES' : 'NO'}`);
   
   try {
-    const options = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionToken}`,
+    let data;
+    
+    if (useDemoData) {
+      // Use demo data
+      console.log('📺 Using DEMO data');
+      data = DEMO_ANALYTICS_DATA;
+    } else {
+      // Fetch real data from API
+      console.log(`🔑 Using sessionToken: ${sessionToken ? 'YES' : 'NO'}`);
+      
+      const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionToken}`,
+        }
+      };
+      
+      const workerUrl = 'https://nagohai.gregoryhogan.workers.dev';
+      const url = `${workerUrl}/v1/analytics/dashboard`;
+      console.log(`🔗 Fetching from Worker: ${url}`);
+      
+      const response = await fetch(url, options);
+      console.log(`📊 Response status: ${response.status}`);
+      
+      if (!response.ok) {
+        throw new Error(`API returned status ${response.status}`);
       }
-    };
-    
-    const workerUrl = 'https://nagohai.gregoryhogan.workers.dev';
-    const url = `${workerUrl}/v1/analytics/dashboard`;
-    console.log(`🔗 Fetching from Worker: ${url}`);
-    
-    const response = await fetch(url, options);
-    console.log(`📊 Response status: ${response.status}`);
-    
-    if (!response.ok) {
-      throw new Error(`API returned status ${response.status}`);
+      
+      data = await response.json();
+      console.log(`✅ Got REAL analytics data:`, data);
     }
-    
-    const data = await response.json();
-    console.log(`✅ Got analytics data:`, data);
     
     currentAnalyticsData = data;
     loadingState.style.display = 'none';
@@ -210,6 +265,13 @@ async function loadAnalyticsData() {
     // Update title & description based on industry
     updateIndustryContext();
     renderAnalyticsData(data);
+    
+    // Destroy old charts before rendering new ones
+    Object.values(analyticsCharts).forEach(chart => {
+      if (chart) chart.destroy();
+    });
+    analyticsCharts = {};
+    
     window.renderAnalyticsCharts();
     
   } catch (error) {
