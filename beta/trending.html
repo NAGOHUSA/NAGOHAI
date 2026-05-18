@@ -14,16 +14,28 @@ async function loadTrendingTopics() {
     // Show loading state
     container.innerHTML = '<div style="text-align:center;color:var(--dim);padding:2rem;">📡 Loading trending topics for ' + industry + '...</div>';
     
-    // Use proper API call with auth headers
-    const result = await callAPI(`/v1/trending?industry=${encodeURIComponent(industry)}`);
+    // Use proper API call with auth headers via your domain
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionToken}`,
+      }
+    };
     
-    console.log(`📊 API Response:`, result);
+    const url = `/v1/trending?industry=${encodeURIComponent(industry)}`;
+    console.log(`🔗 Fetching from: ${url}`);
+    console.log(`🔑 Auth header: Bearer ${sessionToken.substring(0, 10)}...`);
     
-    if (!result.ok) {
-      throw new Error(`API returned status ${result.status}: ${result.data?.error || 'Unknown error'}`);
+    const response = await fetch(url, options);
+    console.log(`📊 Response status: ${response.status}`);
+    
+    if (!response.ok) {
+      const errorData = await response.text();
+      throw new Error(`API returned status ${response.status}: ${errorData}`);
     }
     
-    const trending = result.data;
+    const trending = await response.json();
     console.log(`✅ Got ${trending.length || 0} trending topics:`, trending);
     
     if (!trending || trending.length === 0) {
