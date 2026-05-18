@@ -748,11 +748,12 @@ window.copyText = function(elementId) {
   }
   
   const text = el.textContent;
+  const btn = event.target; // Capture the button NOW while event exists
   
   // Try modern clipboard API first
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
-      const btn = event.target;
+      // Use the captured button reference
       const original = btn.textContent;
       btn.textContent = '✅ Copied!';
       setTimeout(() => { btn.textContent = original; }, 2000);
