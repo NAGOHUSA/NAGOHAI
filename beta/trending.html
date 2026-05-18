@@ -1,18 +1,114 @@
-<h2 style="margin-bottom:1.5rem;">🔥 Trending Topics for Your Industry <span style="font-size:0.7rem;color:var(--dim);">v2.1</span></h2>
-<div id="trendingTopics" style="display:flex;flex-direction:column;gap:1rem;"></div>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;gap:2rem;">
+  <div>
+    <h2 style="margin:0;margin-bottom:0.5rem;">🔥 <span id="trendingTitle">Trending Topics for Your Industry</span> <span style="font-size:0.7rem;color:var(--dim);">v2.1</span></h2>
+    <p style="margin:0;font-size:0.85rem;color:var(--dim);line-height:1.5;" id="trendingDescription">
+      Fresh topics your audience cares about right now. Use these ideas to stay relevant and create content that resonates.
+    </p>
+  </div>
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;">
+    <button style="padding:0.5rem 1rem;background:var(--teal);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.75rem;transition:all 0.2s;" onclick="location.reload()">🔄 Refresh Topics</button>
+  </div>
+</div>
+
+<div id="trendingLoadingState" style="text-align:center;color:var(--dim);padding:2rem;">📡 Finding trending topics for your industry...</div>
+
+<div id="trendingContent" style="display:none;">
+  
+  <!-- MAIN TRENDING TOPICS CARDS -->
+  <div id="trendingTopicsContainer" style="display:flex;flex-direction:column;gap:1.2rem;margin-bottom:2rem;"></div>
+
+  <!-- QUICK ACTION SECTION -->
+  <div style="background:var(--gold-lt);border:1px solid var(--gold);border-radius:10px;padding:1.5rem;margin-top:2rem;">
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.75rem;">💡 How to Use These Topics</div>
+    <ul style="margin:0;padding-left:1.5rem;font-size:0.8rem;color:var(--ink);line-height:1.8;">
+      <li><strong>Pick a topic</strong> and click "Add to chat" to create variations instantly</li>
+      <li><strong>Stay seasonal</strong> - notice which topics relate to current events and holidays</li>
+      <li><strong>Mix formats</strong> - take trending ideas and create them as posts, emails, videos, or guides</li>
+      <li><strong>Refresh daily</strong> - topics update with fresh AI insights every day</li>
+    </ul>
+  </div>
+
+  <!-- MOMENTUM LEGEND -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-top:1.5rem;">
+    <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">📊 Understanding Momentum</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px,1fr));gap:1rem;">
+      <div style="padding:1rem;background:var(--gold-lt);border-radius:8px;border-left:3px solid var(--gold);">
+        <div style="font-weight:600;color:var(--gold-dk);font-size:0.9rem;margin-bottom:0.25rem;">🚀 TRENDING</div>
+        <div style="font-size:0.75rem;color:var(--ink);">Hot right now - peak attention. Jump on this quickly.</div>
+      </div>
+      <div style="padding:1rem;background:var(--teal-lt);border-radius:8px;border-left:3px solid var(--teal);">
+        <div style="font-weight:600;color:var(--teal-dk);font-size:0.9rem;margin-bottom:0.25rem;">📈 STEADY</div>
+        <div style="font-size:0.75rem;color:var(--ink);">Reliable interest - always works. Safe bet for content.</div>
+      </div>
+      <div style="padding:1rem;background:var(--plum-lt);border-radius:8px;border-left:3px solid var(--plum);">
+        <div style="font-weight:600;color:var(--plum);font-size:0.9rem;margin-bottom:0.25rem;">♾️ EVERGREEN</div>
+        <div style="font-size:0.75rem;color:var(--ink);">Timeless content - relevant year-round. Build a library.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <script>
-// Global function to load trending topics from API
+// Industry-specific descriptions and CTAs
+const industryConfig = {
+  etsy: {
+    title: 'What Etsy Buyers Want Right Now',
+    description: 'Fresh product ideas and marketing angles trending with Etsy shoppers. Use these to optimize listings and stand out from competition.',
+    cta: 'Add to product listing strategy',
+  },
+  realtor: {
+    title: 'Hot Real Estate Topics This Week',
+    description: 'What buyers and sellers are searching for right now. Position yourself as the expert on these topics.',
+    cta: 'Add to marketing campaign',
+  },
+  landlord: {
+    title: 'Trending Landlord & Tenant Topics',
+    description: 'Current issues landlords face and tenant concerns. Stay informed and communicate proactively.',
+    cta: 'Add to tenant communication',
+  },
+  coffee: {
+    title: 'Coffee Shop Trends Right Now',
+    description: 'What coffee lovers are talking about - from seasonal drinks to coffee culture. Keep your menu relevant.',
+    cta: 'Add to menu announcement',
+  },
+  salon: {
+    title: 'Hot Salon & Beauty Trends',
+    description: 'What your clients want - from hairstyles to treatments. Book more appointments by staying ahead.',
+    cta: 'Add to promotion ideas',
+  },
+  photography: {
+    title: 'Photography Trends & Styles',
+    description: 'What clients are searching for right now. Guide your shoots and marketing in the right direction.',
+    cta: 'Add to portfolio strategy',
+  },
+  consulting: {
+    title: 'Business Insights Clients Care About',
+    description: 'What your clients are thinking about and struggling with. Position yourself as the expert.',
+    cta: 'Add to thought leadership',
+  },
+  default: {
+    title: 'Trending Topics for Your Industry',
+    description: 'Fresh ideas your audience cares about right now. Use these to stay relevant and create content that resonates.',
+    cta: 'Add to chat',
+  }
+};
+
+// Load trending topics from Worker API
 async function loadTrendingTopics() {
-  const container = document.getElementById('trendingTopics');
+  const loadingState = document.getElementById('trendingLoadingState');
+  const trendingContent = document.getElementById('trendingContent');
   const industry = currentIndustry || 'general';
   
   console.log(`📡 Loading trending topics for industry: ${industry}`);
   console.log(`🔑 Using sessionToken: ${sessionToken ? 'YES' : 'NO'}`);
   
   try {
+    // Update industry-specific title & description
+    updateIndustryContext();
+    
     // Show loading state
-    container.innerHTML = '<div style="text-align:center;color:var(--dim);padding:2rem;">📡 Loading trending topics for ' + industry + '...</div>';
+    loadingState.innerHTML = '<div style="text-align:center;color:var(--dim);padding:2rem;">📡 Finding trending topics for ' + industry + '...</div>';
     
     // Use proper API call with auth headers - call Worker directly
     const options = {
@@ -40,51 +136,87 @@ async function loadTrendingTopics() {
     console.log(`✅ Got ${trending.length || 0} trending topics:`, trending);
     
     if (!trending || trending.length === 0) {
-      container.innerHTML = '<div style="text-align:center;color:var(--dim);padding:2rem;">No trending topics available</div>';
+      loadingState.innerHTML = '<div style="text-align:center;color:var(--dim);padding:2rem;">No trending topics available right now</div>';
       return;
     }
     
-    // Render trending topic cards
-    let html = '';
-    trending.forEach(topic => {
-      const momentumColor = 
-        topic.momentum === 'trending' ? 'var(--gold-lt);color:var(--gold-dk)' :
-        topic.momentum === 'steady' ? 'var(--teal-lt);color:var(--teal-dk)' :
-        'var(--dim-bg);color:var(--dim)';
-      
-      html += `
-        <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.25rem;cursor:pointer;transition:all 0.2s;" 
-             onmouseover="this.style.borderColor='var(--teal)';this.style.boxShadow='0 4px 12px rgba(42,157,143,0.1)'" 
-             onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" 
-             onclick="sendTopicToChat('${(topic.title || '').replace(/'/g, "\\'")}')">
-          <div style="display:flex;align-items:flex-start;gap:1rem;">
-            <div style="font-size:2rem;flex-shrink:0;">${topic.emoji || '🔥'}</div>
-            <div style="flex:1;">
-              <div style="font-weight:600;color:var(--ink);font-size:0.95rem;margin-bottom:0.25rem;">${topic.title || 'Topic'}</div>
-              <div style="font-size:0.65rem;font-weight:600;padding:3px 8px;border-radius:12px;background:${momentumColor};display:inline-block;margin-bottom:0.75rem;">${(topic.momentum || 'steady').toUpperCase()}</div>
-              <div style="font-size:0.8rem;color:var(--dim);line-height:1.5;">${topic.context || ''}</div>
-              <div style="font-size:0.7rem;color:var(--border);margin-top:0.75rem;">💬 Click to add to chat</div>
-            </div>
-          </div>
-        </div>
-      `;
-    });
+    // Render trending topics
+    loadingState.style.display = 'none';
+    trendingContent.style.display = 'block';
+    renderTrendingTopics(trending);
     
-    container.innerHTML = html;
   } catch (error) {
     console.error('❌ Trending load error:', error);
-    container.innerHTML = `<div style="text-align:center;color:var(--dim);padding:2rem;">
-      ⚠️ Could not load trending topics. Error: ${error.message}
-    </div>`;
+    loadingState.innerHTML = `<div style="text-align:center;color:var(--rose);padding:2rem;">⚠️ Could not load trending topics. Error: ${error.message}</div>`;
   }
 }
 
-// Function to send topic to chat
-function sendTopicToChat(topic) {
-  console.log(`📤 Sending to chat: ${topic}`);
+function updateIndustryContext() {
+  const industryKey = (currentIndustry || 'default').toLowerCase();
+  const config = industryConfig[industryKey] || industryConfig.default;
+  
+  document.getElementById('trendingTitle').textContent = config.title;
+  document.getElementById('trendingDescription').textContent = config.description;
+}
+
+function renderTrendingTopics(topics) {
+  const container = document.getElementById('trendingTopicsContainer');
+  container.innerHTML = '';
+  
+  topics.forEach((topic, index) => {
+    const momentumColor = 
+      topic.momentum === 'trending' ? 'var(--gold-lt);border-left:3px solid var(--gold)' :
+      topic.momentum === 'steady' ? 'var(--teal-lt);border-left:3px solid var(--teal)' :
+      'var(--plum-lt);border-left:3px solid var(--plum)';
+    
+    const momentumBg = 
+      topic.momentum === 'trending' ? 'var(--gold-lt);color:var(--gold-dk)' :
+      topic.momentum === 'steady' ? 'var(--teal-lt);color:var(--teal-dk)' :
+      'var(--plum-lt);color:var(--plum)';
+
+    const card = document.createElement('div');
+    card.style.cssText = `background:${momentumColor};border:1px solid var(--border);border-radius:10px;padding:1.5rem;cursor:pointer;transition:all 0.2s;`;
+    card.onmouseover = function() { 
+      this.style.boxShadow = '0 4px 12px rgba(42,157,143,0.15)';
+      this.style.transform = 'translateY(-2px)';
+    };
+    card.onmouseout = function() { 
+      this.style.boxShadow = 'none';
+      this.style.transform = 'none';
+    };
+
+    card.innerHTML = `
+      <div style="display:flex;gap:1rem;">
+        <div style="font-size:2.5rem;flex-shrink:0;">${topic.emoji || '🔥'}</div>
+        <div style="flex:1;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.5rem;gap:1rem;">
+            <div>
+              <div style="font-weight:700;color:var(--ink);font-size:1.05rem;margin-bottom:0.25rem;">${topic.title || 'Topic'}</div>
+              <div style="font-size:0.65rem;font-weight:600;padding:3px 8px;border-radius:12px;background:${momentumBg};display:inline-block;">
+                ${(topic.momentum || 'steady').toUpperCase()}
+              </div>
+            </div>
+            <button onclick="sendTopicToChat('${(topic.title || '').replace(/'/g, "\\'")}', '${(topic.emoji || '').replace(/'/g, "\\'")}', '${(topic.context || '').replace(/'/g, "\\'")}')" 
+                    style="padding:0.5rem 1rem;background:var(--teal);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.75rem;white-space:nowrap;transition:all 0.2s;flex-shrink:0;">
+              ➕ Add to Chat
+            </button>
+          </div>
+          <div style="font-size:0.9rem;color:var(--ink);line-height:1.6;margin-top:0.75rem;">${topic.context || ''}</div>
+          <div style="font-size:0.7rem;color:var(--dim);margin-top:0.75rem;">💡 Click "Add to Chat" to create variations and expand on this idea</div>
+        </div>
+      </div>
+    `;
+    
+    container.appendChild(card);
+  });
+}
+
+function sendTopicToChat(title, emoji, context) {
+  console.log(`📤 Sending to chat: ${title}`);
   const chatPrompt = document.getElementById('prompt');
   if (chatPrompt) {
-    chatPrompt.value = `I'd like ideas about: ${topic}`;
+    const prompt = `Topic: ${title} ${emoji}\n\nContext: ${context}\n\nHelp me create 3 variations of content about this topic optimized for my audience.`;
+    chatPrompt.value = prompt;
     chatPrompt.focus();
     
     if (typeof switchTab === 'function') {
@@ -98,9 +230,6 @@ function sendTopicToChat(topic) {
     console.error('Chat prompt element not found');
   }
 }
-
-// Load trending topics when page loads - wait for currentIndustry to be defined
-console.log('🚀 Trending page loaded');
 
 // Wait for currentIndustry to be available
 function initTrending() {
@@ -127,5 +256,6 @@ function initTrending() {
   };
 }
 
+console.log('🚀 Trending page loaded');
 initTrending();
 </script>
