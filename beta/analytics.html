@@ -1,5 +1,5 @@
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;">
-  <h2>📊 Performance Analytics</h2>
+  <h2>📊 Performance Analytics <span style="font-size:0.7rem;color:var(--dim);">v2.0</span></h2>
   <div style="display:flex;gap:0.5rem;">
     <button class="period-btn active" onclick="window.changePeriod('week')" style="padding:0.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.75rem;transition:all 0.2s;">7 Days</button>
     <button class="period-btn" onclick="window.changePeriod('month')" style="padding:0.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.75rem;transition:all 0.2s;">30 Days</button>
@@ -8,102 +8,153 @@
   </div>
 </div>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px,1fr));gap:1rem;margin-bottom:2rem;">
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
-    <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);">127</div>
-    <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Content Generated</div>
-  </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
-    <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);">42%</div>
-    <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Avg Engagement</div>
-  </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
-    <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);">Social</div>
-    <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Best Format</div>
-  </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
-    <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);">2m</div>
-    <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Avg Creation Time</div>
-  </div>
-</div>
+<div id="analyticsLoadingState" style="text-align:center;color:var(--dim);padding:2rem;">📡 Loading analytics data...</div>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(350px,1fr));gap:1.5rem;margin-bottom:2rem;">
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-    <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Generation Trend</div>
-    <div style="position:relative;height:300px;"><canvas id="trendChart"></canvas></div>
+<div id="analyticsContent" style="display:none;">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px,1fr));gap:1rem;margin-bottom:2rem;">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
+      <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);" id="contentCount">0</div>
+      <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Content Generated</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
+      <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);" id="avgEngagement">0%</div>
+      <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Avg Engagement</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
+      <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);" id="bestFormat">—</div>
+      <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Best Format</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
+      <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);" id="avgTime">—</div>
+      <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Avg Creation Time</div>
+    </div>
   </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-    <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Engagement by Format</div>
-    <div style="position:relative;height:300px;"><canvas id="engagementChart"></canvas></div>
-  </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-    <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Editing Activity</div>
-    <div style="position:relative;height:300px;"><canvas id="editingChart"></canvas></div>
-  </div>
-  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-    <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Content by Topic</div>
-    <div style="position:relative;height:300px;"><canvas id="topicChart"></canvas></div>
-  </div>
-</div>
 
-<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-top:2rem;">
-  <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Content Performance Breakdown</div>
-  <table style="width:100%;border-collapse:collapse;font-size:0.75rem;">
-    <thead>
-      <tr>
-        <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Type</th>
-        <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Count</th>
-        <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Edits</th>
-        <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Engagement</th>
-        <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Exports</th>
-      </tr>
-    </thead>
-    <tbody id="analyticsTableBody">
-      <tr style="border-bottom:1px solid var(--border);">
-        <td style="padding:0.75rem;">Social Post</td>
-        <td style="padding:0.75rem;">45</td>
-        <td style="padding:0.75rem;">23</td>
-        <td style="padding:0.75rem;">42%</td>
-        <td style="padding:0.75rem;">18</td>
-      </tr>
-      <tr style="border-bottom:1px solid var(--border);">
-        <td style="padding:0.75rem;">Email</td>
-        <td style="padding:0.75rem;">32</td>
-        <td style="padding:0.75rem;">14</td>
-        <td style="padding:0.75rem;">38%</td>
-        <td style="padding:0.75rem;">12</td>
-      </tr>
-      <tr style="border-bottom:1px solid var(--border);">
-        <td style="padding:0.75rem;">Quote</td>
-        <td style="padding:0.75rem;">28</td>
-        <td style="padding:0.75rem;">8</td>
-        <td style="padding:0.75rem;">45%</td>
-        <td style="padding:0.75rem;">8</td>
-      </tr>
-      <tr>
-        <td style="padding:0.75rem;">Blog Post</td>
-        <td style="padding:0.75rem;">19</td>
-        <td style="padding:0.75rem;">12</td>
-        <td style="padding:0.75rem;">52%</td>
-        <td style="padding:0.75rem;">6</td>
-      </tr>
-    </tbody>
-  </table>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(350px,1fr));gap:1.5rem;margin-bottom:2rem;">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+      <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Generation Trend</div>
+      <div style="position:relative;height:300px;"><canvas id="trendChart"></canvas></div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+      <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Engagement by Format</div>
+      <div style="position:relative;height:300px;"><canvas id="engagementChart"></canvas></div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+      <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Editing Activity</div>
+      <div style="position:relative;height:300px;"><canvas id="editingChart"></canvas></div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+      <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Content by Topic</div>
+      <div style="position:relative;height:300px;"><canvas id="topicChart"></canvas></div>
+    </div>
+  </div>
+
+  <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-top:2rem;">
+    <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Content Performance Breakdown</div>
+    <table style="width:100%;border-collapse:collapse;font-size:0.75rem;">
+      <thead>
+        <tr>
+          <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Type</th>
+          <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Count</th>
+          <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Edits</th>
+          <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Engagement</th>
+          <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Exports</th>
+        </tr>
+      </thead>
+      <tbody id="analyticsTableBody">
+        <tr><td colspan="5" style="padding:1rem;text-align:center;color:var(--dim);">Loading data...</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>
 let analyticsCharts = {};
+let currentAnalyticsData = null;
+
+// Load analytics data from Worker API
+async function loadAnalyticsData() {
+  const loadingState = document.getElementById('analyticsLoadingState');
+  const analyticsContent = document.getElementById('analyticsContent');
+  
+  console.log('📊 Loading analytics data...');
+  console.log(`🔑 Using sessionToken: ${sessionToken ? 'YES' : 'NO'}`);
+  
+  try {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionToken}`,
+      }
+    };
+    
+    const workerUrl = 'https://nagohai.gregoryhogan.workers.dev';
+    const url = `${workerUrl}/v1/analytics/dashboard`;
+    console.log(`🔗 Fetching from Worker: ${url}`);
+    
+    const response = await fetch(url, options);
+    console.log(`📊 Response status: ${response.status}`);
+    
+    if (!response.ok) {
+      throw new Error(`API returned status ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log(`✅ Got analytics data:`, data);
+    
+    currentAnalyticsData = data;
+    loadingState.style.display = 'none';
+    analyticsContent.style.display = 'block';
+    
+    renderAnalyticsData(data);
+    window.renderAnalyticsCharts();
+    
+  } catch (error) {
+    console.error('❌ Analytics load error:', error);
+    loadingState.innerHTML = `<div style="color:var(--rose);padding:2rem;">⚠️ Could not load analytics. Error: ${error.message}</div>`;
+  }
+}
+
+function renderAnalyticsData(data) {
+  // Update metric cards
+  document.getElementById('contentCount').textContent = data.total_content || 0;
+  document.getElementById('avgEngagement').textContent = (data.avg_engagement || 0) + '%';
+  document.getElementById('bestFormat').textContent = data.best_format || '—';
+  document.getElementById('avgTime').textContent = data.avg_creation_time || '—';
+  
+  // Update table
+  const tbody = document.getElementById('analyticsTableBody');
+  tbody.innerHTML = '';
+  
+  if (data.breakdown && Array.isArray(data.breakdown)) {
+    data.breakdown.forEach(item => {
+      const row = document.createElement('tr');
+      row.style.borderBottom = '1px solid var(--border)';
+      row.innerHTML = `
+        <td style="padding:0.75rem;">${item.type || '—'}</td>
+        <td style="padding:0.75rem;">${item.count || 0}</td>
+        <td style="padding:0.75rem;">${item.edits || 0}</td>
+        <td style="padding:0.75rem;">${item.engagement || 0}%</td>
+        <td style="padding:0.75rem;">${item.exports || 0}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+}
 
 window.renderAnalyticsCharts = function() {
+  const data = currentAnalyticsData || {};
+  
   // Trend Chart
   if (!analyticsCharts.trend && document.getElementById('trendChart')) {
     analyticsCharts.trend = new Chart(document.getElementById('trendChart'), {
       type: 'line',
       data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        labels: data.trend_labels || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
           label: 'Content Generated',
-          data: [12, 19, 8, 15, 22, 18, 14],
+          data: data.trend_data || [12, 19, 8, 15, 22, 18, 14],
           borderColor: '#2a9d8f',
           backgroundColor: 'rgba(42, 157, 143, 0.1)',
           tension: 0.4,
@@ -119,9 +170,9 @@ window.renderAnalyticsCharts = function() {
     analyticsCharts.engagement = new Chart(document.getElementById('engagementChart'), {
       type: 'doughnut',
       data: {
-        labels: ['Social', 'Email', 'Quote', 'Blog'],
+        labels: data.engagement_labels || ['Social', 'Email', 'Quote', 'Blog'],
         datasets: [{
-          data: [42, 38, 45, 52],
+          data: data.engagement_data || [42, 38, 45, 52],
           backgroundColor: ['#2a9d8f', '#e9a028', '#8b5cf6', '#e8524a']
         }]
       },
@@ -134,10 +185,10 @@ window.renderAnalyticsCharts = function() {
     analyticsCharts.editing = new Chart(document.getElementById('editingChart'), {
       type: 'bar',
       data: {
-        labels: ['Tone', 'Length', 'Detail', 'Format'],
+        labels: data.editing_labels || ['Tone', 'Length', 'Detail', 'Format'],
         datasets: [{
           label: 'Edit Count',
-          data: [45, 38, 25, 32],
+          data: data.editing_data || [45, 38, 25, 32],
           backgroundColor: '#2a9d8f'
         }]
       },
@@ -151,10 +202,10 @@ window.renderAnalyticsCharts = function() {
       type: 'bar',
       indexAxis: 'y',
       data: {
-        labels: ['Marketing', 'Sales', 'Support', 'Product', 'Other'],
+        labels: data.topic_labels || ['Marketing', 'Sales', 'Support', 'Product', 'Other'],
         datasets: [{
           label: 'Count',
-          data: [38, 32, 28, 19, 10],
+          data: data.topic_data || [38, 32, 28, 19, 10],
           backgroundColor: '#2a9d8f'
         }]
       },
@@ -164,7 +215,11 @@ window.renderAnalyticsCharts = function() {
 }
 
 window.changePeriod = function(period) {
-  document.querySelectorAll('.period-btn').forEach(btn => btn.style.background = '#fff');
+  console.log(`📅 Changing period to: ${period}`);
+  document.querySelectorAll('.period-btn').forEach(btn => {
+    btn.style.background = '#fff';
+    btn.style.color = 'inherit';
+  });
   event.target.style.background = 'var(--teal)';
   event.target.style.color = '#fff';
   
@@ -177,5 +232,18 @@ window.changePeriod = function(period) {
   }, 200);
 }
 
-setTimeout(() => window.renderAnalyticsCharts(), 100);
+// Wait for sessionToken to be available, then load analytics
+function initAnalytics() {
+  if (typeof sessionToken === 'undefined' || !sessionToken) {
+    console.log('⏳ Waiting for sessionToken...');
+    setTimeout(initAnalytics, 100);
+    return;
+  }
+  
+  console.log('✅ sessionToken ready');
+  loadAnalyticsData();
+}
+
+console.log('🚀 Analytics page loaded');
+initAnalytics();
 </script>
