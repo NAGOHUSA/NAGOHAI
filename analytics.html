@@ -261,7 +261,7 @@ function renderAnalyticsData(data) {
 window.renderAnalyticsCharts = function() {
   const data = currentAnalyticsData || {};
   
-  // Trend Chart
+  // Trend Chart - REAL data from API
   if (!analyticsCharts.trend && document.getElementById('trendChart')) {
     analyticsCharts.trend = new Chart(document.getElementById('trendChart'), {
       type: 'line',
@@ -269,7 +269,7 @@ window.renderAnalyticsCharts = function() {
         labels: data.trend_labels || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
           label: 'Content Generated',
-          data: data.trend_data || [12, 19, 8, 15, 22, 18, 14],
+          data: data.trend_data || [0, 0, 0, 0, 0, 0, 0],  // ✅ REAL data from API (zeros if no data)
           borderColor: '#2a9d8f',
           backgroundColor: 'rgba(42, 157, 143, 0.1)',
           tension: 0.4,
@@ -280,14 +280,14 @@ window.renderAnalyticsCharts = function() {
     });
   }
   
-  // Engagement Chart
+  // Engagement Chart - REAL data from API
   if (!analyticsCharts.engagement && document.getElementById('engagementChart')) {
     analyticsCharts.engagement = new Chart(document.getElementById('engagementChart'), {
       type: 'doughnut',
       data: {
         labels: data.engagement_labels || ['Social', 'Email', 'Quote', 'Blog'],
         datasets: [{
-          data: data.engagement_data || [42, 38, 45, 52],
+          data: data.engagement_data || [0, 0, 0, 0],  // ✅ REAL data from API (zeros if no data)
           backgroundColor: ['#2a9d8f', '#e9a028', '#8b5cf6', '#e8524a']
         }]
       },
@@ -295,7 +295,7 @@ window.renderAnalyticsCharts = function() {
     });
   }
   
-  // Editing Chart
+  // Editing Chart - REAL data from API
   if (!analyticsCharts.editing && document.getElementById('editingChart')) {
     analyticsCharts.editing = new Chart(document.getElementById('editingChart'), {
       type: 'bar',
@@ -303,7 +303,7 @@ window.renderAnalyticsCharts = function() {
         labels: data.editing_labels || ['Tone', 'Length', 'Detail', 'Format'],
         datasets: [{
           label: 'Edit Count',
-          data: data.editing_data || [45, 38, 25, 32],
+          data: data.editing_data || [0, 0, 0, 0],  // ✅ REAL data from API (zeros if no data)
           backgroundColor: '#2a9d8f'
         }]
       },
@@ -311,7 +311,7 @@ window.renderAnalyticsCharts = function() {
     });
   }
   
-  // Topic Chart
+  // Topic Chart - REAL data from API
   if (!analyticsCharts.topic && document.getElementById('topicChart')) {
     analyticsCharts.topic = new Chart(document.getElementById('topicChart'), {
       type: 'bar',
@@ -320,7 +320,7 @@ window.renderAnalyticsCharts = function() {
         labels: data.topic_labels || ['Marketing', 'Sales', 'Support', 'Product', 'Other'],
         datasets: [{
           label: 'Count',
-          data: data.topic_data || [38, 32, 28, 19, 10],
+          data: data.topic_data || [0, 0, 0, 0, 0],  // ✅ REAL data from API (zeros if no data)
           backgroundColor: '#2a9d8f'
         }]
       },
