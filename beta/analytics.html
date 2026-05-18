@@ -1,6 +1,11 @@
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;">
-  <h2>📊 Performance Analytics <span style="font-size:0.7rem;color:var(--dim);">v2.0</span></h2>
-  <div style="display:flex;gap:0.5rem;">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;gap:2rem;">
+  <div>
+    <h2 style="margin:0;margin-bottom:0.5rem;">📊 <span id="analyticsTitle">Performance Analytics</span> <span style="font-size:0.7rem;color:var(--dim);">v2.0</span></h2>
+    <p style="margin:0;font-size:0.85rem;color:var(--dim);line-height:1.5;" id="analyticsDescription">
+      Track how your content performs across different formats. Understanding your audience's engagement helps you create more effective marketing materials.
+    </p>
+  </div>
+  <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:flex-end;">
     <button class="period-btn active" onclick="window.changePeriod('week')" style="padding:0.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.75rem;transition:all 0.2s;">7 Days</button>
     <button class="period-btn" onclick="window.changePeriod('month')" style="padding:0.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.75rem;transition:all 0.2s;">30 Days</button>
     <button class="period-btn" onclick="window.changePeriod('quarter')" style="padding:0.5rem 1rem;background:#fff;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:0.75rem;transition:all 0.2s;">90 Days</button>
@@ -11,51 +16,103 @@
 <div id="analyticsLoadingState" style="text-align:center;color:var(--dim);padding:2rem;">📡 Loading analytics data...</div>
 
 <div id="analyticsContent" style="display:none;">
-  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px,1fr));gap:1rem;margin-bottom:2rem;">
-    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
-      <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);" id="contentCount">0</div>
-      <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Content Generated</div>
+  <!-- METRIC CARDS WITH EXPLANATIONS -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px,1fr));gap:1.5rem;margin-bottom:2rem;">
+    
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+        <div>
+          <div style="font-family:var(--serif);font-size:2.5rem;font-weight:700;color:var(--teal);" id="contentCount">0</div>
+          <div style="font-size:0.7rem;color:var(--muted);margin-top:0.25rem;text-transform:uppercase;letter-spacing:0.05em;">Pieces Created</div>
+        </div>
+        <div style="font-size:1.5rem;">✍️</div>
+      </div>
+      <div style="font-size:0.75rem;color:var(--dim);line-height:1.5;border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.75rem;">
+        How much content you've generated. More content = more audience touch points.
+      </div>
     </div>
-    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
-      <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);" id="avgEngagement">0%</div>
-      <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Avg Engagement</div>
+
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+        <div>
+          <div style="font-family:var(--serif);font-size:2.5rem;font-weight:700;color:var(--teal);" id="avgEngagement">0%</div>
+          <div style="font-size:0.7rem;color:var(--muted);margin-top:0.25rem;text-transform:uppercase;letter-spacing:0.05em;">Avg Engagement</div>
+        </div>
+        <div style="font-size:1.5rem;">💬</div>
+      </div>
+      <div style="font-size:0.75rem;color:var(--dim);line-height:1.5;border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.75rem;">
+        Average engagement per piece. Higher % means your content resonates with your audience.
+      </div>
     </div>
-    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
-      <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);" id="bestFormat">—</div>
-      <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Best Format</div>
+
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+        <div>
+          <div style="font-family:var(--serif);font-size:2.5rem;font-weight:700;color:var(--teal);" id="bestFormat">—</div>
+          <div style="font-size:0.7rem;color:var(--muted);margin-top:0.25rem;text-transform:uppercase;letter-spacing:0.05em;">Best Performing</div>
+        </div>
+        <div style="font-size:1.5rem;">🎯</div>
+      </div>
+      <div style="font-size:0.75rem;color:var(--dim);line-height:1.5;border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.75rem;">
+        Your most effective content type. Focus more on what works best for your audience.
+      </div>
     </div>
-    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;text-align:center;">
-      <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);" id="avgTime">—</div>
-      <div style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;text-transform:uppercase;letter-spacing:0.05em;">Avg Creation Time</div>
+
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.75rem;">
+        <div>
+          <div style="font-family:var(--serif);font-size:2.5rem;font-weight:700;color:var(--teal);" id="avgTime">—</div>
+          <div style="font-size:0.7rem;color:var(--muted);margin-top:0.25rem;text-transform:uppercase;letter-spacing:0.05em;">Avg Create Time</div>
+        </div>
+        <div style="font-size:1.5rem;">⏱️</div>
+      </div>
+      <div style="font-size:0.75rem;color:var(--dim);line-height:1.5;border-top:1px solid var(--border);padding-top:0.75rem;margin-top:0.75rem;">
+        How long it takes to create content. AI helps you create faster while maintaining quality.
+      </div>
     </div>
   </div>
 
+  <!-- CHARTS WITH CONTEXT -->
   <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(350px,1fr));gap:1.5rem;margin-bottom:2rem;">
+    
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-      <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Generation Trend</div>
-      <div style="position:relative;height:300px;"><canvas id="trendChart"></canvas></div>
+      <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;">📈 Generation Trend</div>
+      <div style="font-size:0.75rem;color:var(--dim);margin-bottom:1rem;line-height:1.4;">See how your content creation varies by day. Identify your peak productivity days.</div>
+      <div style="position:relative;height:280px;"><canvas id="trendChart"></canvas></div>
     </div>
+
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-      <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Engagement by Format</div>
-      <div style="position:relative;height:300px;"><canvas id="engagementChart"></canvas></div>
+      <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;">🎨 Engagement by Format</div>
+      <div style="font-size:0.75rem;color:var(--dim);margin-bottom:1rem;line-height:1.4;">Which content types get the most interaction? Double down on winners.</div>
+      <div style="position:relative;height:280px;"><canvas id="engagementChart"></canvas></div>
     </div>
+
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-      <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Editing Activity</div>
-      <div style="position:relative;height:300px;"><canvas id="editingChart"></canvas></div>
+      <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;">✏️ Editing Activity</div>
+      <div style="font-size:0.75rem;color:var(--dim);margin-bottom:1rem;line-height:1.4;">How often you refine your content. More edits = higher quality output.</div>
+      <div style="position:relative;height:280px;"><canvas id="editingChart"></canvas></div>
     </div>
+
     <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-      <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Content by Topic</div>
-      <div style="position:relative;height:300px;"><canvas id="topicChart"></canvas></div>
+      <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;">📁 Content by Topic</div>
+      <div style="font-size:0.75rem;color:var(--dim);margin-bottom:1rem;line-height:1.4;">See which business topics you focus on most. Balance your content strategy.</div>
+      <div style="position:relative;height:280px;"><canvas id="topicChart"></canvas></div>
     </div>
   </div>
 
+  <!-- DETAILED BREAKDOWN TABLE -->
   <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-top:2rem;">
-    <div style="font-weight:600;color:var(--ink);margin-bottom:1rem;">Content Performance Breakdown</div>
+    <div style="margin-bottom:1rem;">
+      <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;">📊 Content Performance by Type</div>
+      <div style="font-size:0.75rem;color:var(--dim);line-height:1.4;">
+        Detailed breakdown of each content format's performance. <strong>Best format</strong> gets the most engagement per piece.
+      </div>
+    </div>
     <table style="width:100%;border-collapse:collapse;font-size:0.75rem;">
       <thead>
         <tr>
           <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Type</th>
-          <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Count</th>
+          <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Created</th>
           <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Edits</th>
           <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Engagement</th>
           <th style="padding:0.75rem;text-align:left;border-bottom:1px solid var(--border);background:var(--parchmt);font-weight:600;">Exports</th>
@@ -66,11 +123,54 @@
       </tbody>
     </table>
   </div>
+
+  <!-- INSIGHTS & RECOMMENDATIONS -->
+  <div style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:10px;padding:1.5rem;margin-top:2rem;">
+    <div style="font-weight:600;color:var(--teal);margin-bottom:0.75rem;">💡 Quick Insights</div>
+    <ul style="margin:0;padding-left:1.5rem;font-size:0.8rem;color:var(--ink);line-height:1.8;">
+      <li>Your <strong id="bestFormatInsight">Social Posts</strong> get the most engagement. Create more of these!</li>
+      <li>Average engagement of <strong id="engagementInsight">42%</strong> is healthy. Keep this momentum.</li>
+      <li>You've created <strong id="contentInsight">127</strong> pieces recently. Consistency is key to growth.</li>
+      <li>Try focusing content on your top performing topics to maximize reach.</li>
+    </ul>
+  </div>
 </div>
 
 <script>
 let analyticsCharts = {};
 let currentAnalyticsData = null;
+
+// Industry-specific descriptions
+const industryDescriptions = {
+  etsy: {
+    title: 'Product & Listing Performance',
+    description: 'Track how your product listings, shop updates, and promotional content perform. Strong engagement means more buyers discovering your products.',
+  },
+  realtor: {
+    title: 'Marketing & Listing Analytics',
+    description: 'Monitor how your property listings, market updates, and client communications perform. Higher engagement drives more qualified leads.',
+  },
+  landlord: {
+    title: 'Tenant & Property Communications',
+    description: 'Track notices, updates, and communications with tenants. Effective messaging keeps tenants engaged and informed.',
+  },
+  coffee: {
+    title: 'Menu & Customer Engagement',
+    description: 'See how menu announcements, promotions, and customer updates perform. Strong engagement builds a loyal customer base.',
+  },
+  salon: {
+    title: 'Booking & Service Promotions',
+    description: 'Monitor how service promotions, new offerings, and client updates drive bookings. Engagement = more appointments.',
+  },
+  photography: {
+    title: 'Portfolio & Client Work Performance',
+    description: 'Track which portfolio pieces and styles get the most interest. Guide your creative direction based on client engagement.',
+  },
+  default: {
+    title: 'Content Performance Analytics',
+    description: 'Track how your content performs across different formats. Understanding your audience\'s engagement helps you create more effective marketing materials.',
+  }
+};
 
 // Load analytics data from Worker API
 async function loadAnalyticsData() {
@@ -107,6 +207,8 @@ async function loadAnalyticsData() {
     loadingState.style.display = 'none';
     analyticsContent.style.display = 'block';
     
+    // Update title & description based on industry
+    updateIndustryContext();
     renderAnalyticsData(data);
     window.renderAnalyticsCharts();
     
@@ -116,12 +218,25 @@ async function loadAnalyticsData() {
   }
 }
 
+function updateIndustryContext() {
+  const industryKey = (currentIndustry || 'default').toLowerCase();
+  const description = industryDescriptions[industryKey] || industryDescriptions.default;
+  
+  document.getElementById('analyticsTitle').textContent = description.title;
+  document.getElementById('analyticsDescription').textContent = description.description;
+}
+
 function renderAnalyticsData(data) {
   // Update metric cards
   document.getElementById('contentCount').textContent = data.total_content || 0;
   document.getElementById('avgEngagement').textContent = (data.avg_engagement || 0) + '%';
   document.getElementById('bestFormat').textContent = data.best_format || '—';
   document.getElementById('avgTime').textContent = data.avg_creation_time || '—';
+  
+  // Update insights
+  document.getElementById('bestFormatInsight').textContent = data.best_format || 'content';
+  document.getElementById('engagementInsight').textContent = (data.avg_engagement || 0) + '%';
+  document.getElementById('contentInsight').textContent = data.total_content || 0;
   
   // Update table
   const tbody = document.getElementById('analyticsTableBody');
@@ -135,7 +250,7 @@ function renderAnalyticsData(data) {
         <td style="padding:0.75rem;">${item.type || '—'}</td>
         <td style="padding:0.75rem;">${item.count || 0}</td>
         <td style="padding:0.75rem;">${item.edits || 0}</td>
-        <td style="padding:0.75rem;">${item.engagement || 0}%</td>
+        <td style="padding:0.75rem;"><strong>${item.engagement || 0}%</strong></td>
         <td style="padding:0.75rem;">${item.exports || 0}</td>
       `;
       tbody.appendChild(row);
