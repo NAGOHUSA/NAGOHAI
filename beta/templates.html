@@ -1,83 +1,821 @@
-# 🚀 DEPLOYMENT FIX - Templates Not Loading
+<style>
+/* Hide any accidentally rendered markdown or debug text */
+#templatesContainer > p { display: none; }
+#templatesContainer > h1 { display: none; }
+#templatesContainer > h2 { display: none; }
+/* Only show our actual template content */
+#templatesContainer > div { display: block; }
+#templatesContainer > h3 { display: block; }
+</style>
 
-## ⚠️ The Problem
-The error "Could not load templates. Make sure templates.html exists" means:
-- ✅ templates.html exists locally (27KB)
-- ❌ templates.html NOT uploaded to ai.nagoh.us/beta/
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;gap:2rem;">
+  <div>
+    <h2 style="margin:0;margin-bottom:0.5rem;">📋 <span id="templatesTitle">Templates & Tools</span> <span style="font-size:0.7rem;color:var(--dim);">v3.0</span></h2>
+    <p style="margin:0;font-size:0.85rem;color:var(--dim);line-height:1.5;" id="templatesDescription">
+      Pre-built templates optimized for your industry. Copy, customize, and paste into chat to generate variations instantly.
+    </p>
+  </div>
+</div>
 
-## ✅ The Fix
+<!-- SECTION 1: POWER TOOLS -->
+<div style="background:var(--gold-lt);border:1px solid var(--gold);border-radius:10px;padding:1.5rem;margin-bottom:2rem;">
+  <h3 style="margin:0 0 1rem;color:var(--ink);font-weight:700;">⚡ Power Tools</h3>
+  
+  <!-- Quote Generator -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px,1fr));gap:1.5rem;margin-bottom:1.5rem;">
+    <div>
+      <div style="font-weight:600;color:var(--ink);margin-bottom:0.75rem;font-size:0.9rem;">💰 <span id="quoteToolTitle">Quote Generator</span></div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <input type="text" placeholder="Client name" id="quoteName" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;">
+        <input type="text" placeholder="Service type" id="quoteService" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;">
+        <input type="text" placeholder="Scope" id="quoteScope" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;">
+        <input type="text" placeholder="Budget/pricing" id="quoteBudget" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;">
+        <button onclick="window.genQuote()" style="padding:0.6rem;background:var(--teal);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.8rem;">Generate Quote</button>
+      </div>
+      <div id="quoteBox" style="margin-top:0.75rem;"></div>
+    </div>
+  </div>
 
-### STEP 1: Upload templates.html to GitHub Pages
-1. Go to your GitHub repo (NAGOHAI)
-2. Navigate to `/beta/` folder
-3. Upload **templates.html** (from /mnt/user-data/outputs/)
-4. Commit with message: "Add: Industry-specific templates v3.0"
-5. Wait for GitHub to publish (usually instant)
+  <!-- Smart Suggestions -->
+  <div>
+    <div style="font-weight:600;color:var(--ink);margin-bottom:0.75rem;font-size:0.9rem;">✨ Smart Suggestions</div>
+    <textarea placeholder="Paste your content here..." id="suggestArea" style="width:100%;padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;min-height:80px;resize:none;"></textarea>
+    <button onclick="window.getSuggestions()" style="width:100%;padding:0.6rem;background:var(--teal);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.8rem;margin-top:0.5rem;">Get Suggestions</button>
+    <div id="suggestBox" style="margin-top:0.75rem;font-size:0.8rem;"></div>
+  </div>
+</div>
 
-### STEP 2: Verify All 5 Frontend Files Are Uploaded
-Check that THESE 5 files exist in your `/beta/` folder:
-- ✅ index.html (v1.0)
-- ✅ shared.js (globals & auth)
-- ✅ templates.html (v3.0) ← **THIS ONE MIGHT BE MISSING**
-- ✅ trending.html (v2.1)
-- ✅ analytics.html (v2.0)
+<!-- SECTION 2: INDUSTRY-SPECIFIC TEMPLATES -->
+<h3 style="margin:2rem 0 1rem;color:var(--ink);font-weight:700;">📚 <span id="templatesHeading">Templates for Your Industry</span></h3>
+<div id="templatesContainer" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px,1fr));gap:1.5rem;margin-bottom:2rem;"></div>
 
-### STEP 3: Hard Refresh Your Browser
-1. Go to https://ai.nagoh.us/beta/
-2. Hard refresh: **Ctrl+Shift+R** (Windows) or **Cmd+Shift+R** (Mac)
-3. Clear cache if needed (DevTools → Storage → Clear Site Data)
+<!-- SECTION 3: CONTENT STRATEGIES -->
+<h3 style="margin:2rem 0 1rem;color:var(--ink);font-weight:700;">🎯 Content Strategy Prompts</h3>
+<div id="strategiesContainer" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px,1fr));gap:1.5rem;"></div>
 
-### STEP 4: Verify
-1. Open DevTools (F12)
-2. Go to **Console** tab
-3. You should see:
-   ```
-   ✅ Templates page loaded
-   ✅ currentIndustry ready: etsy
-   🔄 Industry changed, reloading templates
-   ```
-4. Click **Templates** tab → Should now show templates with cards!
+<script>
+// Comprehensive industry-specific templates
+const industryTemplates = {
+  etsy: {
+    title: 'Etsy Seller Templates',
+    description: 'Optimize your shop and listings',
+    quoteTitle: 'Custom Order Quote',
+    templates: [
+      {
+        emoji: '🛍️',
+        title: 'Product Listing',
+        desc: 'SEO-optimized listing copy',
+        id: 'etsyListing',
+        content: `PRODUCT TITLE: [Clear, searchable title with key words]
 
----
+SHORT DESCRIPTION: [1-2 sentences, benefit-focused]
 
-## 📋 Files Ready to Deploy
+FULL DESCRIPTION:
+What it is: [Simple, clear description of the item]
 
-All these are in `/mnt/user-data/outputs/`:
-- ✅ index.html (46 KB)
-- ✅ shared.js (18 KB)
-- ✅ templates.html (27 KB) ← **UPLOAD THIS**
-- ✅ trending.html (12 KB)
-- ✅ analytics.html (18 KB)
+Materials: [List all materials used]
 
----
+Dimensions: [Size/specifications]
 
-## 🔍 Troubleshooting
+Care Instructions: [How to care for it]
 
-### If error persists after uploading:
-1. Check GitHub repo - verify templates.html is actually there
-2. Try incognito/private browsing window
-3. Wait 5 minutes for GitHub Pages to fully propagate
-4. Check Network tab (F12) - see if fetch to templates.html succeeds
+Made to Order Note: [If applicable, timeline]
 
-### If templates still don't render:
-1. Copy `templates.html` content
-2. Paste into browser DevTools Console:
-   ```javascript
-   console.log(document.getElementById('templatesContainer'));
-   ```
-3. Should return the container element
+Perfect For: [Who would love this? Gift ideas?]
 
----
+TAGS: [12 relevant, searchable tags]`
+      },
+      {
+        emoji: '📸',
+        title: 'Instagram Caption',
+        desc: 'Drive traffic to your shop',
+        id: 'etsyInstagram',
+        content: `[Hook - stop the scroll]
 
-## 📞 Summary
+🎨 What: [What is this product?]
+💎 Why: [Why is it special/unique?]
+🛍️ Where: [Link to shop/product]
 
-**The issue:** templates.html hasn't been uploaded to GitHub Pages yet.
+[3-5 relevant hashtags]
+[Brand hashtags]
+#etsyshop #etsyseller #handmade`
+      },
+      {
+        emoji: '💌',
+        title: 'Customer Thank You',
+        desc: 'Build loyalty and repeat buyers',
+        id: 'etsyThankYou',
+        content: `Hi [NAME]!
 
-**The fix:** 
-1. Upload templates.html to your `/beta/` folder on GitHub
-2. Commit & push
-3. Wait for GitHub to publish
-4. Hard refresh your browser
-5. Done! ✨
+Thank you so much for your order of [PRODUCT]. We're thrilled you chose our shop! 💕
 
-All files are ready in `/mnt/user-data/outputs/` - just upload templates.html!
+Your item was hand-crafted with care and is being prepared for shipment. You'll receive a tracking number by [DATE].
+
+📮 Questions? Reply to this message anytime.
+
+🎁 Interested in more? Browse our full collection: [SHOP LINK]
+
+Can't wait to make your next custom order!
+
+With gratitude,
+[Your Shop Name]`
+      },
+      {
+        emoji: '📝',
+        title: 'Shop Announcement',
+        desc: 'Keep customers updated',
+        id: 'etsyAnnouncement',
+        content: `📢 SHOP ANNOUNCEMENT
+
+[NEW PRODUCT LAUNCH / SALE / UPDATE]
+
+🎉 What's New: [Describe the announcement]
+
+🗓️ When: [Timeline or dates]
+
+💡 Why You'll Love It: [3 reasons or benefits]
+
+🛒 Learn More: [Shop link or product link]
+
+Thank you for supporting handmade! ❤️`
+      }
+    ],
+    strategies: [
+      {
+        emoji: '📊',
+        title: 'Seasonal Product Strategy',
+        prompt: 'I sell [PRODUCT TYPE] on Etsy. Create a 90-day content and product strategy for [SEASON]. Include: 1) 5 seasonal product ideas, 2) Instagram caption themes, 3) Listing optimization tips, 4) customer engagement ideas. Make it specific to what\'s trending.'
+      },
+      {
+        emoji: '💰',
+        title: 'Upsell Campaign',
+        prompt: 'I sell [PRODUCT TYPE] on Etsy. Create an email/message campaign to encourage customers who bought [ITEM A] to also buy [ITEM B]. Include: 1) 3 message templates, 2) bundle deal ideas, 3) complementary product suggestions, 4) incentive ideas.'
+      },
+      {
+        emoji: '⭐',
+        title: 'Review Request',
+        prompt: 'Create 3 friendly, non-pushy ways to ask Etsy customers to leave reviews for [PRODUCT]. Make them feel special and appreciated, not obligated. Include: 1) Follow-up message templates, 2) review incentive ideas (without violating Etsy policy), 3) timing suggestions.'
+      }
+    ]
+  },
+
+  realtor: {
+    title: 'Real Estate Templates',
+    description: 'Win listings and buyers',
+    quoteTitle: 'Market Analysis Quote',
+    templates: [
+      {
+        emoji: '🏠',
+        title: 'Property Listing',
+        desc: 'MLS-ready, conversion-focused',
+        id: 'realtorListing',
+        content: `HEADLINE: [Address - Compelling benefit statement]
+
+PROPERTY OVERVIEW:
+Beds: [#] | Baths: [#] | Sqft: [#]
+Lot: [Size] | Year Built: [Year] | Status: [Status]
+
+PROPERTY DESCRIPTION:
+[Opening hook - what makes this special?]
+
+[Neighborhood appeal - why this location?]
+
+[Home features - 5-7 key selling points]
+
+[Unique features - what sets it apart?]
+
+[Recent upgrades - what's been updated?]
+
+INSIDE:
+- Kitchen: [Details, updates, appliances]
+- Living: [Layout, natural light, views]
+- Bedrooms: [Size, features, views]
+- Bathrooms: [Updates, fixtures]
+- Other: [Bonus rooms, storage, etc.]
+
+OUTSIDE:
+- Yard: [Size, landscaping, potential]
+- Patio/Deck: [Details]
+- Parking: [Garage, driveway, spots]
+
+LOCATION HIGHLIGHTS:
+- Schools: [Rankings, names]
+- Walkability: [Nearby amenities]
+- Transportation: [Access, commute times]
+- Community: [Vibe, events, character]
+
+INVESTMENT OPPORTUNITY:
+[Why this is a smart buy - equity, rental potential, appreciation]
+
+SHOWING INSTRUCTIONS:
+[Any special notes for showings]`
+      },
+      {
+        emoji: '📱',
+        title: 'Facebook/Instagram Ad',
+        desc: 'Drive qualified leads',
+        id: 'realtorAd',
+        content: `[HEADLINE - Benefit-driven, emotional]
+
+🏡 [ADDRESS] | $[PRICE]
+
+[1-2 sentence description of the property and why it's special]
+
+✓ [Key feature 1]
+✓ [Key feature 2]
+✓ [Key feature 3]
+
+📍 Perfect [schools/commute/location benefit]
+
+[Sense of urgency or scarcity if applicable]
+
+Learn More & Schedule Showing:
+[LINK]
+
+Contact [YOUR NAME] Today
+[PHONE] | [EMAIL]`
+      },
+      {
+        emoji: '💌',
+        title: 'Buyer Follow-up Email',
+        desc: 'Nurture leads to close',
+        id: 'realtorFollowup',
+        content: `Subject: Let's Find Your Perfect Home | [Your Name]
+
+Hi [NAME],
+
+Thank you for viewing [PROPERTY ADDRESS] yesterday! I loved showing you the property.
+
+Based on our conversation, I think you'd also be interested in [SIMILAR PROPERTY]. Here's why:
+- [Reason 1]
+- [Reason 2]
+- [Reason 3]
+
+I've scheduled a private showing for [DATE/TIME] if you'd like to see it. Just let me know!
+
+In the meantime, here are a few resources that might help:
+📊 [Market Report Link]
+🔍 [Neighborhood Guide]
+💰 [Mortgage Calculator Link]
+
+Have any questions? I'm here to help.
+
+Best regards,
+[YOUR NAME]
+[PHONE]
+[EMAIL]`
+      },
+      {
+        emoji: '🎯',
+        title: 'Just Sold Announcement',
+        desc: 'Build credibility and leads',
+        id: 'realtorSoldAnnouncement',
+        content: `🎉 JUST SOLD!
+
+[ADDRESS] sold for $[PRICE]
+[BEDS] BD | [BATHS] BA | [SQFT] SQFT
+
+Congratulations to [SELLERS] on your sale! 🏡
+
+[2-3 sentences about the property's special features]
+
+📊 Market Stats:
+Sold for: [% of asking]
+Days on market: [#]
+Final price: $[PRICE]
+
+Thank you to all my clients and supporters who made this possible! 🙌
+
+Thinking about selling? Let's talk about your home's value.
+Ready to buy? I have exciting new listings coming soon!
+
+📱 Call or text [YOUR NAME] at [PHONE]`
+      }
+    ],
+    strategies: [
+      {
+        emoji: '📊',
+        title: 'Listing Farm Strategy',
+        prompt: 'I\'m a real estate agent focusing on [NEIGHBORHOOD/AREA]. Create a 90-day content strategy to become the area expert and generate listings. Include: 1) 10 social media post ideas, 2) 3 email newsletter topics, 3) community event ideas, 4) neighborhood report angles.'
+      },
+      {
+        emoji: '💰',
+        title: 'Buyer Nurture Campaign',
+        prompt: 'Create a 30-day email sequence for new buyers (pre-approval stage) to stay top-of-mind. Include: 1) 5 email templates, 2) content topics (market updates, neighborhood guides, buyer tips), 3) timing and frequency, 4) call-to-action strategy.'
+      },
+      {
+        emoji: '🏆',
+        title: 'Open House Marketing',
+        prompt: 'Create a complete open house marketing plan for [ADDRESS]. Include: 1) 3 weeks of social media content, 2) email templates, 3) yard sign copy, 4) day-of tactics, 5) follow-up strategy for visitors.'
+      }
+    ]
+  },
+
+  salon: {
+    title: 'Salon & Beauty Templates',
+    description: 'Book more appointments',
+    quoteTitle: 'Service Pricing Quote',
+    templates: [
+      {
+        emoji: '💇',
+        title: 'Service Promo',
+        desc: 'Highlight your services',
+        id: 'salonService',
+        content: `✨ [SERVICE NAME] ✨
+
+[Emoji describing the service]
+
+What it includes:
+✓ [Step 1 of the service]
+✓ [Step 2 of the service]
+✓ [Step 3 of the service]
+
+Perfect for: [Who would love this?]
+
+Benefits:
+💎 [Benefit 1 - appearance/confidence]
+💎 [Benefit 2 - how they'll feel]
+💎 [Benefit 3 - long-term result]
+
+Price: $[PRICE] | Duration: [TIME]
+
+👉 BOOK NOW: [LINK]
+
+Questions? Call us at [PHONE]
+
+Valid: [Dates] | New clients save [X%]`
+      },
+      {
+        emoji: '📸',
+        title: 'Before & After Caption',
+        desc: 'Show transformations',
+        id: 'salonBeforeAfter',
+        content: `😍 TRANSFORMATION TUESDAY 😍
+
+Client: [Name or "Meet Sarah"]
+Service: [Service name]
+Hair/Beauty Goal: [What they wanted]
+
+The Story:
+[2-3 sentences about why they came in and what they were hoping for]
+
+The Result: ⬇️
+[Client testimonial or your description]
+
+Love your look? Ask for [STYLIST NAME]!
+
+📱 Book your transformation: [LINK]
+📞 Questions? [PHONE]
+
+[HASHTAGS]`
+      },
+      {
+        emoji: '💌',
+        title: 'Loyalty Email',
+        desc: 'Keep clients coming back',
+        id: 'salonLoyalty',
+        content: `Hi [NAME]!
+
+We noticed it's been [TIME] since we saw you - we miss you! 💕
+
+We've loved working with you and wanted to make your next visit extra special.
+
+🎁 Here's your exclusive offer:
+[OFFER TYPE] - [VALUE]
+Valid through [DATE]
+Use code: [CODE]
+
+Plus: [Additional perk or note about new services]
+
+We've also been using [NEW PRODUCT/TECHNIQUE] that we think you'd absolutely love!
+
+👉 Ready to get back to gorgeous? BOOK NOW: [LINK]
+
+See you soon!
+[SALON NAME] Team`
+      },
+      {
+        emoji: '🎯',
+        title: 'New Service Announcement',
+        desc: 'Drive trial and excitement',
+        id: 'salonNewService',
+        content: `🚨 EXCITING NEWS! 🚨
+
+We just added [SERVICE NAME] to our menu! 
+
+[EMOJI] What is it?
+[2 sentences describing the service and what makes it special]
+
+[EMOJI] Why you'll love it:
+✓ [Benefit 1]
+✓ [Benefit 2]
+✓ [Benefit 3]
+
+[EMOJI] Introductory pricing:
+Regular: $[REGULAR] | Launch special: $[SPECIAL]
+Valid: [Dates] | Limited spots!
+
+🌟 Perfect for: [Who would want this?]
+
+[EMOJI] Meet your stylist: [STYLIST NAME]
+[Brief bio or credentials]
+
+👉 CLAIM YOUR SPOT: [BOOKING LINK]
+Limited appointments available!
+
+Questions? Call [PHONE]`
+      }
+    ],
+    strategies: [
+      {
+        emoji: '📅',
+        title: 'Client Booking Funnel',
+        prompt: 'Create a complete client booking strategy for my salon. Include: 1) 5 service descriptions that sell, 2) customer journey from awareness to booking, 3) email/text templates to confirm and remind, 4) post-appointment follow-up to encourage return visits.'
+      },
+      {
+        emoji: '💎',
+        title: 'VIP Loyalty Program',
+        prompt: 'Design a VIP loyalty program for my salon clients. Include: 1) tier system (bronze/silver/gold), 2) reward structure, 3) exclusive perks per tier, 4) email campaigns to drive enrollment, 5) retention tactics.'
+      },
+      {
+        emoji: '✨',
+        title: 'Seasonal Campaign',
+        prompt: 'Create a seasonal beauty campaign for [SEASON/HOLIDAY]. Include: 1) 3 signature service bundles, 2) promotional messaging, 3) social media post ideas, 4) email templates, 5) stylist talking points.'
+      }
+    ]
+  },
+
+  default: {
+    title: 'Professional Templates',
+    description: 'Create like a pro',
+    quoteTitle: 'Service Quote',
+    templates: [
+      {
+        emoji: '📱',
+        title: 'Social Media Post',
+        desc: 'Engage your audience',
+        id: 'socialPost',
+        content: `[Hook - capture attention in first line]
+
+[Context or story - build interest]
+
+[Key message - what do you want them to know?]
+
+[Call to action - what should they do?]
+
+[Relevant hashtags]`
+      },
+      {
+        emoji: '📧',
+        title: 'Email Campaign',
+        desc: 'Convert readers to customers',
+        id: 'emailCampaign',
+        content: `Subject: [Compelling, benefit-focused subject line]
+
+Hi [NAME],
+
+[Personal opening - acknowledge their situation or need]
+
+[Main message - the value or offer]
+
+[Why it matters - how will it help them?]
+
+[Social proof - testimonial, stat, or case study]
+
+[Call to action - specific next step]
+
+[Sign-off]
+[Your name]
+[Contact info]`
+      },
+      {
+        emoji: '📝',
+        title: 'Blog Post Outline',
+        desc: 'Attract and educate readers',
+        id: 'blogOutline',
+        content: `TITLE: [Benefit-driven, searchable headline]
+
+INTRODUCTION:
+- Hook: [What problem does this solve?]
+- Promise: [What will they learn?]
+- Overview: [What will you cover?]
+
+SECTION 1: [Main point/benefit]
+- Explanation
+- Example or story
+- Key takeaway
+
+SECTION 2: [Main point/benefit]
+- Explanation
+- Example or story
+- Key takeaway
+
+SECTION 3: [Main point/benefit]
+- Explanation
+- Example or story
+- Key takeaway
+
+PRACTICAL TIPS:
+- Tip 1
+- Tip 2
+- Tip 3
+
+CONCLUSION:
+- Summary of key points
+- Call to action
+- Next steps`
+      },
+      {
+        emoji: '💰',
+        title: 'Product Description',
+        desc: 'Sell with words',
+        id: 'productDesc',
+        content: `HEADLINE: [Benefit-first, compelling]
+
+SUBHEADING: [What problem does it solve?]
+
+WHAT IT IS:
+[Clear, simple explanation]
+
+KEY BENEFITS:
+✓ Benefit 1
+✓ Benefit 2
+✓ Benefit 3
+✓ Benefit 4
+
+WHO IT'S FOR:
+[Your ideal customer avatar]
+
+HOW IT WORKS:
+[Simple, easy-to-understand steps]
+
+SPECIFICATIONS:
+[Size, color, materials, etc.]
+
+WHY CHOOSE US:
+[What makes you different?]
+
+PRICE & OPTIONS:
+[Clear pricing, any variations]
+
+GUARANTEE:
+[Risk reversal - your promise]
+
+CALL TO ACTION:
+[Button text or link]`
+      },
+      {
+        emoji: '🎯',
+        title: 'Landing Page Copy',
+        desc: 'Convert visitors',
+        id: 'landingPage',
+        content: `HEADLINE: [Benefit-driven, solution-focused]
+
+SUBHEADLINE: [Address the main pain point]
+
+HERO IMAGE/VIDEO: [Visual that shows the transformation]
+
+SECTION 1 - THE PROBLEM:
+"Are you struggling with [PAIN POINT]?"
+[Describe the frustration or challenge]
+
+SECTION 2 - THE SOLUTION:
+"Here's how we help:"
+[Your approach, explained simply]
+
+SECTION 3 - BENEFITS:
+✓ [Benefit 1]
+✓ [Benefit 2]
+✓ [Benefit 3]
+
+SOCIAL PROOF:
+"[Testimonial]" - [Name], [Title]
+[Stat or case study result]
+
+FAQ:
+Q: [Common question]
+A: [Answer]
+
+CTA BUTTON: [Clear action text]
+
+FOOTER:
+[Trust signals - guarantees, certifications]`
+      },
+      {
+        emoji: '📊',
+        title: 'Case Study',
+        desc: 'Show your results',
+        id: 'caseStudy',
+        content: `TITLE: How [CLIENT] [Achieved Result]
+
+THE SITUATION:
+Company: [Name & industry]
+Challenge: [The problem they faced]
+Goal: [What they wanted to achieve]
+Status: [Where they were before]
+
+THE SOLUTION:
+Approach: [Your method/strategy]
+Timeline: [How long it took]
+Key steps: [What you did]
+
+THE RESULTS:
+[Metric 1]: [Before] → [After] ([% improvement])
+[Metric 2]: [Before] → [After] ([% improvement])
+[Metric 3]: [Before] → [After] ([% improvement])
+
+TESTIMONIAL:
+"[Client's own words about the experience and results]"
+- [Client name], [Title]
+
+KEY INSIGHT:
+[What made the difference?]
+
+NEXT STEPS:
+[How others can get similar results]`
+      }
+    ],
+    strategies: [
+      {
+        emoji: '🎯',
+        title: 'Content Calendar',
+        prompt: 'Create a 90-day content calendar for my [BUSINESS TYPE]. Include: 1) 12 post themes, 2) content mix (educational, promotional, engagement), 3) posting schedule, 4) hashtag strategy, 5) call-to-action variations.'
+      },
+      {
+        emoji: '💌',
+        title: 'Email Nurture Sequence',
+        prompt: 'Design a 7-email nurture sequence for new leads in my [INDUSTRY]. Include: 1) welcome email, 2) value/education emails, 3) objection-handling email, 4) social proof email, 5) final offer email with copy for each.'
+      },
+      {
+        emoji: '📈',
+        title: 'Growth Strategy',
+        prompt: 'Create a 6-month growth strategy for my [BUSINESS]. Include: 1) 3 awareness tactics, 2) 3 engagement tactics, 3) 3 conversion tactics, 4) metrics to track, 5) content ideas for each phase.'
+      }
+    ]
+  }
+};
+
+// Initialize templates on page load
+function initTemplates() {
+  if (typeof currentIndustry === 'undefined') {
+    console.log('⏳ Waiting for currentIndustry...');
+    setTimeout(initTemplates, 100);
+    return;
+  }
+  
+  console.log('✅ currentIndustry ready:', currentIndustry);
+  renderTemplates();
+  
+  // Listen for industry changes
+  const originalOnIndustryChange = window.onIndustryChange;
+  window.onIndustryChange = function() {
+    console.log('🔄 Industry changed, reloading templates');
+    if (originalOnIndustryChange) {
+      originalOnIndustryChange.apply(this, arguments);
+    }
+    setTimeout(renderTemplates, 100);
+  };
+}
+
+function renderTemplates() {
+  const industryKey = (currentIndustry || 'default').toLowerCase();
+  const config = industryTemplates[industryKey] || industryTemplates.default;
+  
+  // Update titles
+  document.getElementById('templatesTitle').textContent = config.title;
+  document.getElementById('templatesDescription').textContent = config.description;
+  document.getElementById('templatesHeading').textContent = 'Templates for ' + config.title;
+  document.getElementById('quoteToolTitle').textContent = config.quoteTitle;
+  
+  // Render template cards
+  const templatesContainer = document.getElementById('templatesContainer');
+  templatesContainer.innerHTML = config.templates.map(template => `
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;transition:all 0.2s;" onmouseover="this.style.boxShadow='0 4px 12px rgba(42,157,143,0.15)'" onmouseout="this.style.boxShadow='none'">
+      <div style="font-size:2rem;margin-bottom:0.5rem;">${template.emoji}</div>
+      <div style="font-weight:700;color:var(--ink);margin-bottom:0.25rem;font-size:0.95rem;">${template.title}</div>
+      <div style="font-size:0.75rem;color:var(--dim);margin-bottom:0.75rem;">${template.desc}</div>
+      <div id="${template.id}" style="background:var(--teal-lt);border:1px solid var(--teal);border-radius:6px;padding:0.75rem;font-size:0.7rem;white-space:pre-wrap;font-family:monospace;margin-bottom:0.75rem;max-height:150px;overflow:auto;line-height:1.4;">${template.content}</div>
+      <div style="display:flex;gap:0.5rem;">
+        <button onclick="window.copyText('${template.id}')" style="flex:1;padding:0.5rem;background:#fff;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:0.7rem;font-weight:600;">📋 Copy</button>
+        <button onclick="window.pasteToChat('${template.id}')" style="flex:1;padding:0.5rem;background:var(--teal);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.7rem;font-weight:600;">📤 Chat</button>
+      </div>
+    </div>
+  `).join('');
+  
+  // Render strategy cards
+  const strategiesContainer = document.getElementById('strategiesContainer');
+  strategiesContainer.innerHTML = config.strategies.map((strategy, idx) => `
+    <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;transition:all 0.2s;cursor:pointer;" onmouseover="this.style.boxShadow='0 4px 12px rgba(42,157,143,0.15)';this.style.borderColor='var(--teal)'" onmouseout="this.style.boxShadow='none';this.style.borderColor='var(--border)'" onclick="window.sendStrategyToChat('${strategy.prompt.replace(/'/g, "\\'")}')">
+      <div style="font-size:1.8rem;margin-bottom:0.5rem;">${strategy.emoji}</div>
+      <div style="font-weight:700;color:var(--ink);margin-bottom:0.5rem;font-size:0.9rem;">${strategy.title}</div>
+      <div style="font-size:0.75rem;color:var(--dim);line-height:1.5;margin-bottom:0.75rem;">${strategy.prompt.substring(0, 80)}...</div>
+      <button style="width:100%;padding:0.5rem;background:var(--teal);color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.75rem;font-weight:600;">➕ Use Strategy</button>
+    </div>
+  `).join('');
+}
+
+// Global functions
+window.copyText = function(elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  
+  const text = el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const original = btn.textContent;
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = original; }, 2000);
+  }).catch(() => {
+    alert('Copy failed. Please try again.');
+  });
+};
+
+window.pasteToChat = function(elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  
+  const text = el.textContent;
+  const chatPrompt = document.getElementById('prompt');
+  
+  if (chatPrompt) {
+    chatPrompt.value = text;
+    chatPrompt.focus();
+    if (typeof switchTab === 'function') switchTab('chat');
+    if (typeof showSuccessNotification === 'function') {
+      showSuccessNotification('✅ Template pasted to chat!');
+    }
+  }
+};
+
+window.sendStrategyToChat = function(prompt) {
+  const chatPrompt = document.getElementById('prompt');
+  if (chatPrompt) {
+    chatPrompt.value = prompt;
+    chatPrompt.focus();
+    if (typeof switchTab === 'function') switchTab('chat');
+    if (typeof showSuccessNotification === 'function') {
+      showSuccessNotification('✅ Strategy prompt sent to chat!');
+    }
+  }
+};
+
+window.genQuote = function() {
+  const name = document.getElementById('quoteName').value.trim();
+  const service = document.getElementById('quoteService').value.trim();
+  const scope = document.getElementById('quoteScope').value.trim();
+  const budget = document.getElementById('quoteBudget').value.trim();
+  
+  if (!name || !service) {
+    alert('Please fill in client name and service type');
+    return;
+  }
+  
+  const quote = `PROJECT QUOTE
+
+Date: ${new Date().toLocaleDateString()}
+Client: ${name}
+
+Service: ${service}
+Scope: ${scope}
+Budget: ${budget}
+
+Terms: 50% deposit, 50% on completion
+Timeline: TBD based on scope
+
+Thank you for your business!`;
+  
+  const box = document.getElementById('quoteBox');
+  box.innerHTML = `
+    <div style="background:var(--gold-lt);border:1px solid var(--gold);border-radius:6px;padding:0.75rem;font-size:0.7rem;white-space:pre-wrap;font-family:monospace;margin-bottom:0.75rem;" id="generatedQuote">${quote}</div>
+    <button onclick="window.copyText('generatedQuote')" style="width:100%;padding:0.5rem;background:#fff;border:1px solid var(--border);border-radius:6px;cursor:pointer;font-size:0.7rem;font-weight:600;">📋 Copy Quote</button>
+  `;
+};
+
+window.getSuggestions = function() {
+  const content = document.getElementById('suggestArea').value;
+  const box = document.getElementById('suggestBox');
+  
+  if (!content.trim()) {
+    box.innerHTML = '<div style="color:var(--dim);">📝 Paste content to get suggestions</div>';
+    return;
+  }
+  
+  const tips = [];
+  if (content.includes('utilize')) tips.push('✨ Replace "utilize" with "use"');
+  if (content.includes('leverage')) tips.push('✨ Replace "leverage" with "use" or "apply"');
+  if (/[A-Z]{5,}/.test(content)) tips.push('✨ Reduce ALL-CAPS for friendlier tone');
+  if (content.length > 500) tips.push('✨ Break into shorter paragraphs');
+  if (content.split('.').length < 3) tips.push('✨ Add more specific examples');
+  if (content.match(/\b(very|really|quite|actually|basically)\b/gi)) tips.push('✨ Remove filler words');
+  if (!/[!?]/.test(content)) tips.push('✨ Add more personality with punctuation');
+  
+  if (tips.length === 0) {
+    box.innerHTML = '<div style="color:var(--teal);padding:0.75rem;background:var(--teal-lt);border-radius:6px;">✅ Content looks great!</div>';
+  } else {
+    box.innerHTML = tips.map(t => `<div style="padding:0.5rem;background:var(--teal-lt);border-radius:4px;margin-bottom:0.5rem;font-size:0.8rem;">${t}</div>`).join('');
+  }
+};
+
+console.log('🚀 Templates page loaded');
+initTemplates();
+</script>
