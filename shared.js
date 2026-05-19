@@ -261,6 +261,11 @@ function applyUserToUI(user) {
   const name = document.getElementById('tuserName');
   if (user.picture && avatar) { avatar.src = user.picture; avatar.classList.add('show'); }
   if (user.name && name) { name.textContent = user.name.split(' ')[0]; name.classList.add('show'); }
+  
+  // Update subscription tier UI if function exists
+  if (typeof updateTierUI === 'function') {
+    updateTierUI();
+  }
 }
 
 function showModal() {
