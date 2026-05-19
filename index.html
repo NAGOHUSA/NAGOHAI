@@ -1333,38 +1333,55 @@ async function processCheckout(tier) {
 function showPaymentModal(stripe, clientSecret, tier, tierInfo) {
   // Create modal HTML
   const modalHtml = `
-    <div class="modal-wrap" id="paymentModalWrap">
-      <div class="modal" style="max-width:500px;">
+    <div class="modal-wrap" id="paymentModalWrap" onclick="if(event.target.id==='paymentModalWrap') closePaymentModal()">
+      <div class="modal" style="max-width:520px;">
         <div class="modal-hero">
           <div class="modal-logo">Upgrade to <em>${tierInfo.name}</em></div>
           <div class="modal-tagline">${tierInfo.description}</div>
         </div>
         <div class="modal-body">
-          <div id="payment-element"></div>
-          <div id="payment-message" style="color:var(--rose);font-size:0.8rem;margin-top:1rem;"></div>
+          <div style="background:var(--parchmt);border-radius:10px;padding:1rem;margin-bottom:1.5rem;border-left:4px solid var(--gold);">
+            <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.3rem;">Amount to Pay</div>
+            <div style="font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--gold);">${tierInfo.price}</div>
+            <div style="font-size:0.7rem;color:var(--dim);margin-top:0.3rem;">${tierInfo.description}</div>
+          </div>
+          
+          <div style="margin-bottom:1.5rem;">
+            <div style="font-size:0.75rem;color:var(--dim);font-weight:600;margin-bottom:0.8rem;text-transform:uppercase;letter-spacing:0.06em;">Payment Information</div>
+            <div id="payment-element"></div>
+          </div>
+          
+          <div id="payment-message" style="color:var(--rose);font-size:0.8rem;margin-bottom:1rem;min-height:1.2rem;"></div>
+          
           <button id="submit-payment" style="
             width:100%;
-            padding:0.75rem;
-            background:var(--teal);
-            color:#fff;
+            padding:1rem;
+            background:var(--gold);
+            color:var(--deep);
             border:none;
-            border-radius:8px;
-            font-weight:600;
+            border-radius:10px;
+            font-weight:700;
+            font-size:0.9rem;
             cursor:pointer;
-            margin-top:1.5rem;
-          ">
-            Pay ${tierInfo.price}
+            letter-spacing:0.03em;
+            transition:all 0.2s;
+            font-family:var(--sans);
+          " onmouseover="this.style.background='#d48f20'" onmouseout="this.style.background='var(--gold)'">
+            💳 Complete Payment
           </button>
         </div>
-        <button onclick="closePaymentModal()" style="
-          position:absolute;
-          top:1rem;
-          right:1rem;
-          background:transparent;
-          border:none;
-          font-size:1.5rem;
-          cursor:pointer;
-        ">×</button>
+        <div class="modal-foot">
+          <button onclick="closePaymentModal()" style="
+            padding:0.5rem 1rem;
+            background:transparent;
+            border:1px solid var(--border);
+            border-radius:8px;
+            cursor:pointer;
+            color:var(--dim);
+            font-size:0.8rem;
+            font-family:var(--sans);
+          ">Cancel</button>
+        </div>
       </div>
     </div>
   `;
@@ -1386,19 +1403,19 @@ function showPaymentModal(stripe, clientSecret, tier, tierInfo) {
     e.preventDefault();
     const submitBtn = document.getElementById('submit-payment');
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Processing...';
+    submitBtn.textContent = '⏳ Processing...';
     
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: window.location.href + '?payment=success&tier=' + tier,
+        return_url: window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'payment=success&tier=' + tier,
       },
     });
     
     if (error) {
-      document.getElementById('payment-message').textContent = error.message;
+      document.getElementById('payment-message').textContent = '⚠️ ' + error.message;
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Pay ' + tierInfo.price;
+      submitBtn.textContent = '💳 Complete Payment';
     }
   });
 }
@@ -1482,27 +1499,87 @@ function openBuyTokens() {
     return;
   }
   
-  // Show plan selection modal
+  showPlanSelectionModal();
+}
+
+function showPlanSelectionModal() {
   const plans = [
-    { tier: 'starter', name: 'Starter', price: '$9.99/mo', tokens: '100K tokens' },
-    { tier: 'professional', name: 'Professional', price: '$29.99/mo', tokens: '500K tokens' },
-    { tier: 'business', name: 'Business', price: '$99.99/mo', tokens: '2M tokens' },
-    { tier: 'enterprise', name: 'Enterprise', price: '$299.99/mo', tokens: '10M+ tokens' },
+    { tier: 'starter', name: 'Starter', price: '$9.99/mo', tokens: '100K tokens', color: '#2a9d8f' },
+    { tier: 'professional', name: 'Professional', price: '$29.99/mo', tokens: '500K tokens', color: '#e9a028' },
+    { tier: 'business', name: 'Business', price: '$99.99/mo', tokens: '2M tokens', color: '#8b5cf6' },
+    { tier: 'enterprise', name: 'Enterprise', price: '$299.99/mo', tokens: '10M+ tokens', color: '#e8524a' },
   ];
   
-  let msg = 'Choose a plan:\n\n';
-  plans.forEach((p, i) => {
-    msg += `${i+1}. ${p.name} - ${p.price} (${p.tokens})\n`;
-  });
-  msg += '\n0. Cancel';
+  // Remove old modal if exists
+  const oldModal = document.getElementById('planSelectionModalWrap');
+  if (oldModal) oldModal.remove();
   
-  const choice = prompt(msg);
-  if (!choice || choice === '0') return;
+  const modalHtml = `
+    <div class="modal-wrap" id="planSelectionModalWrap" onclick="if(event.target.id==='planSelectionModalWrap') closePlanModal()">
+      <div class="modal" style="max-width:600px;">
+        <div class="modal-hero">
+          <div class="modal-logo">Choose Your <em>Plan</em></div>
+          <div class="modal-tagline">Upgrade to unlock more tokens and features</div>
+        </div>
+        <div class="modal-body" style="padding:2rem;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;">
+            ${plans.map(plan => `
+              <div style="
+                background:#fff;
+                border:2px solid var(--border);
+                border-radius:12px;
+                padding:1.5rem 1rem;
+                text-align:center;
+                cursor:pointer;
+                transition:all 0.2s;
+              " onmouseover="this.style.borderColor='${plan.color}';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="selectPlan('${plan.tier}')">
+                <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;font-size:0.9rem;">${plan.name}</div>
+                <div style="font-family:var(--serif);font-size:1.8rem;font-weight:700;color:${plan.color};margin-bottom:0.3rem;">${plan.price}</div>
+                <div style="font-size:0.75rem;color:var(--dim);margin-bottom:1rem;">${plan.tokens}</div>
+                <button style="
+                  width:100%;
+                  padding:0.6rem 0.8rem;
+                  background:${plan.color};
+                  color:#fff;
+                  border:none;
+                  border-radius:8px;
+                  font-weight:600;
+                  font-size:0.75rem;
+                  cursor:pointer;
+                  transition:all 0.2s;
+                " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                  Select
+                </button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button onclick="closePlanModal()" style="
+            padding:0.5rem 1rem;
+            background:transparent;
+            border:1px solid var(--border);
+            border-radius:8px;
+            cursor:pointer;
+            color:var(--dim);
+            font-size:0.8rem;
+          ">Cancel</button>
+        </div>
+      </div>
+    </div>
+  `;
   
-  const idx = parseInt(choice) - 1;
-  if (idx >= 0 && idx < plans.length) {
-    processCheckout(plans[idx].tier);
-  }
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+}
+
+function selectPlan(tier) {
+  closePlanModal();
+  processCheckout(tier);
+}
+
+function closePlanModal() {
+  const modal = document.getElementById('planSelectionModalWrap');
+  if (modal) modal.remove();
 }
 
 function checkPaymentSuccess() {
