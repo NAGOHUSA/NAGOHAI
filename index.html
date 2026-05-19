@@ -1233,13 +1233,8 @@ function showUpgradePlan(tier) {
     return;
   }
   
-  const currentTier = currentUser.subscription_tier || 'free';
-  const tierInfo = SUBSCRIPTION_TIERS[tier];
-  
-  const confirmed = confirm(`Upgrade to ${tierInfo.name}? (${tierInfo.description})`);
-  if (!confirmed) return;
-  
-  upgradeSubscription(tier);
+  // Show plan selection modal instead of confirm dialog
+  showPlanSelectionModal();
 }
 
 async function upgradeSubscription(tier) {
@@ -1420,12 +1415,10 @@ function showPaymentModal(stripe, clientSecret, tier, tierInfo) {
   });
 }
 
-function closePaymentModal() {
-  const modal = document.getElementById('paymentModalWrap');
+function closePlanModal() {
+  const modal = document.getElementById('planSelectionModalWrap');
   if (modal) modal.remove();
 }
-
-function onModel() {}
 
 // ─────────────────────────────────────────────────────────
 // AUTH & CONNECTION
@@ -1491,95 +1484,6 @@ function signOut() {
   setBalUI(0);
   if (typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
   showModal();
-}
-
-function openBuyTokens() {
-  if (!currentUser) {
-    showModal();
-    return;
-  }
-  
-  showPlanSelectionModal();
-}
-
-function showPlanSelectionModal() {
-  const plans = [
-    { tier: 'starter', name: 'Starter', price: '$9.99/mo', tokens: '100K tokens', color: '#2a9d8f' },
-    { tier: 'professional', name: 'Professional', price: '$29.99/mo', tokens: '500K tokens', color: '#e9a028' },
-    { tier: 'business', name: 'Business', price: '$99.99/mo', tokens: '2M tokens', color: '#8b5cf6' },
-    { tier: 'enterprise', name: 'Enterprise', price: '$299.99/mo', tokens: '10M+ tokens', color: '#e8524a' },
-  ];
-  
-  // Remove old modal if exists
-  const oldModal = document.getElementById('planSelectionModalWrap');
-  if (oldModal) oldModal.remove();
-  
-  const modalHtml = `
-    <div class="modal-wrap" id="planSelectionModalWrap" onclick="if(event.target.id==='planSelectionModalWrap') closePlanModal()">
-      <div class="modal" style="max-width:600px;">
-        <div class="modal-hero">
-          <div class="modal-logo">Choose Your <em>Plan</em></div>
-          <div class="modal-tagline">Upgrade to unlock more tokens and features</div>
-        </div>
-        <div class="modal-body" style="padding:2rem;">
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;">
-            ${plans.map(plan => `
-              <div style="
-                background:#fff;
-                border:2px solid var(--border);
-                border-radius:12px;
-                padding:1.5rem 1rem;
-                text-align:center;
-                cursor:pointer;
-                transition:all 0.2s;
-              " onmouseover="this.style.borderColor='${plan.color}';this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" onmouseout="this.style.borderColor='var(--border)';this.style.boxShadow='none'" onclick="selectPlan('${plan.tier}')">
-                <div style="font-weight:600;color:var(--ink);margin-bottom:0.5rem;font-size:0.9rem;">${plan.name}</div>
-                <div style="font-family:var(--serif);font-size:1.8rem;font-weight:700;color:${plan.color};margin-bottom:0.3rem;">${plan.price}</div>
-                <div style="font-size:0.75rem;color:var(--dim);margin-bottom:1rem;">${plan.tokens}</div>
-                <button style="
-                  width:100%;
-                  padding:0.6rem 0.8rem;
-                  background:${plan.color};
-                  color:#fff;
-                  border:none;
-                  border-radius:8px;
-                  font-weight:600;
-                  font-size:0.75rem;
-                  cursor:pointer;
-                  transition:all 0.2s;
-                " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-                  Select
-                </button>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-        <div class="modal-foot">
-          <button onclick="closePlanModal()" style="
-            padding:0.5rem 1rem;
-            background:transparent;
-            border:1px solid var(--border);
-            border-radius:8px;
-            cursor:pointer;
-            color:var(--dim);
-            font-size:0.8rem;
-          ">Cancel</button>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  document.body.insertAdjacentHTML('beforeend', modalHtml);
-}
-
-function selectPlan(tier) {
-  closePlanModal();
-  processCheckout(tier);
-}
-
-function closePlanModal() {
-  const modal = document.getElementById('planSelectionModalWrap');
-  if (modal) modal.remove();
 }
 
 function checkPaymentSuccess() {
