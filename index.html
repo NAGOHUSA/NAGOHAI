@@ -48,7 +48,6 @@
 html, body { height: 100%; overflow: hidden; background: var(--cream); }
 body { color: var(--ink); font-family: var(--sans); display: flex; flex-direction: column; }
 
-/* ── TOPBAR ── */
 .topbar {
   height: 60px; display: flex; align-items: center;
   padding: 0 1.5rem; gap: 1rem;
@@ -104,7 +103,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 .tbal span { font-size: 0.58rem; color: rgba(255,255,255,0.4); display: block; text-align: right; }
 
-/* ── TAB NAVIGATION ── */
 .tab-nav {
   display: flex; gap: 0.5rem; padding: 0 1.5rem; background: var(--deep);
   border-bottom: 1px solid rgba(255,255,255,0.1); height: 48px; align-items: center;
@@ -120,10 +118,8 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .tab-btn:hover { color: rgba(255,255,255,0.9); }
 .tab-btn.active { color: #fff; border-bottom-color: var(--gold); }
 
-/* ── SHELL ── */
 .shell { flex: 1; display: flex; overflow: hidden; }
 
-/* ── LEFT PANEL ── */
 .left {
   width: 220px; flex-shrink: 0;
   background: var(--parchmt);
@@ -221,7 +217,6 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .hitem:hover { color: var(--ink); background: var(--warm); }
 .hitem.active { color: var(--teal); background: var(--teal-lt); border-left-color: var(--teal); }
 
-/* ── CONTENT AREA ── */
 .content-area { flex: 1; display: flex; overflow: hidden; background: var(--cream); }
 
 .tab-content {
@@ -229,7 +224,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 .tab-content.active { display: flex; }
 
-/* ── CHAT TAB ── */
+/* CHAT TAB */
 .msgs { flex: 1; overflow-y: auto; padding: 2rem 0 1rem; scroll-behavior: smooth; }
 .msgs::-webkit-scrollbar { width: 4px; }
 .msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
@@ -355,7 +350,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   font-size: 0.58rem; color: var(--muted);
 }
 
-/* ── RIGHT PANEL ── */
+/* RIGHT PANEL */
 .right {
   width: 190px; flex-shrink: 0;
   background: var(--parchmt); border-left: 1px solid var(--border);
@@ -383,60 +378,13 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 .idea-text { font-size: 0.65rem; color: var(--dim); line-height: 1.4; }
 .idea-text strong { color: var(--ink); font-weight: 500; display: block; font-size: 0.68rem; }
 
-/* ── TEMPLATES TAB ── */
-.template-container { flex: 1; overflow-y: auto; padding: 2rem; max-width: 1200px; margin: 0 auto; width: 100%; }
-.template-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-.template-card {
-  background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem;
-  display: flex; flex-direction: column; cursor: pointer; transition: all 0.2s;
+/* OTHER TABS (loaded via fetch) */
+.page-container {
+  flex: 1; overflow-y: auto; padding: 2rem;
+  max-width: 1400px; margin: 0 auto; width: 100%;
 }
-.template-card:hover { border-color: var(--teal); box-shadow: 0 4px 12px rgba(42,157,143,0.1); }
-.template-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
-.template-name { font-weight: 600; color: var(--ink); margin-bottom: 0.25rem; }
-.template-desc { font-size: 0.75rem; color: var(--dim); line-height: 1.4; }
 
-.trending-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
-.topic-card {
-  background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1rem;
-  cursor: pointer; transition: all 0.2s;
-}
-.topic-card:hover { border-color: var(--teal); background: var(--teal-lt); }
-.topic-header { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
-.topic-emoji { font-size: 1.4rem; }
-.topic-title { font-weight: 600; color: var(--ink); flex: 1; }
-.topic-momentum { font-size: 0.6rem; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: var(--gold-lt); color: var(--dim); }
-.topic-context { font-size: 0.7rem; color: var(--dim); line-height: 1.5; }
-
-/* ── ANALYTICS TAB ── */
-.analytics-container { flex: 1; overflow-y: auto; padding: 2rem; max-width: 1400px; margin: 0 auto; width: 100%; }
-.period-controls { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
-.period-btn { padding: 0.5rem 1rem; background: #fff; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s; }
-.period-btn.active { background: var(--teal); color: #fff; border-color: var(--teal); }
-
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-.stat-box {
-  background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; text-align: center;
-}
-.stat-value { font-family: var(--serif); font-size: 2rem; font-weight: 700; color: var(--teal); }
-.stat-label { font-size: 0.7rem; color: var(--muted); margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
-
-.chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-.chart-card {
-  background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem;
-}
-.chart-title { font-weight: 600; color: var(--ink); margin-bottom: 1rem; }
-.chart-container { position: relative; height: 300px; }
-
-.table-card {
-  background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; margin-top: 2rem;
-}
-.table-title { font-weight: 600; color: var(--ink); margin-bottom: 1rem; }
-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
-th, td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
-th { background: var(--parchmt); font-weight: 600; }
-tr:hover { background: var(--teal-lt); }
-
-/* ── AUTH MODAL ── */
+/* AUTH MODAL */
 .modal-wrap {
   position: fixed; inset: 0; z-index: 1000;
   background: rgba(45, 32, 22, 0.72);
@@ -533,14 +481,6 @@ tr:hover { background: var(--teal-lt); }
 }
 .modal-foot a { color: var(--teal); text-decoration: none; }
 
-.stxt {
-  width: 100%; background: #fff; border: 1px solid var(--border2);
-  color: var(--sub); font-family: var(--sans); font-size: 0.68rem;
-  line-height: 1.55; padding: 0.5rem 0.7rem; resize: none; outline: none;
-  border-radius: 8px; transition: border-color 0.2s;
-}
-.stxt:focus { border-color: var(--teal); color: var(--ink); }
-
 .success-banner {
   position: fixed; top: 20px; right: 20px; z-index: 2000;
   background: var(--sage); color: #fff; padding: 1rem 1.5rem;
@@ -550,47 +490,28 @@ tr:hover { background: var(--teal-lt); }
 .success-banner.show { display: flex; }
 @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .left { width: 180px; }
-  .right { width: 160px; }
-  .bub { max-width: 85%; }
-}
-
 @media (max-width: 768px) {
   .left, .right { display: none; }
   .content-area { flex-direction: column; }
-  
   .topbar { padding: 0 1rem; height: 56px; }
   .wordmark { font-size: 1.1rem; }
   .tagline { font-size: 0.55rem; }
   .tuser-name { display: none !important; }
   .tuser-avatar { width: 24px; height: 24px; }
   .tbtn { padding: 4px 10px; font-size: 0.6rem; }
-  
   .tab-nav { padding: 0 1rem; height: 44px; }
   .tab-btn { font-size: 0.65rem; padding: 6px 12px; }
-  
   .modal { max-width: 90vw; border-radius: 16px; }
   .modal-body { padding: 1.5rem 1.5rem 1.5rem; }
-  
   .msgs { padding: 1.5rem 0 0.5rem; }
   .row { padding: 0.3rem 1rem; gap: 8px; }
   .bub { max-width: 90%; font-size: 0.85rem; padding: 0.6rem 0.8rem; }
   .ava { width: 28px; height: 28px; font-size: 0.7rem; }
-  
   .ibar { padding: 0.65rem 1rem; }
   .iinner { gap: 0.5rem; }
   .prompt { padding: 0.6rem 0.8rem; font-size: 0.85rem; min-height: 44px; }
   .send { padding: 0 1rem; font-size: 0.7rem; height: 44px; }
-  
-  .template-container { padding: 1.5rem; }
-  .template-grid { grid-template-columns: 1fr; }
-  .trending-grid { grid-template-columns: 1fr; }
-  
-  .analytics-container { padding: 1.5rem; }
-  .chart-grid { grid-template-columns: 1fr; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .page-container { padding: 1.5rem; }
 }
 
 @media (max-width: 480px) {
@@ -598,19 +519,7 @@ tr:hover { background: var(--teal-lt); }
   .wordmark { font-size: 0.95rem; }
   .tab-nav { padding: 0 0.75rem; height: 40px; }
   .tab-btn { font-size: 0.6rem; padding: 4px 10px; }
-  
-  .template-container { padding: 1rem; }
-  .trending-grid { gap: 0.75rem; }
-  .topic-card { padding: 0.75rem; }
-  .topic-emoji { font-size: 1.2rem; }
-  .topic-title { font-size: 0.7rem; }
-  
-  .analytics-container { padding: 1rem; }
-  .stats-grid { grid-template-columns: 1fr; }
-  .chart-container { height: 250px; }
-  .table-card { padding: 1rem; }
-  table { font-size: 0.7rem; }
-  th, td { padding: 0.5rem; }
+  .page-container { padding: 1rem; }
 }
 
 input, textarea, select { font-size: 16px !important; }
@@ -618,7 +527,7 @@ input, textarea, select { font-size: 16px !important; }
 </head>
 <body>
 
-<!-- ── AUTH MODAL ── -->
+<!-- AUTH MODAL -->
 <div class="modal-wrap" id="modalWrap">
   <div class="modal">
     <div class="modal-hero">
@@ -666,11 +575,11 @@ input, textarea, select { font-size: 16px !important; }
   ✅ <span id="successMsg">Purchase successful! Your tokens have been added.</span>
 </div>
 
-<!-- ── TOPBAR ── -->
+<!-- TOPBAR -->
 <div class="topbar">
   <div>
     <div class="wordmark">NAGOH <em>AI</em></div>
-    <div class="tagline">YOUR BUSINESS ASSISTANT</div>
+    <div class="tagline">YOUR BUSINESS ASSISTANT <span style="font-size:0.6rem;color:var(--dim);">v1.0</span></div>
   </div>
   <div class="tsep"></div>
   <div class="tbal" id="topBal">— <span>tokens</span></div>
@@ -688,7 +597,7 @@ input, textarea, select { font-size: 16px !important; }
   <button class="tbtn" onclick="signOut()">Sign out</button>
 </div>
 
-<!-- ── TAB NAVIGATION ── -->
+<!-- TAB NAVIGATION -->
 <div class="tab-nav">
   <button class="tab-btn active" onclick="switchTab('chat')" id="tab-chat-btn">
     💬 Chat
@@ -704,12 +613,11 @@ input, textarea, select { font-size: 16px !important; }
   </button>
 </div>
 
-<!-- ── SHELL ── -->
+<!-- SHELL -->
 <div class="shell">
 
-  <!-- LEFT PANEL (visible in chat tab) -->
+  <!-- LEFT PANEL -->
   <div class="left" id="leftPanel">
-    <!-- Industry Selector -->
     <div class="industry-section">
       <label class="industry-label">Your Industry</label>
       <select class="industry-sel" id="industrySel" onchange="onIndustryChange()">
@@ -787,131 +695,23 @@ input, textarea, select { font-size: 16px !important; }
       </div>
     </div>
 
-    <!-- TEMPLATES TAB -->
+    <!-- TEMPLATES TAB (loaded dynamically) -->
     <div class="tab-content" id="tab-templates">
-      <div class="template-container">
-        <h2 style="margin-bottom:1.5rem;">📋 Templates & Tools</h2>
-        
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px,1fr));gap:1.5rem;margin-bottom:2rem;">
-          <!-- Templates Section -->
-          <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-            <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">💼 Your Templates</h3>
-            <div id="customTemplates"></div>
-            <button class="pbtn primary" onclick="showNewTemplateModal()" style="margin-top:1rem;width:100%;">+ New Template</button>
-          </div>
-
-          <!-- Quote Generator Section -->
-          <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-            <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">💰 Quote Generator</h3>
-            <div style="display:flex;flex-direction:column;gap:0.75rem;font-size:0.85rem;">
-              <input type="text" placeholder="Client name" id="quoteName" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
-              <input type="text" placeholder="Service type" id="quoteService" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
-              <input type="text" placeholder="Scope" id="quoteScope" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
-              <input type="text" placeholder="Budget range" id="quoteBudget" style="padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
-              <button class="pbtn primary" onclick="generateQuote()" style="width:100%;">Generate Quote</button>
-            </div>
-            <div id="quoteOutput" style="margin-top:1rem;"></div>
-          </div>
-
-          <!-- Smart Suggestions Section -->
-          <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:1.5rem;">
-            <h3 style="font-size:0.9rem;margin-bottom:1rem;color:var(--ink);">✨ Smart Suggestions</h3>
-            <textarea placeholder="Paste your content here..." id="suggestContent" style="width:100%;padding:0.5rem;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:0.8rem;min-height:80px;resize:none;"></textarea>
-            <button class="pbtn primary" onclick="getSuggestions()" style="width:100%;margin-top:0.75rem;">Get Suggestions</button>
-            <div id="suggestOutput" style="margin-top:1rem;font-size:0.8rem;"></div>
-          </div>
-        </div>
-
-        <!-- Default Templates Grid -->
-        <h3 style="margin:2rem 0 1rem;color:var(--ink);">📚 Default Templates</h3>
-        <div class="template-grid" id="defaultTemplates"></div>
-      </div>
+      <div class="page-container" id="templatesContainer"></div>
     </div>
 
-    <!-- TRENDING TAB -->
+    <!-- TRENDING TAB (loaded dynamically) -->
     <div class="tab-content" id="tab-trending">
-      <div class="template-container">
-        <h2 style="margin-bottom:1.5rem;">🔥 Trending Topics for Your Industry</h2>
-        <div class="trending-grid" id="trendingTopics"></div>
-      </div>
+      <div class="page-container" id="trendingContainer"></div>
     </div>
 
-    <!-- ANALYTICS TAB -->
+    <!-- ANALYTICS TAB (loaded dynamically) -->
     <div class="tab-content" id="tab-analytics">
-      <div class="analytics-container">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;">
-          <h2>📊 Performance Analytics</h2>
-          <div class="period-controls">
-            <button class="period-btn active" onclick="changePeriod('week')">7 Days</button>
-            <button class="period-btn" onclick="changePeriod('month')">30 Days</button>
-            <button class="period-btn" onclick="changePeriod('quarter')">90 Days</button>
-            <button class="period-btn" onclick="changePeriod('year')">1 Year</button>
-          </div>
-        </div>
-
-        <!-- Stats -->
-        <div class="stats-grid">
-          <div class="stat-box">
-            <div class="stat-value" id="stat-generated">0</div>
-            <div class="stat-label">Content Generated</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value" id="stat-engagement">0%</div>
-            <div class="stat-label">Avg Engagement</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value" id="stat-format">Social Post</div>
-            <div class="stat-label">Best Format</div>
-          </div>
-          <div class="stat-box">
-            <div class="stat-value" id="stat-time">2m</div>
-            <div class="stat-label">Avg Creation Time</div>
-          </div>
-        </div>
-
-        <!-- Charts -->
-        <div class="chart-grid">
-          <div class="chart-card">
-            <div class="chart-title">Generation Trend</div>
-            <div class="chart-container"><canvas id="trendChart"></canvas></div>
-          </div>
-          <div class="chart-card">
-            <div class="chart-title">Engagement by Format</div>
-            <div class="chart-container"><canvas id="engagementChart"></canvas></div>
-          </div>
-          <div class="chart-card">
-            <div class="chart-title">Editing Activity</div>
-            <div class="chart-container"><canvas id="editingChart"></canvas></div>
-          </div>
-          <div class="chart-card">
-            <div class="chart-title">Content by Topic</div>
-            <div class="chart-container"><canvas id="topicChart"></canvas></div>
-          </div>
-        </div>
-
-        <!-- Table -->
-        <div class="table-card">
-          <div class="table-title">Content Performance Breakdown</div>
-          <table id="analyticsTable">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Count</th>
-                <th>Edits</th>
-                <th>Engagement</th>
-                <th>Exports</th>
-              </tr>
-            </thead>
-            <tbody id="analyticsTableBody">
-              <tr><td colspan="5">Load analytics to see data...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <div class="page-container" id="analyticsContainer"></div>
     </div>
   </div>
 
-  <!-- RIGHT PANEL (visible in chat tab) -->
+  <!-- RIGHT PANEL -->
   <div class="right" id="rightPanel">
     <div class="rblock">
       <div class="plabel">This Chat</div>
@@ -941,129 +741,16 @@ input, textarea, select { font-size: 16px !important; }
   </div>
 </div>
 
+<script src="shared.js"></script>
 <script>
-// ─────────────────────────────────────────────────────────
-// CONFIGURATION
-// ─────────────────────────────────────────────────────────
-const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
-const GOOGLE_CLIENT_ID = '571680874030-4o2cr62ghese6d6r4e79m9gqj7vhsr9f.apps.googleusercontent.com';
-const STRIPE_PUBLISHABLE_KEY = 'pk_live_51TK0JWGUbXtKf7F7FBt5ingZaPPj8oi6n7sk50AS4yWKkoISv6bJHXphJS5ygOX0QQScFuDUskZ6Uq0SCgwBVwnr00GVEiex2f';
-
-// Industry-specific configurations
-const INDUSTRIES = {
-  etsy: {
-    name: '🛍️ Etsy & Craft Sellers',
-    placeholder: 'Ask anything — listing copy, captions, pricing, customer replies…',
-    emptyMsg: 'Perfect for selling handmade goods, crafts, and creative items.',
-    quickStarters: [
-      { emoji: '📝', title: 'Product Listing', desc: 'Write descriptions that sell', prompt: 'Write an Etsy product description for: ' },
-      { emoji: '📸', title: 'Social Captions', desc: 'Instagram, Facebook & more', prompt: 'Write 5 Instagram captions for my craft shop that sells: ' },
-      { emoji: '💌', title: 'Customer Reply', desc: 'Handle messages with ease', prompt: 'Write a friendly reply to this customer message: ' },
-      { emoji: '💰', title: 'Pricing Help', desc: 'Price your work fairly', prompt: 'Give me 10 pricing strategies for my craft business that makes: ' },
-      { emoji: '🔍', title: 'SEO & Tags', desc: 'Get found by buyers', prompt: 'Write SEO tags and keywords for my Etsy shop that sells: ' },
-    ],
-    ideas: [
-      { emoji: '🎄', title: 'Holiday announcement', desc: 'Let buyers know your hours' },
-      { emoji: '📅', title: 'Weekly content plan', desc: 'Never run out of post ideas' },
-      { emoji: '💝', title: 'Thank-you note', desc: 'Delight your customers' },
-      { emoji: '🔎', title: 'Trending keywords', desc: 'Improve your SEO' },
-      { emoji: '🛡️', title: 'Handle bad reviews', desc: 'Respond with grace' },
-      { emoji: '🗓️', title: '30-day social plan', desc: 'Stay consistent online' },
-      { emoji: '📦', title: 'Shipping tips', desc: 'Keep buyers happy' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a warm, encouraging assistant for Etsy sellers, crafters, and artists. Be supportive and clear. Use simple language. Help them feel confident about their business and creative work.",
-      professional: "You are NAGOH AI, a professional business assistant for Etsy sellers. Provide clear, well-structured advice about listings, pricing, and customer service.",
-      playful: "You are NAGOH AI, a fun and enthusiastic assistant for creative makers! Be upbeat and make running a craft business feel exciting. Use emojis occasionally.",
-      concise: "You are NAGOH AI, an assistant for Etsy sellers. Be extremely concise. Bullet points preferred. No fluff.",
-    }
-  },
-  realtor: {
-    name: '🏠 Real Estate Agents',
-    placeholder: 'Ask anything — listings, social posts, client follow-ups, property promotions…',
-    emptyMsg: 'Create professional property listings and marketing content.',
-    quickStarters: [
-      { emoji: '🏘️', title: 'Property Listing', desc: 'MLS-ready descriptions', prompt: 'Write a compelling real estate listing description for a house at [address/MLS number]: ' },
-      { emoji: '📸', title: 'Social Post', desc: 'Facebook, Instagram ads', prompt: 'Write a social media post to promote this property: [address]: ' },
-      { emoji: '💌', title: 'Client Follow-up', desc: 'Nurture leads', prompt: 'Write a follow-up email to a client who viewed this property: ' },
-      { emoji: '📊', title: 'Market Analysis', desc: 'Explain neighborhood value', prompt: 'Write a market analysis summary for this neighborhood: ' },
-      { emoji: '🎯', title: 'Open House Invite', desc: 'Drive attendance', prompt: 'Write an open house invitation email for: ' },
-    ],
-    ideas: [
-      { emoji: '🏡', title: 'New listing announcement', desc: 'Alert your sphere' },
-      { emoji: '📍', title: 'Neighborhood guide', desc: 'Show local value' },
-      { emoji: '💼', title: 'Buyer qualification', desc: 'Pre-qualify leads' },
-      { emoji: '🔑', title: 'Closing congrats', desc: 'Build relationships' },
-      { emoji: '🏆', title: 'Success story', desc: 'Share testimonials' },
-      { emoji: '💡', title: 'Investment tips', desc: 'Attract investors' },
-      { emoji: '📞', title: 'Cold outreach', desc: 'Expired/FSBO scripts' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a helpful assistant for real estate professionals. Be warm, professional, and client-focused. Create content that builds trust and showcases properties effectively.",
-      professional: "You are NAGOH AI, a professional real estate assistant. Provide clear, market-smart advice about listings, marketing, and client management.",
-      playful: "You are NAGOH AI, an enthusiastic real estate marketing assistant. Be energetic and make property marketing fun and engaging.",
-      concise: "You are NAGOH AI, a real estate assistant. Be concise and direct. Focus on key selling points and call-to-action.",
-    }
-  },
-  general: {
-    name: '⭐ General Small Business',
-    placeholder: 'Ask anything — marketing, customer service, operations…',
-    emptyMsg: 'Your AI assistant for all small business needs.',
-    quickStarters: [
-      { emoji: '📝', title: 'Product/Service', desc: 'Write descriptions', prompt: 'Write a description for our product/service: ' },
-      { emoji: '📢', title: 'Marketing Post', desc: 'Social media content', prompt: 'Write a social media post for: ' },
-      { emoji: '💌', title: 'Customer Message', desc: 'Professional replies', prompt: 'Write a professional response to: ' },
-      { emoji: '💰', title: 'Pricing Strategy', desc: 'Fair & profitable', prompt: 'Help me develop pricing for: ' },
-      { emoji: '📊', title: 'Business Plan', desc: 'Growth strategy', prompt: 'Help me create a plan for: ' },
-    ],
-    ideas: [
-      { emoji: '📱', title: 'Social media post', desc: 'Build audience' },
-      { emoji: '📧', title: 'Email campaign', desc: 'Customer retention' },
-      { emoji: '🎯', title: 'Lead generation', desc: 'Grow your business' },
-      { emoji: '⭐', title: 'Customer review', desc: 'Request testimonials' },
-      { emoji: '🎁', title: 'Promotion idea', desc: 'Drive sales' },
-      { emoji: '📞', title: 'Cold outreach', desc: 'New business' },
-      { emoji: '🎉', title: 'Event planning', desc: 'Customer engagement' },
-    ],
-    tonePrompts: {
-      friendly: "You are NAGOH AI, a warm and practical assistant for small business owners. Be supportive and encouraging. Help entrepreneurs succeed.",
-      professional: "You are NAGOH AI, a professional business assistant. Provide clear, strategic business advice.",
-      playful: "You are NAGOH AI, an enthusiastic business assistant. Make entrepreneurship feel exciting and achievable.",
-      concise: "You are NAGOH AI, a business assistant. Be direct and actionable. Focus on results.",
-    }
-  }
-};
-
-// Trending topics by industry
-const INDUSTRY_TRENDING = {
-  ecommerce: [
-    { title: 'Post-Purchase Sequences', emoji: '📧', momentum: 'trending', context: 'Follow-up emails drive repeat purchases by 40%.' },
-    { title: 'User-Generated Content', emoji: '📸', momentum: 'viral', context: 'Customer photos get 5-10x higher engagement.' },
-    { title: 'Seasonal Flash Sales', emoji: '⚡', momentum: 'trending', context: 'Limited-time offers create urgency and drive conversions.' },
-    { title: 'Sustainable Packaging', emoji: '♻️', momentum: 'rising', context: 'Eco-friendly materials appeal to conscious consumers.' },
-    { title: 'Video Product Demos', emoji: '🎬', momentum: 'trending', context: 'Short videos convert 300% better than static images.' },
-  ],
-  general: [
-    { title: 'Personal Brand Stories', emoji: '👤', momentum: 'trending', context: 'Personal narratives build stronger audience connections.' },
-    { title: 'Quick Tips & Hacks', emoji: '⚡', momentum: 'evergreen', context: 'Short-form educational content always performs well.' },
-    { title: 'Industry Predictions', emoji: '🔮', momentum: 'trending', context: 'Forward-looking insights establish thought leadership.' },
-    { title: 'Community Engagement', emoji: '🤝', momentum: 'steady', context: 'Interactive content drives 2x more engagement.' },
-    { title: 'Educational Guides', emoji: '📚', momentum: 'evergreen', context: 'How-to content has the longest lifespan.' },
-  ]
-};
-
-let sessionToken = '';
-let currentUser  = null;
-let isGuest      = false;
-let msgs         = [];
-let sessions     = lsGet('nagoh_sessions', []);
-let curSess      = null;
-let busy         = false;
-let balance      = 0;
-let sessSpent    = 0;
-let turns        = 0;
-let currentIndustry = 'etsy';
-let currentTab   = 'chat';
+// Global state (from original)
+let msgs = [];
+let sessions = lsGet('nagoh_sessions', []);
+let curSess = null;
+let busy = false;
+let sessSpent = 0;
+let turns = 0;
+let currentTab = 'chat';
 let analyticsCharts = {};
 
 // ─────────────────────────────────────────────────────────
@@ -1071,57 +758,35 @@ let analyticsCharts = {};
 // ─────────────────────────────────────────────────────────
 
 window.onload = () => {
-  const sessionStored = sessionStorage.getItem('nagoh_session');
-  const localStored = localStorage.getItem('nagoh_session');
-  const saved = sessionStored || localStored;
-  
-  let hasSession = false;
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved);
-      sessionToken = parsed.token;
-      currentUser  = parsed.user;
-      balance      = parsed.balance || 0;
-      hasSession = true;
-    } catch { 
-      hasSession = false;
-    }
-  }
-  
-  if (typeof google !== 'undefined') {
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleCredential,
-      auto_select: false,
-      cancel_on_tap_outside: false,
-    });
-  }
-  
-  currentIndustry = lsGet('nagoh_industry', 'etsy');
-  document.getElementById('industrySel').value = currentIndustry;
-  
-  onIndustryChange();
-  updateSysPrompt();
-  renderHistory();
-  renderTemplates();
-  renderTrending();
-  loadAnalytics();
-  checkPaymentSuccess();
+  // Delay slightly to ensure shared.js is fully loaded
+  setTimeout(() => {
+    const hasSession = getSession();
+    
+    currentIndustry = lsGet('nagoh_industry', 'etsy');
+    const sel = document.getElementById('industrySel');
+    if (sel) sel.value = currentIndustry;
+    
+    onIndustryChange();
+    updateSysPrompt();
+    renderHistory();
+    checkPaymentSuccess();
 
-  if (hasSession) {
-    applyUserToUI(currentUser);
-    setBalUI(balance);
-    setLed('on', 'Connected ✓');
-    document.getElementById('sendBtn').disabled = false;
-    hideModal();
-    connect();
-  } else {
-    showModal();
-  }
+    if (hasSession) {
+      applyUserToUI(currentUser);
+      setBalUI(balance);
+      setLed('on', 'Connected ✓');
+      const sendBtn = document.getElementById('sendBtn');
+      if (sendBtn) sendBtn.disabled = false;
+      hideModal();
+      connect();
+    } else {
+      showModal();
+    }
+  }, 100);
 };
 
 // ─────────────────────────────────────────────────────────
-// TAB SWITCHING
+// TAB SWITCHING & PAGE LOADING
 // ─────────────────────────────────────────────────────────
 
 function switchTab(tabName) {
@@ -1146,264 +811,114 @@ function switchTab(tabName) {
   document.getElementById('leftPanel').style.display = showSidebars ? 'flex' : 'none';
   document.getElementById('rightPanel').style.display = showSidebars ? 'flex' : 'none';
   
-  // Load analytics charts if switching to analytics
-  if (tabName === 'analytics') {
-    setTimeout(() => renderAnalyticsCharts(), 300);
+  // Load content for other tabs
+  if (tabName === 'templates') {
+    loadTemplatesPage();
+  } else if (tabName === 'trending') {
+    loadTrendingPage();
+  } else if (tabName === 'analytics') {
+    loadAnalyticsPage();
   }
 }
 
-// ─────────────────────────────────────────────────────────
-// TEMPLATES
-// ─────────────────────────────────────────────────────────
-
-function renderTemplates() {
-  const defaults = document.getElementById('defaultTemplates');
-  defaults.innerHTML = '';
-  
-  const templateData = [
-    { icon: '📱', name: 'Social Media Post', desc: 'LinkedIn, Twitter, Instagram' },
-    { icon: '📧', name: 'Email Campaign', desc: 'Cold outreach or nurture' },
-    { icon: '💰', name: 'Project Quote', desc: 'Professional pricing' },
-    { icon: '📝', name: 'Blog Post Outline', desc: 'Structured content' },
-  ];
-  
-  templateData.forEach(t => {
-    const card = document.createElement('div');
-    card.className = 'template-card';
-    card.innerHTML = `
-      <div class="template-icon">${t.icon}</div>
-      <div class="template-name">${t.name}</div>
-      <div class="template-desc">${t.desc}</div>
-    `;
-    card.onclick = () => {
-      if (curSess === null) newChat();
-      document.getElementById('prompt').value = `Use the ${t.name} template: `;
-      document.getElementById('prompt').focus();
-      switchTab('chat');
-    };
-    defaults.appendChild(card);
-  });
-}
-
-function renderTrending() {
-  const container = document.getElementById('trendingTopics');
-  container.innerHTML = '';
-  
-  const trending = INDUSTRY_TRENDING[currentIndustry === 'realtor' || currentIndustry === 'etsy' ? 'ecommerce' : 'general'];
-  
-  trending.forEach(topic => {
-    const card = document.createElement('div');
-    card.className = 'topic-card';
-    card.innerHTML = `
-      <div class="topic-header">
-        <div class="topic-emoji">${topic.emoji}</div>
-        <div class="topic-title">${topic.title}</div>
-        <div class="topic-momentum">${topic.momentum}</div>
-      </div>
-      <div class="topic-context">${topic.context}</div>
-    `;
-    card.onclick = () => {
-      if (curSess === null) newChat();
-      document.getElementById('prompt').value = `Create content about ${topic.title.toLowerCase()}: `;
-      document.getElementById('prompt').focus();
-      switchTab('chat');
-    };
-    container.appendChild(card);
-  });
-}
-
-function generateQuote() {
-  const name = document.getElementById('quoteName').value;
-  const service = document.getElementById('quoteService').value;
-  const scope = document.getElementById('quoteScope').value;
-  const budget = document.getElementById('quoteBudget').value;
-  
-  if (!name || !service) {
-    alert('Please fill in client name and service type');
-    return;
-  }
-  
-  const quote = `PROJECT QUOTE\n\nDate: ${new Date().toLocaleDateString()}\nClient: ${name}\n\nService: ${service}\nScope: ${scope}\nBudget: ${budget}\n\nTerms: 50% deposit, 50% on completion\nTimeline: TBD based on scope\n\nThank you for your business!`;
-  
-  const output = document.getElementById('quoteOutput');
-  output.innerHTML = `
-    <div style="background:var(--gold-lt);border:1px solid var(--gold-md);border-radius:8px;padding:1rem;font-size:0.8rem;white-space:pre-wrap;margin-bottom:0.75rem;">${quote}</div>
-    <button class="pbtn primary" onclick="copyToClipboard('${quote.replace(/'/g,"\\'")}')">📋 Copy</button>
-  `;
-}
-
-function getSuggestions() {
-  const content = document.getElementById('suggestContent').value;
-  if (!content) return;
-  
-  const suggestions = [];
-  if (content.includes('utilize')) suggestions.push('Replace "utilize" with "use"');
-  if (content.length > 500) suggestions.push('Consider breaking this into shorter sections');
-  if (/[A-Z]{5,}/.test(content)) suggestions.push('Reduce ALL-CAPS for friendlier tone');
-  if (content.split('.').length < 3) suggestions.push('Add more specific examples');
-  
-  const output = document.getElementById('suggestOutput');
-  if (suggestions.length > 0) {
-    output.innerHTML = suggestions.map(s => `<div style="padding:0.5rem;background:var(--teal-lt);border-radius:6px;margin-bottom:0.5rem;">✨ ${s}</div>`).join('');
-  } else {
-    output.innerHTML = '<div style="color:var(--teal);">✅ Content looks great!</div>';
-  }
-}
-
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    showSuccessNotification('Copied to clipboard!');
-  });
-}
-
-// ─────────────────────────────────────────────────────────
-// ANALYTICS
-// ─────────────────────────────────────────────────────────
-
-function loadAnalytics() {
-  const analytics = {
-    generated: 127,
-    engagement: 42,
-    format: 'Social Post',
-    time: '2m 15s'
-  };
-  
-  document.getElementById('stat-generated').textContent = analytics.generated;
-  document.getElementById('stat-engagement').textContent = analytics.engagement + '%';
-  document.getElementById('stat-format').textContent = analytics.format;
-  document.getElementById('stat-time').textContent = analytics.time;
-  
-  const tableBody = document.getElementById('analyticsTableBody');
-  tableBody.innerHTML = `
-    <tr><td>Social Post</td><td>45</td><td>23</td><td>42%</td><td>18</td></tr>
-    <tr><td>Email</td><td>32</td><td>14</td><td>38%</td><td>12</td></tr>
-    <tr><td>Quote</td><td>28</td><td>8</td><td>45%</td><td>8</td></tr>
-    <tr><td>Blog Post</td><td>19</td><td>12</td><td>52%</td><td>6</td></tr>
-  `;
-}
-
-function changePeriod(period) {
-  document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  setTimeout(() => {
-    Object.values(analyticsCharts).forEach(chart => {
-      if (chart) chart.destroy();
+async function loadTemplatesPage() {
+  const container = document.getElementById('templatesContainer');
+  container.innerHTML = '<p>Loading templates...</p>';
+  try {
+    const timestamp = new Date().getTime();
+    const html = await fetch(`templates.html?v=${timestamp}`).then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.text();
     });
-    analyticsCharts = {};
-    renderAnalyticsCharts();
-  }, 200);
-}
-
-function renderAnalyticsCharts() {
-  // Trend Chart
-  const trendCtx = document.getElementById('trendChart');
-  if (trendCtx && !analyticsCharts.trend) {
-    analyticsCharts.trend = new Chart(trendCtx, {
-      type: 'line',
-      data: {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [{
-          label: 'Content Generated',
-          data: [12, 19, 8, 15, 22, 18, 14],
-          borderColor: '#2a9d8f',
-          backgroundColor: 'rgba(42, 157, 143, 0.1)',
-          tension: 0.4,
-          fill: true
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true, ticks: { font: { size: 10 } } }
-        }
+    
+    // Insert HTML
+    container.innerHTML = html;
+    console.log('✅ Templates HTML injected');
+    
+    // Extract and execute scripts with proper error handling
+    const scripts = container.querySelectorAll('script');
+    console.log(`📝 Found ${scripts.length} scripts to execute`);
+    
+    for (let script of scripts) {
+      try {
+        // Use Function constructor instead of eval for better scope access
+        const fn = new Function(script.textContent);
+        fn.call(window);
+        console.log('✅ Script executed successfully');
+      } catch (scriptError) {
+        console.error('❌ Script execution error:', scriptError);
+        throw scriptError;
       }
-    });
+    }
+    
+  } catch (e) {
+    console.error('❌ Templates load error:', e);
+    container.innerHTML = `<p>Could not load templates. Error: ${e.message}</p><p style="font-size:0.8rem;color:#999;">Check console for details.</p>`;
   }
-  
-  // Engagement Chart
-  const engCtx = document.getElementById('engagementChart');
-  if (engCtx && !analyticsCharts.engagement) {
-    analyticsCharts.engagement = new Chart(engCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Social Post', 'Email', 'Quote', 'Blog'],
-        datasets: [{
-          data: [42, 38, 45, 52],
-          backgroundColor: ['#2a9d8f', '#e9a028', '#8b5cf6', '#e8524a']
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom', labels: { font: { size: 10 } } } }
-      }
+}
+
+async function loadTrendingPage() {
+  const container = document.getElementById('trendingContainer');
+  container.innerHTML = '<p>Loading trending...</p>';
+  try {
+    const timestamp = new Date().getTime();
+    const html = await fetch(`trending.html?v=${timestamp}`).then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.text();
     });
+    container.innerHTML = html;
+    const scripts = container.querySelectorAll('script');
+    for (let script of scripts) {
+      try {
+        const fn = new Function(script.textContent);
+        fn.call(window);
+      } catch (scriptError) {
+        console.error('❌ Trending script error:', scriptError);
+        throw scriptError;
+      }
+    }
+  } catch (e) {
+    container.innerHTML = '<p>Could not load trending. Make sure trending.html exists.</p>';
   }
-  
-  // Editing Chart
-  const editCtx = document.getElementById('editingChart');
-  if (editCtx && !analyticsCharts.editing) {
-    analyticsCharts.editing = new Chart(editCtx, {
-      type: 'bar',
-      data: {
-        labels: ['Tone', 'Length', 'Detail', 'Format'],
-        datasets: [{
-          label: 'Edit Count',
-          data: [45, 38, 25, 32],
-          backgroundColor: '#2a9d8f'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          y: { beginAtZero: true, ticks: { font: { size: 10 } } }
-        }
-      }
+}
+
+async function loadAnalyticsPage() {
+  const container = document.getElementById('analyticsContainer');
+  container.innerHTML = '<p>Loading analytics...</p>';
+  try {
+    const timestamp = new Date().getTime();
+    const html = await fetch(`analytics.html?v=${timestamp}`).then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.text();
     });
-  }
-  
-  // Topic Chart
-  const topicCtx = document.getElementById('topicChart');
-  if (topicCtx && !analyticsCharts.topic) {
-    analyticsCharts.topic = new Chart(topicCtx, {
-      type: 'bar',
-      indexAxis: 'y',
-      data: {
-        labels: ['Marketing', 'Sales', 'Customer Service', 'Product', 'Other'],
-        datasets: [{
-          label: 'Count',
-          data: [38, 32, 28, 19, 10],
-          backgroundColor: '#2a9d8f'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { beginAtZero: true, ticks: { font: { size: 10 } } }
-        }
+    container.innerHTML = html;
+    const scripts = container.querySelectorAll('script');
+    for (let script of scripts) {
+      try {
+        const fn = new Function(script.textContent);
+        fn.call(window);
+      } catch (scriptError) {
+        console.error('❌ Analytics script error:', scriptError);
+        throw scriptError;
       }
-    });
+    }
+  } catch (e) {
+    container.innerHTML = '<p>Could not load analytics. Make sure analytics.html exists.</p>';
   }
 }
 
 // ─────────────────────────────────────────────────────────
-// CHAT (existing functionality)
+// CHAT FUNCTIONALITY (from original index.html)
 // ─────────────────────────────────────────────────────────
 
 async function send() {
-  const box  = document.getElementById('prompt');
+  const box = document.getElementById('prompt');
   const text = box.value.trim();
   if (!text || busy) return;
   busy = true;
   document.getElementById('sendBtn').disabled = true;
-  box.value = ''; box.style.height = 'auto';
+  box.value = '';
+  box.style.height = 'auto';
   document.getElementById('ccount').textContent = '';
 
   hideEmpty();
@@ -1415,35 +930,22 @@ async function send() {
   addThink(tid);
 
   try {
-    const r = await fetch(`${WORKER}/v1/chat`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionToken}`,
-      },
-      body: JSON.stringify({
-        messages: msgs,
-        system: document.getElementById('sysTxt').value.trim() || getSystemPrompt(),
-        model: document.getElementById('modelSel').value,
-        max_tokens: 2048,
-        temperature: 0.75,
-      }),
-    });
-    const data = await r.json();
+    const result = await sendChat(msgs, document.getElementById('sysTxt').value.trim() || getSystemPrompt(), document.getElementById('modelSel').value);
+
     killThink(tid);
 
-    if (!r.ok) {
-      addErr(data.error || 'Something went wrong.');
+    if (!result.ok) {
+      addErr(result.data?.error || 'Something went wrong.');
       msgs.pop();
-      if (r.status === 402) addErr('Out of tokens! Click "Buy More Tokens" to top up.');
-      if (r.status === 401) { showModal(); }
+      if (result.status === 402) addErr('Out of tokens! Click "Buy More Tokens" to top up.');
+      if (result.status === 401) { showModal(); }
     } else {
-      const reply = data.message.content;
+      const reply = result.data.message.content;
       msgs.push({ role: 'assistant', content: reply });
       const suggestions = getSuggestionsList(text);
-      addBubble('ai', reply, data.nagoh, suggestions);
-      balance = data.nagoh.tokens_remaining;
-      sessSpent += data.nagoh.tokens_charged;
+      addBubble('ai', reply, result.data.nagoh, suggestions);
+      balance = result.data.nagoh.tokens_remaining;
+      sessSpent += result.data.nagoh.tokens_charged;
       turns++;
       setBalUI(balance);
       updateStats();
@@ -1498,15 +1000,18 @@ function addBubble(role, content, nagoh, suggestions) {
   r.innerHTML = `
     <div class="ava ${role === 'user' ? 'you' : 'ai'}">${avaContent}</div>
     <div><div class="bub">${esc(content)}</div>${meta}${sugsHtml}</div>`;
-  c.appendChild(r); c.scrollTop = c.scrollHeight;
+  c.appendChild(r);
+  c.scrollTop = c.scrollHeight;
 }
 
 function addThink(id) {
   const c = document.getElementById('msgs');
   const r = document.createElement('div');
-  r.id = id; r.className = 'row ai';
+  r.id = id;
+  r.className = 'row ai';
   r.innerHTML = `<div class="ava ai">N</div><div class="bub thinking">Thinking<span class="think-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
-  c.appendChild(r); c.scrollTop = c.scrollHeight;
+  c.appendChild(r);
+  c.scrollTop = c.scrollHeight;
 }
 
 function killThink(id) {
@@ -1519,25 +1024,9 @@ function addErr(msg) {
   const r = document.createElement('div');
   r.className = 'row ai';
   r.innerHTML = `<div class="ava ai">N</div><div class="bub error">⚠️ ${esc(msg)}</div>`;
-  c.appendChild(r); c.scrollTop = c.scrollHeight;
+  c.appendChild(r);
+  c.scrollTop = c.scrollHeight;
 }
-
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function setLed(state, label) {
-  document.getElementById('led').className = 'dot ' + state;
-  document.getElementById('sstr').textContent = label;
-}
-
-function setBalUI(n) {
-  const fmt = n.toLocaleString();
-  document.getElementById('balNum').textContent = fmt;
-  document.getElementById('topBal').innerHTML = `${fmt} <span>tokens</span>`;
-}
-
-function onModel() {}
 
 function onIndustryChange() {
   currentIndustry = document.getElementById('industrySel').value;
@@ -1574,8 +1063,6 @@ function onIndustryChange() {
       <div class="esub">${ind.emptyMsg}</div>
       <div class="etagline">Use quick starters or type your question below</div>`;
   }
-  
-  renderTrending();
 }
 
 function getSystemPrompt() {
@@ -1619,18 +1106,23 @@ function renderHistory() {
     el.className = 'hitem' + (curSess?.id === s.id ? ' active' : '');
     el.textContent = s.title;
     el.onclick = () => {
-      curSess = s; msgs = [...s.messages];
+      curSess = s;
+      msgs = [...s.messages];
       document.getElementById('msgs').innerHTML = '';
-      msgs.forEach(m => addBubble(m.role==='user'?'user':'ai', m.content));
+      msgs.forEach(m => addBubble(m.role === 'user' ? 'user' : 'ai', m.content));
       turns = Math.floor(msgs.length / 2);
-      updateStats(); renderHistory();
+      updateStats();
+      renderHistory();
     };
     w.appendChild(el);
   });
 }
 
 function newChat() {
-  curSess = null; msgs = []; sessSpent = 0; turns = 0;
+  curSess = null;
+  msgs = [];
+  sessSpent = 0;
+  turns = 0;
   const ind = INDUSTRIES[currentIndustry] || INDUSTRIES.general;
   document.getElementById('msgs').innerHTML = `
     <div class="empty" id="empty">
@@ -1638,27 +1130,38 @@ function newChat() {
       <div class="esub">${ind.emptyMsg}</div>
       <div class="etagline">Use quick starters or type your question below</div>
     </div>`;
-  updateStats(); renderHistory();
+  updateStats();
+  renderHistory();
 }
 
 function clearAll() {
   if (!confirm('Clear all past chats?')) return;
-  sessions = []; curSess = null; msgs = [];
-  lsSet('nagoh_sessions', []); newChat();
+  sessions = [];
+  curSess = null;
+  msgs = [];
+  lsSet('nagoh_sessions', []);
+  newChat();
 }
 
 function quickPrompt(text) {
   const box = document.getElementById('prompt');
-  box.value = text; box.focus();
+  box.value = text;
+  box.focus();
   grow(box);
 }
 
 function quickSend(text) {
   const box = document.getElementById('prompt');
-  box.value = text; send();
+  box.value = text;
+  send();
 }
 
-function onKey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+function onKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    send();
+  }
+}
 
 function grow(el) {
   el.style.height = 'auto';
@@ -1667,25 +1170,23 @@ function grow(el) {
   document.getElementById('ccount').textContent = l ? `${l} chars` : '';
 }
 
+function onModel() {}
+
 // ─────────────────────────────────────────────────────────
 // AUTH & CONNECTION
 // ─────────────────────────────────────────────────────────
 
 async function connect() {
   setLed('spin', 'Connecting…');
-  try {
-    const r = await fetch(`${WORKER}/v1/balance`, {
-      headers: { 'Authorization': `Bearer ${sessionToken}` }
-    });
-    const d = await r.json();
-    if (!r.ok) { setLed('err', 'Auth error'); showModal(); return; }
-    balance = d.token_balance;
-    setBalUI(balance);
-    setLed('on', 'Connected ✓');
-    document.getElementById('sendBtn').disabled = false;
-  } catch {
-    setLed('err', 'Offline');
+  const result = await getBalance();
+  if (!result.ok) {
+    setLed('err', 'Auth error');
+    showModal();
+    return;
   }
+  setBalUI(balance);
+  setLed('on', 'Connected ✓');
+  document.getElementById('sendBtn').disabled = false;
 }
 
 function initiateGoogleSignIn() {
@@ -1696,7 +1197,7 @@ function initiateGoogleSignIn() {
   }
 }
 
-async function handleGoogleCredential(response) {
+window.handleGoogleCredential = async (response) => {
   if (!response || !response.credential) {
     document.getElementById('authLoading').style.display = 'none';
     document.getElementById('authErr').textContent = 'Sign-in cancelled.';
@@ -1707,21 +1208,11 @@ async function handleGoogleCredential(response) {
   document.getElementById('authErr').textContent = '';
 
   try {
-    const r = await fetch(`${WORKER}/v1/auth/google`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id_token: response.credential }),
-    });
-    const d = await r.json();
-    if (!r.ok) throw new Error(d.error || 'Auth failed');
+    const result = await authGoogle(response.credential);
 
-    sessionToken = d.session_token;
-    currentUser  = d.user;
-    balance      = d.token_balance;
+    if (!result.ok) throw new Error(result.data?.error || 'Auth failed');
 
-    const sessionData = { token: sessionToken, user: currentUser, balance: balance };
-    sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
-    localStorage.setItem('nagoh_session', JSON.stringify(sessionData));
+    saveSession(result.data.session_token, result.data.user, result.data.token_balance);
 
     applyUserToUI(currentUser);
     setBalUI(balance);
@@ -1733,21 +1224,11 @@ async function handleGoogleCredential(response) {
   } finally {
     document.getElementById('authLoading').style.display = 'none';
   }
-}
-
-function applyUserToUI(user) {
-  if (!user) return;
-  const avatar = document.getElementById('tuserAvatar');
-  const name   = document.getElementById('tuserName');
-  if (user.picture) { avatar.src = user.picture; avatar.classList.add('show'); }
-  if (user.name)    { name.textContent = user.name.split(' ')[0]; name.classList.add('show'); }
-}
+};
 
 function signOut() {
   if (!confirm('Sign out?')) return;
-  sessionToken = ''; currentUser = null;
-  sessionStorage.removeItem('nagoh_session');
-  localStorage.removeItem('nagoh_session');
+  clearSession();
   document.getElementById('sendBtn').disabled = true;
   document.getElementById('tuserAvatar').classList.remove('show');
   document.getElementById('tuserName').classList.remove('show');
@@ -1758,7 +1239,10 @@ function signOut() {
 }
 
 function openBuyTokens() {
-  if (!currentUser) { showModal(); return; }
+  if (!currentUser) {
+    showModal();
+    return;
+  }
   showSuccessNotification('Redirecting to payment...');
   setTimeout(() => {
     window.location.href = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
@@ -1776,46 +1260,8 @@ function checkPaymentSuccess() {
   }
 }
 
-function showSuccessNotification(msg) {
-  const banner = document.getElementById('successBanner');
-  document.getElementById('successMsg').textContent = msg;
-  banner.classList.add('show');
-  setTimeout(() => {
-    banner.classList.remove('show');
-  }, 4000);
-}
-
-function continueAsGuest() {
-  document.getElementById('authLoading').style.display = 'block';
-  fetch(`${WORKER}/v1/auth/guest`, { method: 'POST' })
-    .then(r => r.json())
-    .then(d => {
-      if (d.session_token) {
-        sessionToken = d.session_token;
-        currentUser = d.user;
-        balance = d.token_balance;
-        
-        const sessionData = { token: sessionToken, user: currentUser, balance: balance };
-        sessionStorage.setItem('nagoh_session', JSON.stringify(sessionData));
-        
-        applyUserToUI(currentUser);
-        setBalUI(balance);
-        document.getElementById('guestBanner').classList.add('show');
-        setLed('on', 'Connected ✓');
-        document.getElementById('sendBtn').disabled = false;
-        hideModal();
-      }
-    })
-    .finally(() => {
-      document.getElementById('authLoading').style.display = 'none';
-    });
-}
-
-function showModal() { document.getElementById('modalWrap').classList.remove('hidden'); }
-function hideModal() { document.getElementById('modalWrap').classList.add('hidden'); }
-
-function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
-function lsGet(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } }
+// Note: continueAsGuest, showModal, hideModal, initiateGoogleSignIn, handleGoogleCredential
+// are all defined in shared.js as window.* functions
 </script>
 </body>
 </html>
