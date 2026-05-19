@@ -523,6 +523,28 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
 }
 
 input, textarea, select { font-size: 16px !important; }
+
+/* STRIPE PAYMENT ELEMENT STYLING */
+.StripeElement {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 10px 12px;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+  border-color: var(--teal);
+}
+
+.StripeElement--invalid {
+  border-color: var(--rose);
+}
 </style>
 </head>
 <body>
@@ -640,6 +662,18 @@ input, textarea, select { font-size: 16px !important; }
     </div>
 
     <div class="pblock">
+      <div class="plabel">Your Plan</div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:0.85rem;margin-bottom:0.8rem;">
+        <div style="font-weight:600;color:var(--ink);font-size:0.8rem;margin-bottom:0.3rem;" id="tierName">Free</div>
+        <div style="font-size:0.7rem;color:var(--dim);margin-bottom:0.6rem;" id="tierDesc">50,000 tokens/month</div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+          <button class="pbtn" onclick="showUpgradePlan('starter')" style="flex:1;padding:0.4rem 0.6rem;font-size:0.65rem;">Upgrade</button>
+          <button class="pbtn" onclick="showSubscriptionInfo()" style="flex:1;padding:0.4rem 0.6rem;font-size:0.65rem;">View Plans</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pblock" style="display:none">
       <div class="plabel">Your Balance</div>
       <div class="bal-wrap">
         <div class="bal-icon">🪙</div>
@@ -1173,6 +1207,210 @@ function grow(el) {
 function onModel() {}
 
 // ─────────────────────────────────────────────────────────
+// SUBSCRIPTION MANAGEMENT
+// ─────────────────────────────────────────────────────────
+
+const SUBSCRIPTION_TIERS = {
+  free: { name: 'Free', tokens: 50000, price: '$0', description: '50,000 tokens/month' },
+  starter: { name: 'Starter', tokens: 100000, price: '$9.99/mo', description: '100,000 tokens/month' },
+  professional: { name: 'Professional', tokens: 500000, price: '$29.99/mo', description: '500,000 tokens/month' },
+  business: { name: 'Business', tokens: 2000000, price: '$99.99/mo', description: '2,000,000 tokens/month' },
+  enterprise: { name: 'Enterprise', tokens: 10000000, price: '$299.99/mo', description: '10,000,000+ tokens/month' },
+};
+
+function updateTierUI() {
+  const tier = currentUser?.subscription_tier || 'free';
+  const tierInfo = SUBSCRIPTION_TIERS[tier];
+  if (tierInfo) {
+    document.getElementById('tierName').textContent = tierInfo.name;
+    document.getElementById('tierDesc').textContent = tierInfo.description;
+  }
+}
+
+function showUpgradePlan(tier) {
+  if (!currentUser) {
+    showModal();
+    return;
+  }
+  
+  const currentTier = currentUser.subscription_tier || 'free';
+  const tierInfo = SUBSCRIPTION_TIERS[tier];
+  
+  const confirmed = confirm(`Upgrade to ${tierInfo.name}? (${tierInfo.description})`);
+  if (!confirmed) return;
+  
+  upgradeSubscription(tier);
+}
+
+async function upgradeSubscription(tier) {
+  try {
+    const result = await callAPI('/v1/subscription/upgrade', {
+      new_tier: tier
+    }, 'POST');
+    
+    if (!result.ok) {
+      alert('Upgrade failed: ' + (result.data?.error || 'Unknown error'));
+      return;
+    }
+    
+    currentUser.subscription_tier = tier;
+    updateTierUI();
+    showSuccessNotification(`✅ Upgraded to ${SUBSCRIPTION_TIERS[tier].name}!`);
+    
+    if (result.data.token_adjustment > 0) {
+      balance += result.data.token_adjustment;
+      setBalUI(balance);
+      showSuccessNotification(`💰 +${result.data.token_adjustment} bonus tokens!`);
+    }
+  } catch (err) {
+    alert('Error upgrading: ' + err.message);
+  }
+}
+
+function showSubscriptionInfo() {
+  const currentTier = currentUser?.subscription_tier || 'free';
+  let info = 'NAGOH AI Subscription Plans\n\n';
+  
+  Object.entries(SUBSCRIPTION_TIERS).forEach(([key, tier]) => {
+    const current = key === currentTier ? ' ← Your Current Plan' : '';
+    info += `${tier.name} - ${tier.price}\n${tier.description}\n\n`;
+  });
+  
+  info += 'Upgrade anytime. Pro-rata token adjustments apply.';
+  alert(info);
+}
+
+function showSuccessNotification(msg) {
+  const el = document.getElementById('successBanner');
+  const msgEl = document.getElementById('successMsg');
+  msgEl.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ─────────────────────────────────────────────────────────
+// STRIPE PAYMENT
+// ─────────────────────────────────────────────────────────
+
+async function processCheckout(tier) {
+  if (!currentUser) {
+    showModal();
+    return;
+  }
+  
+  try {
+    showSuccessNotification('⏳ Creating payment form...');
+    
+    const tierInfo = SUBSCRIPTION_TIERS[tier];
+    const priceCents = tierInfo.price.includes('$') 
+      ? parseInt(tierInfo.price.replace(/[^\d]/g, '')) * 100 
+      : 0;
+    
+    // Create payment intent on backend
+    const result = await callAPI('/v1/checkout/session', {
+      tier: tier,
+      billing_period: 'monthly',
+      price_cents: priceCents
+    }, 'POST');
+    
+    if (!result.ok) {
+      alert('Payment failed: ' + (result.data?.error || 'Unknown error'));
+      return;
+    }
+    
+    // Initialize Stripe
+    const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+    const clientSecret = result.data.client_secret;
+    
+    // Show embedded payment form modal
+    showPaymentModal(stripe, clientSecret, tier, tierInfo);
+    
+  } catch (err) {
+    alert('Error processing payment: ' + err.message);
+  }
+}
+
+function showPaymentModal(stripe, clientSecret, tier, tierInfo) {
+  // Create modal HTML
+  const modalHtml = `
+    <div class="modal-wrap" id="paymentModalWrap">
+      <div class="modal" style="max-width:500px;">
+        <div class="modal-hero">
+          <div class="modal-logo">Upgrade to <em>${tierInfo.name}</em></div>
+          <div class="modal-tagline">${tierInfo.description}</div>
+        </div>
+        <div class="modal-body">
+          <div id="payment-element"></div>
+          <div id="payment-message" style="color:var(--rose);font-size:0.8rem;margin-top:1rem;"></div>
+          <button id="submit-payment" style="
+            width:100%;
+            padding:0.75rem;
+            background:var(--teal);
+            color:#fff;
+            border:none;
+            border-radius:8px;
+            font-weight:600;
+            cursor:pointer;
+            margin-top:1.5rem;
+          ">
+            Pay ${tierInfo.price}
+          </button>
+        </div>
+        <button onclick="closePaymentModal()" style="
+          position:absolute;
+          top:1rem;
+          right:1rem;
+          background:transparent;
+          border:none;
+          font-size:1.5rem;
+          cursor:pointer;
+        ">×</button>
+      </div>
+    </div>
+  `;
+  
+  // Remove old modal if exists
+  const oldModal = document.getElementById('paymentModalWrap');
+  if (oldModal) oldModal.remove();
+  
+  // Insert new modal
+  document.body.insertAdjacentHTML('beforeend', modalHtml);
+  
+  // Initialize Elements and Payment Element
+  const elements = stripe.elements({ clientSecret });
+  const paymentElement = elements.create('payment');
+  paymentElement.mount('#payment-element');
+  
+  // Handle submit
+  document.getElementById('submit-payment').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('submit-payment');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Processing...';
+    
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: window.location.href + '?payment=success&tier=' + tier,
+      },
+    });
+    
+    if (error) {
+      document.getElementById('payment-message').textContent = error.message;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Pay ' + tierInfo.price;
+    }
+  });
+}
+
+function closePaymentModal() {
+  const modal = document.getElementById('paymentModalWrap');
+  if (modal) modal.remove();
+}
+
+function onModel() {}
+
+// ─────────────────────────────────────────────────────────
 // AUTH & CONNECTION
 // ─────────────────────────────────────────────────────────
 
@@ -1243,18 +1481,38 @@ function openBuyTokens() {
     showModal();
     return;
   }
-  showSuccessNotification('Redirecting to payment...');
-  setTimeout(() => {
-    window.location.href = 'https://buy.stripe.com/4gM6oHdxyata0CVdIE1Fe06';
-  }, 500);
+  
+  // Show plan selection modal
+  const plans = [
+    { tier: 'starter', name: 'Starter', price: '$9.99/mo', tokens: '100K tokens' },
+    { tier: 'professional', name: 'Professional', price: '$29.99/mo', tokens: '500K tokens' },
+    { tier: 'business', name: 'Business', price: '$99.99/mo', tokens: '2M tokens' },
+    { tier: 'enterprise', name: 'Enterprise', price: '$299.99/mo', tokens: '10M+ tokens' },
+  ];
+  
+  let msg = 'Choose a plan:\n\n';
+  plans.forEach((p, i) => {
+    msg += `${i+1}. ${p.name} - ${p.price} (${p.tokens})\n`;
+  });
+  msg += '\n0. Cancel';
+  
+  const choice = prompt(msg);
+  if (!choice || choice === '0') return;
+  
+  const idx = parseInt(choice) - 1;
+  if (idx >= 0 && idx < plans.length) {
+    processCheckout(plans[idx].tier);
+  }
 }
 
 function checkPaymentSuccess() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('payment') === 'success') {
-    showSuccessNotification('✅ Purchase successful! Your tokens have been added.');
+    const tier = params.get('tier');
+    showSuccessNotification(`✅ Payment successful! Upgraded to ${SUBSCRIPTION_TIERS[tier]?.name || 'your plan'}.`);
+    
     if (sessionToken) {
-      setTimeout(() => { connect(); }, 1000);
+      setTimeout(() => { connect(); }, 1500);
     }
     window.history.replaceState({}, document.title, window.location.pathname);
   }
