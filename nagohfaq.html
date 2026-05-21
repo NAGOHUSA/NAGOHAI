@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAGOH AI — FAQ & Help</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:    #fdf8f0;
+      --parchmt:  #f5ede0;
+      --warm:     #ede3d5;
+      --border:   #e0d4c4;
+      --border2:  #d4c4b0;
+      --muted:    #b5a090;
+      --dim:      #8a7868;
+      --sub:      #6b5e50;
+      --ink:      #3d2f24;
+      --deep:     #2a1f16;
+
+      --rose:     #e8524a;
+      --teal:     #2a9d8f;
+      --teal-lt:  #e0f5f3;
+      --gold:     #e9a028;
+      --gold-lt:  #fdf0d5;
+      --plum:     #8b5cf6;
+      --plum-lt:  #f0ebff;
+      --sage:     #4a7c59;
+      --sage-lt:  #e8f4eb;
+
+      --sans:     'DM Sans', sans-serif;
+      --serif:    'Fraunces', serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER / NAV ── */
+    .header {
+      background: var(--deep);
+      border-bottom: 3px solid var(--rose);
+      padding: 1rem 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .logo em {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-links a.active {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 3rem 1.5rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: 2.4rem;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .hero h1 em {
+      color: var(--teal);
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: var(--dim);
+      line-height: 1.7;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── QUICK LINKS ── */
+    .quick-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .quick-link {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: var(--ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .quick-link:hover {
+      border-color: var(--teal);
+      background: var(--teal-lt);
+      transform: translateY(-2px);
+    }
+
+    .quick-link-emoji {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .quick-link-text {
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    /* ── FAQ SECTION ── */
+    .faq-section {
+      margin-bottom: 2.5rem;
+    }
+
+    .faq-title {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--teal-lt);
+    }
+
+    .faq-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .faq-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .faq-item:hover {
+      border-color: var(--teal);
+      box-shadow: 0 4px 12px rgba(42,157,143,0.1);
+    }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      background: #fff;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: var(--sans);
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--ink);
+      transition: all 0.2s;
+    }
+
+    .faq-question:hover {
+      background: var(--teal-lt);
+    }
+
+    .faq-question.active {
+      background: var(--teal-lt);
+      color: var(--teal);
+    }
+
+    .faq-toggle {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+    }
+
+    .faq-question.active .faq-toggle {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      border-top: 1px solid var(--border);
+    }
+
+    .faq-answer.open {
+      max-height: 1000px;
+    }
+
+    .faq-answer-content {
+      padding: 1.5rem;
+      line-height: 1.8;
+      color: var(--dim);
+      font-size: 0.95rem;
+    }
+
+    .faq-answer-content a {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .faq-answer-content a:hover {
+      text-decoration: underline;
+    }
+
+    .faq-answer-content ul, .faq-answer-content ol {
+      margin-left: 1.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .faq-answer-content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .highlight {
+      background: var(--gold-lt);
+      color: var(--ink);
+      padding: 1rem;
+      border-left: 3px solid var(--gold);
+      border-radius: 6px;
+      margin: 1rem 0;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--teal) 0%, #1e8577 100%);
+      color: #fff;
+      padding: 2.5rem;
+      border-radius: 16px;
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+    .cta-section h2 {
+      font-family: var(--serif);
+      font-size: 1.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-section p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.95;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--deep);
+      padding: 0.85rem 2rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 1rem;
+    }
+
+    .cta-btn:hover {
+      background: #d48f20;
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--parchmt);
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    footer a {
+      color: var(--teal);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .faq-title {
+        font-size: 1.3rem;
+      }
+
+      .faq-question {
+        font-size: 0.95rem;
+        padding: 1rem 1.25rem;
+      }
+
+      .cta-section {
+        padding: 1.5rem;
+      }
+
+      .cta-section h2 {
+        font-size: 1.4rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      main {
+        padding: 1.5rem 1rem;
+      }
+
+      .container {
+        padding: 0;
+      }
+
+      .hero h1 {
+        font-size: 1.4rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .quick-nav {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+      }
+
+      .quick-link {
+        padding: 0.75rem;
+      }
+
+      .quick-link-emoji {
+        font-size: 1.5rem;
+      }
+
+      .quick-link-text {
+        font-size: 0.8rem;
+      }
+
+      .faq-question {
+        font-size: 0.85rem;
+        padding: 0.85rem 1rem;
+      }
+
+      .faq-answer-content {
+        padding: 1rem;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="header-content">
+    <a href="index.html" class="logo">NAGOH <em>AI</em></a>
+    <nav class="nav-links">
+      <a href="index.html">← Back to App</a>
+      <a href="#what-is" class="active">What is it?</a>
+      <a href="#how-works">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ── MAIN ── -->
+<main>
+  <div class="container">
+
+    <!-- ── HERO ── -->
+    <section class="hero" id="what-is">
+      <h1>Frequently Asked <em>Questions</em></h1>
+      <p>Everything you need to know about NAGOH AI and how it can help your small business succeed.</p>
+    </section>
+
+    <!-- ── QUICK NAV ── -->
+    <div class="quick-nav">
+      <a href="#what-is-section" class="quick-link">
+        <div class="quick-link-emoji">❓</div>
+        <div class="quick-link-text">What is NAGOH AI?</div>
+      </a>
+      <a href="#getting-started" class="quick-link">
+        <div class="quick-link-emoji">🚀</div>
+        <div class="quick-link-text">Getting Started</div>
+      </a>
+      <a href="#features" class="quick-link">
+        <div class="quick-link-emoji">⭐</div>
+        <div class="quick-link-text">Features</div>
+      </a>
+      <a href="#tokens" class="quick-link">
+        <div class="quick-link-emoji">🪙</div>
+        <div class="quick-link-text">Tokens & Pricing</div>
+      </a>
+      <a href="#troubleshooting" class="quick-link">
+        <div class="quick-link-emoji">🔧</div>
+        <div class="quick-link-text">Troubleshooting</div>
+      </a>
+      <a href="#privacy" class="quick-link">
+        <div class="quick-link-emoji">🔒</div>
+        <div class="quick-link-text">Privacy & Security</div>
+      </a>
+    </div>
+
+    <!-- ── WHAT IS NAGOH AI ── -->
+    <section class="faq-section" id="what-is-section">
+      <h2 class="faq-title">What is NAGOH AI?</h2>
+      <div class="faq-grid">
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>❓ What exactly is NAGOH AI?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>NAGOH AI is your personal <strong>AI business assistant</strong> designed specifically for small business owners. It helps you:</p>
+              <ul>
+                <li>Write professional marketing copy and social media posts</li>
+                <li>Create customer service replies and business communications</li>
+                <li>Generate product descriptions and service listings</li>
+                <li>Brainstorm business ideas and strategies</li>
+                <li>Save time on day-to-day business writing tasks</li>
+              </ul>
+              <p style="margin-top: 1rem;">Think of NAGOH AI as a <strong>smart coworker</strong> who's available 24/7 to help you run your business better.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🎯 Who is NAGOH AI for?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>NAGOH AI is perfect for:</p>
+              <ul>
+                <li><strong>Etsy sellers</strong> — Create product listings and social posts</li>
+                <li><strong>Real estate agents</strong> — Write property descriptions and client emails</li>
+                <li><strong>Service businesses</strong> — Coffee shops, salons, landscapers, plumbers, etc.</li>
+                <li><strong>Freelancers & consultants</strong> — Draft proposals and client updates</li>
+                <li><strong>Any small business owner</strong> — General marketing and communication help</li>
+              </ul>
+              <p style="margin-top: 1rem;">If you're a small business owner who spends time writing emails, posts, and marketing copy, NAGOH AI is for you.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🤖 How is NAGOH AI different from other AI tools?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>NAGOH AI is <strong>built for small business owners</strong>, not just general chatting. Here's what makes it special:</p>
+              <ul>
+                <li><strong>Industry-specific</strong> — Choose your industry (Etsy, real estate, coffee shop, etc.) for tailored prompts</li>
+                <li><strong>Quick starters</strong> — Pre-built templates for common business tasks</li>
+                <li><strong>Smart suggestions</strong> — Get follow-up ideas after each response</li>
+                <li><strong>Token-based pricing</strong> — Pay only for what you use, no subscriptions</li>
+                <li><strong>Simple & focused</strong> — No clutter, just what you need to run your business</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>⭐ What can I actually do with it?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Here are real examples of what NAGOH AI helps with:</p>
+              <ul>
+                <li>Write Etsy product descriptions that sell</li>
+                <li>Create Instagram captions and social media posts</li>
+                <li>Draft professional emails to customers and clients</li>
+                <li>Generate marketing copy for your website or ads</li>
+                <li>Write thank-you notes and follow-ups</li>
+                <li>Create FAQ answers for your business</li>
+                <li>Brainstorm business ideas and marketing strategies</li>
+                <li>Respond to customer complaints professionally</li>
+                <li>Write service descriptions and pricing justifications</li>
+              </ul>
+              <p style="margin-top: 1rem;">Basically, any <strong>writing task for your small business</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── GETTING STARTED ── -->
+    <section class="faq-section" id="getting-started">
+      <h2 class="faq-title">Getting Started</h2>
+      <div class="faq-grid">
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🚀 How do I get started?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <ol>
+                <li>Go to <strong>ai.nagoh.us</strong> and click "Sign in with Google"</li>
+                <li>Select your <strong>industry</strong> from the dropdown menu</li>
+                <li>You get <strong>5,000 free tokens</strong> instantly to test it out</li>
+                <li>Click on a <strong>Quick Starter</strong> or type your question</li>
+                <li>Hit <strong>Send</strong> and get your AI-generated response</li>
+              </ol>
+              <p style="margin-top: 1rem;">That's it! You're ready to use NAGOH AI.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>📝 How do I ask NAGOH AI for help?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Just type naturally! Examples:</p>
+              <div class="highlight">
+                <strong>✓ Good:</strong><br>
+                "Write a product description for my handmade candles"<br>
+                "Create 5 Instagram captions for my coffee shop"<br>
+                "Draft an email response to this customer complaint..."
+              </div>
+              <p style="margin-top: 1rem;">The more specific you are, the better the response. You can also use the <strong>Quick Starters</strong> on the left sidebar for common tasks.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🎯 What do the "Quick Starters" do?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Quick Starters are <strong>pre-built prompts</strong> for your industry. Instead of typing from scratch, they give you a head start:</p>
+              <ul>
+                <li>Click a Quick Starter button</li>
+                <li>The prompt auto-fills in the chat box</li>
+                <li>Add your specific details (product name, topic, etc.)</li>
+                <li>Hit Send to get instant results</li>
+              </ul>
+              <p style="margin-top: 1rem;">Each industry has different Quick Starters tailored to your business type.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>💡 What are the ideas on the right side?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>The <strong>"Ideas to Try"</strong> section shows you popular requests for your industry. Click any idea to ask NAGOH AI about it.</p>
+              <p style="margin-top: 0.75rem;">For example, if you're a salon owner, you'll see ideas like:</p>
+              <ul>
+                <li>New stylist introduction</li>
+                <li>Product launch promotion</li>
+                <li>Appointment reminders</li>
+                <li>Client testimonials</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">It's a quick way to discover what other business owners are asking about.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🔄 Can I refine my responses?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Absolutely! After NAGOH AI responds, you'll see <strong>suggestion buttons</strong> like:</p>
+              <ul>
+                <li>↪ Make it shorter</li>
+                <li>↪ Make it longer</li>
+                <li>↪ More professional</li>
+                <li>↪ Give me another version</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">Click any suggestion to refine the response. Or just keep chatting to further develop your idea.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── FEATURES ── -->
+    <section class="faq-section" id="features">
+      <h2 class="faq-title">Features & Capabilities</h2>
+      <div class="faq-grid">
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🌍 Can I change my industry anytime?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Yes! You can change your industry at any time using the dropdown in the left sidebar. This updates your:</p>
+              <ul>
+                <li>Quick Starters (tailored to your business type)</li>
+                <li>Ideas to Try suggestions</li>
+                <li>AI tone and context</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">You can also toggle between different tones (<strong>Friendly, Professional, Playful, Concise</strong>) for different situations.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🎨 What's the "Tone/Mode" selector?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>The <strong>Tone/Mode</strong> selector changes how NAGOH AI writes:</p>
+              <ul>
+                <li><strong>😊 Friendly & warm</strong> — Approachable and supportive</li>
+                <li><strong>💼 Professional</strong> — Formal and business-focused</li>
+                <li><strong>🎉 Fun & playful</strong> — Upbeat and creative</li>
+                <li><strong>⚡ Short & snappy</strong> — Concise and to-the-point</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">Choose the tone that matches your brand and audience.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>📊 What's the difference between Chat models?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>NAGOH AI offers two models:</p>
+              <ul>
+                <li><strong>NagohAI Chat (Fast)</strong> — Quick responses, great for most tasks. Use this for most writing jobs.</li>
+                <li><strong>NagohAI Reasoner (Deep)</strong> — Slower but more thoughtful. Best for complex strategy questions or detailed planning.</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">Most users stick with <strong>Chat (Fast)</strong> for speed and simplicity.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>💬 Can I save my chat history?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Yes! All your chats are automatically saved. You'll see <strong>"Past Chats"</strong> in the left sidebar showing your recent conversations.</p>
+              <ul>
+                <li>Click any past chat to reload it</li>
+                <li>Your token usage and message history are preserved</li>
+                <li>Start a new chat with the <strong>"+ New Chat"</strong> button</li>
+                <li>Clear all history with <strong>"Clear History"</strong> (be careful!)</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">Your chat data is private and never shared.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── TOKENS & PRICING ── -->
+    <section class="faq-section" id="tokens">
+      <h2 class="faq-title">Tokens & Pricing</h2>
+      <div class="faq-grid">
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🪙 What are tokens?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p><strong>Tokens</strong> are how NAGOH AI measures usage. Think of them like a "currency" for AI responses.</p>
+              <ul>
+                <li>Every message you send uses some tokens</li>
+                <li>Longer responses use more tokens</li>
+                <li>You see exactly how many tokens each response costs</li>
+                <li>Your token balance is shown at the top of the app</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">This way, you only pay for what you actually use—no surprise bills!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>💰 How much do tokens cost?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Token pricing depends on your plan:</p>
+              <div class="highlight">
+                <strong>Starter</strong><br>$9/month = 100,000 tokens
+              </div>
+              <div class="highlight">
+                <strong>Professional</strong><br>$29/month = 500,000 tokens
+              </div>
+              <div class="highlight">
+                <strong>Business</strong><br>$99/month = 2,000,000 tokens
+              </div>
+              <p style="margin-top: 1rem;"><strong>Annual plans save you 6%</strong> when paid upfront.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🎁 Do I get free tokens to try?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p><strong>Yes!</strong> New users get <strong>5,000 free tokens</strong> instantly when you sign up with Google.</p>
+              <p style="margin-top: 0.75rem;">This is enough to test out NAGOH AI and see if it's right for your business. No credit card required.</p>
+              <p style="margin-top: 0.75rem;">Guests also get <strong>1,000 free tokens</strong> to try the app (no sign-up needed), but these tokens don't carry over between visits.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>📉 How many tokens does a response use?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Token usage varies based on:</p>
+              <ul>
+                <li><strong>Length of your question</strong> — Longer questions use more tokens</li>
+                <li><strong>Length of the response</strong> — Longer answers cost more</li>
+                <li><strong>AI model used</strong> — The "Reasoner" model uses more tokens than "Chat"</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">After each response, you'll see exactly how many tokens that message cost. This way, there are no surprises.</p>
+              <p style="margin-top: 0.75rem;"><strong>Example:</strong> A short question asking for 3 social media posts might use 150-300 tokens. A longer, detailed request might use 500+ tokens.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🛒 How do I buy more tokens?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <ol>
+                <li>Click <strong>"+ Buy More Tokens"</strong> in the left sidebar</li>
+                <li>Choose your plan (Starter, Professional, or Business)</li>
+                <li>Select monthly or annual billing</li>
+                <li>Enter your payment info (Stripe is secure and trusted)</li>
+                <li>Your tokens are added instantly!</li>
+              </ol>
+              <p style="margin-top: 0.75rem;">You can buy more tokens anytime you run low. No long-term contracts—you can cancel anytime.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>⚠️ What happens when I run out of tokens?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>When you run out of tokens:</p>
+              <ul>
+                <li>You can't send new messages</li>
+                <li>You'll see a message: <strong>"You're out of tokens!"</strong></li>
+                <li>Just click <strong>"Buy More Tokens"</strong> to add more</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">Your chat history and past messages are always saved. You can continue your conversations once you add more tokens.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── TROUBLESHOOTING ── -->
+    <section class="faq-section" id="troubleshooting">
+      <h2 class="faq-title">Troubleshooting</h2>
+      <div class="faq-grid">
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>❓ The AI response doesn't seem right. What do I do?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Try these tips to get better responses:</p>
+              <ul>
+                <li><strong>Be more specific</strong> — Include details about your product, audience, or goal</li>
+                <li><strong>Use click suggestions</strong> — After a response, click buttons like "Make it shorter" or "Give me another version"</li>
+                <li><strong>Change the tone</strong> — Try a different Tone/Mode in the right sidebar</li>
+                <li><strong>Ask follow-up questions</strong> — Refine your request in the next message</li>
+                <li><strong>Try the Reasoner model</strong> — For complex requests, use NagohAI Reasoner for deeper thinking</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🔌 The app says "offline" or "connecting"—what's wrong?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Check the status indicator at the top-right of the app:</p>
+              <ul>
+                <li><strong>Green dot "Connected"</strong> — Everything is working ✓</li>
+                <li><strong>Yellow dot "Connecting"</strong> — Wait a moment, the app is starting up</li>
+                <li><strong>Red dot "Offline"</strong> — Check your internet connection</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">If you see "Offline":</p>
+              <ol>
+                <li>Refresh the page (Ctrl+R or Cmd+R)</li>
+                <li>Check your internet connection</li>
+                <li>Try again in a few moments</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🔐 My session got disconnected. How do I sign back in?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>If you get signed out:</p>
+              <ol>
+                <li>Click <strong>"Sign in with Google"</strong> on the login page</li>
+                <li>Use the same Google account you originally signed up with</li>
+                <li>Your chat history and tokens will be right where you left them</li>
+              </ol>
+              <p style="margin-top: 0.75rem;">Your data is always saved. Sign out anytime by clicking <strong>"Sign out"</strong> in the top-right button.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>⚡ The app is slow or responses are taking forever. Why?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>A few reasons responses might be slow:</p>
+              <ul>
+                <li><strong>Using "Reasoner" model</strong> — This is slower but more thoughtful. Switch to "Chat" for speed.</li>
+                <li><strong>Complex request</strong> — Detailed questions take longer to answer</li>
+                <li><strong>Server load</strong> — During peak times, responses can be slower</li>
+                <li><strong>Internet connection</strong> — Slow WiFi or mobile data affects speed</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">If responses are consistently slow, try switching to the <strong>"NagohAI Chat (Fast)"</strong> model.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🚫 I can't sign in with Google. What should I do?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>If Google sign-in isn't working:</p>
+              <ol>
+                <li>Try a different browser (Chrome, Firefox, Safari, Edge)</li>
+                <li>Clear your browser cookies and cache</li>
+                <li>Disable any ad blockers or privacy extensions temporarily</li>
+                <li>Make sure cookies are enabled in your browser</li>
+                <li>Try signing in on a different device</li>
+              </ol>
+              <p style="margin-top: 0.75rem;">As a workaround, you can click <strong>"Continue as Guest"</strong> to try the app without signing in.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── PRIVACY & SECURITY ── -->
+    <section class="faq-section" id="privacy">
+      <h2 class="faq-title">Privacy & Security</h2>
+      <div class="faq-grid">
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🔒 Is my data private and secure?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p><strong>Yes, absolutely.</strong> Here's how we protect your data:</p>
+              <ul>
+                <li><strong>Encrypted connection</strong> — All data is encrypted in transit (HTTPS)</li>
+                <li><strong>Private storage</strong> — Your chats are stored securely and privately</li>
+                <li><strong>No selling data</strong> — We never sell or share your data with anyone</li>
+                <li><strong>Google OAuth</strong> — We only use Google to verify your identity</li>
+                <li><strong>Only you can see your chats</strong> — Your messages are 100% private</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>📋 What happens to my chat data?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Your chat data is:</p>
+              <ul>
+                <li><strong>Stored on our secure servers</strong> — Accessible only to you</li>
+                <li><strong>Saved automatically</strong> — Every message is backed up</li>
+                <li><strong>Deletable by you</strong> — Click "Clear History" to delete everything</li>
+                <li><strong>Not used for AI training</strong> — We don't use your messages to train the AI</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">You control your data. Delete it anytime.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🚪 Can I delete my account?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>To delete your account, you can:</p>
+              <ol>
+                <li>Click <strong>"Clear History"</strong> to delete all your chats</li>
+                <li>Click <strong>"Sign out"</strong> to disconnect</li>
+              </ol>
+              <p style="margin-top: 0.75rem;">Or <a href="#contact">contact support</a> for full account deletion.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>💳 How is my payment info protected?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>We use <strong>Stripe</strong>, a trusted payment processor, to handle all transactions:</p>
+              <ul>
+                <li><strong>PCI compliant</strong> — Stripe is certified for payment security</li>
+                <li><strong>We never see your card</strong> — Stripe handles all credit card data</li>
+                <li><strong>Encrypted transactions</strong> — All payments are encrypted</li>
+                <li><strong>Secure storage</strong> — Your payment method is stored securely</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">Your payment info is as safe with us as it is with major retailers.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>⚖️ What are your terms of service?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>When you use NAGOH AI, you agree to:</p>
+              <ul>
+                <li>Use it legally and ethically</li>
+                <li>Not use it for illegal activities or spam</li>
+                <li>Respect others' intellectual property</li>
+                <li>Not resell tokens or access</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">We respect your privacy. Your data is yours. For full terms, <a href="#contact">contact us</a>.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── CONTACT ── -->
+    <section class="faq-section" id="contact">
+      <h2 class="faq-title">Still Have Questions?</h2>
+      <div class="faq-grid">
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>📞 How do I contact support?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>We're here to help! Reach out to us:</p>
+              <ul>
+                <li><strong>Email:</strong> support@nagoh.us</li>
+                <li><strong>Website:</strong> ai.nagoh.us</li>
+                <li><strong>Response time:</strong> We typically reply within 24 hours</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">Have a bug to report? Feature request? Just let us know!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>🎓 Are there tutorials or guides?</span>
+            <span class="faq-toggle">▼</span>
+          </button>
+          <div class="faq-answer">
+            <div class="faq-answer-content">
+              <p>Check out these resources:</p>
+              <ul>
+                <li><strong>Quick Starters</strong> — Built into the app for your industry</li>
+                <li><strong>Ideas to Try</strong> — See what other business owners are doing</li>
+                <li><strong>This FAQ</strong> — You're reading it now! 📖</li>
+              </ul>
+              <p style="margin-top: 0.75rem;">Start with a Quick Starter, then explore from there!</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="cta-section">
+      <h2>Ready to boost your small business?</h2>
+      <p>Get 5,000 free tokens and start writing with NAGOH AI today.</p>
+      <a href="index.html" class="cta-btn">Launch the App →</a>
+    </section>
+
+  </div>
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>NAGOH AI © 2024 • <a href="#">Terms</a> • <a href="#">Privacy</a> • <a href="mailto:support@nagoh.us">Contact</a></p>
+</footer>
+
+<script>
+function toggleFaq(button) {
+  const answer = button.nextElementSibling;
+  const isOpen = answer.classList.contains('open');
+  
+  // Close all other FAQs
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.classList.remove('active');
+    btn.nextElementSibling.classList.remove('open');
+  });
+  
+  // Toggle current FAQ
+  if (!isOpen) {
+    button.classList.add('active');
+    answer.classList.add('open');
+  }
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
