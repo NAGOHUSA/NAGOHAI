@@ -136,6 +136,8 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   letter-spacing: 0.02em; text-decoration: none;
 }
 .buy-btn:hover { background: #d48f20; }
+.buy-btn.secondary { background: var(--teal); color: #fff; }
+.buy-btn.secondary:hover { background: #228b7e; }
 
 /* ── INDUSTRY SELECTOR ── */
 .industry-section { padding: 1rem 1rem 0.8rem; border-bottom: 1px solid var(--border); }
@@ -216,7 +218,7 @@ body { color: var(--ink); font-family: var(--sans); display: flex; flex-directio
   display: flex; align-items: center; gap: 6px; font-size: 0.72rem; font-weight: 500;
   color: rgba(255,255,255,0.6); background: transparent; border: none; cursor: pointer;
   padding: 8px 14px; white-space: nowrap; transition: all 0.2s; border-bottom: 2px solid transparent;
-  font-family: var(--sans);
+  font-family: var(--sans); text-decoration: none;
 }
 .tab-btn:hover { color: rgba(255,255,255,0.9); }
 .tab-btn.active { color: #fff; border-bottom-color: var(--gold); }
@@ -701,6 +703,9 @@ input, textarea, select { font-size: 16px !important; }
   <button class="tab-btn" onclick="switchTab('analytics')" id="tab-analytics-btn">
     📊 Analytics
   </button>
+  <a href="nagohfaq.html" target="_blank" class="tab-btn" style="text-decoration:none;">
+    ❓ Help & FAQ
+  </a>
 </div>
 
 <!-- ── SHELL ── -->
@@ -740,7 +745,7 @@ input, textarea, select { font-size: 16px !important; }
         </div>
       </div>
       <a class="buy-btn" id="buyLink" href="#" target="_blank" onclick="openBuyTokens(); return false;">+ Buy More Tokens</a>
-      <a class="buy-btn" href="nagohfaq.html" target="_blank" style="background:var(--teal);margin-top:0.4rem;">❓ Help & FAQ</a>
+      <a class="buy-btn secondary" href="nagohfaq.html" target="_blank">❓ Help & FAQ</a>
     </div>
 
     <div class="pblock">
