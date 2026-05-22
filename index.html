@@ -703,9 +703,9 @@ input, textarea, select { font-size: 16px !important; }
   <button class="tab-btn" onclick="switchTab('analytics')" id="tab-analytics-btn">
     📊 Analytics
   </button>
-  <a href="nagohfaq.html" target="_blank" class="tab-btn" style="text-decoration:none;">
+  <button class="tab-btn" onclick="switchTab('faq')" id="tab-faq-btn">
     ❓ Help & FAQ
-  </a>
+  </button>
 </div>
 
 <!-- ── SHELL ── -->
@@ -745,7 +745,6 @@ input, textarea, select { font-size: 16px !important; }
         </div>
       </div>
       <a class="buy-btn" id="buyLink" href="#" target="_blank" onclick="openBuyTokens(); return false;">+ Buy More Tokens</a>
-      <a class="buy-btn secondary" href="nagohfaq.html" target="_blank">❓ Help & FAQ</a>
     </div>
 
     <div class="pblock">
@@ -805,6 +804,11 @@ input, textarea, select { font-size: 16px !important; }
   <!-- ANALYTICS TAB -->
   <div class="tab-content" id="tab-analytics">
     <div class="page-container" id="analyticsContainer"></div>
+  </div>
+
+  <!-- FAQ TAB -->
+  <div class="tab-content" id="tab-faq">
+    <div class="page-container" id="faqContainer"></div>
   </div>
 
   <!-- RIGHT -->
@@ -1319,6 +1323,7 @@ function switchTab(tabName) {
   if (tabName === 'templates') loadTemplatesPage();
   else if (tabName === 'trending') loadTrendingPage();
   else if (tabName === 'analytics') loadAnalyticsPage();
+  else if (tabName === 'faq') loadFAQPage();
 }
 
 async function loadTemplatesPage() {
@@ -1355,6 +1360,22 @@ async function loadAnalyticsPage() {
       try { new Function(s.textContent).call(window); } catch (e) {}
     });
   } catch (e) { c.innerHTML = '<p>Error loading analytics</p>'; }
+}
+
+async function loadFAQPage() {
+  const c = document.getElementById('faqContainer');
+  c.innerHTML = '<p>Loading...</p>';
+  try {
+    const html = await fetch(`nagohfaq.html?v=${Date.now()}`).then(r => r.text());
+    // Extract body content from the fetched HTML
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const bodyContent = doc.body.innerHTML;
+    c.innerHTML = bodyContent;
+    c.querySelectorAll('script').forEach(s => {
+      try { new Function(s.textContent).call(window); } catch (e) {}
+    });
+  } catch (e) { c.innerHTML = '<p>Error loading help & FAQ</p>'; }
 }
 
 function onIndustryChange() {
