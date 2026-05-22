@@ -268,6 +268,8 @@
             position: relative;
             display: inline-block;
             filter: drop-shadow(0 8px 24px rgba(0,0,0,0.12));
+            transform-origin: center top;
+            transition: transform 0.15s ease-out;
         }
         
         #guidanceOverlay {
@@ -1527,12 +1529,11 @@
             const zoomDisplay = document.getElementById('zoomDisplay');
             const zoomInBtn = document.getElementById('zoomInBtn');
             const zoomOutBtn = document.getElementById('zoomOutBtn');
-            const canvasWrapper = document.querySelector('.canvas-wrapper');
+            const canvasContainer = document.getElementById('canvasContainer');
             
             function updateZoom(value) {
                 const scale = value / 100;
-                canvasWrapper.style.transform = `scale(${scale})`;
-                canvasWrapper.style.transformOrigin = 'top center';
+                canvasContainer.style.transform = `scale(${scale})`;
                 zoomDisplay.textContent = value + '%';
             }
             
