@@ -324,6 +324,85 @@
             padding: 0.5rem 0;
         }
         
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+        }
+        
+        .zoom-btn {
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            border: 1.5px solid var(--border);
+            background: white;
+            color: var(--ink);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        
+        .zoom-btn:hover {
+            border-color: var(--teal);
+            background: var(--teal-lt);
+            color: var(--teal);
+        }
+        
+        .zoom-display {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--sub);
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .zoom-slider {
+            width: 200px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        
+        .zoom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--teal);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        
+        .zoom-slider::-webkit-slider-thumb:hover {
+            background: #1f8a7a;
+            transform: scale(1.2);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .zoom-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--teal);
+            cursor: pointer;
+            border: none;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        
+        .zoom-slider::-moz-range-thumb:hover {
+            background: #1f8a7a;
+            transform: scale(1.2);
+            box-shadow: var(--shadow-lg);
+        }
+        
         /* ════════════════════════════════════════ BUTTONS ════════════════════════════════════════ */
         
         .btn {
@@ -1079,6 +1158,12 @@
             </div>
             
             <div class="canvas-controls">
+                <div class="zoom-controls">
+                    <button class="zoom-btn" id="zoomOutBtn">−</button>
+                    <input type="range" class="zoom-slider" id="zoomSlider" min="50" max="200" value="100">
+                    <span class="zoom-display" id="zoomDisplay">100%</span>
+                    <button class="zoom-btn" id="zoomInBtn">+</button>
+                </div>
                 <button class="btn btn-primary" id="uploadBtn">📤 Upload Image</button>
                 <button class="btn btn-secondary" id="resetBtn">↻ Reset</button>
             </div>
@@ -1437,6 +1522,40 @@
         }
 
         function setupEventListeners() {
+            // Zoom controls
+            const zoomSlider = document.getElementById('zoomSlider');
+            const zoomDisplay = document.getElementById('zoomDisplay');
+            const zoomInBtn = document.getElementById('zoomInBtn');
+            const zoomOutBtn = document.getElementById('zoomOutBtn');
+            const canvasWrapper = document.querySelector('.canvas-wrapper');
+            
+            function updateZoom(value) {
+                const scale = value / 100;
+                canvasWrapper.style.transform = `scale(${scale})`;
+                canvasWrapper.style.transformOrigin = 'top center';
+                zoomDisplay.textContent = value + '%';
+            }
+            
+            zoomSlider.addEventListener('input', (e) => {
+                updateZoom(e.target.value);
+            });
+            
+            zoomInBtn.addEventListener('click', () => {
+                let currentValue = parseInt(zoomSlider.value);
+                if (currentValue < 200) {
+                    zoomSlider.value = Math.min(currentValue + 10, 200);
+                    updateZoom(zoomSlider.value);
+                }
+            });
+            
+            zoomOutBtn.addEventListener('click', () => {
+                let currentValue = parseInt(zoomSlider.value);
+                if (currentValue > 50) {
+                    zoomSlider.value = Math.max(currentValue - 10, 50);
+                    updateZoom(zoomSlider.value);
+                }
+            });
+            
             document.querySelectorAll('[data-type]').forEach(btn => {
                 btn.onclick = (e) => {
                     document.querySelectorAll('[data-type]').forEach(b => b.classList.remove('active'));
