@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAGOH Shots - Professional Universal Image Maker</title>
+    <title>NAGOH Shots - Ultimate Design Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,500&family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -13,6 +13,7 @@
             --cream:    #fdf8f0;
             --warm:     #ede3d5;
             --border:   #e0d4c4;
+            --border2:  #d4c4b0;
             --muted:    #b5a090;
             --dim:      #8a7868;
             --sub:      #6b5e50;
@@ -20,78 +21,253 @@
             --deep:     #2a1f16;
             --rose:     #e8524a;
             --rose-lt:  #fce8e7;
+            --rose-md:  #f5c4c2;
             --teal:     #2a9d8f;
             --teal-lt:  #e0f5f3;
+            --teal-md:  #a0dcd6;
             --gold:     #e9a028;
             --gold-lt:  #fdf0d5;
+            --gold-md:  #f7d08a;
             --sans:     'DM Sans', sans-serif;
             --serif:    'Fraunces', serif;
+            
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+            --shadow-xl: 0 20px 48px rgba(0,0,0,0.15);
+            --shadow-focus: 0 0 0 3px rgba(42, 157, 143, 0.2);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         html, body {
             height: 100%;
             width: 100%;
             overflow: hidden;
-            background: var(--cream);
+            background: linear-gradient(135deg, #fdf8f0 0%, #f5ede0 100%);
             color: var(--ink);
             font-family: var(--sans);
         }
         
         body { display: flex; flex-direction: column; }
         
+        /* ════════════════════════════════════════ TOPBAR ════════════════════════════════════════ */
+        
         .topbar {
-            height: 60px;
+            height: 72px;
             display: flex;
             align-items: center;
-            padding: 0 1.5rem;
-            gap: 1rem;
+            padding: 0 2rem;
+            gap: 1.5rem;
             background: var(--deep);
             flex-shrink: 0;
-            border-bottom: 3px solid var(--rose);
+            border-bottom: 2px solid var(--rose);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 100;
         }
         
-        .wordmark { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: #fff; }
-        .wordmark em { color: var(--gold); font-style: italic; }
-        .tagline { font-size: 0.65rem; color: rgba(255,255,255,0.45); }
-        .tsep { flex: 1; }
-        .tpill { display: flex; align-items: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 12px; font-size: 0.7rem; color: rgba(255,255,255,0.65); }
-        .tbtn { font-family: var(--sans); font-size: 0.68rem; font-weight: 500; padding: 6px 14px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.65); cursor: pointer; border-radius: 6px; transition: all 0.15s; }
-        .tbtn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: fit-content;
+        }
+        
+        .brand-icon {
+            font-size: 2rem;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .wordmark {
+            font-family: var(--serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.01em;
+        }
+        
+        .wordmark em {
+            color: var(--gold);
+            font-style: italic;
+            font-weight: 500;
+        }
+        
+        .tagline {
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 0.12em;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .topbar-sep { flex: 1; }
+        
+        .topbar-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 8px;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 500;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+            animation: pulse-dot 2s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 #4ade80; }
+            50% { opacity: 0.7; box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.3); }
+        }
+        
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .top-btn {
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 10px 18px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.9);
+            cursor: pointer;
+            border-radius: 8px;
+            transition: var(--transition);
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .top-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .top-btn:active {
+            transform: translateY(0);
+        }
+        
+        .top-btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, #d48f20 100%);
+            border: none;
+            color: var(--deep);
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .top-btn-primary:hover {
+            background: linear-gradient(135deg, #d48f20 0%, #c47f1a 100%);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .top-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* ════════════════════════════════════════ MAIN LAYOUT ════════════════════════════════════════ */
         
         .main {
             flex: 1;
             display: grid;
-            grid-template-columns: 1fr 480px;
+            grid-template-columns: 1fr 360px;
             gap: 1.5rem;
             padding: 1.5rem;
             overflow: hidden;
+            background: transparent;
         }
         
         .canvas-section {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.25rem;
             min-height: 0;
+        }
+        
+        .canvas-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 0.5rem;
+        }
+        
+        .canvas-title {
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+        
+        .canvas-status {
+            display: flex;
+            gap: 1.2rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-weight: 500;
+        }
+        
+        .canvas-status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .canvas-status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--teal);
         }
         
         .canvas-wrapper {
             flex: 1;
             background: white;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 2rem;
+            border-radius: 16px;
+            padding: 2.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: auto;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: var(--shadow-lg);
             min-height: 0;
             position: relative;
+            transition: var(--transition);
+        }
+        
+        .canvas-wrapper:hover {
+            box-shadow: var(--shadow-xl);
         }
         
         #canvasContainer {
             position: relative;
             display: inline-block;
+            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.12));
         }
         
         #guidanceOverlay {
@@ -106,47 +282,102 @@
             max-width: 100%;
             max-height: 100%;
             display: block;
+            border-radius: 4px;
         }
         
         .text-label {
             position: absolute;
-            cursor: move;
-            padding: 4px 8px;
-            background: rgba(0,0,0,0.05);
-            border: 1px dashed var(--rose);
-            border-radius: 4px;
+            cursor: grab;
+            padding: 8px 12px;
+            background: var(--rose);
+            border: 2px solid var(--rose);
+            color: white;
+            border-radius: 6px;
             font-size: 0.7rem;
-            color: var(--rose);
+            font-weight: 700;
             white-space: nowrap;
             user-select: none;
             z-index: 10;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
         }
         
-        .text-label:hover { background: rgba(232, 82, 74, 0.1); }
-        .text-label.active { background: var(--rose-lt); border-color: var(--rose); box-shadow: 0 0 8px rgba(232, 82, 74, 0.3); }
+        .text-label:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            cursor: grabbing;
+        }
         
-        .controls {
+        .text-label.active {
+            background: var(--teal);
+            border-color: var(--teal);
+            box-shadow: 0 0 16px rgba(42, 157, 143, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .canvas-controls {
             display: flex;
-            gap: 0.75rem;
+            gap: 1rem;
             flex-wrap: wrap;
+            padding: 0.5rem 0;
         }
+        
+        /* ════════════════════════════════════════ BUTTONS ════════════════════════════════════════ */
         
         .btn {
             font-family: var(--sans);
-            font-size: 0.8rem;
-            font-weight: 500;
-            padding: 9px 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 11px 20px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: var(--transition);
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-sm);
         }
         
-        .btn-primary { background: var(--teal); color: white; }
-        .btn-primary:hover { background: #1f8a7a; }
-        .btn-secondary { background: var(--warm); color: var(--ink); border: 1px solid var(--border); }
-        .btn-secondary:hover { background: #f5ede0; }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal) 0%, #1f8a7a 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--ink);
+            border: 1.5px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--teal);
+            background: var(--teal-lt);
+            color: var(--teal);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* ════════════════════════════════════════ SIDEBAR ════════════════════════════════════════ */
         
         .sidebar {
             display: flex;
@@ -156,179 +387,330 @@
             padding-right: 0.5rem;
         }
         
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+            transition: var(--transition);
+        }
+        
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--muted);
+        }
+        
         .panel {
             background: white;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            padding: 1.3rem;
+            box-shadow: var(--shadow-sm);
             flex-shrink: 0;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+        
+        .panel:hover {
+            border-color: var(--teal-md);
+            box-shadow: var(--shadow-md);
         }
         
         .panel-title {
             font-family: var(--serif);
-            font-size: 0.85rem;
-            font-weight: 600;
+            font-size: 0.9rem;
+            font-weight: 700;
             color: var(--ink);
-            margin-bottom: 1rem;
+            margin-bottom: 1.1rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
         }
         
-        .form-group { margin-bottom: 1rem; }
-        .form-group:last-child { margin-bottom: 0; }
+        .panel-icon {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 1.1rem;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
         
         label {
             display: block;
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 700;
             color: var(--sub);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.65rem;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
-        input, select, textarea {
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
             width: 100%;
-            padding: 8px 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            padding: 11px 13px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
             font-family: var(--sans);
             font-size: 0.8rem;
             color: var(--ink);
+            background: #fafaf8;
+            transition: var(--transition);
+            font-weight: 500;
         }
         
-        input:focus, select:focus, textarea:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
-            border-color: var(--rose);
-            box-shadow: 0 0 0 3px var(--rose-lt);
+            border-color: var(--teal);
+            background: white;
+            box-shadow: var(--shadow-focus);
         }
         
-        textarea { resize: vertical; min-height: 70px; }
+        textarea {
+            resize: vertical;
+            min-height: 70px;
+            font-family: var(--sans);
+        }
         
         .color-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.6rem;
-            margin-top: 0.5rem;
+            gap: 0.9rem;
+            margin-top: 0.7rem;
+        }
+        
+        .color-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .color-input-group label {
+            margin: 0;
+        }
+        
+        input[type="color"] {
+            width: 100%;
+            height: 48px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        input[type="color"]:hover {
+            border-color: var(--teal);
+            box-shadow: var(--shadow-focus);
+            transform: scale(1.02);
         }
         
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.6rem;
-            margin-top: 0.5rem;
+            gap: 0.75rem;
+            margin-top: 0.8rem;
         }
         
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0.6rem;
-            margin-top: 0.5rem;
+            gap: 0.75rem;
+            margin-top: 0.8rem;
         }
         
         .grid-4 {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.6rem;
-            margin-top: 0.5rem;
+            gap: 0.75rem;
+            margin-top: 0.8rem;
         }
         
-        .option-btn, .font-option, .btn-small, .guide-btn {
-            padding: 8px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
+        .option-btn,
+        .font-option,
+        .btn-small,
+        .guide-btn {
+            padding: 10px 11px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
             background: white;
             cursor: pointer;
-            font-size: 0.7rem;
-            font-weight: 500;
+            font-size: 0.75rem;
+            font-weight: 700;
             text-align: center;
-            transition: all 0.15s;
+            transition: var(--transition);
+            color: var(--ink);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
         
-        .option-btn, .guide-btn { border: 2px solid var(--border); padding: 10px 8px; }
-        
-        .option-btn:hover, .font-option:hover, .btn-small:hover, .guide-btn:hover { 
-            border-color: var(--rose); 
-            background: var(--rose-lt); 
+        .option-btn:hover,
+        .font-option:hover,
+        .btn-small:hover,
+        .guide-btn:hover {
+            border-color: var(--teal);
+            background: var(--teal-lt);
+            color: var(--teal);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
         }
         
-        .option-btn.active, .font-option.active, .btn-small.active { 
-            border-color: var(--teal); 
-            background: var(--teal-lt); 
-            color: var(--teal); 
+        .option-btn.active,
+        .font-option.active,
+        .btn-small.active {
+            border-color: var(--teal);
+            background: var(--teal);
+            color: white;
+            box-shadow: 0 0 0 3px var(--teal-lt);
+            font-weight: 700;
         }
         
-        .guide-btn.active { 
-            border-color: var(--gold); 
-            background: var(--gold); 
-            color: white; 
+        .guide-btn.active {
+            border-color: var(--gold);
+            background: var(--gold);
+            color: white;
+            box-shadow: 0 0 0 3px var(--gold-lt);
         }
         
         .emoji-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 0.4rem;
-            margin-top: 0.5rem;
+            gap: 0.6rem;
+            margin-top: 0.8rem;
         }
         
         .emoji-btn {
-            padding: 6px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            padding: 10px;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
             background: white;
             cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.15s;
+            font-size: 1.4rem;
+            transition: var(--transition);
         }
         
-        .emoji-btn:hover { background: var(--rose-lt); border-color: var(--rose); }
+        .emoji-btn:hover {
+            border-color: var(--rose);
+            background: var(--rose-lt);
+            transform: scale(1.15) rotate(5deg);
+        }
+        
+        .emoji-btn:active {
+            transform: scale(0.95);
+        }
         
         .drop-zone {
             border: 2px dashed var(--border);
-            border-radius: 8px;
-            padding: 1.2rem;
+            border-radius: 10px;
+            padding: 1.4rem;
             text-align: center;
             cursor: pointer;
-            background: var(--rose-lt);
-            margin-top: 0.5rem;
-            transition: all 0.2s;
+            background: linear-gradient(135deg, rgba(42, 157, 143, 0.05) 0%, rgba(232, 82, 74, 0.03) 100%);
+            margin-top: 0.8rem;
+            transition: var(--transition);
         }
         
-        .drop-zone:hover { border-color: var(--rose); }
+        .drop-zone:hover {
+            border-color: var(--teal);
+            background: linear-gradient(135deg, rgba(42, 157, 143, 0.1) 0%, rgba(232, 82, 74, 0.05) 100%);
+            transform: scale(1.02);
+        }
+        
+        .drop-zone-icon {
+            font-size: 2rem;
+            margin-bottom: 0.6rem;
+            line-height: 1;
+        }
+        
+        .drop-zone-text {
+            font-size: 0.75rem;
+            color: var(--dim);
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
         
         .info-text {
             font-size: 0.7rem;
             color: var(--muted);
-            margin-top: 0.5rem;
+            margin-top: 0.7rem;
             font-style: italic;
+            font-weight: 500;
         }
         
         .badge {
             display: inline-block;
             background: var(--gold);
             color: white;
-            padding: 2px 8px;
+            padding: 4px 12px;
             border-radius: 12px;
             font-size: 0.65rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
+            font-weight: 700;
+            margin-left: 0.6rem;
+            letter-spacing: 0.03em;
         }
         
         input[type="range"] {
             width: 100%;
-            margin-top: 0.5rem;
-        }
-
-        .faq-btn {
-            font-family: var(--sans);
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 8px 12px;
-            background: var(--gold);
-            color: white;
-            border: none;
-            border-radius: 6px;
+            margin-top: 0.8rem;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            outline: none;
+            -webkit-appearance: none;
             cursor: pointer;
         }
-
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal) 0%, #1f8a7a 100%);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 2px solid white;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal) 0%, #1f8a7a 100%);
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+        
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* ════════════════════════════════════════ MODALS ════════════════════════════════════════ */
+        
         .faq-modal {
             display: none;
             position: fixed;
@@ -337,195 +719,355 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             overflow-y: auto;
+            backdrop-filter: blur(6px);
+            animation: fadeIn 0.3s ease-out;
         }
-
-        .faq-modal.active { display: block; }
-
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .faq-modal.active {
+            display: block;
+        }
+        
         .faq-content {
-            background: var(--cream);
-            margin: 2rem auto;
-            padding: 2rem;
-            border-radius: 12px;
-            max-width: 700px;
+            background: white;
+            margin: 2.5rem auto;
+            padding: 2.5rem;
+            border-radius: 16px;
+            max-width: 800px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.3s ease-out;
         }
-
+        
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
         .faq-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
             border-bottom: 2px solid var(--border);
-            padding-bottom: 1rem;
+            padding-bottom: 1.5rem;
         }
-
+        
         .faq-title {
             font-family: var(--serif);
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--ink);
         }
-
+        
         .faq-close {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
             color: var(--dim);
             cursor: pointer;
+            transition: var(--transition);
+            line-height: 1;
         }
-
-        .faq-close:hover { color: var(--rose); }
-
+        
+        .faq-close:hover {
+            color: var(--rose);
+            transform: scale(1.15);
+        }
+        
         .faq-item {
             margin-bottom: 1.5rem;
-            border-left: 3px solid var(--rose);
-            padding-left: 1rem;
+            border-left: 4px solid var(--rose);
+            padding-left: 1.3rem;
             cursor: pointer;
+            transition: var(--transition);
         }
-
+        
         .faq-item:hover {
             border-left-color: var(--teal);
-            background: rgba(42, 157, 143, 0.05);
+            background: rgba(42, 157, 143, 0.04);
             padding: 0.5rem;
-            padding-left: 1rem;
+            padding-left: 1.3rem;
         }
-
+        
         .faq-question {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--ink);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
+            font-size: 0.95rem;
         }
-
+        
         .faq-toggle {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             background: var(--rose);
             color: white;
             border-radius: 50%;
             text-align: center;
-            line-height: 20px;
-            font-size: 0.8rem;
+            line-height: 24px;
+            font-size: 0.85rem;
             flex-shrink: 0;
+            transition: var(--transition);
+            font-weight: 700;
         }
-
-        .faq-item.expanded .faq-toggle { transform: rotate(180deg); }
-
+        
+        .faq-item.expanded .faq-toggle {
+            transform: rotate(180deg);
+            background: var(--teal);
+        }
+        
         .faq-answer {
             display: none;
             color: var(--dim);
-            font-size: 0.85rem;
-            line-height: 1.6;
-            margin-top: 0.8rem;
-            padding: 0.8rem;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-top: 0.9rem;
+            padding: 1.1rem;
             background: rgba(0,0,0,0.02);
-            border-radius: 4px;
+            border-radius: 8px;
+            animation: slideDown 0.2s ease-out;
         }
-
-        .faq-item.expanded .faq-answer { display: block; }
-
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .faq-item.expanded .faq-answer {
+            display: block;
+        }
+        
         .faq-category {
             font-family: var(--serif);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--rose);
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
+            margin-top: 1.8rem;
+            margin-bottom: 1.2rem;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
-        .faq-category:first-child { margin-top: 0; }
-
+        
+        .faq-category:first-child {
+            margin-top: 0;
+        }
+        
+        /* ════════════════════════════════════════ CAPTIONS ════════════════════════════════════════ */
+        
         .caption-item {
-            background: rgba(42, 157, 143, 0.08);
-            border-left: 3px solid var(--teal);
-            padding: 0.8rem;
-            border-radius: 4px;
-            margin-bottom: 0.8rem;
+            background: linear-gradient(135deg, rgba(42, 157, 143, 0.08) 0%, rgba(42, 157, 143, 0.05) 100%);
+            border-left: 4px solid var(--teal);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.9rem;
+            transition: var(--transition);
+            cursor: pointer;
         }
-
+        
+        .caption-item:hover {
+            background: linear-gradient(135deg, rgba(42, 157, 143, 0.12) 0%, rgba(42, 157, 143, 0.08) 100%);
+        }
+        
         .caption-item.active {
-            background: rgba(42, 157, 143, 0.15);
+            background: linear-gradient(135deg, rgba(42, 157, 143, 0.2) 0%, rgba(42, 157, 143, 0.15) 100%);
             border-left-color: var(--teal);
+            box-shadow: var(--shadow-focus);
         }
-
+        
         .caption-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.9rem;
         }
-
+        
         .caption-num {
             font-size: 0.7rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--teal);
             text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-
+        
         .remove-caption {
             background: var(--rose);
             color: white;
             border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 6px 10px;
+            border-radius: 6px;
             font-size: 0.65rem;
             cursor: pointer;
+            font-weight: 700;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
-
+        
+        .remove-caption:hover {
+            background: #c73f3a;
+            transform: scale(1.08);
+        }
+        
+        .caption-item textarea {
+            font-size: 0.75rem;
+            padding: 9px;
+            min-height: 55px;
+            border: 1.5px solid rgba(42, 157, 143, 0.2);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.6);
+        }
+        
         .add-caption-btn {
             width: 100%;
-            padding: 8px;
-            background: var(--teal);
+            padding: 11px;
+            background: linear-gradient(135deg, var(--teal) 0%, #1f8a7a 100%);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 0.9rem;
+            transition: var(--transition);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
         }
-
+        
+        .add-caption-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* ════════════════════════════════════════ RESPONSIVE ════════════════════════════════════════ */
+        
+        @media (max-width: 1400px) {
+            .main {
+                grid-template-columns: 1fr 340px;
+                gap: 1.2rem;
+                padding: 1.2rem;
+            }
+        }
+        
         @media (max-width: 1024px) {
-            .main { grid-template-columns: 1fr; }
-            .sidebar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; max-height: 350px; }
+            .main {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .sidebar {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                max-height: 380px;
+            }
         }
         
         @media (max-width: 768px) {
-            .topbar { padding: 0 1rem; }
-            .main { padding: 1rem; grid-template-columns: 1fr; }
-            .sidebar { grid-template-columns: 1fr; }
+            .topbar {
+                height: 64px;
+                padding: 0 1rem;
+                gap: 1rem;
+            }
+            
+            .brand-icon {
+                font-size: 1.6rem;
+            }
+            
+            .wordmark {
+                font-size: 1.1rem;
+            }
+            
+            .tagline {
+                font-size: 0.55rem;
+            }
+            
+            .main {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+                padding: 0.8rem;
+            }
+            
+            .sidebar {
+                display: grid;
+                grid-template-columns: 1fr;
+                max-height: 300px;
+                overflow-y: auto;
+            }
+            
+            .canvas-wrapper {
+                padding: 1.5rem;
+            }
+            
+            .topbar-actions {
+                gap: 0.5rem;
+            }
+            
+            .top-btn {
+                padding: 8px 12px;
+                font-size: 0.7rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- TOPBAR -->
     <div class="topbar">
-        <div class="wordmark">NAGOH <em>Shots</em></div>
-        <div class="tagline">Professional Universal Image Maker</div>
-        <div class="tsep"></div>
-        <div class="tpill">✓ <span id="imageTypeLabel">App Store</span></div>
-        <button class="faq-btn" id="faqBtn">? Features</button>
-        <button class="tbtn" id="downloadBtn" disabled>Download PNG</button>
+        <div class="brand">
+            <div class="brand-icon">📸</div>
+            <div class="brand-text">
+                <div class="wordmark">NAGOH <em>Shots</em></div>
+                <div class="tagline">Ultimate Design Studio</div>
+            </div>
+        </div>
+        
+        <div class="topbar-sep"></div>
+        
+        <div class="topbar-status">
+            <div class="status-dot"></div>
+            <span>Ready to create</span>
+        </div>
+        
+        <div class="topbar-actions">
+            <button class="top-btn" id="faqBtn">? Help & Features</button>
+            <button class="top-btn top-btn-primary" id="downloadBtn" disabled>⬇ Export PNG</button>
+        </div>
     </div>
 
+    <!-- FAQ MODAL -->
     <div class="faq-modal" id="faqModal">
         <div class="faq-content">
             <div class="faq-header">
-                <div class="faq-title">Features & FAQ</div>
+                <div class="faq-title">Help & Features</div>
                 <span class="faq-close" id="faqClose">&times;</span>
             </div>
             <div id="faqContainer"></div>
         </div>
     </div>
 
+    <!-- MAIN -->
     <div class="main">
+        <!-- CANVAS SECTION -->
         <div class="canvas-section">
+            <div class="canvas-header">
+                <div class="canvas-title" id="canvasTitle">iPhone 16 Pro • 1290×2796</div>
+                <div class="canvas-status">
+                    <div class="canvas-status-item">
+                        <div class="canvas-status-dot"></div>
+                        <span id="imageSizeStatus">No image</span>
+                    </div>
+                </div>
+            </div>
+            
             <div class="canvas-wrapper">
                 <div id="canvasContainer">
                     <canvas id="canvas"></canvas>
@@ -533,74 +1075,56 @@
                     <div id="textOverlays"></div>
                 </div>
             </div>
-            <div class="controls">
-                <button class="btn btn-primary" id="uploadBtn">Upload Image</button>
-                <button class="btn btn-secondary" id="resetBtn">Reset</button>
+            
+            <div class="canvas-controls">
+                <button class="btn btn-primary" id="uploadBtn">📤 Upload Image</button>
+                <button class="btn btn-secondary" id="resetBtn">↻ Reset</button>
             </div>
         </div>
 
+        <!-- SIDEBAR -->
         <div class="sidebar">
+            <!-- IMAGE TYPE PANEL -->
             <div class="panel">
-                <label class="panel-title">Image Type</label>
+                <div class="panel-title"><span class="panel-icon">📱</span>Image Type</div>
                 <div class="grid-2">
-                    <button class="option-btn active" data-type="appstore">📱 App</button>
-                    <button class="option-btn" data-type="social">📸 Social</button>
-                    <button class="option-btn" data-type="product">🛍️ Product</button>
-                    <button class="option-btn" data-type="promo">🎯 Promo</button>
+                    <button class="option-btn active" data-type="appstore">App Store</button>
+                    <button class="option-btn" data-type="social">Social Media</button>
+                    <button class="option-btn" data-type="product">Product</button>
+                    <button class="option-btn" data-type="promo">Promo</button>
                 </div>
             </div>
 
+            <!-- DEVICE SELECTOR -->
             <div class="panel">
-                <label class="panel-title">Settings</label>
-                <div class="form-group">
-                    <label>Language 🌐</label>
-                    <select id="languageSelect">
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
-                        <option value="fr">Français</option>
-                        <option value="de">Deutsch</option>
-                        <option value="ja">日本語</option>
-                        <option value="zh">中文</option>
-                        <option value="pt">Português</option>
-                        <option value="ko">한국어</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Alignment Guides</label>
-                    <div class="grid-3">
-                        <button class="guide-btn active" id="guideGridBtn">Grid</button>
-                        <button class="guide-btn" id="guideSafeBtn">Safe</button>
-                        <button class="guide-btn" id="guideNoneBtn">None</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="panel">
-                <label class="panel-title">Device</label>
+                <div class="panel-title"><span class="panel-icon">🎯</span>Device</div>
                 <select id="sizeSelect"></select>
             </div>
 
+            <!-- AUDIENCE SELECTOR -->
             <div class="panel">
-                <label class="panel-title">Audience <span class="badge" id="audienceLabel">Tech</span></label>
+                <div class="panel-title"><span class="panel-icon">👥</span>Audience <span class="badge" id="audienceLabel">Tech</span></div>
                 <div class="grid-2" id="audienceGrid"></div>
             </div>
 
+            <!-- COLORS PANEL -->
             <div class="panel">
-                <label class="panel-title">Colors</label>
+                <div class="panel-title"><span class="panel-icon">🎨</span>Colors</div>
                 <div class="color-row">
-                    <div class="form-group">
+                    <div class="color-input-group">
                         <label>Background</label>
                         <input type="color" id="bgColor" value="#fdf8f0">
                     </div>
-                    <div class="form-group">
+                    <div class="color-input-group">
                         <label>Text</label>
                         <input type="color" id="textColor" value="#3d2f24">
                     </div>
                 </div>
             </div>
 
+            <!-- TEMPLATES PANEL -->
             <div class="panel">
-                <label class="panel-title">Templates</label>
+                <div class="panel-title"><span class="panel-icon">✨</span>Templates</div>
                 <div class="grid-2">
                     <button class="option-btn active" data-template="minimal">Minimal</button>
                     <button class="option-btn" data-template="vibrant">Vibrant</button>
@@ -609,11 +1133,11 @@
                     <button class="option-btn" data-template="warm">Warm</button>
                     <button class="option-btn" data-template="cool">Cool</button>
                 </div>
-                <p class="info-text">Preset styles</p>
             </div>
 
+            <!-- FONTS PANEL -->
             <div class="panel">
-                <label class="panel-title">Font</label>
+                <div class="panel-title"><span class="panel-icon">🔤</span>Font</div>
                 <div class="grid-2">
                     <button class="font-option active" data-font="Fraunces, serif" style="font-family: Fraunces, serif;">Fraunces</button>
                     <button class="font-option" data-font="Playfair Display, serif" style="font-family: Playfair Display, serif;">Playfair</button>
@@ -624,42 +1148,78 @@
                 </div>
             </div>
 
+            <!-- GUIDES PANEL -->
             <div class="panel">
-                <label class="panel-title">Image</label>
-                <div class="drop-zone" id="dropZone">Drop image or click</div>
+                <div class="panel-title"><span class="panel-icon">📐</span>Guides</div>
+                <div class="grid-3">
+                    <button class="guide-btn active" id="guideGridBtn">Grid</button>
+                    <button class="guide-btn" id="guideSafeBtn">Safe Zone</button>
+                    <button class="guide-btn" id="guideNoneBtn">None</button>
+                </div>
             </div>
 
+            <!-- IMAGE UPLOAD PANEL -->
             <div class="panel">
-                <label class="panel-title">Captions</label>
+                <div class="panel-title"><span class="panel-icon">🖼️</span>Image</div>
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-icon">📁</div>
+                    <div class="drop-zone-text">Click or drag image</div>
+                </div>
+            </div>
+
+            <!-- CAPTIONS PANEL -->
+            <div class="panel">
+                <div class="panel-title"><span class="panel-icon">💬</span>Captions</div>
                 <div id="captionsContainer"></div>
                 <button class="add-caption-btn" id="addCaptionBtn">+ Add Caption</button>
             </div>
 
+            <!-- TEXT POSITION PANEL -->
             <div class="panel">
-                <label class="panel-title">Position</label>
+                <div class="panel-title"><span class="panel-icon">↕️</span>Position</div>
                 <div class="grid-3">
                     <button class="btn-small active" data-position="top">Top</button>
                     <button class="btn-small" data-position="middle">Middle</button>
                     <button class="btn-small" data-position="bottom">Bottom</button>
                 </div>
-                <p class="info-text">Or drag text on canvas</p>
+                <p class="info-text">Drag on canvas to reposition</p>
             </div>
 
+            <!-- TEXT STYLE PANEL -->
             <div class="panel">
-                <label class="panel-title">Text Format</label>
+                <div class="panel-title"><span class="panel-icon">✏️</span>Text Style</div>
                 <div class="grid-4">
-                    <button class="btn-small" id="boldBtn">B</button>
-                    <button class="btn-small" id="italicBtn">I</button>
-                    <button class="btn-small" id="underlineBtn">U</button>
-                    <button class="btn-small" id="strikeBtn">S</button>
+                    <button class="btn-small" id="boldBtn" title="Bold">B</button>
+                    <button class="btn-small" id="italicBtn" title="Italic">I</button>
+                    <button class="btn-small" id="underlineBtn" title="Underline">U</button>
+                    <button class="btn-small" id="strikeBtn" title="Strikethrough">S</button>
                 </div>
-                <label style="margin-top: 1rem;">Size</label>
+                <label>Size</label>
                 <input type="range" id="fontSize" min="12" max="80" value="32">
             </div>
 
+            <!-- EMOJIS PANEL -->
             <div class="panel">
-                <label class="panel-title">Emojis</label>
+                <div class="panel-title"><span class="panel-icon">😊</span>Emojis</div>
                 <div class="emoji-grid" id="emojiGrid"></div>
+            </div>
+
+            <!-- SETTINGS PANEL -->
+            <div class="panel">
+                <div class="panel-title"><span class="panel-icon">⚙️</span>Settings</div>
+                <div class="form-group">
+                    <label>Language</label>
+                    <select id="languageSelect">
+                        <option value="en">🇺🇸 English</option>
+                        <option value="es">🇪🇸 Español</option>
+                        <option value="fr">🇫🇷 Français</option>
+                        <option value="de">🇩🇪 Deutsch</option>
+                        <option value="ja">🇯🇵 日本語</option>
+                        <option value="zh">🇨🇳 中文</option>
+                        <option value="pt">🇵🇹 Português</option>
+                        <option value="ko">🇰🇷 한국어</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -669,38 +1229,38 @@
     <script>
         const FAQ_DATA = [
             { category: "Getting Started", items: [
-                { q: "What is NAGOH Shots?", a: "A professional universal image maker for creating screenshots, social media content, product images, and promotional materials in one tool." },
-                { q: "Do I need to install anything?", a: "No! It's a single HTML file that works in any web browser. Works online or offline." },
-                { q: "Is there a cost?", a: "Completely free to use with no registration required." },
+                { q: "What is NAGOH Shots?", a: "A professional universal image maker for creating screenshots, social media content, product images, and promotional materials in one intuitive studio. No design experience needed." },
+                { q: "Do I need to install anything?", a: "No! It's a single HTML file that works in any web browser. Works online or offline. Just open and start creating." },
+                { q: "Is there a cost?", a: "Completely free to use. No registration, no limits, no hidden costs." },
                 { q: "Can I use it on my phone?", a: "Yes! It's fully responsive and works on mobile, tablet, and desktop devices." }
             ]},
             { category: "Multiple Captions", items: [
-                { q: "Can I add more than one caption?", a: "Yes! Click '+ Add Caption' to add as many captions as you need. Each caption has its own text, font, size, color, and position." },
+                { q: "Can I add more than one caption?", a: "Yes! Click '+ Add Caption' to add unlimited captions. Each caption has its own text, font, size, color, and position." },
                 { q: "How do I manage multiple captions?", a: "Each caption appears as a separate item in the Captions panel. Click on a caption to select it, then customize its properties. Click Remove to delete it." },
-                { q: "Can each caption have different styling?", a: "Absolutely! Each caption can have its own font, size, color, and position. They're completely independent." },
-                { q: "How do I drag captions?", a: "Selected caption shows a drag handle on the canvas. Click and drag to position it anywhere. All guides work with all captions!" }
+                { q: "Can each caption have different styling?", a: "Absolutely! Each caption is completely independent. Use Bold, Italic, size control, and colors for each one." },
+                { q: "How do I drag captions?", a: "Click the 'Drag me' label on the canvas. You'll see it scale up and turn teal. Click and drag to any position." }
             ]},
             { category: "Features", items: [
-                { q: "What image types are supported?", a: "Four main types: App Store (iOS/iPad), Social Media (Instagram/TikTok/Twitter/LinkedIn), Product (e-commerce/catalog), and Promotional (ads/banners)." },
+                { q: "What image types are supported?", a: "Four main categories: App Store (iOS/iPad), Social Media (Instagram/TikTok/Twitter/LinkedIn), Product (e-commerce), and Promotional (ads/banners)." },
                 { q: "How many devices are included?", a: "Over 20 devices! All major iPhone models, iPad variants, and exact dimensions for every social platform." },
-                { q: "What fonts are available?", a: "Six professional fonts: Fraunces, Playfair Display, DM Sans, Inter, Poppins, and Georgia." },
-                { q: "What are templates?", a: "Templates are preset design systems. Click one and it automatically sets colors, fonts, and sizing. Six templates included." }
+                { q: "What fonts are available?", a: "Six professional fonts: Fraunces (elegant serif), Playfair Display, DM Sans, Inter, Poppins, and Georgia." },
+                { q: "What are templates?", a: "Templates are preset design systems. Click one and it automatically sets colors, fonts, and sizing. Six beautiful templates included." }
             ]},
             { category: "Professional Tools", items: [
-                { q: "What are alignment guides?", a: "Grid Guide (Rule of Thirds) and Safe Zone (15% margin) help with professional composition and prevent content cutoff." },
+                { q: "What are alignment guides?", a: "Grid Guide (Rule of Thirds) and Safe Zone (15% margin) help with professional composition and prevent content cutoff on all platforms." },
                 { q: "How do I position text?", a: "Use Top/Middle/Bottom buttons for preset positions, OR click and drag the text directly on canvas for pixel-perfect placement." },
-                { q: "Can I use my own images?", a: "Yes! Drag and drop onto canvas, click to upload, or paste from clipboard." },
-                { q: "What happens to guides in export?", a: "Guides are visual helpers only - they don't appear in your downloaded PNG." }
+                { q: "Can I use my own images?", a: "Yes! Drag and drop onto the drop zone, click to upload, or copy/paste from clipboard." },
+                { q: "Do guides appear in my export?", a: "No. Guides are visual helpers only - they don't appear in your downloaded PNG." }
             ]},
-            { category: "Languages & Colors", items: [
-                { q: "What languages are supported?", a: "Eight languages: English, Spanish, French, German, Japanese, Chinese, Portuguese, and Korean." },
-                { q: "How do color suggestions work?", a: "Select an audience and get colors that match psychology. Tech=Blue, Luxury=Gold, Eco=Green, Influencers=Pink." },
-                { q: "Can I customize colors?", a: "Yes! Full RGB color pickers for background and text. Or use audience suggestions." }
+            { category: "Colors & Languages", items: [
+                { q: "How do color suggestions work?", a: "Select an audience and get color recommendations based on color psychology. Each audience has curated colors." },
+                { q: "Can I use custom colors?", a: "Yes! Full RGB color pickers for background and text. Or use audience suggestions for instant color schemes." },
+                { q: "What languages are supported?", a: "Eight languages: English, Spanish, French, German, Japanese, Chinese, Portuguese, and Korean." }
             ]},
-            { category: "Export", items: [
-                { q: "What format do I get?", a: "PNG format (lossless quality). Perfect for all platforms - App Store, social media, e-commerce, everything." },
-                { q: "Are dimensions correct?", a: "Yes! Uses exact official dimensions with no scaling errors. Files are ready for immediate upload." },
-                { q: "What's the auto-filename?", a: "Downloads are named like 'iphone-16-pro-1290x2796.png' - includes device and exact dimensions." }
+            { category: "Export & Sharing", items: [
+                { q: "What format do I get?", a: "PNG format (lossless, high quality). Perfect for App Store, social media, e-commerce, newsletters - everywhere." },
+                { q: "Are dimensions correct?", a: "Yes! Uses exact official dimensions with zero scaling errors. Files are ready for immediate upload to any platform." },
+                { q: "What's the auto-filename?", a: "Downloads are named like 'iphone-16-pro-1290x2796.png'. Includes device name and exact dimensions so you always know what you're using." }
             ]}
         ];
 
@@ -789,7 +1349,7 @@
                 devices: {
                     'promo-square': { name: 'Square Ad', width: 1080, height: 1080 },
                     'promo-wide': { name: 'Wide Banner', width: 1920, height: 400 },
-                    'promo-vertical': { name: 'Vertical', width: 400, height: 900 },
+                    'promo-vertical': { name: 'Vertical Ad', width: 400, height: 900 },
                     'email': { name: 'Email Header', width: 600, height: 300 }
                 },
                 audiences: { sale: { name: 'Sales/Offers' }, launch: { name: 'Launch' }, seasonal: { name: 'Seasonal' }, event: { name: 'Event' } }
@@ -843,7 +1403,7 @@
                         <span class="caption-num">Caption ${idx + 1}</span>
                         <button class="remove-caption" data-id="${caption.id}">Remove</button>
                     </div>
-                    <textarea style="font-size: 0.75rem; padding: 6px; width: 100%; border: 1px solid #e0d4c4; border-radius: 4px; min-height: 50px;" placeholder="Caption text...">${caption.text}</textarea>
+                    <textarea placeholder="Enter caption text...">${caption.text}</textarea>
                 `;
                 const textarea = item.querySelector('textarea');
                 textarea.addEventListener('change', (e) => { caption.text = e.target.value; redraw(); });
@@ -924,7 +1484,7 @@
                 redraw();
             };
 
-            document.getElementById('sizeSelect').onchange = (e) => { state.currentDevice = e.target.value; redraw(); };
+            document.getElementById('sizeSelect').onchange = (e) => { state.currentDevice = e.target.value; document.getElementById('canvasTitle').textContent = `${IMAGE_TYPES[state.imageType].devices[e.target.value].name} • ${IMAGE_TYPES[state.imageType].devices[e.target.value].width}×${IMAGE_TYPES[state.imageType].devices[e.target.value].height}`; redraw(); };
             document.getElementById('bgColor').onchange = (e) => { state.bgColor = e.target.value; redraw(); };
             document.getElementById('textColor').onchange = (e) => {
                 if (state.selectedCaptionId !== null) {
@@ -939,14 +1499,14 @@
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     const img = new Image();
-                    img.onload = () => { state.image = img; document.getElementById('downloadBtn').disabled = false; redraw(); };
+                    img.onload = () => { state.image = img; document.getElementById('downloadBtn').disabled = false; document.getElementById('imageSizeStatus').textContent = `${img.width}×${img.height}px`; redraw(); };
                     img.src = event.target.result;
                 };
                 reader.readAsDataURL(e.target.files[0]);
             };
 
             const dropZone = document.getElementById('dropZone');
-            dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.opacity = '0.5'; };
+            dropZone.ondragover = (e) => { e.preventDefault(); dropZone.style.opacity = '0.7'; };
             dropZone.ondragleave = () => { dropZone.style.opacity = '1'; };
             dropZone.ondrop = (e) => {
                 e.preventDefault();
@@ -956,7 +1516,7 @@
                     const reader = new FileReader();
                     reader.onload = (event) => {
                         const img = new Image();
-                        img.onload = () => { state.image = img; document.getElementById('downloadBtn').disabled = false; redraw(); };
+                        img.onload = () => { state.image = img; document.getElementById('downloadBtn').disabled = false; document.getElementById('imageSizeStatus').textContent = `${img.width}×${img.height}px`; redraw(); };
                         img.src = event.target.result;
                     };
                     reader.readAsDataURL(file);
@@ -1021,6 +1581,7 @@
                 document.getElementById('bgColor').value = '#fdf8f0';
                 document.getElementById('textColor').value = '#3d2f24';
                 document.getElementById('downloadBtn').disabled = true;
+                document.getElementById('imageSizeStatus').textContent = 'No image';
                 selectImageType('appstore');
             };
 
@@ -1049,7 +1610,6 @@
         function selectImageType(type) {
             state.imageType = type;
             const typeData = IMAGE_TYPES[type];
-            document.getElementById('imageTypeLabel').textContent = typeData.label;
             
             const sizeSelect = document.getElementById('sizeSelect');
             sizeSelect.innerHTML = '';
@@ -1077,6 +1637,8 @@
             });
             
             state.currentDevice = Object.keys(typeData.devices)[0];
+            const firstDevice = typeData.devices[state.currentDevice];
+            document.getElementById('canvasTitle').textContent = `${firstDevice.name} • ${firstDevice.width}×${firstDevice.height}`;
             redraw();
         }
 
@@ -1133,7 +1695,7 @@
             const height = guidanceCanvas.height;
             
             guideCtx.clearRect(0, 0, width, height);
-            guideCtx.strokeStyle = 'rgba(232, 82, 74, 0.15)';
+            guideCtx.strokeStyle = 'rgba(232, 82, 74, 0.12)';
             guideCtx.lineWidth = 1;
             
             for (let i = 1; i < 3; i++) {
@@ -1150,7 +1712,7 @@
                 guideCtx.stroke();
             }
             
-            guideCtx.strokeStyle = 'rgba(232, 82, 74, 0.25)';
+            guideCtx.strokeStyle = 'rgba(232, 82, 74, 0.2)';
             guideCtx.lineWidth = 1.5;
             guideCtx.setLineDash([5, 5]);
             
@@ -1178,17 +1740,13 @@
             guideCtx.setLineDash([8, 4]);
             guideCtx.strokeRect(margin, margin, width - margin * 2, height - margin * 2);
             
-            guideCtx.fillStyle = 'rgba(232, 82, 74, 0.05)';
+            guideCtx.fillStyle = 'rgba(232, 82, 74, 0.04)';
             guideCtx.fillRect(0, 0, width, margin);
             guideCtx.fillRect(0, height - margin, width, margin);
             guideCtx.fillRect(0, margin, margin, height - margin * 2);
             guideCtx.fillRect(width - margin, margin, margin, height - margin * 2);
             
             guideCtx.setLineDash([]);
-            guideCtx.fillStyle = 'rgba(232, 82, 74, 0.4)';
-            guideCtx.font = '12px Arial';
-            guideCtx.textAlign = 'center';
-            guideCtx.fillText('Safe Zone', width / 2, margin + 20);
         }
 
         function redraw() {
@@ -1294,7 +1852,7 @@
             label.dataset.captionId = caption.id;
             label.style.left = (x * scaleX - 20) + 'px';
             label.style.top = (y * scaleY - 25) + 'px';
-            label.textContent = '↔ Drag me';
+            label.textContent = '⋮ Drag me';
             
             if (caption.id === state.selectedCaptionId) {
                 label.classList.add('active');
