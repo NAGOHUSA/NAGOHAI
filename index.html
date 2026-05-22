@@ -1367,15 +1367,50 @@ async function loadFAQPage() {
   c.innerHTML = '<p>Loading...</p>';
   try {
     const html = await fetch(`nagohfaq.html?v=${Date.now()}`).then(r => r.text());
-    // Extract body content from the fetched HTML
+    // Parse the HTML to extract styles and content
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
-    const bodyContent = doc.body.innerHTML;
-    c.innerHTML = bodyContent;
+    
+    // Extract all style tags
+    const styles = doc.querySelectorAll('style');
+    let styleContent = '';
+    styles.forEach(style => {
+      styleContent += style.textContent;
+    });
+    
+    // Create a style tag and inject it with FAQ-specific namespace
+    if (styleContent) {
+      const styleTag = document.createElement('style');
+      styleTag.textContent = styleContent;
+      styleTag.id = 'faq-styles';
+      // Remove old FAQ styles if they exist
+      const oldStyles = document.getElementById('faq-styles');
+      if (oldStyles) oldStyles.remove();
+      document.head.appendChild(styleTag);
+    }
+    
+    // Extract main content area
+    const main = doc.querySelector('main');
+    if (main) {
+      c.innerHTML = main.innerHTML;
+    } else {
+      // Fallback: try to get body content but skip header
+      let bodyContent = doc.body.innerHTML;
+      const header = doc.querySelector('header');
+      if (header) {
+        bodyContent = bodyContent.replace(header.outerHTML, '');
+      }
+      c.innerHTML = bodyContent;
+    }
+    
+    // Execute any scripts
     c.querySelectorAll('script').forEach(s => {
       try { new Function(s.textContent).call(window); } catch (e) {}
     });
-  } catch (e) { c.innerHTML = '<p>Error loading help & FAQ</p>'; }
+  } catch (e) { 
+    c.innerHTML = '<p>Error loading help & FAQ</p>';
+    console.error(e);
+  }
 }
 
 function onIndustryChange() {
