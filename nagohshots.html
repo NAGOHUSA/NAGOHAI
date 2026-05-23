@@ -536,6 +536,55 @@
             backdrop-filter: blur(10px);
         }
         
+        .panel.collapsible {
+            padding: 0;
+        }
+        
+        .panel.collapsible > .panel-title {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(42, 157, 143, 0.05);
+            border-bottom: 1px solid var(--border);
+            margin: 0;
+            border-radius: 12px 12px 0 0;
+            font-family: var(--serif);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--ink);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            gap: 0.5rem;
+        }
+        
+        .panel.collapsible > .panel-title::after {
+            content: '▼';
+            font-size: 0.6rem;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .panel.collapsible.collapsed > .panel-title::after {
+            transform: rotate(-90deg);
+        }
+        
+        .panel.collapsible .panel-content {
+            padding: 1rem;
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+        
+        .panel.collapsible.collapsed .panel-content {
+            max-height: 0;
+            padding: 0 1rem;
+            opacity: 0;
+        }
+        
         .panel:hover {
             border-color: var(--teal-md);
             box-shadow: var(--shadow-md);
@@ -1234,140 +1283,166 @@
         <!-- SIDEBAR -->
         <div class="sidebar">
             <!-- IMAGE TYPE PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">📱</span>Image Type</div>
-                <div class="grid-2">
-                    <button class="option-btn active" data-type="appstore">App Store</button>
-                    <button class="option-btn" data-type="social">Social Media</button>
-                    <button class="option-btn" data-type="product">Product</button>
-                    <button class="option-btn" data-type="promo">Promo</button>
+                <div class="panel-content">
+                    <div class="grid-2">
+                        <button class="option-btn active" data-type="appstore">App Store</button>
+                        <button class="option-btn" data-type="social">Social Media</button>
+                        <button class="option-btn" data-type="product">Product</button>
+                        <button class="option-btn" data-type="promo">Promo</button>
+                    </div>
                 </div>
             </div>
 
             <!-- DEVICE SELECTOR -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">🎯</span>Device</div>
-                <select id="sizeSelect"></select>
+                <div class="panel-content">
+                    <select id="sizeSelect"></select>
+                </div>
             </div>
 
             <!-- AUDIENCE SELECTOR -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">👥</span>Audience <span class="badge" id="audienceLabel">Tech</span></div>
-                <div class="grid-2" id="audienceGrid"></div>
+                <div class="panel-content">
+                    <div class="grid-2" id="audienceGrid"></div>
+                </div>
             </div>
 
             <!-- COLORS PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">🎨</span>Colors</div>
-                <div class="color-row">
-                    <div class="color-input-group">
-                        <label>Background</label>
-                        <input type="color" id="bgColor" value="#fdf8f0">
-                    </div>
-                    <div class="color-input-group">
-                        <label>Text</label>
-                        <input type="color" id="textColor" value="#3d2f24">
+                <div class="panel-content">
+                    <div class="color-row">
+                        <div class="color-input-group">
+                            <label>Background</label>
+                            <input type="color" id="bgColor" value="#fdf8f0">
+                        </div>
+                        <div class="color-input-group">
+                            <label>Text</label>
+                            <input type="color" id="textColor" value="#3d2f24">
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- TEMPLATES PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">✨</span>Templates</div>
-                <div class="grid-2">
-                    <button class="option-btn active" data-template="minimal">Minimal</button>
-                    <button class="option-btn" data-template="vibrant">Vibrant</button>
-                    <button class="option-btn" data-template="elegant">Elegant</button>
-                    <button class="option-btn" data-template="modern">Modern</button>
-                    <button class="option-btn" data-template="warm">Warm</button>
-                    <button class="option-btn" data-template="cool">Cool</button>
+                <div class="panel-content">
+                    <div class="grid-2">
+                        <button class="option-btn active" data-template="minimal">Minimal</button>
+                        <button class="option-btn" data-template="vibrant">Vibrant</button>
+                        <button class="option-btn" data-template="elegant">Elegant</button>
+                        <button class="option-btn" data-template="modern">Modern</button>
+                        <button class="option-btn" data-template="warm">Warm</button>
+                        <button class="option-btn" data-template="cool">Cool</button>
+                    </div>
                 </div>
             </div>
 
             <!-- FONTS PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">🔤</span>Font</div>
-                <div class="grid-2">
-                    <button class="font-option active" data-font="Fraunces, serif" style="font-family: Fraunces, serif;">Fraunces</button>
-                    <button class="font-option" data-font="Playfair Display, serif" style="font-family: Playfair Display, serif;">Playfair</button>
-                    <button class="font-option" data-font="DM Sans, sans-serif" style="font-family: DM Sans, sans-serif;">DM Sans</button>
-                    <button class="font-option" data-font="Inter, sans-serif" style="font-family: Inter, sans-serif;">Inter</button>
-                    <button class="font-option" data-font="Poppins, sans-serif" style="font-family: Poppins, sans-serif;">Poppins</button>
-                    <button class="font-option" data-font="Georgia, serif" style="font-family: Georgia, serif;">Georgia</button>
+                <div class="panel-content">
+                    <div class="grid-2">
+                        <button class="font-option active" data-font="Fraunces, serif" style="font-family: Fraunces, serif;">Fraunces</button>
+                        <button class="font-option" data-font="Playfair Display, serif" style="font-family: Playfair Display, serif;">Playfair</button>
+                        <button class="font-option" data-font="DM Sans, sans-serif" style="font-family: DM Sans, sans-serif;">DM Sans</button>
+                        <button class="font-option" data-font="Inter, sans-serif" style="font-family: Inter, sans-serif;">Inter</button>
+                        <button class="font-option" data-font="Poppins, sans-serif" style="font-family: Poppins, sans-serif;">Poppins</button>
+                        <button class="font-option" data-font="Georgia, serif" style="font-family: Georgia, serif;">Georgia</button>
+                    </div>
                 </div>
             </div>
 
             <!-- GUIDES PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">📐</span>Guides</div>
-                <div class="grid-3">
-                    <button class="guide-btn active" id="guideGridBtn">Grid</button>
-                    <button class="guide-btn" id="guideSafeBtn">Safe Zone</button>
-                    <button class="guide-btn" id="guideNoneBtn">None</button>
+                <div class="panel-content">
+                    <div class="grid-3">
+                        <button class="guide-btn active" id="guideGridBtn">Grid</button>
+                        <button class="guide-btn" id="guideSafeBtn">Safe Zone</button>
+                        <button class="guide-btn" id="guideNoneBtn">None</button>
+                    </div>
                 </div>
             </div>
 
             <!-- IMAGE UPLOAD PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">🖼️</span>Image</div>
-                <div class="drop-zone" id="dropZone">
-                    <div class="drop-zone-icon">📁</div>
-                    <div class="drop-zone-text">Click or drag image</div>
+                <div class="panel-content">
+                    <div class="drop-zone" id="dropZone">
+                        <div class="drop-zone-icon">📁</div>
+                        <div class="drop-zone-text">Click or drag image</div>
+                    </div>
                 </div>
             </div>
 
             <!-- CAPTIONS PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">💬</span>Captions</div>
-                <div id="captionsContainer"></div>
-                <button class="add-caption-btn" id="addCaptionBtn">+ Add Caption</button>
+                <div class="panel-content">
+                    <div id="captionsContainer"></div>
+                    <button class="add-caption-btn" id="addCaptionBtn">+ Add Caption</button>
+                </div>
             </div>
 
             <!-- TEXT POSITION PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">↕️</span>Position</div>
-                <div class="grid-3">
-                    <button class="btn-small active" data-position="top">Top</button>
-                    <button class="btn-small" data-position="middle">Middle</button>
-                    <button class="btn-small" data-position="bottom">Bottom</button>
+                <div class="panel-content">
+                    <div class="grid-3">
+                        <button class="btn-small active" data-position="top">Top</button>
+                        <button class="btn-small" data-position="middle">Middle</button>
+                        <button class="btn-small" data-position="bottom">Bottom</button>
+                    </div>
+                    <p class="info-text">Drag on canvas to reposition</p>
                 </div>
-                <p class="info-text">Drag on canvas to reposition</p>
             </div>
 
             <!-- TEXT STYLE PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">✏️</span>Text Style</div>
-                <div class="grid-4">
-                    <button class="btn-small" id="boldBtn" title="Bold">B</button>
-                    <button class="btn-small" id="italicBtn" title="Italic">I</button>
-                    <button class="btn-small" id="underlineBtn" title="Underline">U</button>
-                    <button class="btn-small" id="strikeBtn" title="Strikethrough">S</button>
+                <div class="panel-content">
+                    <div class="grid-4">
+                        <button class="btn-small" id="boldBtn" title="Bold">B</button>
+                        <button class="btn-small" id="italicBtn" title="Italic">I</button>
+                        <button class="btn-small" id="underlineBtn" title="Underline">U</button>
+                        <button class="btn-small" id="strikeBtn" title="Strikethrough">S</button>
+                    </div>
+                    <label>Size</label>
+                    <input type="range" id="fontSize" min="12" max="80" value="32">
                 </div>
-                <label>Size</label>
-                <input type="range" id="fontSize" min="12" max="80" value="32">
             </div>
 
             <!-- EMOJIS PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">😊</span>Emojis</div>
-                <div class="emoji-grid" id="emojiGrid"></div>
+                <div class="panel-content">
+                    <div class="emoji-grid" id="emojiGrid"></div>
+                </div>
             </div>
 
             <!-- SETTINGS PANEL -->
-            <div class="panel">
+            <div class="panel collapsible">
                 <div class="panel-title"><span class="panel-icon">⚙️</span>Settings</div>
-                <div class="form-group">
-                    <label>Language</label>
-                    <select id="languageSelect">
-                        <option value="en">🇺🇸 English</option>
-                        <option value="es">🇪🇸 Español</option>
-                        <option value="fr">🇫🇷 Français</option>
-                        <option value="de">🇩🇪 Deutsch</option>
-                        <option value="ja">🇯🇵 日本語</option>
-                        <option value="zh">🇨🇳 中文</option>
-                        <option value="pt">🇵🇹 Português</option>
-                        <option value="ko">🇰🇷 한국어</option>
-                    </select>
+                <div class="panel-content">
+                    <div class="form-group">
+                        <label>Language</label>
+                        <select id="languageSelect">
+                            <option value="en">🇺🇸 English</option>
+                            <option value="es">🇪🇸 Español</option>
+                            <option value="fr">🇫🇷 Français</option>
+                            <option value="de">🇩🇪 Deutsch</option>
+                            <option value="ja">🇯🇵 日本語</option>
+                            <option value="zh">🇨🇳 中文</option>
+                            <option value="pt">🇵🇹 Português</option>
+                            <option value="ko">🇰🇷 한국어</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1376,6 +1451,16 @@
     <input type="file" id="fileInput" accept="image/*" style="display: none;">
 
     <script>
+        // Toggle collapsible panels
+        function initializeCollapsibles() {
+            document.querySelectorAll('.panel.collapsible > .panel-title').forEach(title => {
+                title.addEventListener('click', function() {
+                    const panel = this.parentElement;
+                    panel.classList.toggle('collapsed');
+                });
+            });
+        }
+
         const FAQ_DATA = [
             { category: "Getting Started", items: [
                 { q: "What is NAGOH Shots?", a: "A professional universal image maker for creating screenshots, social media content, product images, and promotional materials in one intuitive studio. No design experience needed." },
@@ -1464,6 +1549,7 @@
         });
 
         initializeFAQ();
+        initializeCollapsibles();
 
         // TEMPLATES
         const TEMPLATES = {
