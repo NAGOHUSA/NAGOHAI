@@ -1680,8 +1680,15 @@
 
         function init() {
             setupEventListeners();
-            selectImageType('appstore');
+            // Collapse all panels by default
+            document.querySelectorAll('.panel.collapsible').forEach(panel => {
+                panel.classList.add('collapsed');
+            });
+            selectImageType('product');
             addCaption();
+            // Set zoom to 50% for better canvas fit
+            document.getElementById('zoomSlider').value = 50;
+            updateZoom(50);
         }
 
         function setupEventListeners() {
@@ -1692,7 +1699,7 @@
             const zoomOutBtn = document.getElementById('zoomOutBtn');
             const canvasContainer = document.getElementById('canvasContainer');
             
-            function updateZoom(value) {
+            window.updateZoom = function(value) {
                 const scale = value / 100;
                 canvasContainer.style.transform = `scale(${scale})`;
                 zoomDisplay.textContent = value + '%';
@@ -1919,9 +1926,16 @@
                 audienceGrid.appendChild(btn);
             });
             
-            state.currentDevice = Object.keys(typeData.devices)[0];
-            const firstDevice = typeData.devices[state.currentDevice];
-            document.getElementById('canvasTitle').textContent = `${firstDevice.name} • ${firstDevice.width}×${firstDevice.height}`;
+            // Set device based on image type
+            if (type === 'product') {
+                state.currentDevice = 'ecom-main';
+            } else {
+                state.currentDevice = Object.keys(typeData.devices)[0];
+            }
+            sizeSelect.value = state.currentDevice;
+            
+            const selectedDevice = typeData.devices[state.currentDevice];
+            document.getElementById('canvasTitle').textContent = `${selectedDevice.name} • ${selectedDevice.width}×${selectedDevice.height}`;
             redraw();
         }
 
