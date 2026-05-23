@@ -1319,11 +1319,15 @@ function switchTab(tabName) {
   });
   document.getElementById(`tab-${tabName}`).classList.add('active');
   document.getElementById(`tab-${tabName}-btn`).classList.add('active');
+  
+  // Hide sidebars for everything except chat
   const showSidebars = (tabName === 'chat');
-  const lp = document.getElementById('leftPanel');
-  const rp = document.getElementById('rightPanel');
-  if (lp) lp.style.display = showSidebars ? 'flex' : 'none';
-  if (rp) rp.style.display = showSidebars ? 'flex' : 'none';
+  const leftSidebar = document.querySelector('.left');
+  const rightSidebar = document.querySelector('.right');
+  if (leftSidebar) leftSidebar.style.display = showSidebars ? 'flex' : 'none';
+  if (rightSidebar) rightSidebar.style.display = showSidebars ? 'flex' : 'none';
+  
+  // Load appropriate page
   if (tabName === 'templates') loadTemplatesPage();
   else if (tabName === 'trending') loadTrendingPage();
   else if (tabName === 'analytics') loadAnalyticsPage();
