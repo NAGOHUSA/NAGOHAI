@@ -1686,9 +1686,6 @@
             });
             selectImageType('product');
             addCaption();
-            // Set zoom to 50% for better canvas fit
-            document.getElementById('zoomSlider').value = 50;
-            updateZoom(50);
         }
 
         function setupEventListeners() {
@@ -1936,6 +1933,13 @@
             
             const selectedDevice = typeData.devices[state.currentDevice];
             document.getElementById('canvasTitle').textContent = `${selectedDevice.name} • ${selectedDevice.width}×${selectedDevice.height}`;
+            
+            // Set zoom: 50% for appstore (tall format), 100% for everything else
+            const zoomSlider = document.getElementById('zoomSlider');
+            const zoomValue = (type === 'appstore') ? 50 : 100;
+            zoomSlider.value = zoomValue;
+            updateZoom(zoomValue);
+            
             redraw();
         }
 
