@@ -622,36 +622,50 @@ async function loadSeoTab() {
     }
   } catch(e) { /* not public */ }
 
-  // Strategy 2: if state empty, scrape blog index for post links
-  if (!gotState) {
-    try {
-      const r = await fetch(SITE + '/blog/?_=' + Date.now());
-      if (r.ok) {
-        const html = await r.text();
-        // Parse post cards from the blog index HTML
-        const linkRegex = /href="https:\/\/nagoh\.us\/blog\/([^"]+\.html)"/g;
-        const titleRegex = /<div class="post-title">(.*?)<\/div>/g;
-        const dateRegex = /<div class="post-date">(.*?)<\/div>/g;
-        const kwRegex = /<div class="post-kw">(.*?)<\/div>/g;
-        const links = [], titles = [], dates = [], kws = [];
-        let m;
-        while ((m = linkRegex.exec(html)) !== null) links.push(m[1]);
-        while ((m = titleRegex.exec(html)) !== null) titles.push(m[1]);
-        while ((m = dateRegex.exec(html)) !== null) dates.push(m[1]);
-        while ((m = kwRegex.exec(html)) !== null) kws.push(m[1]);
-        if (links.length > 0) {
-          seoState.generated = links.map((slug, i) => ({
-            slug: slug.replace('.html',''),
+  // Strategy 2: scrape blog index for post links (works even if topic_state.json is stale/empty)
+  // Always run this to merge any posts not yet in topic_state.json
+  try {
+    const r = await fetch(SITE + '/blog/?_=' + Date.now());
+    if (r.ok) {
+      const html = await r.text();
+      // Match post-card anchor hrefs
+      const linkRegex = /href="(https:\/\/nagoh\.us\/blog\/[^"]+\.html)"/g;
+      const titleRegex = /<div class="post-title">([\s\S]*?)<\/div>/g;
+      const dateRegex = /<div class="post-date">(.*?)<\/div>/g;
+      const kwRegex = /<div class="post-kw">(.*?)<\/div>/g;
+      const links = [], titles = [], dates = [], kws = [];
+      let m;
+      while ((m = linkRegex.exec(html)) !== null) links.push(m[1]);
+      while ((m = titleRegex.exec(html)) !== null) titles.push(m[1].trim());
+      while ((m = dateRegex.exec(html)) !== null) dates.push(m[1].trim());
+      while ((m = kwRegex.exec(html)) !== null) kws.push(m[1].trim());
+
+      if (links.length > 0) {
+        // Build a set of slugs already known from topic_state
+        const knownSlugs = new Set((seoState.generated || []).map(p => p.slug));
+        const scrapedPosts = links.map((url, i) => {
+          const slug = url.replace(SITE + '/blog/', '').replace('.html', '');
+          return {
+            slug,
             title: titles[i] || slug,
             date: dates[i] || '—',
             keyword: kws[i] || '—',
-            file: 'blog/' + slug,
-          }));
-          seoState.index = seoState.generated.length;
+            file: 'blog/' + slug + '.html',
+          };
+        });
+        // Merge: scraped posts take precedence (they're confirmed live)
+        // Use scraped as base, overlay any richer topic_state data
+        const merged = scrapedPosts.map(sp => {
+          const known = (seoState.generated || []).find(p => p.slug === sp.slug);
+          return known ? { ...sp, ...known } : sp;
+        });
+        if (merged.length > 0) {
+          seoState.generated = merged;
+          if (!gotState) seoState.index = merged.length;
         }
       }
-    } catch(e) { /* blog not accessible */ }
-  }
+    }
+  } catch(e) { /* blog scrape failed silently */ }
 
   renderSeoTab();
   if (!seoChecksRun) { runSeoChecks(); seoChecksRun = true; }
