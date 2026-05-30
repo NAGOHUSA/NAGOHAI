@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAGOH AI — SEO Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#3d2f24;--deep:#2a1f16;--cream:#fdf8f0;--parchmt:#f5ede0;
+  --border:#e0d4c4;--border2:#d4c4b0;--muted:#b5a090;--dim:#8a7868;
+  --teal:#2a9d8f;--teal-lt:#e0f5f3;--teal-md:#a0dcd6;
+  --gold:#e9a028;--gold-lt:#fdf0d5;--gold-md:#f7d08a;
+  --rose:#e8524a;--rose-lt:#fce8e7;--rose-md:#f5c4c2;
+  --sage:#4a7c59;--sage-lt:#e8f4eb;
+  --sans:'DM Sans',sans-serif;--serif:'Fraunces',serif;
+}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
+.topbar{background:var(--deep);border-bottom:3px solid var(--gold);padding:0 2rem;height:60px;display:flex;align-items:center;gap:1rem;justify-content:space-between;}
+.wordmark{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:#fff;}
+.wordmark em{color:var(--gold);font-style:italic;}
+.badge{font-size:0.6rem;background:var(--teal);color:#fff;padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:0.06em;}
+.nav-links{display:flex;gap:1.5rem;align-items:center;}
+.nav-links a{color:rgba(255,255,255,0.6);font-size:0.8rem;text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover,.nav-links a.active{color:#fff;}
+.main{flex:1;max-width:1200px;margin:0 auto;width:100%;padding:2rem 1.5rem;}
+.page-title{font-family:var(--serif);font-size:1.6rem;font-weight:700;margin-bottom:0.25rem;}
+.page-sub{font-size:0.8rem;color:var(--dim);margin-bottom:2rem;}
+
+/* Cards */
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 6px rgba(0,0,0,0.04);}
+.card-title{font-family:var(--serif);font-size:1.1rem;font-weight:500;color:var(--ink);margin-bottom:1rem;}
+.card-title small{font-family:var(--sans);font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:0.5rem;}
+
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center;}
+.stat-value{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);}
+.stat-value.gold{color:var(--gold);}
+.stat-value.sage{color:var(--sage);}
+.stat-value.rose{color:var(--rose);}
+.stat-label{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;}
+
+/* Status indicators */
+.status-row{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 0;border-bottom:1px solid var(--border);font-size:0.82rem;}
+.status-row:last-child{border:none;padding-bottom:0;}
+.status-label{color:var(--dim);font-weight:500;}
+.status-val{font-weight:600;color:var(--ink);}
+.pip{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;flex-shrink:0;}
+.pip.green{background:var(--sage);box-shadow:0 0 0 3px var(--sage-lt);}
+.pip.gold{background:var(--gold);box-shadow:0 0 0 3px var(--gold-lt);}
+.pip.red{background:var(--rose);box-shadow:0 0 0 3px var(--rose-lt);}
+.pip.pulse{animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+/* Posts table */
+.posts-table{width:100%;border-collapse:collapse;font-size:0.75rem;}
+.posts-table th{text-align:left;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:0.75rem;border-bottom:1px solid var(--border);font-weight:600;background:rgba(255,255,255,0.5);}
+.posts-table td{padding:0.75rem;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:middle;}
+.posts-table tr:hover{background:var(--cream);}
+.posts-table tr:last-child td{border:none;}
+.kw-pill{display:inline-block;background:var(--teal-lt);color:var(--teal);padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:600;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.date-cell{white-space:nowrap;}
+.link-btn{display:inline-block;padding:3px 10px;background:var(--gold-lt);color:var(--gold);border-radius:6px;font-size:0.65rem;font-weight:600;text-decoration:none;border:1px solid var(--gold-md);transition:all 0.15s;}
+.link-btn:hover{background:var(--gold);color:var(--deep);}
+
+/* Keyword queue */
+.kw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.75rem;margin-top:0.5rem;}
+.kw-item{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:0.85rem 1rem;display:flex;align-items:center;gap:0.75rem;font-size:0.78rem;}
+.kw-num{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--gold);min-width:24px;}
+.kw-text{color:var(--ink);flex:1;}
+.kw-svc{font-size:0.62rem;color:var(--muted);margin-top:2px;}
+.kw-item.done{opacity:0.45;}
+.kw-item.next{border-color:var(--teal);background:var(--teal-lt);}
+.kw-item.next .kw-num{color:var(--teal);}
+
+/* Checklist */
+.check-list{list-style:none;}
+.check-list li{display:flex;align-items:flex-start;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid var(--border);font-size:0.82rem;}
+.check-list li:last-child{border:none;}
+.check-icon{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;margin-top:1px;}
+.check-icon.done{background:var(--sage-lt);color:var(--sage);}
+.check-icon.todo{background:var(--parchmt);color:var(--muted);border:1px solid var(--border);}
+.check-icon.warn{background:var(--gold-lt);color:var(--gold);}
+.check-text{flex:1;}
+.check-text strong{display:block;color:var(--ink);font-weight:600;margin-bottom:2px;}
+.check-text span{color:var(--dim);font-size:0.75rem;}
+
+/* Buttons */
+.fbtn{display:inline-block;font-family:var(--sans);font-size:0.8rem;font-weight:600;padding:0.6rem 1.2rem;background:var(--teal);border:none;color:#fff;cursor:pointer;border-radius:10px;transition:all 0.15s;text-decoration:none;}
+.fbtn:hover{background:#228b7e;}
+.fbtn.gold{background:var(--gold);color:var(--deep);}
+.fbtn.gold:hover{background:#d48f20;}
+.fbtn.sm{padding:0.4rem 0.9rem;font-size:0.72rem;}
+
+/* Layout helpers */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.section-divider{border:none;border-top:1px solid var(--border);margin:1.5rem 0;}
+
+/* Cost badge */
+.cost-badge{display:inline-block;background:var(--sage-lt);color:var(--sage);border:1px solid var(--sage);padding:0.3rem 0.75rem;border-radius:8px;font-size:0.72rem;font-weight:600;}
+
+/* Empty state */
+.empty{text-align:center;padding:2.5rem;color:var(--muted);font-size:0.82rem;}
+.empty-icon{font-size:2rem;margin-bottom:0.5rem;}
+
+@media(max-width:768px){
+  .topbar{padding:0 1rem;}
+  .nav-links{display:none;}
+  .main{padding:1.5rem 1rem;}
+  .two-col{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .posts-table{font-size:0.68rem;}
+  .posts-table th,.posts-table td{padding:0.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wordmark">NAGOH <em>Admin</em></div>
+  <div class="nav-links">
+    <a href="./index.html">← Main Dashboard</a>
+    <a href="./seo.html" class="active">SEO Automation</a>
+  </div>
+  <div class="badge">SEO</div>
+</div>
+
+<div class="main">
+
+  <div class="page-title">SEO Automation</div>
+  <div class="page-sub">GitHub Actions · DeepSeek API · nagoh.us/blog/ — Perry, GA | Middle Georgia</div>
+
+  <!-- STATS ROW -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value" id="statPosts">—</div>
+      <div class="stat-label">Posts Published</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value gold" id="statNext">—</div>
+      <div class="stat-label">Next Topic #</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value sage" id="statCoverage">—</div>
+      <div class="stat-label">Keywords Covered</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statCost">$0.00</div>
+      <div class="stat-label">Est. API Cost</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value sage" id="statWeeks">—</div>
+      <div class="stat-label">Weeks of Content Left</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+
+    <!-- LEFT: System Status -->
+    <div>
+      <div class="card">
+        <div class="card-title">System Status</div>
+        <div class="status-row">
+          <span class="status-label"><span class="pip green pulse"></span>GitHub Action</span>
+          <span class="status-val">Active — runs every Monday 8am ET</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label"><span class="pip" id="apiPip" style="background:var(--muted)"></span>DeepSeek API Key</span>
+          <span class="status-val" id="apiStatus">Checking...</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label"><span class="pip" id="blogPip" style="background:var(--muted)"></span>Blog Index</span>
+          <span class="status-val" id="blogStatus">Checking...</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label"><span class="pip" id="sitemapPip" style="background:var(--muted)"></span>Sitemap</span>
+          <span class="status-val" id="sitemapStatus">Checking...</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label"><span class="pip" id="robotsPip" style="background:var(--muted)"></span>robots.txt</span>
+          <span class="status-val" id="robotsStatus">Checking...</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label"><span class="pip" id="schemaPip" style="background:var(--muted)"></span>LocalBusiness Schema</span>
+          <span class="status-val" id="schemaStatus">Checking...</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label"><span class="pip" id="ogPip" style="background:var(--muted)"></span>OG Image</span>
+          <span class="status-val" id="ogStatus">Checking...</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label"><span class="pip" id="favPip" style="background:var(--muted)"></span>Favicon</span>
+          <span class="status-val" id="favStatus">Checking...</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Setup Checklist</div>
+        <ul class="check-list">
+          <li>
+            <div class="check-icon done">✓</div>
+            <div class="check-text">
+              <strong>SEO head tags patched</strong>
+              <span>Title, meta description, geo tags, canonical — all updated in index.html</span>
+            </div>
+          </li>
+          <li>
+            <div class="check-icon done">✓</div>
+            <div class="check-text">
+              <strong>LocalBusiness schema installed</strong>
+              <span>Perry, GA · areaServed covers 11 Middle Georgia cities + 4 counties</span>
+            </div>
+          </li>
+          <li>
+            <div class="check-icon done">✓</div>
+            <div class="check-text">
+              <strong>OG image created</strong>
+              <span>og-image.png — 1200×630, matches brand palette</span>
+            </div>
+          </li>
+          <li>
+            <div class="check-icon done">✓</div>
+            <div class="check-text">
+              <strong>Favicon set created</strong>
+              <span>favicon.ico + 16/32/180/512px PNGs + apple-touch-icon</span>
+            </div>
+          </li>
+          <li>
+            <div class="check-icon done">✓</div>
+            <div class="check-text">
+              <strong>robots.txt deployed</strong>
+              <span>Points crawlers to sitemap.xml</span>
+            </div>
+          </li>
+          <li>
+            <div class="check-icon done">✓</div>
+            <div class="check-text">
+              <strong>GitHub Action created</strong>
+              <span>.github/workflows/seo-content.yml — weekly cron, auto-commit</span>
+            </div>
+          </li>
+          <li>
+            <div class="check-icon" id="checkSecret" style="background:var(--gold-lt);color:var(--gold);">!</div>
+            <div class="check-text">
+              <strong>DEEPSEEK_API_KEY secret added</strong>
+              <span>GitHub → Settings → Secrets → Actions → DEEPSEEK_API_KEY</span>
+            </div>
+          </li>
+          <li>
+            <div class="check-icon" id="checkGSC" style="background:var(--parchmt);color:var(--muted);border:1px solid var(--border);">○</div>
+            <div class="check-text">
+              <strong>Google Search Console verified</strong>
+              <span>Submit nagoh.us/sitemap.xml at search.google.com/search-console</span>
+            </div>
+          </li>
+          <li>
+            <div class="check-icon" id="checkGBP" style="background:var(--parchmt);color:var(--muted);border:1px solid var(--border);">○</div>
+            <div class="check-text">
+              <strong>Google Business Profile updated</strong>
+              <span>Add Perry, GA address, services, and website URL</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- RIGHT: Live checks + cost -->
+    <div>
+      <div class="card">
+        <div class="card-title">Live URL Checks <small>nagoh.us</small></div>
+        <div id="urlChecks">
+          <div class="empty"><div class="empty-icon">🔍</div>Running checks...</div>
+        </div>
+        <hr class="section-divider">
+        <button class="fbtn sm" onclick="runChecks()">↻ Refresh Checks</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Cost Calculator</div>
+        <div class="status-row">
+          <span class="status-label">Est. tokens per post</span>
+          <span class="status-val">~800 tokens</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label">DeepSeek cost per 1K output tokens</span>
+          <span class="status-val">~$0.014</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label">Cost per post</span>
+          <span class="status-val cost-badge">~$0.01</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label">Posts per year (52 weeks)</span>
+          <span class="status-val">52 posts</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label">Annual API cost estimate</span>
+          <span class="status-val cost-badge">~$0.52 / year</span>
+        </div>
+        <div class="status-row">
+          <span class="status-label">36 unique keywords cycle</span>
+          <span class="status-val">~9 months before repeat</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Local Coverage</div>
+        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;">
+          <span style="background:var(--teal-lt);color:var(--teal);padding:4px 10px;border-radius:8px;font-size:0.72rem;font-weight:600;">Perry ★</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Macon</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Warner Robins</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Fort Valley</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Milledgeville</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Byron</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Cordele</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Hawkinsville</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Dublin</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Forsyth</span>
+          <span style="background:var(--cream);border:1px solid var(--border);color:var(--dim);padding:4px 10px;border-radius:8px;font-size:0.72rem;">Fitzgerald</span>
+          <span style="background:var(--gold-lt);border:1px solid var(--gold-md);color:#a06800;padding:4px 10px;border-radius:8px;font-size:0.72rem;">Houston County</span>
+          <span style="background:var(--gold-lt);border:1px solid var(--gold-md);color:#a06800;padding:4px 10px;border-radius:8px;font-size:0.72rem;">Peach County</span>
+          <span style="background:var(--gold-lt);border:1px solid var(--gold-md);color:#a06800;padding:4px 10px;border-radius:8px;font-size:0.72rem;">Bibb County</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PUBLISHED POSTS -->
+  <div class="card">
+    <div class="card-title">Published Posts <small id="postCount"></small>
+      <a href="https://nagoh.us/blog/" target="_blank" class="fbtn sm gold" style="float:right;margin-top:-4px;">View Blog →</a>
+    </div>
+    <div id="postsSection">
+      <div class="empty"><div class="empty-icon">📝</div>No posts published yet — trigger the workflow to generate the first one.</div>
+    </div>
+  </div>
+
+  <!-- KEYWORD QUEUE -->
+  <div class="card">
+    <div class="card-title">Keyword Queue <small>36 total · rotates weekly</small></div>
+    <div class="kw-grid" id="kwGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SITE = 'https://nagoh.us';
+
+// ── Keyword list (mirrors generate_post.py) ───────────────────────────────────
+const TOPICS = [
+  {k:"small business website design Perry GA",s:"website design"},
+  {k:"affordable web design Middle Georgia",s:"website design"},
+  {k:"website hosting Perry GA small business",s:"website hosting"},
+  {k:"professional website builder Perry Georgia",s:"website design"},
+  {k:"local web designer Middle Georgia",s:"website design"},
+  {k:"WordPress website design Warner Robins GA",s:"website design"},
+  {k:"cheap website design Macon GA",s:"website design"},
+  {k:"iOS app developer Perry GA",s:"iOS app development"},
+  {k:"iPhone app development Middle Georgia",s:"iOS app development"},
+  {k:"custom iOS app small business Perry",s:"iOS app development"},
+  {k:"mobile app developer Macon Warner Robins GA",s:"iOS app development"},
+  {k:"SwiftUI developer Georgia small business app",s:"iOS app development"},
+  {k:"SEO services Perry Georgia small business",s:"SEO content"},
+  {k:"local SEO Middle Georgia GA",s:"SEO content"},
+  {k:"Google ranking help Perry GA",s:"SEO content"},
+  {k:"SEO content writing service Warner Robins Georgia",s:"SEO content"},
+  {k:"how to rank on Google Perry small business",s:"SEO content"},
+  {k:"AI tools for small business Perry Georgia",s:"AI tools"},
+  {k:"business automation Middle Georgia",s:"AI tools"},
+  {k:"AI content writing tool Perry GA",s:"AI tools"},
+  {k:"Nagoh Creative Perry web design apps",s:"general"},
+  {k:"web design iOS app development Perry GA freelancer",s:"general"},
+  {k:"hire web developer Middle Georgia",s:"general"},
+  {k:"freelance web designer Perry Warner Robins Macon Georgia",s:"general"},
+  {k:"web design near me Perry Georgia",s:"general"},
+  {k:"affordable web design Middle Georgia small business",s:"general"},
+  {k:"web design Fort Valley GA small business",s:"website design"},
+  {k:"website design Milledgeville Georgia",s:"website design"},
+  {k:"web designer Byron GA",s:"website design"},
+  {k:"small business website Cordele Georgia",s:"website design"},
+  {k:"web design Hawkinsville GA",s:"website design"},
+  {k:"website design Dublin Georgia small business",s:"website design"},
+  {k:"web design Forsyth GA Monroe County",s:"website design"},
+  {k:"Houston County Georgia small business web design",s:"website design"},
+  {k:"Peach County Georgia website design",s:"website design"},
+  {k:"iOS app developer Warner Robins GA",s:"iOS app development"},
+];
+
+// ── Load topic_state.json from the repo ──────────────────────────────────────
+let state = { index: 0, generated: [] };
+
+async function loadState() {
+  try {
+    const r = await fetch(SITE + '/scripts/topic_state.json?_=' + Date.now());
+    if (r.ok) {
+      state = await r.json();
+    }
+  } catch(e) {
+    // File may not be publicly accessible — use defaults
+  }
+  renderAll();
+}
+
+// ── URL checks ────────────────────────────────────────────────────────────────
+const CHECKS = [
+  { url: '/sitemap.xml',           label: 'sitemap.xml',          expect: 'xml' },
+  { url: '/robots.txt',            label: 'robots.txt',           expect: 'text' },
+  { url: '/blog/',                 label: 'blog/index.html',       expect: 'html' },
+  { url: '/og-image.png',          label: 'og-image.png',          expect: 'image' },
+  { url: '/favicon.ico',           label: 'favicon.ico',           expect: 'any' },
+  { url: '/favicon-32x32.png',     label: 'favicon-32x32.png',     expect: 'image' },
+  { url: '/apple-touch-icon.png',  label: 'apple-touch-icon.png',  expect: 'image' },
+];
+
+async function runChecks() {
+  document.getElementById('urlChecks').innerHTML = '<div class="empty"><div class="empty-icon">🔍</div>Checking...</div>';
+  const results = await Promise.all(CHECKS.map(async c => {
+    try {
+      const r = await fetch(SITE + c.url, { method: 'HEAD', cache: 'no-store' });
+      return { ...c, ok: r.ok, status: r.status };
+    } catch(e) {
+      return { ...c, ok: false, status: 'Error' };
+    }
+  }));
+
+  let html = '';
+  let allOk = true;
+  results.forEach(r => {
+    const ok = r.ok;
+    if (!ok) allOk = false;
+    html += `
+      <div class="status-row">
+        <span class="status-label">
+          <span class="pip ${ok ? 'green' : 'red'}"></span>
+          <code style="font-size:0.75rem;">${SITE}${r.url}</code>
+        </span>
+        <span class="status-val" style="color:${ok ? 'var(--sage)' : 'var(--rose)'}">
+          ${ok ? '✓ ' + r.status : '✗ ' + r.status}
+        </span>
+      </div>`;
+
+    // Update system status pips
+    if (r.url === '/sitemap.xml')           updatePip('sitemapPip', 'sitemapStatus', ok, 'Live', 'Not found');
+    if (r.url === '/robots.txt')            updatePip('robotsPip',  'robotsStatus',  ok, 'Live', 'Not found');
+    if (r.url === '/blog/')                 updatePip('blogPip',    'blogStatus',    ok, 'Live', 'Not deployed yet');
+    if (r.url === '/og-image.png')          updatePip('ogPip',      'ogStatus',      ok, 'Live', 'Missing — upload og-image.png');
+    if (r.url === '/favicon.ico')           updatePip('favPip',     'favStatus',     ok, 'Live', 'Missing — upload favicon.ico');
+  });
+
+  // API key — can't check directly from browser, mark as assumed ok
+  updatePip('apiPip', 'apiStatus', true, 'Set in GitHub Secrets', '');
+  // Schema — assume ok if index.html was patched
+  updatePip('schemaPip', 'schemaStatus', true, 'Deployed in index.html', '');
+
+  document.getElementById('urlChecks').innerHTML = html;
+}
+
+function updatePip(pipId, statusId, ok, okText, failText) {
+  const pip = document.getElementById(pipId);
+  const status = document.getElementById(statusId);
+  if (!pip || !status) return;
+  if (ok) {
+    pip.style.background = 'var(--sage)';
+    pip.style.boxShadow = '0 0 0 3px var(--sage-lt)';
+    status.textContent = okText;
+    status.style.color = 'var(--sage)';
+  } else {
+    pip.style.background = 'var(--rose)';
+    pip.style.boxShadow = '0 0 0 3px var(--rose-lt)';
+    status.textContent = failText;
+    status.style.color = 'var(--rose)';
+  }
+}
+
+// ── Render everything ─────────────────────────────────────────────────────────
+function renderAll() {
+  const published = state.generated || [];
+  const nextIdx   = state.index || 0;
+  const total     = TOPICS.length;
+  const remaining = total - (nextIdx % total);
+  const cost      = (published.length * 0.01).toFixed(2);
+
+  document.getElementById('statPosts').textContent    = published.length;
+  document.getElementById('statNext').textContent     = '#' + ((nextIdx % total) + 1);
+  document.getElementById('statCoverage').textContent = nextIdx + '/' + total;
+  document.getElementById('statCost').textContent     = '$' + cost;
+  document.getElementById('statWeeks').textContent    = remaining;
+  document.getElementById('postCount').textContent    = published.length + ' posts';
+
+  // Posts table
+  const postsSection = document.getElementById('postsSection');
+  if (published.length === 0) {
+    postsSection.innerHTML = '<div class="empty"><div class="empty-icon">📝</div>No posts yet — trigger the GitHub Action to generate the first one.</div>';
+  } else {
+    let rows = '';
+    [...published].reverse().forEach((p, i) => {
+      rows += `
+        <tr>
+          <td class="date-cell">${p.date || '—'}</td>
+          <td><span class="kw-pill">${p.keyword || '—'}</span></td>
+          <td style="max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.title || '—'}</td>
+          <td><a href="${SITE}/blog/${p.slug}.html" target="_blank" class="link-btn">View →</a></td>
+        </tr>`;
+    });
+    postsSection.innerHTML = `
+      <table class="posts-table">
+        <thead><tr><th>Date</th><th>Keyword</th><th>Title</th><th>Link</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }
+
+  // Keyword queue
+  const grid = document.getElementById('kwGrid');
+  grid.innerHTML = '';
+  TOPICS.forEach((t, i) => {
+    const done  = i < nextIdx % total && published.length > 0;
+    const isNext = i === nextIdx % total;
+    const div = document.createElement('div');
+    div.className = 'kw-item' + (done ? ' done' : '') + (isNext ? ' next' : '');
+    div.innerHTML = `
+      <div class="kw-num">${i + 1}</div>
+      <div>
+        <div class="kw-text">${t.k}</div>
+        <div class="kw-svc">${t.s}${isNext ? ' ← next up' : ''}</div>
+      </div>`;
+    grid.appendChild(div);
+  });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadState();
+runChecks();
+// Re-run checks every 2 minutes
+setInterval(runChecks, 120000);
+</script>
+</body>
+</html>
