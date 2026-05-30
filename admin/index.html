@@ -608,11 +608,51 @@ let seoState = { index: 0, generated: [] };
 let seoChecksRun = false;
 
 async function loadSeoTab() {
-  // Load topic_state.json from the public repo
+  // Strategy 1: try topic_state.json (most accurate — has titles, slugs, dates)
+  let gotState = false;
   try {
     const r = await fetch(SITE + '/scripts/topic_state.json?_=' + Date.now());
-    if (r.ok) seoState = await r.json();
-  } catch(e) { /* file may not be public yet */ }
+    if (r.ok) {
+      const data = await r.json();
+      // Only use it if it has actual generated posts
+      if (data && Array.isArray(data.generated)) {
+        seoState = data;
+        gotState = data.generated.length > 0;
+      }
+    }
+  } catch(e) { /* not public */ }
+
+  // Strategy 2: if state empty, scrape blog index for post links
+  if (!gotState) {
+    try {
+      const r = await fetch(SITE + '/blog/?_=' + Date.now());
+      if (r.ok) {
+        const html = await r.text();
+        // Parse post cards from the blog index HTML
+        const linkRegex = /href="https:\/\/nagoh\.us\/blog\/([^"]+\.html)"/g;
+        const titleRegex = /<div class="post-title">(.*?)<\/div>/g;
+        const dateRegex = /<div class="post-date">(.*?)<\/div>/g;
+        const kwRegex = /<div class="post-kw">(.*?)<\/div>/g;
+        const links = [], titles = [], dates = [], kws = [];
+        let m;
+        while ((m = linkRegex.exec(html)) !== null) links.push(m[1]);
+        while ((m = titleRegex.exec(html)) !== null) titles.push(m[1]);
+        while ((m = dateRegex.exec(html)) !== null) dates.push(m[1]);
+        while ((m = kwRegex.exec(html)) !== null) kws.push(m[1]);
+        if (links.length > 0) {
+          seoState.generated = links.map((slug, i) => ({
+            slug: slug.replace('.html',''),
+            title: titles[i] || slug,
+            date: dates[i] || '—',
+            keyword: kws[i] || '—',
+            file: 'blog/' + slug,
+          }));
+          seoState.index = seoState.generated.length;
+        }
+      }
+    } catch(e) { /* blog not accessible */ }
+  }
+
   renderSeoTab();
   if (!seoChecksRun) { runSeoChecks(); seoChecksRun = true; }
 }
