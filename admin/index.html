@@ -24,6 +24,7 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .main{flex:1;max-width:100%;margin:0 auto;width:100%;padding:2rem 1.5rem;}
 .card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 1px 6px rgba(0,0,0,0.04);}
 .card-title{font-family:var(--serif);font-size:1.1rem;font-weight:500;color:var(--ink);margin-bottom:1rem;}
+.card-title small{font-family:var(--sans);font-size:0.7rem;color:var(--muted);font-weight:400;margin-left:0.5rem;}
 .lock-screen{position:fixed;inset:0;background:var(--deep);display:flex;align-items:center;justify-content:center;z-index:100;}
 .lock-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:360px;text-align:center;}
 .lock-title{font-family:var(--serif);font-size:1.4rem;font-weight:700;margin-bottom:0.5rem;}
@@ -35,6 +36,8 @@ body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height
 .fbtn:disabled{opacity:0.4;cursor:not-allowed;}
 .fbtn.gold{background:var(--gold);color:var(--deep);}
 .fbtn.gold:hover:not(:disabled){background:#d48f20;}
+.fbtn.sm{width:auto;padding:0.4rem 0.9rem;font-size:0.72rem;}
+.fbtn.rose{background:var(--rose);color:#fff;}
 label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--dim);font-weight:500;margin-bottom:0.3rem;}
 .fgroup{margin-bottom:0.75rem;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:0.75rem;}
@@ -45,11 +48,14 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
 .tab{flex:0 0 auto;padding:0.75rem 1.5rem;background:none;border:none;border-bottom:2px solid transparent;color:var(--dim);cursor:pointer;font-family:var(--sans);font-size:0.75rem;font-weight:600;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap;}
 .tab:hover{color:var(--ink);}
 .tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+.tab.seo-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem;}
 .stat-card{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;}
 .stat-value{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--teal);}
+.stat-value.gold{color:var(--gold);}
+.stat-value.sage{color:var(--sage);}
 .stat-label{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.5rem;}
 .users-table{width:100%;border-collapse:collapse;font-size:0.75rem;}
 .users-table th{text-align:left;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:0.75rem;border-bottom:1px solid var(--border);font-weight:600;background:rgba(255,255,255,0.5);}
@@ -76,7 +82,62 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
 .tier-stat{display:inline-block;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-right:1rem;margin-bottom:1rem;text-align:center;min-width:100px;}
 .tier-stat-value{font-size:1.5rem;font-weight:700;color:var(--teal);}
 .tier-stat-label{font-size:0.65rem;color:var(--muted);text-transform:uppercase;margin-top:0.5rem;}
-@media(max-width:768px){.topbar{padding:0 1rem}.main{padding:1.5rem 1rem}.users-table{font-size:0.65rem}.users-table th,.users-table td{padding:0.5rem}.stats-grid{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}.btn-small{margin-bottom:0.25rem}}
+
+/* ── SEO TAB STYLES ── */
+.seo-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.status-row{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid var(--border);font-size:0.82rem;}
+.status-row:last-child{border:none;padding-bottom:0;}
+.status-label{color:var(--dim);font-weight:500;display:flex;align-items:center;gap:6px;}
+.status-val{font-weight:600;color:var(--ink);font-size:0.8rem;}
+.pip{display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.pip.green{background:var(--sage);box-shadow:0 0 0 3px var(--sage-lt);}
+.pip.gold{background:var(--gold);box-shadow:0 0 0 3px var(--gold-lt);}
+.pip.red{background:var(--rose);box-shadow:0 0 0 3px var(--rose-lt);}
+.pip.grey{background:var(--muted);}
+.pip.pulse{animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.posts-table{width:100%;border-collapse:collapse;font-size:0.75rem;}
+.posts-table th{text-align:left;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:0.75rem;border-bottom:1px solid var(--border);font-weight:600;background:rgba(255,255,255,0.5);}
+.posts-table td{padding:0.75rem;border-bottom:1px solid var(--border);color:var(--dim);vertical-align:middle;}
+.posts-table tr:last-child td{border:none;}
+.posts-table tr:hover{background:var(--cream);}
+.kw-pill{display:inline-block;background:var(--teal-lt);color:var(--teal);padding:2px 8px;border-radius:6px;font-size:0.65rem;font-weight:600;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.link-btn{display:inline-block;padding:3px 10px;background:var(--gold-lt);color:#a06800;border-radius:6px;font-size:0.65rem;font-weight:600;text-decoration:none;border:1px solid var(--gold-md);transition:all 0.15s;}
+.link-btn:hover{background:var(--gold);color:var(--deep);}
+.kw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0.65rem;margin-top:0.5rem;}
+.kw-item{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:0.75rem 1rem;display:flex;align-items:center;gap:0.75rem;font-size:0.78rem;}
+.kw-num{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--gold);min-width:22px;}
+.kw-text{color:var(--ink);flex:1;line-height:1.3;}
+.kw-svc{font-size:0.62rem;color:var(--muted);margin-top:2px;}
+.kw-item.done{opacity:0.4;}
+.kw-item.next{border-color:var(--teal);background:var(--teal-lt);}
+.kw-item.next .kw-num{color:var(--teal);}
+.check-list{list-style:none;}
+.check-list li{display:flex;align-items:flex-start;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid var(--border);font-size:0.82rem;}
+.check-list li:last-child{border:none;}
+.check-icon{flex-shrink:0;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;margin-top:1px;}
+.check-icon.done{background:var(--sage-lt);color:var(--sage);}
+.check-icon.todo{background:var(--parchmt);color:var(--muted);border:1px solid var(--border);}
+.check-icon.warn{background:var(--gold-lt);color:var(--gold);}
+.check-text strong{display:block;color:var(--ink);font-weight:600;margin-bottom:2px;}
+.check-text span{color:var(--dim);font-size:0.75rem;}
+.cost-badge{display:inline-block;background:var(--sage-lt);color:var(--sage);border:1px solid var(--sage);padding:0.2rem 0.6rem;border-radius:6px;font-size:0.72rem;font-weight:600;}
+.city-tag{display:inline-block;padding:4px 10px;border-radius:8px;font-size:0.72rem;font-weight:600;margin:3px;}
+.empty-state{text-align:center;padding:2.5rem;color:var(--muted);font-size:0.82rem;}
+.section-divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
+
+@media(max-width:768px){
+  .topbar{padding:0 1rem}
+  .main{padding:1.5rem 1rem}
+  .users-table{font-size:0.65rem}
+  .users-table th,.users-table td{padding:0.5rem}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .btn-small{margin-bottom:0.25rem}
+  .two-col{grid-template-columns:1fr}
+  .kw-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -100,22 +161,10 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
   <h1 style="font-family:var(--serif);margin-bottom:1rem;">Admin Dashboard</h1>
 
   <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-value" id="statUsers">0</div>
-      <div class="stat-label">Total Users</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statPaid">0</div>
-      <div class="stat-label">Paid Subscribers</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statTokens">0</div>
-      <div class="stat-label">Total Tokens</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statMrr">$0</div>
-      <div class="stat-label">Monthly Revenue</div>
-    </div>
+    <div class="stat-card"><div class="stat-value" id="statUsers">0</div><div class="stat-label">Total Users</div></div>
+    <div class="stat-card"><div class="stat-value" id="statPaid">0</div><div class="stat-label">Paid Subscribers</div></div>
+    <div class="stat-card"><div class="stat-value" id="statTokens">0</div><div class="stat-label">Total Tokens</div></div>
+    <div class="stat-card"><div class="stat-value" id="statMrr">$0</div><div class="stat-label">Monthly Revenue</div></div>
   </div>
 
   <div class="tabs">
@@ -123,26 +172,19 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
     <button class="tab" onclick="switchTab(1)">MANAGE SUBS</button>
     <button class="tab" onclick="switchTab(2)">TOOLS</button>
     <button class="tab" onclick="switchTab(3)">ANALYTICS</button>
+    <button class="tab seo-tab" onclick="switchTab(4)">📈 SEO</button>
   </div>
 
   <!-- Tab 0: Users -->
   <div class="tab-content active">
     <div class="card">
-      <div class="card-title">Gmail Users & Subscriptions</div>
+      <div class="card-title">Gmail Users &amp; Subscriptions</div>
       <table class="users-table">
         <thead>
-          <tr>
-            <th>NAME</th>
-            <th>EMAIL</th>
-            <th>INDUSTRY</th>
-            <th>SUBSCRIPTION</th>
-            <th>TOKENS</th>
-            <th>CREATED</th>
-            <th>ACTIONS</th>
-          </tr>
+          <tr><th>NAME</th><th>EMAIL</th><th>INDUSTRY</th><th>SUBSCRIPTION</th><th>TOKENS</th><th>CREATED</th><th>ACTIONS</th></tr>
         </thead>
         <tbody id="usersBody">
-          <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--muted);">Loading...</td></tr>
+          <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted);">Loading...</td></tr>
         </tbody>
       </table>
     </div>
@@ -152,14 +194,8 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
   <div class="tab-content">
     <div class="card">
       <div class="card-title">Assign Subscription</div>
-      <div class="fgroup">
-        <label>Select User</label>
-        <select id="subUserSelect" class="select-ctrl">
-          <option value="">-- Select a user --</option>
-        </select>
-      </div>
-      <div class="fgroup">
-        <label>Subscription Tier</label>
+      <div class="fgroup"><label>Select User</label><select id="subUserSelect" class="select-ctrl"><option value="">-- Select a user --</option></select></div>
+      <div class="fgroup"><label>Subscription Tier</label>
         <select id="subTier" class="select-ctrl">
           <option value="free">Free - 50k tokens/mo</option>
           <option value="starter">Starter - 100k tokens/mo ($9/mo or $85/yr)</option>
@@ -169,46 +205,18 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
         </select>
       </div>
       <button class="fbtn gold" onclick="assignSubscription()">Assign Subscription</button>
-      <div class="alert ok" id="subOk"></div>
-      <div class="alert err" id="subErr"></div>
-
+      <div class="alert ok" id="subOk"></div><div class="alert err" id="subErr"></div>
       <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
-
       <div class="card-title" style="margin-top:0;">Update Subscription</div>
-      <div class="fgroup">
-        <label>Select User</label>
-        <select id="updateUserSelect" class="select-ctrl" onchange="updateUserInfo()">
-          <option value="">-- Select a user --</option>
-        </select>
-      </div>
-      <div id="userInfoBox" style="display:none;background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:0.8rem;">
-        <strong>Current Tier:</strong> <span id="currentTier">-</span><br>
-        <strong>Status:</strong> <span id="tierStatus">-</span>
-      </div>
-      <div class="fgroup">
-        <label>New Tier</label>
-        <select id="updateTier" class="select-ctrl">
-          <option value="free">Free</option>
-          <option value="starter">Starter</option>
-          <option value="professional">Professional</option>
-          <option value="business">Business</option>
-          <option value="enterprise">Enterprise</option>
-        </select>
-      </div>
+      <div class="fgroup"><label>Select User</label><select id="updateUserSelect" class="select-ctrl" onchange="updateUserInfo()"><option value="">-- Select a user --</option></select></div>
+      <div id="userInfoBox" style="display:none;background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:1rem;font-size:0.8rem;"><strong>Current Tier:</strong> <span id="currentTier">-</span><br><strong>Status:</strong> <span id="tierStatus">-</span></div>
+      <div class="fgroup"><label>New Tier</label><select id="updateTier" class="select-ctrl"><option value="free">Free</option><option value="starter">Starter</option><option value="professional">Professional</option><option value="business">Business</option><option value="enterprise">Enterprise</option></select></div>
       <button class="fbtn gold" onclick="updateSubscription()">Update Subscription</button>
-      <div class="alert ok" id="updateOk"></div>
-      <div class="alert err" id="updateErr"></div>
-
+      <div class="alert ok" id="updateOk"></div><div class="alert err" id="updateErr"></div>
       <hr style="border:none;border-top:1px solid var(--border);margin:2rem 0;">
-
       <div class="card-title" style="margin-top:0;">Delete Subscription</div>
-      <div class="fgroup">
-        <label>Select User</label>
-        <select id="deleteSubSelect" class="select-ctrl">
-          <option value="">-- Select a user --</option>
-        </select>
-      </div>
-      <button class="fbtn" style="background:var(--rose);" onclick="deleteSubscription()">Delete Subscription</button>
+      <div class="fgroup"><label>Select User</label><select id="deleteSubSelect" class="select-ctrl"><option value="">-- Select a user --</option></select></div>
+      <button class="fbtn rose" onclick="deleteSubscription()">Delete Subscription</button>
       <div class="alert err" id="deleteErr"></div>
     </div>
   </div>
@@ -218,88 +226,58 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
     <div class="card">
       <div class="card-title">Gift Tokens</div>
       <div class="form-row">
-        <div>
-          <label>User Email</label>
-          <input type="email" id="giftEmail" class="finput" placeholder="user@example.com" style="margin-bottom:0;">
-        </div>
-        <div>
-          <label>Tokens</label>
-          <input type="number" id="giftAmount" class="finput" placeholder="5000" min="1" style="margin-bottom:0;">
-        </div>
+        <div><label>User Email</label><input type="email" id="giftEmail" class="finput" placeholder="user@example.com" style="margin-bottom:0;"></div>
+        <div><label>Tokens</label><input type="number" id="giftAmount" class="finput" placeholder="5000" min="1" style="margin-bottom:0;"></div>
       </div>
       <button class="fbtn gold" onclick="giftTokens()">Gift Tokens</button>
-      <div class="alert ok" id="giftOk"></div>
-      <div class="alert err" id="giftErr"></div>
+      <div class="alert ok" id="giftOk"></div><div class="alert err" id="giftErr"></div>
     </div>
-
     <div class="card">
       <div class="card-title">Create New User</div>
       <div class="form-row">
-        <div>
-          <label>Name</label>
-          <input type="text" id="createName" class="finput" placeholder="John Doe" style="margin-bottom:0;">
-        </div>
-        <div>
-          <label>Email</label>
-          <input type="email" id="createEmail" class="finput" placeholder="john@example.com" style="margin-bottom:0;">
-        </div>
+        <div><label>Name</label><input type="text" id="createName" class="finput" placeholder="John Doe" style="margin-bottom:0;"></div>
+        <div><label>Email</label><input type="email" id="createEmail" class="finput" placeholder="john@example.com" style="margin-bottom:0;"></div>
       </div>
-      <div class="fgroup">
-        <label>Initial Tokens</label>
-        <input type="number" id="createTokens" class="finput" placeholder="5000" value="5000" min="0">
-      </div>
+      <div class="fgroup"><label>Initial Tokens</label><input type="number" id="createTokens" class="finput" placeholder="5000" value="5000" min="0"></div>
       <button class="fbtn gold" onclick="createUser()">Create User</button>
-      <div class="alert ok" id="createOk"></div>
-      <div class="alert err" id="createErr"></div>
+      <div class="alert ok" id="createOk"></div><div class="alert err" id="createErr"></div>
     </div>
-
     <div class="card">
       <div class="card-title">Reset Monthly Tokens</div>
       <p style="font-size:0.8rem;color:var(--dim);margin-bottom:1rem;">Reset all subscriber tokens to tier amount.</p>
       <button class="fbtn gold" onclick="resetTokens()">Reset All Tokens</button>
-      <div class="alert ok" id="resetOk"></div>
-      <div class="alert err" id="resetErr"></div>
+      <div class="alert ok" id="resetOk"></div><div class="alert err" id="resetErr"></div>
     </div>
-
     <div class="card">
       <div class="card-title">Rebuild Users Index</div>
       <p style="font-size:0.8rem;color:var(--dim);margin-bottom:1rem;">Scan KV and rebuild the users:index. Use if users are missing from the list.</p>
       <button class="fbtn gold" onclick="rebuildIndex()">Rebuild Index</button>
-      <div class="alert ok" id="rebuildOk"></div>
-      <div class="alert err" id="rebuildErr"></div>
+      <div class="alert ok" id="rebuildOk"></div><div class="alert err" id="rebuildErr"></div>
     </div>
-
     <div class="card">
       <div class="card-title">Edit User Industry</div>
-      <div class="fgroup">
-        <label>Select User</label>
-        <select id="industryUserSelect" class="select-ctrl">
-          <option value="">-- Select a user --</option>
-        </select>
-      </div>
-      <div class="fgroup">
-        <label>Industry</label>
+      <div class="fgroup"><label>Select User</label><select id="industryUserSelect" class="select-ctrl"><option value="">-- Select a user --</option></select></div>
+      <div class="fgroup"><label>Industry</label>
         <select id="industrySelect" class="select-ctrl">
           <option value="">-- Select industry --</option>
-          <option value="etsy">🛍️ Etsy & Craft Sellers</option>
+          <option value="etsy">🛍️ Etsy &amp; Craft Sellers</option>
           <option value="realtor">🏠 Real Estate Agents</option>
-          <option value="landlord">🏢 Landlords & Property Managers</option>
-          <option value="coffee">☕ Coffee Shops & Cafés</option>
-          <option value="landscaping">🌳 Landscaping & Yard Services</option>
-          <option value="roofing">🏠 Roofing & Construction</option>
-          <option value="plumbing">🔧 Plumbing & HVAC</option>
-          <option value="salon">💇 Hair & Beauty Services</option>
+          <option value="landlord">🏢 Landlords &amp; Property Managers</option>
+          <option value="coffee">☕ Coffee Shops &amp; Cafés</option>
+          <option value="landscaping">🌳 Landscaping &amp; Yard Services</option>
+          <option value="roofing">🏠 Roofing &amp; Construction</option>
+          <option value="plumbing">🔧 Plumbing &amp; HVAC</option>
+          <option value="salon">💇 Hair &amp; Beauty Services</option>
           <option value="massage">💆 Massage Therapists</option>
-          <option value="photography">📸 Photography & Creative Services</option>
-          <option value="personal_training">💪 Personal Training & Fitness</option>
+          <option value="photography">📸 Photography &amp; Creative Services</option>
+          <option value="personal_training">💪 Personal Training &amp; Fitness</option>
           <option value="insurance">🛡️ Insurance Agents</option>
-          <option value="consulting">💼 Consulting & Professional Services</option>
+          <option value="consulting">💼 Consulting &amp; Professional Services</option>
           <option value="general">⭐ General Small Business</option>
         </select>
       </div>
       <button class="fbtn gold" onclick="updateIndustry()">Update Industry</button>
-      <div class="alert ok" id="industryOk"></div>
-      <div class="alert err" id="industryErr"></div>
+      <div class="alert ok" id="industryOk"></div><div class="alert err" id="industryErr"></div>
     </div>
   </div>
 
@@ -309,70 +287,441 @@ label{display:block;font-size:0.62rem;letter-spacing:0.08em;text-transform:upper
       <div class="card-title">Tier Breakdown</div>
       <div id="tierBreakdown" style="margin-top:1rem;"></div>
     </div>
-
     <div class="card">
       <div class="card-title">Revenue by Tier</div>
       <table class="revenue-table">
-        <thead>
-          <tr><th>Tier</th><th>Active</th><th>Price</th><th>MRR</th><th>ARR</th></tr>
-        </thead>
-        <tbody id="revenueBody">
-          <tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--muted);">Loading...</td></tr>
-        </tbody>
+        <thead><tr><th>Tier</th><th>Active</th><th>Price</th><th>MRR</th><th>ARR</th></tr></thead>
+        <tbody id="revenueBody"><tr><td colspan="5" style="text-align:center;padding:1.5rem;color:var(--muted);">Loading...</td></tr></tbody>
       </table>
     </div>
   </div>
 
-</div>
+  <!-- Tab 4: SEO Automation -->
+  <div class="tab-content">
+
+    <!-- SEO Stats -->
+    <div class="seo-stats-grid">
+      <div class="stat-card"><div class="stat-value gold" id="seoStatPosts">—</div><div class="stat-label">Posts Published</div></div>
+      <div class="stat-card"><div class="stat-value" id="seoStatNext">—</div><div class="stat-label">Next Topic #</div></div>
+      <div class="stat-card"><div class="stat-value sage" id="seoStatCoverage">—</div><div class="stat-label">Keywords Covered</div></div>
+      <div class="stat-card"><div class="stat-value sage" id="seoStatCost">$0.00</div><div class="stat-label">Est. API Cost</div></div>
+      <div class="stat-card"><div class="stat-value" id="seoStatWeeks">—</div><div class="stat-label">Weeks Left</div></div>
+    </div>
+
+    <div class="two-col">
+
+      <!-- Left: Status + Checklist -->
+      <div>
+        <div class="card">
+          <div class="card-title">System Status</div>
+          <div class="status-row">
+            <span class="status-label"><span class="pip green pulse"></span>GitHub Action</span>
+            <span class="status-val">Active — every Monday 8am ET</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label"><span class="pip green"></span>DeepSeek API Key</span>
+            <span class="status-val" style="color:var(--sage);">Set in GitHub Secrets</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label"><span class="pip grey" id="blogPip"></span>Blog Index</span>
+            <span class="status-val" id="blogStatus">Checking...</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label"><span class="pip grey" id="sitemapPip"></span>sitemap.xml</span>
+            <span class="status-val" id="sitemapStatus">Checking...</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label"><span class="pip grey" id="robotsPip"></span>robots.txt</span>
+            <span class="status-val" id="robotsStatus">Checking...</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label"><span class="pip grey" id="ogPip"></span>OG Image</span>
+            <span class="status-val" id="ogStatus">Checking...</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label"><span class="pip grey" id="favPip"></span>Favicon</span>
+            <span class="status-val" id="favStatus">Checking...</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label"><span class="pip green"></span>LocalBusiness Schema</span>
+            <span class="status-val" style="color:var(--sage);">Perry, GA — deployed</span>
+          </div>
+          <hr class="section-divider">
+          <button class="fbtn sm gold" onclick="runSeoChecks()" style="width:auto;">↻ Refresh Checks</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Setup Checklist</div>
+          <ul class="check-list">
+            <li><div class="check-icon done">✓</div><div class="check-text"><strong>SEO head tags patched</strong><span>Title, meta, geo tags, canonical in index.html</span></div></li>
+            <li><div class="check-icon done">✓</div><div class="check-text"><strong>LocalBusiness schema</strong><span>Perry, GA · 11 cities + 3 counties in areaServed</span></div></li>
+            <li><div class="check-icon done">✓</div><div class="check-text"><strong>OG image created</strong><span>og-image.png — 1200×630 brand card</span></div></li>
+            <li><div class="check-icon done">✓</div><div class="check-text"><strong>Favicon set created</strong><span>favicon.ico + 16/32/180/512px + apple-touch-icon</span></div></li>
+            <li><div class="check-icon done">✓</div><div class="check-text"><strong>robots.txt deployed</strong><span>Points crawlers to sitemap.xml</span></div></li>
+            <li><div class="check-icon done">✓</div><div class="check-text"><strong>GitHub Action created</strong><span>.github/workflows/seo-content.yml</span></div></li>
+            <li><div class="check-icon warn">!</div><div class="check-text"><strong>DEEPSEEK_API_KEY secret</strong><span>GitHub → Settings → Secrets → Actions</span></div></li>
+            <li><div class="check-icon todo">○</div><div class="check-text"><strong>Google Search Console</strong><span>Submit nagoh.us/sitemap.xml</span></div></li>
+            <li><div class="check-icon todo">○</div><div class="check-text"><strong>Google Business Profile</strong><span>Add Perry, GA address + nagoh.us URL</span></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right: URL checks + cost -->
+      <div>
+        <div class="card">
+          <div class="card-title">Live URL Checks <small>nagoh.us</small></div>
+          <div id="seoUrlChecks"><div class="empty-state">🔍 Running checks...</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Cost Calculator</div>
+          <div class="status-row"><span class="status-label">Est. tokens per post</span><span class="status-val">~800 tokens</span></div>
+          <div class="status-row"><span class="status-label">DeepSeek cost / 1K tokens</span><span class="status-val">~$0.014</span></div>
+          <div class="status-row"><span class="status-label">Cost per post</span><span class="status-val"><span class="cost-badge">~$0.01</span></span></div>
+          <div class="status-row"><span class="status-label">Posts per year</span><span class="status-val">52 posts</span></div>
+          <div class="status-row"><span class="status-label">Annual API cost</span><span class="status-val"><span class="cost-badge">~$0.52/yr</span></span></div>
+          <div class="status-row"><span class="status-label">Keyword cycle</span><span class="status-val">36 topics · ~9 months</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Local Coverage</div>
+          <div style="margin-top:0.5rem;">
+            <span class="city-tag" style="background:var(--teal-lt);color:var(--teal);border:1px solid var(--teal-md);">Perry ★</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Macon</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Warner Robins</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Fort Valley</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Milledgeville</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Byron</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Cordele</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Hawkinsville</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Dublin</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Forsyth</span>
+            <span class="city-tag" style="background:var(--cream);border:1px solid var(--border);color:var(--dim);">Fitzgerald</span>
+            <span class="city-tag" style="background:var(--gold-lt);border:1px solid var(--gold-md);color:#a06800;">Houston County</span>
+            <span class="city-tag" style="background:var(--gold-lt);border:1px solid var(--gold-md);color:#a06800;">Peach County</span>
+            <span class="city-tag" style="background:var(--gold-lt);border:1px solid var(--gold-md);color:#a06800;">Bibb County</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Published Posts -->
+    <div class="card">
+      <div class="card-title">Published Posts <small id="seoPostCount"></small>
+        <a href="https://nagoh.us/blog/" target="_blank" class="fbtn sm gold" style="float:right;margin-top:-4px;">View Blog →</a>
+      </div>
+      <div id="seoPostsSection"><div class="empty-state">📝 No posts yet — trigger the GitHub Action to generate the first one.</div></div>
+    </div>
+
+    <!-- Keyword Queue -->
+    <div class="card">
+      <div class="card-title">Keyword Queue <small>36 total · rotates weekly</small></div>
+      <div class="kw-grid" id="seoKwGrid"></div>
+    </div>
+
+  </div><!-- end Tab 4 -->
+
+</div><!-- end mainContent -->
 
 <script>
 const WORKER = 'https://nagohai.gregoryhogan.workers.dev';
+const SITE   = 'https://nagoh.us';
 let adminPwd = '';
-let allUsers = [];
-let allSubs = {};
-let allAnalytics = {};
+let allUsers = [], allSubs = {}, allAnalytics = {};
 
-function switchTab(i){document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content')[i].classList.add('active');document.querySelectorAll('.tab')[i].classList.add('active');}
+// ── SEO keyword list ──────────────────────────────────────────────────────────
+const SEO_TOPICS = [
+  {k:"small business website design Perry GA",s:"website design"},
+  {k:"affordable web design Middle Georgia",s:"website design"},
+  {k:"website hosting Perry GA small business",s:"website hosting"},
+  {k:"professional website builder Perry Georgia",s:"website design"},
+  {k:"local web designer Middle Georgia",s:"website design"},
+  {k:"WordPress website design Warner Robins GA",s:"website design"},
+  {k:"cheap website design Macon GA",s:"website design"},
+  {k:"iOS app developer Perry GA",s:"iOS app dev"},
+  {k:"iPhone app development Middle Georgia",s:"iOS app dev"},
+  {k:"custom iOS app small business Perry",s:"iOS app dev"},
+  {k:"mobile app developer Macon Warner Robins GA",s:"iOS app dev"},
+  {k:"SwiftUI developer Georgia small business app",s:"iOS app dev"},
+  {k:"SEO services Perry Georgia small business",s:"SEO content"},
+  {k:"local SEO Middle Georgia GA",s:"SEO content"},
+  {k:"Google ranking help Perry GA",s:"SEO content"},
+  {k:"SEO content writing service Warner Robins Georgia",s:"SEO content"},
+  {k:"how to rank on Google Perry small business",s:"SEO content"},
+  {k:"AI tools for small business Perry Georgia",s:"AI tools"},
+  {k:"business automation Middle Georgia",s:"AI tools"},
+  {k:"AI content writing tool Perry GA",s:"AI tools"},
+  {k:"Nagoh Creative Perry web design apps",s:"general"},
+  {k:"web design iOS app development Perry GA freelancer",s:"general"},
+  {k:"hire web developer Middle Georgia",s:"general"},
+  {k:"freelance web designer Perry Warner Robins Macon Georgia",s:"general"},
+  {k:"web design near me Perry Georgia",s:"general"},
+  {k:"affordable web design Middle Georgia small business",s:"general"},
+  {k:"web design Fort Valley GA small business",s:"website design"},
+  {k:"website design Milledgeville Georgia",s:"website design"},
+  {k:"web designer Byron GA",s:"website design"},
+  {k:"small business website Cordele Georgia",s:"website design"},
+  {k:"web design Hawkinsville GA",s:"website design"},
+  {k:"website design Dublin Georgia small business",s:"website design"},
+  {k:"web design Forsyth GA Monroe County",s:"website design"},
+  {k:"Houston County Georgia small business web design",s:"website design"},
+  {k:"Peach County Georgia website design",s:"website design"},
+  {k:"iOS app developer Warner Robins GA",s:"iOS app dev"},
+];
 
-function unlock(){const p=document.getElementById('pwdInput').value;if(!p)return;adminPwd=p;fetch(WORKER+'/admin/api/subscriptions',{headers:{'X-Admin-Password':p}}).then(r=>{if(r.status===401){document.getElementById('lockErr').textContent='Incorrect password';document.getElementById('lockErr').style.display='block';adminPwd='';}else if(!r.ok){document.getElementById('lockErr').textContent='Server error: '+r.status;document.getElementById('lockErr').style.display='block';adminPwd='';}else{localStorage.setItem('nagoh_admin_pwd',p);document.getElementById('lockScreen').style.display='none';document.getElementById('mainContent').style.display='block';loadDashboard();}}).catch(e=>{document.getElementById('lockErr').textContent='Error: '+e.message;document.getElementById('lockErr').style.display='block';});}
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function switchTab(i) {
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content')[i].classList.add('active');
+  document.querySelectorAll('.tab')[i].classList.add('active');
+  if (i === 4) { loadSeoTab(); }
+}
 
-async function loadDashboard(){try{const [sr,ar,ur]=await Promise.all([fetch(WORKER+'/admin/api/subscriptions',{headers:{'X-Admin-Password':adminPwd}}),fetch(WORKER+'/admin/api/analytics',{headers:{'X-Admin-Password':adminPwd}}),fetch(WORKER+'/admin/api/users',{headers:{'X-Admin-Password':adminPwd}})]);if(sr.ok){const d=await sr.json();allSubs={};(d.subscriptions||[]).forEach(s=>{allSubs[s.user_id]=s;});}if(ar.ok){allAnalytics=await ar.json();}if(ur.ok){const ud=await ur.json();allUsers=ud.users||[];}}catch(e){console.error(e);}renderDashboard();}
+// ── Auth ──────────────────────────────────────────────────────────────────────
+function unlock() {
+  const p = document.getElementById('pwdInput').value;
+  if (!p) return;
+  adminPwd = p;
+  fetch(WORKER + '/admin/api/subscriptions', { headers: { 'X-Admin-Password': p } })
+    .then(r => {
+      if (r.status === 401) { showLockErr('Incorrect password'); adminPwd = ''; }
+      else if (!r.ok) { showLockErr('Server error: ' + r.status); adminPwd = ''; }
+      else {
+        localStorage.setItem('nagoh_admin_pwd', p);
+        document.getElementById('lockScreen').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        loadDashboard();
+      }
+    }).catch(e => showLockErr('Error: ' + e.message));
+}
+function showLockErr(msg) {
+  const el = document.getElementById('lockErr');
+  el.textContent = msg; el.style.display = 'block';
+}
 
-function renderDashboard(){const p=Object.keys(allSubs).length;const t=allAnalytics.total_users||0;const tk=allAnalytics.total_tokens_spent||0;let m=0;const pr={starter:900,professional:2900,business:9900,enterprise:0};const tb=allAnalytics.tier_breakdown||{};Object.keys(tb).forEach(tier=>{const c=tb[tier].active_subscriptions||0;m+=c*(pr[tier]||0);});const mr=(m/100).toFixed(2);document.getElementById('statUsers').textContent=t;document.getElementById('statPaid').textContent=p;document.getElementById('statTokens').textContent=tk.toLocaleString();document.getElementById('statMrr').textContent='$'+mr;const tb_div=document.getElementById('tierBreakdown');tb_div.innerHTML='';Object.keys(tb).forEach(tier=>{const u=tb[tier].users||0;const a=tb[tier].active_subscriptions||0;tb_div.innerHTML+=`<div class="tier-stat"><div style="font-weight:600;margin-bottom:0.5rem;">${tier.toUpperCase()}</div><div class="tier-stat-value">${a}</div><div class="tier-stat-label">active</div><div style="font-size:0.7rem;color:var(--dim);margin-top:0.5rem;">${u} users</div></div>`;});const tbody=document.getElementById('usersBody');tbody.innerHTML='';if(allUsers.length===0){tbody.innerHTML='<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted);">No users</td></tr>';}else{allUsers.forEach(u=>{const tr=document.createElement('tr');const sub=allSubs[u.user_id];let st='<span class="sub-none">None</span>';if(sub&&sub.tier){st=`<span class="sub-badge sub-${sub.tier}">${sub.tier.toUpperCase()}</span>`;}const ts=u.created_at||0;const isMs=ts>10000000000;const ms=isMs?ts:ts*1000;const c=new Date(ms).toLocaleDateString();const ind=u.industry||'—';tr.innerHTML=`<td>${u.name||'Guest'}</td><td>${u.email||'Guest'}</td><td style="font-size:0.7rem;">${ind}</td><td>${st}</td><td class="bal">${(u.token_balance||0).toLocaleString()}</td><td>${c}</td><td><button class="btn-small btn-view" onclick="viewUser('${u.user_id}')">View</button><button class="btn-small btn-delete" onclick="deleteUser('${u.user_id}')">Delete</button></td>`;tbody.appendChild(tr);});}const s1=document.getElementById('subUserSelect');const s2=document.getElementById('updateUserSelect');const s3=document.getElementById('deleteSubSelect');const s4=document.getElementById('industryUserSelect');s1.innerHTML='<option>-- Select --</option>';s2.innerHTML='<option>-- Select --</option>';s3.innerHTML='<option>-- Select --</option>';s4.innerHTML='<option>-- Select --</option>';allUsers.forEach(u=>{const sub=allSubs[u.user_id];const o1=document.createElement('option');o1.value=u.user_id;o1.textContent=u.email+' ('+(sub?.tier||'None')+')';s1.appendChild(o1);const o2=document.createElement('option');o2.value=u.user_id;o2.textContent=u.email+' ('+(sub?.tier||'None')+')';s2.appendChild(o2);const o3=document.createElement('option');o3.value=u.user_id;o3.textContent=u.email+' ('+(sub?.tier||'None')+')';s3.appendChild(o3);const o4=document.createElement('option');o4.value=u.user_id;o4.textContent=u.name+' ('+u.email+')';s4.appendChild(o4);});renderRevenueTable();}
+// ── Main dashboard ────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const [sr, ar, ur] = await Promise.all([
+      fetch(WORKER + '/admin/api/subscriptions', { headers: { 'X-Admin-Password': adminPwd } }),
+      fetch(WORKER + '/admin/api/analytics',     { headers: { 'X-Admin-Password': adminPwd } }),
+      fetch(WORKER + '/admin/api/users',          { headers: { 'X-Admin-Password': adminPwd } }),
+    ]);
+    if (sr.ok) { const d = await sr.json(); allSubs = {}; (d.subscriptions || []).forEach(s => { allSubs[s.user_id] = s; }); }
+    if (ar.ok) { allAnalytics = await ar.json(); }
+    if (ur.ok) { const ud = await ur.json(); allUsers = ud.users || []; }
+  } catch(e) { console.error(e); }
+  renderDashboard();
+}
 
-function renderRevenueTable(){const tb=document.getElementById('revenueBody');tb.innerHTML='';const tb_d=allAnalytics.tier_breakdown||{};const pr={starter:9,professional:29,business:99,enterprise:0};Object.keys(pr).forEach(tier=>{const a=tb_d[tier]?.active_subscriptions||0;const p=pr[tier];const m=(a*p).toFixed(2);const y=(m*12).toFixed(2);const tr=document.createElement('tr');tr.innerHTML=`<td><span class="sub-badge sub-${tier}">${tier.toUpperCase()}</span></td><td>${a}</td><td>$${p.toFixed(2)}</td><td>$${m}</td><td>$${y}</td>`;tb.appendChild(tr);});}
+function renderDashboard() {
+  const p = Object.keys(allSubs).length;
+  const t = allAnalytics.total_users || 0;
+  const tk = allAnalytics.total_tokens_spent || 0;
+  let m = 0;
+  const pr = { starter: 900, professional: 2900, business: 9900, enterprise: 0 };
+  const tb = allAnalytics.tier_breakdown || {};
+  Object.keys(tb).forEach(tier => { m += (tb[tier].active_subscriptions || 0) * (pr[tier] || 0); });
+  document.getElementById('statUsers').textContent = t;
+  document.getElementById('statPaid').textContent = p;
+  document.getElementById('statTokens').textContent = tk.toLocaleString();
+  document.getElementById('statMrr').textContent = '$' + (m / 100).toFixed(2);
 
-function updateUserInfo(){const u=document.getElementById('updateUserSelect').value;const s=allSubs[u];if(s){document.getElementById('userInfoBox').style.display='block';document.getElementById('currentTier').textContent=(s.tier||'None').toUpperCase();document.getElementById('tierStatus').textContent=s.status||'Active';}else{document.getElementById('userInfoBox').style.display='none';}}
+  // Tier breakdown
+  const tb_div = document.getElementById('tierBreakdown');
+  tb_div.innerHTML = '';
+  Object.keys(tb).forEach(tier => {
+    const u = tb[tier].users || 0, a = tb[tier].active_subscriptions || 0;
+    tb_div.innerHTML += `<div class="tier-stat"><div style="font-weight:600;margin-bottom:0.5rem;">${tier.toUpperCase()}</div><div class="tier-stat-value">${a}</div><div class="tier-stat-label">active</div><div style="font-size:0.7rem;color:var(--dim);margin-top:0.5rem;">${u} users</div></div>`;
+  });
 
-function viewUser(u){const user=allUsers.find(x=>x.user_id===u);const sub=allSubs[u];if(user){alert(user.name+'\n'+user.email+'\nTokens: '+(user.token_balance||0).toLocaleString()+'\nSubscription: '+(sub?.tier||'None').toUpperCase());}}
+  // Users table
+  const tbody = document.getElementById('usersBody');
+  tbody.innerHTML = '';
+  if (allUsers.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--muted);">No users</td></tr>';
+  } else {
+    allUsers.forEach(u => {
+      const tr = document.createElement('tr');
+      const sub = allSubs[u.user_id];
+      let st = '<span class="sub-none">None</span>';
+      if (sub && sub.tier) st = `<span class="sub-badge sub-${sub.tier}">${sub.tier.toUpperCase()}</span>`;
+      const ts = u.created_at || 0;
+      const ms = ts > 10000000000 ? ts : ts * 1000;
+      const c = new Date(ms).toLocaleDateString();
+      tr.innerHTML = `<td>${u.name || 'Guest'}</td><td>${u.email || 'Guest'}</td><td style="font-size:0.7rem;">${u.industry || '—'}</td><td>${st}</td><td class="bal">${(u.token_balance || 0).toLocaleString()}</td><td>${c}</td><td><button class="btn-small btn-view" onclick="viewUser('${u.user_id}')">View</button><button class="btn-small btn-delete" onclick="deleteUser('${u.user_id}')">Delete</button></td>`;
+      tbody.appendChild(tr);
+    });
+  }
 
-async function deleteUser(u){if(!confirm('Delete user?'))return;const user=allUsers.find(x=>x.user_id===u);if(!user)return;try{const r=await fetch(WORKER+'/admin/api/users/'+encodeURIComponent(u),{method:'DELETE',headers:{'X-Admin-Password':adminPwd}});if(r.ok){loadDashboard();}else{alert('Error');}}catch(e){alert('Error: '+e.message);}}
+  // Populate selects
+  ['subUserSelect','updateUserSelect','deleteSubSelect','industryUserSelect'].forEach(id => {
+    const el = document.getElementById(id);
+    const isIndustry = id === 'industryUserSelect';
+    el.innerHTML = '<option>-- Select --</option>';
+    allUsers.forEach(u => {
+      const o = document.createElement('option');
+      o.value = u.user_id;
+      o.textContent = isIndustry ? `${u.name} (${u.email})` : `${u.email} (${allSubs[u.user_id]?.tier || 'None'})`;
+      el.appendChild(o);
+    });
+  });
+  renderRevenueTable();
+}
 
-async function assignSubscription(){const u=document.getElementById('subUserSelect').value;const t=document.getElementById('subTier').value;if(!u||!t){showAlert('subErr','Select user and tier');return;}const user=allUsers.find(x=>x.user_id===u);if(!user)return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({email:user.email,tier:t})});const d=await r.json();if(!r.ok){showAlert('subErr',d.error||'Failed');return;}showAlert('subOk','✅ Assigned!');setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('subErr','Error: '+e.message);}}
+function renderRevenueTable() {
+  const tb = document.getElementById('revenueBody');
+  tb.innerHTML = '';
+  const tb_d = allAnalytics.tier_breakdown || {};
+  const pr = { starter: 9, professional: 29, business: 99, enterprise: 0 };
+  Object.keys(pr).forEach(tier => {
+    const a = tb_d[tier]?.active_subscriptions || 0;
+    const p = pr[tier], m = (a * p).toFixed(2), y = (m * 12).toFixed(2);
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><span class="sub-badge sub-${tier}">${tier.toUpperCase()}</span></td><td>${a}</td><td>$${p.toFixed(2)}</td><td>$${m}</td><td>$${y}</td>`;
+    tb.appendChild(tr);
+  });
+}
 
-async function updateSubscription(){const u=document.getElementById('updateUserSelect').value;const t=document.getElementById('updateTier').value;if(!u||!t){showAlert('updateErr','Select user and tier');return;}const user=allUsers.find(x=>x.user_id===u);if(!user)return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({email:user.email,tier:t})});const d=await r.json();if(!r.ok){showAlert('updateErr',d.error||'Failed');return;}showAlert('updateOk','✅ Updated!');setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('updateErr','Error: '+e.message);}}
+function updateUserInfo() {
+  const u = document.getElementById('updateUserSelect').value;
+  const s = allSubs[u];
+  const box = document.getElementById('userInfoBox');
+  if (s) { box.style.display = 'block'; document.getElementById('currentTier').textContent = (s.tier || 'None').toUpperCase(); document.getElementById('tierStatus').textContent = s.status || 'Active'; }
+  else { box.style.display = 'none'; }
+}
+function viewUser(u) { const user = allUsers.find(x => x.user_id === u); const sub = allSubs[u]; if (user) alert(user.name + '\n' + user.email + '\nTokens: ' + (user.token_balance || 0).toLocaleString() + '\nSubscription: ' + (sub?.tier || 'None').toUpperCase()); }
+async function deleteUser(u) { if (!confirm('Delete user?')) return; try { const r = await fetch(WORKER + '/admin/api/users/' + encodeURIComponent(u), { method: 'DELETE', headers: { 'X-Admin-Password': adminPwd } }); if (r.ok) loadDashboard(); else alert('Error'); } catch(e) { alert('Error: ' + e.message); } }
+async function assignSubscription() { const u = document.getElementById('subUserSelect').value, t = document.getElementById('subTier').value; if (!u || !t) { showAlert('subErr', 'Select user and tier'); return; } const user = allUsers.find(x => x.user_id === u); if (!user) return; try { const r = await fetch(WORKER + '/admin/api/subscriptions', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd }, body: JSON.stringify({ email: user.email, tier: t }) }); const d = await r.json(); if (!r.ok) { showAlert('subErr', d.error || 'Failed'); return; } showAlert('subOk', '✅ Assigned!'); setTimeout(loadDashboard, 1500); } catch(e) { showAlert('subErr', 'Error: ' + e.message); } }
+async function updateSubscription() { const u = document.getElementById('updateUserSelect').value, t = document.getElementById('updateTier').value; if (!u || !t) { showAlert('updateErr', 'Select user and tier'); return; } const user = allUsers.find(x => x.user_id === u); if (!user) return; try { const r = await fetch(WORKER + '/admin/api/subscriptions', { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd }, body: JSON.stringify({ email: user.email, tier: t }) }); const d = await r.json(); if (!r.ok) { showAlert('updateErr', d.error || 'Failed'); return; } showAlert('updateOk', '✅ Updated!'); setTimeout(loadDashboard, 1500); } catch(e) { showAlert('updateErr', 'Error: ' + e.message); } }
+async function deleteSubscription() { const u = document.getElementById('deleteSubSelect').value; if (!u) { showAlert('deleteErr', 'Select user'); return; } if (!confirm('Delete subscription?')) return; const user = allUsers.find(x => x.user_id === u); if (!user) return; try { const r = await fetch(WORKER + '/admin/api/subscriptions', { method: 'DELETE', headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd }, body: JSON.stringify({ email: user.email }) }); if (!r.ok) { showAlert('deleteErr', 'Failed'); return; } loadDashboard(); } catch(e) { showAlert('deleteErr', 'Error: ' + e.message); } }
+async function giftTokens() { const e = document.getElementById('giftEmail').value.trim(), a = parseInt(document.getElementById('giftAmount').value, 10); if (!e || !a) { showAlert('giftErr', 'Email and amount required'); return; } try { const r = await fetch(WORKER + '/admin/api/gift', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd }, body: JSON.stringify({ email: e, amount: a }) }); const d = await r.json(); if (!r.ok) { showAlert('giftErr', d.error || 'Failed'); return; } showAlert('giftOk', '✅ Gifted ' + a.toLocaleString() + '!'); document.getElementById('giftEmail').value = ''; document.getElementById('giftAmount').value = ''; } catch(e) { showAlert('giftErr', 'Error: ' + e.message); } }
+async function createUser() { const n = document.getElementById('createName').value.trim(), e = document.getElementById('createEmail').value.trim(), t = parseInt(document.getElementById('createTokens').value, 10) || 0; if (!n || !e) { showAlert('createErr', 'Name and email required'); return; } try { const r = await fetch(WORKER + '/admin/api/users', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd }, body: JSON.stringify({ name: n, email: e, initialTokens: t }) }); const d = await r.json(); if (!r.ok) { showAlert('createErr', d.error || 'Failed'); return; } showAlert('createOk', '✅ Created!'); document.getElementById('createName').value = ''; document.getElementById('createEmail').value = ''; document.getElementById('createTokens').value = '5000'; setTimeout(loadDashboard, 1500); } catch(e) { showAlert('createErr', 'Error: ' + e.message); } }
+async function resetTokens() { if (!confirm('Reset all tokens?')) return; try { const r = await fetch(WORKER + '/admin/api/subscriptions', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd }, body: JSON.stringify({ reset_all_tokens: true }) }); if (!r.ok) { showAlert('resetErr', 'Failed'); return; } showAlert('resetOk', '✅ Reset!'); setTimeout(loadDashboard, 1500); } catch(e) { showAlert('resetErr', 'Error: ' + e.message); } }
+async function rebuildIndex() { if (!confirm('Rebuild users index from KV?')) return; try { const r = await fetch(WORKER + '/admin/api/rebuild-index', { method: 'POST', headers: { 'X-Admin-Password': adminPwd } }); const d = await r.json(); if (!r.ok) { showAlert('rebuildErr', d.error || 'Failed'); return; } showAlert('rebuildOk', '✅ Rebuilt! Found ' + d.total_users + ' users'); setTimeout(loadDashboard, 1500); } catch(e) { showAlert('rebuildErr', 'Error: ' + e.message); } }
+async function updateIndustry() { const u = document.getElementById('industryUserSelect').value, ind = document.getElementById('industrySelect').value; if (!u || !ind) { showAlert('industryErr', 'Select user and industry'); return; } const user = allUsers.find(x => x.user_id === u); if (!user) return; try { const r = await fetch(WORKER + '/admin/api/users/' + encodeURIComponent(u), { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Admin-Password': adminPwd }, body: JSON.stringify({ industry: ind }) }); const d = await r.json(); if (!r.ok) { showAlert('industryErr', d.error || 'Failed'); return; } showAlert('industryOk', '✅ Industry updated for ' + user.name + '!'); document.getElementById('industrySelect').value = ''; setTimeout(loadDashboard, 1500); } catch(e) { showAlert('industryErr', 'Error: ' + e.message); } }
+function showAlert(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = 'block'; setTimeout(() => { el.style.display = 'none'; }, 5000); }
 
-async function deleteSubscription(){const u=document.getElementById('deleteSubSelect').value;if(!u){showAlert('deleteErr','Select user');return;}if(!confirm('Delete subscription?'))return;const user=allUsers.find(x=>x.user_id===u);if(!user)return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'DELETE',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({email:user.email})});if(!r.ok){showAlert('deleteErr','Failed');return;}loadDashboard();}catch(e){showAlert('deleteErr','Error: '+e.message);}}
+// ── SEO TAB ───────────────────────────────────────────────────────────────────
+let seoState = { index: 0, generated: [] };
+let seoChecksRun = false;
 
-async function giftTokens(){const e=document.getElementById('giftEmail').value.trim();const a=parseInt(document.getElementById('giftAmount').value,10);if(!e||!a){showAlert('giftErr','Email and amount required');return;}try{const r=await fetch(WORKER+'/admin/api/gift',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({email:e,amount:a})});const d=await r.json();if(!r.ok){showAlert('giftErr',d.error||'Failed');return;}showAlert('giftOk','✅ Gifted '+a.toLocaleString()+'!');document.getElementById('giftEmail').value='';document.getElementById('giftAmount').value='';}catch(e){showAlert('giftErr','Error: '+e.message);}}
+async function loadSeoTab() {
+  // Load topic_state.json from the public repo
+  try {
+    const r = await fetch(SITE + '/scripts/topic_state.json?_=' + Date.now());
+    if (r.ok) seoState = await r.json();
+  } catch(e) { /* file may not be public yet */ }
+  renderSeoTab();
+  if (!seoChecksRun) { runSeoChecks(); seoChecksRun = true; }
+}
 
-async function createUser(){const n=document.getElementById('createName').value.trim();const e=document.getElementById('createEmail').value.trim();const t=parseInt(document.getElementById('createTokens').value,10)||0;if(!n||!e){showAlert('createErr','Name and email required');return;}try{const r=await fetch(WORKER+'/admin/api/users',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({name:n,email:e,initialTokens:t})});const d=await r.json();if(!r.ok){showAlert('createErr',d.error||'Failed');return;}showAlert('createOk','✅ Created!');document.getElementById('createName').value='';document.getElementById('createEmail').value='';document.getElementById('createTokens').value='5000';setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('createErr','Error: '+e.message);}}
+function renderSeoTab() {
+  const published = seoState.generated || [];
+  const nextIdx   = seoState.index || 0;
+  const total     = SEO_TOPICS.length;
+  const remaining = total - (nextIdx % total);
+  const cost      = (published.length * 0.01).toFixed(2);
 
-async function resetTokens(){if(!confirm('Reset all tokens?'))return;try{const r=await fetch(WORKER+'/admin/api/subscriptions',{method:'POST',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({reset_all_tokens:true})});if(!r.ok){showAlert('resetErr','Failed');return;}showAlert('resetOk','✅ Reset!');setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('resetErr','Error: '+e.message);}}
+  document.getElementById('seoStatPosts').textContent    = published.length;
+  document.getElementById('seoStatNext').textContent     = '#' + ((nextIdx % total) + 1);
+  document.getElementById('seoStatCoverage').textContent = nextIdx + '/' + total;
+  document.getElementById('seoStatCost').textContent     = '$' + cost;
+  document.getElementById('seoStatWeeks').textContent    = remaining;
+  document.getElementById('seoPostCount').textContent    = published.length + ' posts';
 
-async function rebuildIndex(){if(!confirm('Rebuild users index from KV?'))return;try{const r=await fetch(WORKER+'/admin/api/rebuild-index',{method:'POST',headers:{'X-Admin-Password':adminPwd}});const d=await r.json();if(!r.ok){showAlert('rebuildErr',d.error||'Failed');return;}showAlert('rebuildOk','✅ Rebuilt! Found '+d.total_users+' users');setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('rebuildErr','Error: '+e.message);}}
+  // Posts table
+  const sec = document.getElementById('seoPostsSection');
+  if (published.length === 0) {
+    sec.innerHTML = '<div class="empty-state">📝 No posts yet — trigger the GitHub Action to generate the first one.</div>';
+  } else {
+    let rows = '';
+    [...published].reverse().forEach(p => {
+      rows += `<tr>
+        <td style="white-space:nowrap;">${p.date || '—'}</td>
+        <td><span class="kw-pill" title="${p.keyword}">${p.keyword || '—'}</span></td>
+        <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.title || '—'}</td>
+        <td><a href="${SITE}/blog/${p.slug}.html" target="_blank" class="link-btn">View →</a></td>
+      </tr>`;
+    });
+    sec.innerHTML = `<table class="posts-table"><thead><tr><th>Date</th><th>Keyword</th><th>Title</th><th>Link</th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
 
-async function updateIndustry(){const u=document.getElementById('industryUserSelect').value;const ind=document.getElementById('industrySelect').value;if(!u||!ind){showAlert('industryErr','Select user and industry');return;}const user=allUsers.find(x=>x.user_id===u);if(!user)return;try{const r=await fetch(WORKER+'/admin/api/users/'+encodeURIComponent(u),{method:'PUT',headers:{'Content-Type':'application/json','X-Admin-Password':adminPwd},body:JSON.stringify({industry:ind})});const d=await r.json();if(!r.ok){showAlert('industryErr',d.error||'Failed');return;}showAlert('industryOk','✅ Industry updated for '+user.name+'!');document.getElementById('industrySelect').value='';setTimeout(()=>{loadDashboard();},1500);}catch(e){showAlert('industryErr','Error: '+e.message);}}
+  // Keyword queue
+  const grid = document.getElementById('seoKwGrid');
+  grid.innerHTML = '';
+  SEO_TOPICS.forEach((t, i) => {
+    const done   = published.length > 0 && i < (nextIdx % total);
+    const isNext = i === (nextIdx % total);
+    const div = document.createElement('div');
+    div.className = 'kw-item' + (done ? ' done' : '') + (isNext ? ' next' : '');
+    div.innerHTML = `<div class="kw-num">${i + 1}</div><div><div class="kw-text">${t.k}</div><div class="kw-svc">${t.s}${isNext ? ' ← next up' : ''}</div></div>`;
+    grid.appendChild(div);
+  });
+}
 
-function showAlert(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';setTimeout(()=>{el.style.display='none';},5000);}
+async function runSeoChecks() {
+  const checks = [
+    { url: '/blog/',                label: 'blog/index.html',      pip: 'blogPip',    status: 'blogStatus' },
+    { url: '/sitemap.xml',          label: 'sitemap.xml',           pip: 'sitemapPip', status: 'sitemapStatus' },
+    { url: '/robots.txt',           label: 'robots.txt',            pip: 'robotsPip',  status: 'robotsStatus' },
+    { url: '/og-image.png',         label: 'og-image.png',          pip: 'ogPip',      status: 'ogStatus' },
+    { url: '/favicon.ico',          label: 'favicon.ico',           pip: 'favPip',     status: 'favStatus' },
+  ];
 
-// Only load dashboard if already unlocked
-if(adminPwd) loadDashboard();
-// Try to restore password from localStorage
-const savedPwd=localStorage.getItem('nagoh_admin_pwd');
-if(savedPwd){adminPwd=savedPwd;document.getElementById('lockScreen').style.display='none';document.getElementById('mainContent').style.display='block';loadDashboard();}
-// Auto-refresh every 60 seconds when unlocked
-setInterval(()=>{ if(adminPwd) loadDashboard(); },60000);
+  const results = await Promise.all(checks.map(async c => {
+    try {
+      const r = await fetch(SITE + c.url, { method: 'HEAD', cache: 'no-store' });
+      return { ...c, ok: r.ok, code: r.status };
+    } catch(e) {
+      return { ...c, ok: false, code: 'ERR' };
+    }
+  }));
+
+  // Update system status pips
+  results.forEach(r => {
+    const pip = document.getElementById(r.pip);
+    const stat = document.getElementById(r.status);
+    if (!pip || !stat) return;
+    if (r.ok) {
+      pip.style.background = 'var(--sage)';
+      pip.style.boxShadow  = '0 0 0 3px var(--sage-lt)';
+      stat.textContent = 'Live (' + r.code + ')';
+      stat.style.color = 'var(--sage)';
+    } else {
+      pip.style.background = 'var(--rose)';
+      pip.style.boxShadow  = '0 0 0 3px var(--rose-lt)';
+      stat.textContent = 'Not found (' + r.code + ')';
+      stat.style.color = 'var(--rose)';
+    }
+  });
+
+  // URL check detail panel
+  let html = '';
+  results.forEach(r => {
+    html += `<div class="status-row">
+      <span class="status-label">
+        <span class="pip ${r.ok ? 'green' : 'red'}"></span>
+        <code style="font-size:0.72rem;">${SITE}${r.url}</code>
+      </span>
+      <span class="status-val" style="color:${r.ok ? 'var(--sage)' : 'var(--rose)'}">
+        ${r.ok ? '✓ ' + r.code : '✗ ' + r.code}
+      </span>
+    </div>`;
+  });
+  document.getElementById('seoUrlChecks').innerHTML = html;
+}
+
+// ── Bootstrap ─────────────────────────────────────────────────────────────────
+const savedPwd = localStorage.getItem('nagoh_admin_pwd');
+if (savedPwd) {
+  adminPwd = savedPwd;
+  document.getElementById('lockScreen').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+  loadDashboard();
+}
+setInterval(() => { if (adminPwd) loadDashboard(); }, 60000);
 </script>
 
 </body>
